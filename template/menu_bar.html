@@ -1,0 +1,52 @@
+<header id="menu_header">
+<nav class="navbar navbar-inverse sidebar" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+         
+        <div class="navbar-header" id="placebo">
+          <a class="navbar-brand" href="#">Placebo-Stock</a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.php?action=Ingreso::hola">
+                 <img  id="logo" src="imagenes/aesi2.png" alt="">
+            </a>
+        </div>
+             
+           
+        
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+            <!-- START BLOCK : dentro -->
+            <ul class="nav navbar-nav">
+                
+                <li><a href="index.php"><span sclass="sr-only" tyle="font-size:16px;" class="pull-right hidden-xs showopacity">{usuario}</span></a></li>
+
+                
+
+                 <li {select_menu}><a href="index.php?action=Ingreso::menu_admin">Ascenso Positivo<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+
+            </ul> 
+
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li {select_locales}><a href="index.php?action=Local::mostrar">Locales <span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <li {select_empleados}><a href="index.php?action=Empleado::menu">Empleados<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+               
+                <li {select_proveedores}><a href="index.php?action=Proveedor::menu">Proveedores<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                 <li {select_articulos}><a href="index.php?action=Articulo::mostrar">Deposito<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <li {select_user}><a href="index.php?action=Ingreso::salir">Salir<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+               
+            <!-- END BLOCK : dentro -->
+              
+            </ul> 
+        </div>
+    </div>
+</nav>
+</header>
+

@@ -1,0 +1,9 @@
+----- DATOS PARA CONSULTA
+--FOTO PROVEEDOR
+SELECT path_foto 
+FROM us_prvd_foto
+WHERE 1;
+--FOTO USUARIO
+SELECT path_foto 
+FROM us_prvd_foto
+WHERE 1;

@@ -1,0 +1,104 @@
+<div class="menu_articulos_admin">
+	<div class="container">
+		<div class="row encabezado">
+			<div class="col-md-4 col-xs-6">
+				<div class="titulo-secciones panel-heading">Principal</div>
+
+			</div>
+			<div class="col-md-4 col-xs-6">
+				<a href="index.php?action=Articulo::cargar_deposito">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
+			</div>
+		</div>
+		<div class="row">
+
+			<!-- START BLOCK : sin_sucursales -->
+			<div class="col-md-6 col-md-offset-2">
+				<div class="alert alert-warning center-block">
+					<h3>No posee locales cargados.</h3>
+					
+				</div>
+			</div>
+			<!-- END BLOCK : sin_sucursales -->
+		</div>
+		<div class="row">
+		<!-- START BLOCK : con_sucursales -->
+
+			<div class="col-md-3 col-xs-6">
+			 
+			
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  </div>
+				  <div class="panel panel-default">
+					  <div class="panel-heading"><strong>{scrs_nombre}</strong></div>
+					  <div class="panel-body">
+					    <p>{scrs_descripcion}</p>
+					  </div>
+					  <h3>Articulos</h3>
+				  <table class="table">
+				    <tr>
+			            <th>Articulo</th>
+			            <th>Marca</th>
+			            <th>Stock</th>
+			            
+			            
+			        </tr>
+			       
+			        <tr>
+			        <!-- START BLOCK : con_articulo -->
+			            <td>{art_nombre}</td>
+			            <td>{art_marca}</td>
+			            <td>{art_cantidad}</td>
+			        <!-- END BLOCK : con_articulo -->
+			        <!-- START BLOCK : sin_articulo -->
+			        	<td>No</td>
+			            <td>Posee</td>
+			            <td>Articulos</td>
+			        <!-- END BLOCK : sin_articulo -->
+			            
+			        </tr>
+				  </table>
+				  <h3>Empleados</h3>
+				  <table class="table">
+				    <tr>
+			            <th>Nombre</th>
+			            <th>Fecha Alta</th>
+			            <th>Foto</th>
+			            
+			            
+			        </tr>
+			       
+			        <tr>
+			        <!-- START BLOCK : con_empleados -->
+			            <td>{empl_nombre}</td>
+			            <td>{empl_fecha_alta}</td>
+			            <td>{empl_foto}</td>
+			        <!-- END BLOCK : con_empleados -->
+			        <!-- START BLOCK : sin_empleados -->
+			        	<td>No</td>
+			            <td>Posee</td>
+			            <td>Empleados</td>
+			        <!-- END BLOCK : sin_empleados -->
+			            
+			        </tr>
+				  </table>
+					  <!--<ul class="list-group">
+					    <li class="list-group-item"><strong>Fecha de Alta:</strong>  {empl_fecha_alta}</li>
+					    <li class="list-group-item"><strong>Dni:</strong> {empl_dni}</li>
+					    <li class="list-group-item"><strong>Fecha de Nacimiento:</strong> {empl_fecha_nac}</li>
+					    <li class="list-group-item"><strong>Direccion:</strong> {empl_direccion}</li>
+					    <li class="list-group-item"><strong>Correo:</strong> {empl_correo}</li>
+					    <li class="list-group-item"><strong>Telefono:</strong> {empl_telefono}</li>
+					  </ul>-->
+					</div>
+				</div>
+
+			</div>
+			<!-- END BLOCK : con_sucursales -->
+
+			
+		</div>
+	</div>
+</div>

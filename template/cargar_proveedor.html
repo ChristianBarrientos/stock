@@ -1,0 +1,94 @@
+<div class="cargar_proveedor">
+	<div class="container">
+	  <h2>Alta de Proveedor</h2>
+	  <h3>Datos generales</h3>
+	  <!-- START BLOCK : error_cuit -->
+	    <div class="alert alert-danger center-block">
+			<h3>Ya existe un proveedor con ese CUIT.</h3>
+		</div>
+	    <!-- END BLOCK : error_cuit -->
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Proveedor::alta_proveedor" method="post">
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_nombre">Nombre:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="prvd_nombre" class="form-control" id="prvd_nombre" placeholder="Ingrese nombre del empleado" name="prvd_nombre">
+	      </div>
+	    </div>
+	     
+	   
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_cuit">CUIT:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="prvd_cuit" class="form-control" id="prvd_cuit" placeholder="Ingrese dni del empleado" name="prvd_cuit">
+	      </div>
+	    </div>
+	     
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="prvd_fecha_alta">Fecha de Alta:</label>
+	       <div class='col-sm-6'>
+            
+            	<div class='input-group date' id='datetimepicker2'>
+            	    <input required placeholder="AAAA-MM-DD" name="prvd_fecha_alta" type='text' class="form-control" />
+            	    <span class="input-group-addon">
+            	        <span class="glyphicon glyphicon-calendar"></span>
+            	    </span>
+            	</div>
+            
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker2').datetimepicker({
+                	format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+	    </div>
+
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_descripcion">Descripcion:</label>
+	      
+  		  <textarea name="prvd_descripcion" class="col-md-5 control-label col-sm-6" rows="5" id="comment">
+  		  </textarea>
+	    </div>
+	    <h3>Datos de Contacto</h3>
+	    
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_direccion">Direccion:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="prvd_direccion" class="form-control" id="prvd_direccion" placeholder="Ingrese direccion del empleado" name="prvd_direccion">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_correo">Correo:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="prvd_correo" class="form-control" id="prvd_correo" placeholder="Ingrese correo del empelado" name="prvd_correo">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="prvd_telefono">Telefono:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="prvd_telefono" class="form-control" id="prvd_telefono" placeholder="Ingrese telefono del empleado" name="prvd_telefono">
+	      </div>
+	    </div>
+
+	     
+	    
+	     
+		
+
+	    <div class="form-group">
+	    <!-- START BLOCK : con_locales_empl --> 
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        	<button type="submit" class="btn btn-default">Cargar</button>
+	      	</div>
+	    <!-- END BLOCK : con_locales_empl -->    
+	    <!-- START BLOCK : sin_locales_empl_2 --> 
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        	<button disabled="disabled" type="submit" class="btn btn-default">Cargar</button>
+	      	</div>
+	    <!-- END BLOCK : sin_locales_empl_2 -->     
+	      
+	    </div>
+	  </form>
+	</div>
+</div>

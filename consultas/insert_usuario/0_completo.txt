@@ -1,0 +1,14 @@
+INSERT INTO `us_prvd_foto`(`id_foto`, `path_foto`) 
+VALUES (0,'imagenes/us_prvd/proveedor.jpg');
+INSERT INTO `us_prvd_foto`(`id_foto`, `path_foto`) 
+VALUES (0,'imagenes/us_prvd/usuario.jpg');
+INSERT INTO `us_prvd_fecha_ab`(`id_fecha_ab`, `alta`, `baja`) 
+VALUES (0,'2017-09-11',null);
+INSERT INTO `us_prvd_contacto_tel`(`id_contacto_tel`, `nro_caracteristica`, `nro_telefono`)
+VALUES (0,383,154528621);
+INSERT INTO `us_prvd_contacto`(`id_contacto`, `id_contacto_tel`, `direccion`, `correo`) 
+VALUES (0,1,'Cordoba 542','christianbarrientoss@hotmail.com');
+INSERT INTO `us_datos`(`id_datos`, `nombre`, `apellido`, `fecha_nac`, `dni`, `id_foto`, `genero`, `id_fecha_ab`) 
+VALUES (0,'Christian','Barrientios','1996-01-31',39014575,2,'m',1);
+INSERT INTO `usuarios`(`id_usuarios`, `id_datos`, `id_contacto`, `acceso`, `usuario`, `pass`) 
+VALUES (0,1,1,'ADMIN','christian','123456');

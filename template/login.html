@@ -1,0 +1,50 @@
+<div class="login">
+	<div class="container">
+		<div class="row">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">Bienvenido!</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
+				<div class="main-login main-center">
+				<!-- START BLOCK : error_login -->
+	           
+	               <div class="alert alert-danger">
+					<span>Los datos ingresados son incorrectos.</span>
+	               </div>
+	           
+	            <!-- END BLOCK : error_login -->
+					<form class="form-horizontal" method="post" action="index.php?action=Ingreso::verificar_usuario">
+						
+
+						<div class="form-group">
+							<label for="usuario" class="cols-sm-2 control-label">Usuario</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="usuario" id="usuario"  placeholder="Ingrese su usuario del Sistema"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="pass" class="cols-sm-2 control-label">Contraseña</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="pass" id="pass"  placeholder="Ingrese su contraseña"/>
+								</div>
+							</div>
+						</div>
+
+						
+						<div class="form-group ">
+							<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Entrar</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+	</div>
+</div>

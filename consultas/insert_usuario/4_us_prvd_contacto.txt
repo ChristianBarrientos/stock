@@ -1,0 +1,3 @@
+--INSERTAR DATOS DE CONTACTO DE USUARIO, HACE REFERENCIA A TABLA CONTACTO TEL
+INSERT INTO `us_prvd_contacto`(`id_contacto`, `id_contacto_tel`, `direccion`, `correo`) 
+VALUES (0,1,'Cordoba 542','christianbarrientoss@hotmail.com')

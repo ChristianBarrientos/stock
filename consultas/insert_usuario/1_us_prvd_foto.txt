@@ -1,0 +1,8 @@
+--PROVEEDOR
+INSERT INTO `us_prvd_foto`(`id_foto`, `path_foto`) 
+VALUES (0,'imagenes/us_prvd/proveedor.jpg')
+
+-- USUARIO
+INSERT INTO `us_prvd_foto`(`id_foto`, `path_foto`) 
+VALUES (0,'imagenes/us_prvd/usuario.jpg')
+

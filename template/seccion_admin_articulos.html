@@ -1,0 +1,56 @@
+<div class="menu_articulos_admin">
+	<div class="container">
+		<div class="row encabezado">
+			<div class="col-md-4 col-xs-6">
+				<div class="titulo-secciones panel-heading">Deposito</div>
+
+			</div>
+			<div class="col-md-4 col-xs-6">
+				<a href="index.php?action=Articulo::cargar_deposito">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
+			</div>
+		</div>
+		<div class="row">
+
+			<!-- START BLOCK : sin_articulos -->
+			<div class="col-md-6 col-md-offset-2">
+				<div class="alert alert-warning center-block">
+					<h3>No posee articulos en el deposito.</h3>
+					
+				</div>
+			</div>
+			<!-- END BLOCK : sin_articulos -->
+		</div>
+		<div class="row">
+		<!-- START BLOCK : con_articulos -->
+
+			<div class="col-md-3 col-xs-6">
+			 
+			
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  </div>
+				  <div class="panel panel-default">
+					  <div class="panel-heading"><strong>{empl_nombre}</strong></div>
+					  <div class="panel-body">
+					    <p><img class="img-circle img-responsive" id="empleado_foto" src="{empl_foto}" alt=""></p>
+					  </div>
+					  <ul class="list-group">
+					    <li class="list-group-item"><strong>Fecha de Alta:</strong>  {empl_fecha_alta}</li>
+					    <li class="list-group-item"><strong>Dni:</strong> {empl_dni}</li>
+					    <li class="list-group-item"><strong>Fecha de Nacimiento:</strong> {empl_fecha_nac}</li>
+					    <li class="list-group-item"><strong>Direccion:</strong> {empl_direccion}</li>
+					    <li class="list-group-item"><strong>Correo:</strong> {empl_correo}</li>
+					    <li class="list-group-item"><strong>Telefono:</strong> {empl_telefono}</li>
+					  </ul>
+					</div>
+				</div>
+
+			</div>
+			<!-- END BLOCK : con_articulos -->
+
+			
+		</div>
+	</div>
+</div>

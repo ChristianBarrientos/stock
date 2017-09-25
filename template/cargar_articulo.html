@@ -1,0 +1,358 @@
+<div class="cargar_articuloe">
+<div class="container">
+	  <div class="row">
+	  	<div class="col-md-4">
+	  			<div class="form-group">
+			    	<div class="modal fade" id="agregar_art_valor_general" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Agregar Articulo General</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+									<div class="form_flotante">
+										<form id="form_art_general">
+											<div class="form-group">
+										      <label class="control-label col-sm-2" for="art_general">Valor:</label>
+										       
+										        <input required type="text" class="form-control" id="art_general" placeholder="Ingrese Valor General" name="art_general">   
+										    </div>
+										    <div class="form-group">    
+										    	 <button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_general">
+										    	 Agregar	
+									        </div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+	  	</div>
+	  </div>
+</div>
+<div class="container">
+	  <div class="row">
+	  	<div class="form-group">
+	    	<div class="modal fade" id="agregar_art_marca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span id = "cerrar_modal1" aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Agregar Marca Articulo</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form_flotante">
+								<form id="form_art_marca">
+									<div class="form-group">
+								      <label class="control-label col-sm-2" for="art_marca">Valor:</label>
+								       
+								        <input required type="text" class="form-control" id="art_marca" placeholder="Ingrese Marca de Articulo" name="art_marca">
+								      
+								    </div>
+								    <div class="form-group">    
+									   	
+									   	<button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_marca">
+										Agregar
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	  </div>
+</div>
+<div class="container">
+	  <div class="row">
+	  	<div class="form-group">
+	    	<div class="modal fade" id="agregar_art_tipo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span id = "cerrar_modal2" aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Agregar Tipo Articulo</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form_flotante">
+								<form id="form_art_tipo">
+									<div class="form-group">
+								      <label class="control-label col-sm-2" for="art_tipo">Valor:</label>
+								       
+								        <input required type="text" class="form-control" id="art_tipo" placeholder="Ingrese Marca de Articulo" name="art_tipo">
+								      
+								    </div>
+								    <div class="form-group">    
+									  	<button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_tipo">
+										Agregar</button>
+								    </div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	  </div>
+</div>
+	<div class="container">
+	  <h2>Alta de Articulos</h2>
+	  <h3>Datos generales</h3>
+	  <!-- START BLOCK : error_cb -->
+	    <div class="alert alert-danger center-block">
+			<h3>Ya existe una articulo con ese CB.</h3>
+					
+		</div>
+	    <!-- END BLOCK : error_cb -->
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_articulo" method="post">
+
+	    <div class="form-group"> 
+	    <div class="row">
+	    	<label class="control-label col-sm-2" for="select_art_general">General:</label>
+		    
+		    	
+			        <div class="col-md-3 col-sm-2 ">
+			      	
+				      <select id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <!-- START BLOCK : cargar_articulo_nombre -->
+				        <option value="{valor_id_articulo}">{nombre_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_nombre -->
+				      	
+				      </select>
+				    </div>  
+			        
+			        <div class="col-md-4 col-sm-3 ">
+				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general">
+							Agregar
+						</button>
+			        </div>
+			        
+		    </div>       
+	      
+	    </div>
+	  
+
+	     <div class="form-group">
+	     <div class="row">
+	     	
+	     
+	      <label class="control-label col-sm-2" for="art_marca">Marca:</label>
+	      		<div class="col-md-3 col-sm-2 ">
+			      	
+				      <select name="art_marca" id = "select_art_marca" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <!-- START BLOCK : cargar_articulo_marca -->
+				        <option value="{valor_id_marca}">{marca_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_marca -->
+				      </select>
+				      
+			    </div>
+			     <div class="col-md-4 col-sm-3 ">
+				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_marca">
+							Agregar
+						</button>
+			        </div>
+		</div>
+	    </div>
+
+	    <div class="form-group">
+	    <div class="row">
+	      <label class="control-label col-sm-2" for="art_tipo">Tipo:</label>
+	            <div class="col-md-3 col-sm-2 ">
+				      <select name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <!-- START BLOCK : cargar_articulo_tipo -->
+				        <option value="{valor_id_tipo}">{tipo_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_tipo -->
+				      </select>
+				      
+			    </div>
+			     <div class="col-md-4 col-sm-3 ">
+				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_tipo">
+							Agregar
+						</button>
+			        </div>
+		</div>	    
+	    </div>
+	    <div class="form-group">
+	    <div class="row">
+	      <label class="control-label col-sm-2" for="art_cantidad_total">Cantidad Total:</label>
+	            <div class="col-md-3 col-sm-2 ">
+				         
+				    <input required min="1" type="number" class="form-control" id="art_cantidad_total" placeholder="Ingrese cantidad total del articulos" name="art_cantidad_total">
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+
+	    <div class="form-group">
+	    <div class="row">
+	      <label class="control-label col-sm-2" for="art_cantidad_total">Codigo de Barras:</label>
+	            <div class="col-md-3 col-sm-2 ">
+				         
+				    <input required min="1000000000000" max="9999999999999" type="number" class="form-control" id="art_codigo_barras" placeholder="Ingrese el codigo de barras del articulo." name="art_codigo_barras">
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+	    
+	   
+	    
+	    <h3>Datos de Grupo de Atributos</h3>
+	    <!-- START BLOCK : cargar_articulo_grupo -->
+	    <div class="form-group">
+	    <div class="row">
+	    
+	      <label class="control-label col-sm-2" for="art_grupo_att">{des_cat}:</label>
+	      	<div class="col-md-3 col-sm-2 ">
+							         
+					<!-- START BLOCK : art_precio_base -->
+					 
+					<input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
+					<!-- END BLOCK : art_precio_base -->  
+
+					<!-- START BLOCK : art_precio_tarjeta -->
+					 
+					<input required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
+					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
+					<!-- END BLOCK : art_precio_tarjeta -->
+
+					<!-- START BLOCK : art_precio_credito_argentino -->
+					 
+					<input required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
+					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
+					<!-- END BLOCK : art_precio_credito_argentino -->
+
+					<!-- START BLOCK : art_medida --> 
+					<input required  type="text" class="form-control" id="art_medida" placeholder="Ingrese el talle." name="art_medida">
+					<!-- END BLOCK : art_medida -->
+				    
+				    <!-- START BLOCK : sin_articulo_grupo -->
+				    <div class="col-md-12 col-xs-12">
+						<div class="alert alert-warning center-block">
+							<h3>Sin grupo de atributos cargados.</h3>
+							
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-3 ">
+				      	<button type="button" class="btn btn-primary btn-md disabled" data-toggle="modal" data-target="#agregar_articulo_nombre">
+							Agregar
+						</button>
+			        </div>
+				    <!-- END BLOCK : sin_articulo_grupo -->
+				      
+			</div>
+			 
+		</div>
+	    </div>
+		<!-- END BLOCK : cargar_articulo_grupo -->
+	     <h3>Datos de Proveedor</h3>
+	     <div class="form-group">
+	    <div class="row">
+	      <label class="control-label col-sm-2" ></label>
+	           	<div id="seleccionar_local_art" class="col-md-3 col-sm-2 checkbox">
+			  <label><input id="conlocal_art" type="checkbox" value="{id_local}">Definir Proveedor</label>
+		    </div>
+			      
+		</div>	    
+	    </div>
+	    <div class="form-group">
+	     <div class="row">
+	      <label class="control-label col-sm-2" for="art_tipo">Proveedor:</label>
+	      
+		    <div  hidden id="con_prvd_">
+		    	<div class="col-md-3 col-sm-2 ">
+				      <select name="art_prvd" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <!-- START BLOCK : cargar_articulo_prvd -->
+				        <option value="null"></option>
+				        <option value="{valor_id_prvd}">{prvd_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_prvd -->
+				      </select>
+				      
+			    </div>
+			    <div class="col-md-4 col-sm-3 ">
+			     <a href="index.php?action=Proveedor::cargar_proveedor">
+				      	<button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre">
+							Agregar
+						</button></a>
+			    </div>
+		    </div>
+	            
+		</div>	
+	    </div>
+	    
+	    
+
+	     
+
+	    <h3>Distribuir por local</h3>
+	    
+	    <div class="form-group">
+	   
+	     <!-- START BLOCK : locales_alta -->
+	     <div class="row">    
+		    <label class="control-label col-sm-2" for="art_local">{nombre_local}:</label>
+	      		<div class="col-md-3 col-sm-2 ">
+			      	
+				      
+				    <input required min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
+				     
+			            
+			        <div class='input-group date' id='datetimepicker{nombre_local_art_2}'>
+			            <input required placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+			        </div>
+			            
+			    
+				<script type="text/javascript">
+				    $(function () {
+				    	
+				        $('#datetimepicker{nombre_local_art}').datetimepicker({
+				        	format: 'YYYY-MM-DD'
+				        });
+				    });
+				</script>
+
+				</div>      
+			</div>   	 
+		    <!-- END BLOCK : locales_alta -->
+		    <!-- START BLOCK : sin_locales_empl -->
+		    <div class="col-md-12 col-xs-12">
+				<div class="alert alert-warning center-block">
+					<h3>No puede realizar una distribucion de los articulos sin antes tener locales cargados.</h3>
+					
+				</div>
+			</div>
+		    <!-- END BLOCK : sin_locales_empl -->
+		
+	    </div>
+
+
+		
+
+	    <div class="form-group">
+	    <!-- START BLOCK : con_locales_empl --> 
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        	<button type="submit" id ="art_carga_btn" class="btn btn-default">Cargar</button>
+	      	</div>
+	    <!-- END BLOCK : con_locales_empl -->    
+	    <!-- START BLOCK : sin_locales_empl_2 --> 
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        	<button disabled="disabled" type="submit" class="btn btn-default">Cargar</button>
+	      	</div>
+	    <!-- END BLOCK : sin_locales_empl_2 -->     
+	      
+	    </div>
+	  </form>
+	</div>
+</div>

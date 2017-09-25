@@ -1,0 +1,3 @@
+--INSERTAR NUMERO DE TELEFONO DE USUARIO
+INSERT INTO `us_prvd_contacto_tel`(`id_contacto_tel`, `nro_caracteristica`, `nro_telefono`)
+VALUES (0,383,154528621)

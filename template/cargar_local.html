@@ -1,0 +1,79 @@
+<div class="cargar_sucursal">
+	<div class="container">
+	  <h2>Carga de Locales</h2>
+	  <h3>Datos generales</h3>
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Local::alta_local" method="post">
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="scrs_nombre">Nombre:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input type="scrs_nombre" class="form-control" id="scrs_nombre" placeholder="Ingrese nombre a la sucursal" name="scrs_nombre">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="scrs_descripcion">Descripcion:</label>
+	      
+  		  <textarea name="scrs_descripcion" class="control-label col-sm-6" rows="5" id="comment">
+  		  </textarea>
+	    </div>
+	    <h3>Ubicacion</h3>
+	    <!-- START BLOCK : error_zona -->
+	    <div class="alert alert-danger center-block">
+			<h3>Ya existe un local para esta ubicacion.</h3>
+					
+		</div>
+	    <!-- END BLOCK : error_zona -->
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="scrs_pais">Pais:</label>
+	      <div class="col-md-5 col-sm-5">
+	      	
+		      <select name="scrs_pais" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+		      <!-- START BLOCK : cargar_pais -->
+		        <option value="{valor_id_pais}">{valor_pais}</option>
+		      <!-- END BLOCK : cargar_pais -->
+		      </select>
+		      
+	      </div>
+	    </div>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="scrs_provincia">Provincia:</label>
+	      <div class="col-md-5 col-sm-5">
+	      	
+		      <select name="scrs_provincia" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+		      <!-- START BLOCK : cargar_provincia -->
+		        <option value="{valor_id_provincia}">{valor_provincia}</option>
+		      <!-- END BLOCK : cargar_provincia -->
+		      </select>
+		      
+	      </div>
+	    </div>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="scrs_localidad">Localidad:</label>
+	      <div class="col-md-5 col-sm-5">
+	      	
+		      <select name="scrs_localidad" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+		      <!-- START BLOCK : cargar_localidad -->
+		        <option value="{valor_id_localidad}">{valor_localidad}</option>
+		      <!-- END BLOCK : cargar_localidad -->
+		      </select>
+		      
+	      </div>
+	    </div>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="scrs_direccion">Direccion:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	      	
+		    
+			 
+			  <input type="text" class="form-control" id="direccion" name="scrs_direccion">
+
+		      
+	      </div>
+	    </div>
+	    <div class="form-group">        
+	      <div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        <button type="submit" class="btn btn-default">Cargar</button>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+</div>

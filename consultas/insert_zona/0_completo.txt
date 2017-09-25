@@ -1,0 +1,5 @@
+INSERT INTO `mp_pais`(`id_pais`, `valor`) VALUES (0,'Argentina');
+INSERT INTO `mp_provincia`(`id_provincia`, `valor`,`id_pais`) 
+VALUES (0,'Catamarca',1);
+INSERT INTO `mp_localidad`(`id_localidad`, `valor`,`id_provincia`,`id_pais`) 
+VALUES (0,'San Fernando del Valle de Catamarca',1,1);

@@ -1,0 +1,55 @@
+<div class="menu_proveedores_admin">
+	<div class="container">
+		<div class="row encabezado">
+			<div class="col-md-4 col-xs-6">
+				<div class="titulo-secciones panel-heading">Proveedores</div>
+
+			</div>
+			<div class="col-md-4 col-xs-6">
+				<a href="index.php?action=Proveedor::cargar_proveedor">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
+			</div>
+		</div>
+		<div class="row">
+			<!-- START BLOCK : sin_proveedores -->
+			<div class="col-md-6 col-md-offset-2">
+				<div class="alert alert-warning center-block">
+					<h3>No posee proveedores cargados.</h3>
+					
+				</div>
+			</div>
+			<!-- END BLOCK : sin_proveedores -->
+		</div>
+		<div class="row">
+		<!-- START BLOCK : con_proveedores -->
+
+			<div class="col-md-4 col-xs-6">
+			 
+			
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  </div>
+				  <div class="panel panel-default">
+					  <div class="panel-heading"><strong>{prvd_nombre}</strong></div>
+					  <div class="panel-body">
+					    <p><img class="img-circle img-responsive" id="prvd_foto" src="{prvd_foto}" alt=""></p>
+					    <p class="lead">{descripcion}</p>
+					  </div>
+					  <ul class="list-group">
+					    <li class="list-group-item"><strong>Fecha de Alta:</strong>  {prvd_fecha_alta}</li>
+					    <li class="list-group-item"><strong>Cuit:</strong> {prvd_cuit}</li>
+					    <li class="list-group-item"><strong>Direccion:</strong> {prvd_direccion}</li>
+					    <li class="list-group-item"><strong>Correo:</strong> {prvd_correo}</li>
+					    <li class="list-group-item"><strong>Telefono:</strong> {prvd_telefono}</li>
+					  </ul>
+					</div>
+				</div>
+
+			</div>
+			<!-- END BLOCK : con_proveedores -->
+
+			
+		</div>
+	</div>
+</div>

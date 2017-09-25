@@ -1,0 +1,88 @@
+
+
+/*FOOTER ABAJO
+html {
+  min-height: 100%;
+  position: relative;
+}
+body {
+  margin: 0;
+  margin-bottom: 140px;
+}
+footer {
+  background-color: black;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 140px;
+  color: white;
+}*/
+.navbar-inverse{
+  
+  /*background-color: white;
+  border: 2px solid black;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;*/
+  border-radius: 0%;
+}
+header li{
+   
+  font-size: 1.2em;
+}
+
+#placebo{
+  border:1px solid #807A7A;
+  border-left-style: none;
+  border-top-style: none;
+  border-bottom-style: none;
+}
+/*LOGIN*/
+.main-login{
+   
+  font-size: 2em;
+
+}
+
+
+/*CARGA-SUCURSALES*/
+.cargar_sucursal .container{
+	 
+	position: relative;
+	padding-left: 25%;
+
+
+}
+button.agregar{
+	margin-top: 30px;
+  margin-bottom: 30px;
+	  
+}
+
+.panel-heading{
+   
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.titulo-secciones{
+   
+  font-size: 4em;
+  font-weight: bold;
+}
+
+/*Carga de Articulos*/
+#seleccionar_local_empl{
+  border:1px solid red;
+}
+
+
+footer{
+  display:none;
+}
+
+
+#cargar_articuloe #form_flotante{
+  border:1px solid red;
+}
+ 
