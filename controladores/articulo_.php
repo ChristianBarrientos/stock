@@ -130,13 +130,26 @@ class Articulo_Controller{
                     print_r($value);
                 }*/
                 foreach ($_SESSION['locales'] as $key => $value) {
-                        $tpl->newBlock("locales_alta");
+                       
+                        $tpl->newBlock("locales_empleado_alta");
+                        $cadena = $value->getId_zona();
+                        $direccion = after_last (',', $cadena);
+                        $tpl->assign("id_local", $direccion);
+                        $tpl->assign("nombre_local", $value->getNombre());
+                                
+                                
+                }
+
+                foreach ($_SESSION['locales'] as $key => $value) {
+
+                        
                         //art_carga_local_fecha_{id_art_local} para rescatar el valor del input echa
                         //art_local_cantidad_{id_art_local}
+                        $tpl->newBlock("locales_alta");
                         $tpl->assign("id_art_local1", $value->getId_local());
                         $tpl->assign("id_art_local", $value->getId_local());
                         $tpl->assign("nombre_local", $value->getNombre());
-                        $tpl->assign("nombre_local", $value->getNombre());
+                        
                         $tpl->assign("nombre_local_art_2", str_replace(' ','',$value->getNombre()));
                         $tpl->assign("nombre_local_art", str_replace(' ','',$value->getNombre()));
                                 

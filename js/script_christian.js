@@ -45,6 +45,48 @@ $(document).ready(function()
                 }
         });
       
+      for (var i = 0 - 1; i <= 0; i++) {
+          {id_local}
+          $("#check_art_locales_"+,click(function(){
+            
+            alert("ok")
+            var locales = document.getElementsByClassName("art_local");
+            var div_locales = document.getElementsByClassName("div_art_local");
+            // Convertimos el HTMLCollection a array
+            //console.log([].slice.call(locales));
+            
+            for (var i = 0 ; i < locales.length; i++) {
+                //$("#art_local_cantidad_" + i).on('keyup', function(){
+                 
+                alert(div_locales[i]);
+                 
+                
+                //}).keyup();
+            }
+           
+          
+        });
+      }
+      //mostrar ocultar div locales
+      $("#check_art_locales").click(function(){
+            
+            alert("ok")
+            var locales = document.getElementsByClassName("art_local");
+            var div_locales = document.getElementsByClassName("div_art_local");
+            // Convertimos el HTMLCollection a array
+            //console.log([].slice.call(locales));
+            
+            for (var i = 0 ; i < locales.length; i++) {
+                //$("#art_local_cantidad_" + i).on('keyup', function(){
+                 
+                alert(div_locales[i]);
+                 
+                
+                //}).keyup();
+            }
+           
+          
+        });
         
        //GENERA PRECIO POR PORCENTAJES
         $("#art_precio_tarjeta").blur(function(){
@@ -62,6 +104,18 @@ $(document).ready(function()
             
         });
 
+        /*$("#art_precio_tarjeta").on('keyup', function(){
+             var porciento =  $(this).val();
+            var preciobase = $("#art_precio_base").val();
+            if (preciobase != '') {
+                var precio_tarjeta_aux = (porciento * preciobase) / 100;
+            
+                $("#valor_calculado_tarjeta").text("Pesos Argentinos: " + (parseInt(precio_tarjeta_aux) + parseInt(preciobase)));
+                $(this).val(porciento + '%')
+            }
+            }).keyup();*/
+ 
+
         $("#art_precio_credito_argentino").blur(function(){
            
             var porciento =  $(this).val();
@@ -75,12 +129,9 @@ $(document).ready(function()
             
         });
 
-
+        //mOSTRAR oCULTAR pROVEEDOR
         $("#conlocal_art").click(function(){
           
-          
-           
-
             if ($('#conlocal_art').prop('checked') ) {
 
                 $('#con_prvd_').show(); //muestro mediante id

@@ -296,10 +296,17 @@
 	    <h3>Distribuir por local</h3>
 	    
 	    <div class="form-group">
-	   
-	     <!-- START BLOCK : locales_alta -->
-	     <div class="row">    
+	   	<!-- START BLOCK : locales_empleado_alta -->
+	        <div id="seleccionar_local_art" class="checkbox">
+			  <label><input id="check_art_locales_{id_local}" name="art_local[]" type="checkbox" value="{id_local}">{nombre_local}</label>
+		    </div>
+		<!-- END BLOCK : locales_empleado_alta -->
+
+		<!-- START BLOCK : locales_alta -->
+	    
+	     <div class="row" name="div_art_local">    
 		    <label class="control-label col-sm-2" for="art_local">{nombre_local}:</label>
+
 	      		<div class="col-md-3 col-sm-2 ">
 			      	
 				      
