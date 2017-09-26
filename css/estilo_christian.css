@@ -75,13 +75,17 @@ button.agregar{
 #seleccionar_local_empl{
   border:1px solid red;
 }
-
+ 
 
 footer{
   display:none;
 }
 
-
+/*Cargar articulos*/
+#label_h{
+  display: inline-block;
+   
+}
 #cargar_articuloe #form_flotante{
   border:1px solid red;
 }

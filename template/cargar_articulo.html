@@ -112,7 +112,7 @@
 					
 		</div>
 	    <!-- END BLOCK : error_cb -->
-	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_articulo" method="post">
+	  <form novalidate class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_articulo" method="post">
 
 	    <div class="form-group"> 
 	    <div class="row">
@@ -298,23 +298,23 @@
 	    <div class="form-group">
 	   	<!-- START BLOCK : locales_empleado_alta -->
 	        <div id="seleccionar_local_art" class="checkbox">
-			  <label><input id="check_art_locales_{id_local}" name="art_local[]" type="checkbox" value="{id_local}">{nombre_local}</label>
+			  <label id="label_h" for="check_art_locales"><input  class="check_art_locales"  name="art_local[]" type="checkbox" value="check_art_locales_{id_local_}">{nombre_local}</label>
 		    </div>
 		<!-- END BLOCK : locales_empleado_alta -->
 
 		<!-- START BLOCK : locales_alta -->
 	    
-	     <div class="row" name="div_art_local">    
+	     <div hidden class="row div_oculto" id="check_art_locales_{id_local_}">    
 		    <label class="control-label col-sm-2" for="art_local">{nombre_local}:</label>
 
 	      		<div class="col-md-3 col-sm-2 ">
 			      	
 				      
-				    <input required min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
+				    <input min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
 				     
 			            
 			        <div class='input-group date' id='datetimepicker{nombre_local_art_2}'>
-			            <input required placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
+			            <input placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
 			            <span class="input-group-addon">
 			                <span class="glyphicon glyphicon-calendar"></span>
 			            </span>

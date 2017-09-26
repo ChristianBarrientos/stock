@@ -134,7 +134,9 @@ class Articulo_Controller{
                         $tpl->newBlock("locales_empleado_alta");
                         $cadena = $value->getId_zona();
                         $direccion = after_last (',', $cadena);
-                        $tpl->assign("id_local", $direccion);
+                        //check_art_locales_
+                        //$tpl->assign("id_local_", $value->getId_local());
+                        $tpl->assign("id_local_", $value->getId_local());
                         $tpl->assign("nombre_local", $value->getNombre());
                                 
                                 
@@ -146,6 +148,8 @@ class Articulo_Controller{
                         //art_carga_local_fecha_{id_art_local} para rescatar el valor del input echa
                         //art_local_cantidad_{id_art_local}
                         $tpl->newBlock("locales_alta");
+                        $tpl->assign("id_local_", $value->getId_local());
+                        //$tpl->assign("id_local_", $value->getId_local());
                         $tpl->assign("id_art_local1", $value->getId_local());
                         $tpl->assign("id_art_local", $value->getId_local());
                         $tpl->assign("nombre_local", $value->getNombre());
@@ -240,36 +244,32 @@ class Articulo_Controller{
         /* inicializamos una variable vacia que contendra los datos */
         $lista_art_locales = array();
         /* Luego para cada campo y valor $_POST realizamos lo siguiente */
+
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);
             echo "%%";
             print_r($valor);*/
-            if ($contador <= $total_locales) {
-                $name_local_cantidad = "art_local_cantidad_".$contador;
-                $name_local_fecha = "art_carga_local_fecha_".$contador;
+            for ($i=1; $i <=$total_locales ; $i++) { 
+                if ($i <= $total_locales) {
+                //Revisar el contador nos va a dar falsos positivos!!!
+                //Utilizar exoresie¡
+                $name_local_cantidad = "art_local_cantidad_".$i;
+                $name_local_fecha = "art_carga_local_fecha_".$i;
                  
                 if (strcmp($campo, $name_local_cantidad ) == 0) {
-                     
-                    $lista_art_locales[]=["Id" => $contador,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
-                    $salto = 2;
-                
+
+                    if ($_POST[$name_local_fecha] != null) {
+                        $lista_art_locales[]=["Id" => $i,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
+                         
+                        }
+                    }
                 }
-                
-                /*if (strcmp($campo, $name_local_fecha) == 0) {
-                    $lista_art_locales[]= array($campo => $valor);
-                    $salto = $salto + 1;
-                    
-                    }*/
-                if ($salto == 2) {
-                    $contador = $contador + 1;
-                    $salto = 0;
-                }
-                
             }
+            
            
             }
-        //print_r($lista_art_locales); 
+        print_r($lista_art_locales); 
 
         //Agregar art_general
         if (is_numeric($art_general)) {

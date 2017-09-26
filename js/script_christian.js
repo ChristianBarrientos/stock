@@ -1,27 +1,98 @@
 
 
 $(document).ready(function()
-    {
+    {   
+       
+        $("#seleccionar_local_art input").on("click",function(e) {
+               
+              // Aquí pones el código que se ejecutará.
+              
+              var valor = $(this).attr('value');
+               
+              if ($(this).prop('checked') ) {
+                     
+                    $('#'+ valor).show(); //muestro mediante id
+                    //$('#' + valor).css('display','block');
+                }
+
+            else{
+                    //$('#' + valor).hide(); //oculto
+                     
+                    $('#' + valor).hide().prop('required',false)
+                    //$('#' + valor).css('display','none');
+                }
+            });
+        /*$("#check_art_locales_"),click(function(){
+            
+            alert("ok")
+            
+            // Convertimos el HTMLCollection a array
+            //console.log([].slice.call(locales));
+            
+            for (var i = 0 ; i < locales.length; i++) {
+                //$("#art_local_cantidad_" + i).on('keyup', function(){
+                 
+                alert(div_locales[i]);
+                 
+                
+                //}).keyup();
+            }
+           
+          
+        });*/
+      
         //PARA VERIFICAR SI LA CANTIDAD TODAL ES MENOR QUE LA CANTIDAD PARCIAL
        $("#art_carga_btn").click(function(){
             var cantidad_parcial_total = 0;
             var cantidad_total = parseInt($("#art_cantidad_total").val());
 
             var locales = document.getElementsByClassName("art_local_cantidad_");
-
+            
+            //console.log($(locales).parents('div'));
+            var padres = $(locales).parents('div');
             // Convertimos el HTMLCollection a array
             //console.log([].slice.call(locales));
+            var id_div =  [];
+
+            for (var i = 0; i < padres.length; i++) {
+                var id_padre = $(padres[i]).attr("id");
+                if(/check_art_locales_/.test(id_padre)) {
+                    id_div.push(id_padre);
+                }                
+                
+            }
             
-            for (var i = 0 ; i < locales.length; i++) {
-                //$("#art_local_cantidad_" + i).on('keyup', function(){
+            var locales_check =  $(".check_art_locales");
+            var locales_check_ok = [];
+           
+            $(".check_art_locales").each(function(){
+                var value_check_ok = $(this).val()
+                    if ($(this).prop('checked') ) {
+                        var siok = value_check_ok.substring(18,20);
+                        locales_check_ok.push(siok);
+                    }
+                
+            });
+             
+             
+            for (var i = 0 ; i <= locales.length; i++) {
                  
-                var cantidad_parcial_total = cantidad_parcial_total + parseInt(locales[i].value);
+                //$("#art_local_cantidad_" + i).on('keyup', function(){
+                for (var x = 0; x <= locales_check_ok.length; x++) {
+
+                    if (locales_check_ok[x] == i) {
+                        
+                        var cantidad_parcial_total = cantidad_parcial_total + parseInt(locales[i-1].value);
+
+                    }
+                }
+                
                  
                 
                 //}).keyup();
             }
-           
-            if (cantidad_total < cantidad_parcial_total ) {
+            
+            if (cantidad_total != cantidad_parcial_total ) {
                     alert("La sumatoria parcial de la distribucion por local no puede ser diferente a la cantidad total del deposito.");
                     for (var i = 0 ; i < locales.length; i++) {
                         //$("#art_local_cantidad_" + i).on('keyup', function(){
@@ -32,61 +103,12 @@ $(document).ready(function()
                         //}).keyup();
                     }
                 }
-            if (cantidad_total > cantidad_parcial_total ) {
-                    alert("La sumatoria parcial de la distribucion por local no puede ser diferente a la cantidad total del deposito.");
-                    for (var i = 0 ; i < locales.length; i++) {
-                        //$("#art_local_cantidad_" + i).on('keyup', function(){
-                         
-                        locales[i].value = 0;
-                         
-                        
-                        //}).keyup();
-                    }
-                }
+            
         });
       
-      for (var i = 0 - 1; i <= 0; i++) {
-          {id_local}
-          $("#check_art_locales_"+,click(function(){
-            
-            alert("ok")
-            var locales = document.getElementsByClassName("art_local");
-            var div_locales = document.getElementsByClassName("div_art_local");
-            // Convertimos el HTMLCollection a array
-            //console.log([].slice.call(locales));
-            
-            for (var i = 0 ; i < locales.length; i++) {
-                //$("#art_local_cantidad_" + i).on('keyup', function(){
-                 
-                alert(div_locales[i]);
-                 
-                
-                //}).keyup();
-            }
-           
-          
-        });
-      }
-      //mostrar ocultar div locales
-      $("#check_art_locales").click(function(){
-            
-            alert("ok")
-            var locales = document.getElementsByClassName("art_local");
-            var div_locales = document.getElementsByClassName("div_art_local");
-            // Convertimos el HTMLCollection a array
-            //console.log([].slice.call(locales));
-            
-            for (var i = 0 ; i < locales.length; i++) {
-                //$("#art_local_cantidad_" + i).on('keyup', function(){
-                 
-                alert(div_locales[i]);
-                 
-                
-                //}).keyup();
-            }
-           
-          
-        });
+     
+      
+     
         
        //GENERA PRECIO POR PORCENTAJES
         $("#art_precio_tarjeta").blur(function(){
