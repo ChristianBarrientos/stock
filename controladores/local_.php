@@ -13,7 +13,7 @@ class Local_Controller{
                                 $tpl->assign("nombre", htmlentities($value->getNombre(), ENT_QUOTES));
                                 $tpl->assign("descripcion", htmlentities($value->getDescripcion(), ENT_QUOTES));
                                 $tpl->assign("direccion", $value->getId_zona());
-                                $tpl->assign("cantidad_empl", $value->getCantidad_empl());
+                                $tpl->assign("cantidad_empl", $value->getCantidad_empl() -1 );
                                 
                             }
                             //$tpl->newBlock("agregar_local");

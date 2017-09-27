@@ -106,6 +106,13 @@ class Articulo_Controller{
                             $tpl->newBlock("art_medida");
                             
                         }
+
+                        if (strcmp($cate, "Color" ) == 0) {
+                            $tpl->newBlock("cargar_articulo_grupo");
+                            $tpl->assign("des_cat", $des);
+                            $tpl->newBlock("art_color");
+                            
+                        }
                        
                        /* $tpl->assign("des_cat", $value->getDescripcion());
                         $tpl->assign("cat_name_input", $value->getNombre());
@@ -203,40 +210,11 @@ class Articulo_Controller{
         $art_precio_tarjeta = $_POST['art_precio_tarjeta'];
         $art_precio_cp= $_POST['art_precio_credito_argentino'];
         $art_medida = ucwords(strtolower($_POST['art_medida']));
+        $art_color =$_POST['art_color'];
+
 
         $art_proveedor = $_POST['art_prvd'];
-        /*echo "General";
-        echo $art_general;
-        echo "\n";
-        echo "Marca";
-        echo $art_marca;
-         echo "\n";
-         echo "Tipo";
-        echo $art_tipo;
-        echo "\n";
-        echo "Cb";
-        echo $art_cb;
-         echo "\n";
-         echo "Medida";
-        echo $art_medida;
-         echo "\n";
-         echo "Cantidad Total";
-        echo $art_cantidad_total;
-         echo "\n";
-         echo "Precio Base";
-        echo $art_precio_base;
-         echo "\n";
-         echo "precio Tarjeta";
-        echo $art_precio_tarjeta;
-         echo "\n";
-         echo "Precio Credito Personal";
-        echo $art_precio_cp;
-        echo "\n";
-         echo "Proveedor";
-        echo $art_prvd;*/
-
-        #extract ($_POST);
-        #print_r($_POST);
+        
         $total_locales = sizeof($_SESSION['locales']);
 
         $contador = 1;
@@ -268,8 +246,8 @@ class Articulo_Controller{
             }
             
            
-            }
-        print_r($lista_art_locales); 
+        }
+        
 
         //Agregar art_general
         if (is_numeric($art_general)) {
@@ -279,17 +257,77 @@ class Articulo_Controller{
             $id_articulo = articulo::alta_art_general($art_general);
         } 
         if (is_numeric($art_marca)) {
-            $id_articulo = $art_marca;
+            $id_marca = $art_marca;
           }
         else{
             $id_marca = art_marca::alta_art_marca($art_marca);
         } 
         if (is_numeric($art_tipo)) {
-            $id_articulo = $art_tipo;
+            $id_tipo = $art_tipo;
           }
         else{
             $id_tipo = art_tipo::alta_art_tipo($art_tipo);
         } 
+
+        //cargar en art_conjunto
+        $id_conjunto = art_conjunto::alta_art_conjunto($id_articulo,$id_marca,$id_tipo);
+
+        //obtener id de proveedor
+        if ($art_prvd != null || $art_prvd != ' ') {
+            $id_proveedor = $art_prvd;
+        }
+        else{
+            $id_proveedor = null;
+        }
+        //cargar codigo de barras
+        $id_cb = art_codigo_barra::alta_art_cb($art_cb);
+
+        //cargar art_categorias y art_grupo_categoria
+       
+        $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
+            foreach ($list_art_grupo_att as $key => $value) {
+                        
+                $nombre =  $value->getNombre();
+                
+                if (strcmp($nombre, "Precio" ) == 0) {
+                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$valor);
+                    //Como precio entra primero, lo usamos como bandera para el id del grupo de categorias
+                    $id_gc = art_grupo_categoria::alta_art_gc($id_categoria_precio);
+                }
+
+                if (strcmp($nombre, "Medida" ) == 0) {
+                    $id_categoria_medida = art_categoria::alta_art_categoria($nombre,$valor);
+                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_medida,$id_gc );
+                }
+
+                if (strcmp($nombre, "Tarjeta" ) == 0) {
+                    $id_categoria_tarjeta = art_categoria::alta_art_categoria($nombre,$valor);
+                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_tarjeta,$id_gc );
+                }
+
+                if (strcmp($nombre, "CreditoP" ) == 0) {
+                    $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,$valor);
+                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_creditop,$id_gc );
+                }
+
+                if (strcmp($nombre, "Color" ) == 0) {
+                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$valor);
+                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_color,$id_gc );
+                }
+
+            }
+
+        //cargar art_lote
+        $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc, $id_proveedor);
+
+        //cargar art_carga y art_lote_local
+        
+        foreach ($lista_art_locales as $key => $value) {
+           
+            $id_carga = art_carga::alta_art_carga($value['Fecha'], $_SESSION["usuario"]->getId_user());
+            $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value['Id'],$value['Cantidad'],$id_carga);
+        }
+        
         /*foreach ($_SESSION['locales'] as $key => $value) {
             
             $cantidad_local = $_POST['art_local_cantidad_'.$value->getId_local()];

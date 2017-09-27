@@ -234,6 +234,11 @@
 					<!-- START BLOCK : art_medida --> 
 					<input required  type="text" class="form-control" id="art_medida" placeholder="Ingrese el talle." name="art_medida">
 					<!-- END BLOCK : art_medida -->
+
+					<!-- START BLOCK : art_color --> 
+					<input required  type="text" class="form-control" id="art_color" placeholder="Ingrese nombre del color" name="art_color">
+					<!-- END BLOCK : art_color -->
+
 				    
 				    <!-- START BLOCK : sin_articulo_grupo -->
 				    <div class="col-md-12 col-xs-12">
@@ -310,11 +315,11 @@
 	      		<div class="col-md-3 col-sm-2 ">
 			      	
 				      
-				    <input min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
+				    <input required min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
 				     
 			            
 			        <div class='input-group date' id='datetimepicker{nombre_local_art_2}'>
-			            <input placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
+			            <input required placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
 			            <span class="input-group-addon">
 			                <span class="glyphicon glyphicon-calendar"></span>
 			            </span>

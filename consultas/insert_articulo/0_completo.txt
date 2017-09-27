@@ -1,9 +1,9 @@
-INSERT INTO `art_articulo`(`id_articulo`, `nombre`, `id_marca`) 
-VALUES (0,'Pantalon',null);
-INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`, `id_lote`) 
-VALUES (0,'Jonh Fose','Zapatillas Urbanas Unisex',null);
-INSERT INTO `art_articulo`(`id_articulo`, `nombre`, `id_marca`) 
-VALUES (0,'Zapatilas',null);
-INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`, `id_lote`) 
-VALUES (0,'Tavertini','Pantalon Urbano Unisex',null);
-INSERT INTO `art_tipo`(`id_tipo`, `nombre`, `descripcion`, `id_marca`) VALUES (0,'Botita','Zapatillas Botitas Urbanas',null);
+INSERT INTO `art_articulo`(`id_articulo`, `nombre`,`descripcion`) 
+VALUES (0,'Pantalon', 'Pantalones convencionales');
+INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`) 
+VALUES (0,'Jonh Fose','Zapatillas Urbanas Unisex');
+INSERT INTO `art_articulo`(`id_articulo`, `nombre`) 
+VALUES (0,'Zapatilas');
+INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`) 
+VALUES (0,'Tavertini','Pantalon Urbano Unisex');
+INSERT INTO `art_tipo`(`id_tipo`, `nombre`, `descripcion`) VALUES (0,'Botita','Zapatillas Botitas Urbanas');

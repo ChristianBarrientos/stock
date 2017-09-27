@@ -24,12 +24,15 @@ include('model/art_marca.model.php');
 include('model/art_sub_categoria.model.php');
 include('model/art_unico.model.php');
 include('model/art_venta.model.php');
+include('model/art_conjunto.model.php');
 include('model/articulo.model.php');
 include('model/proveedor.model.php');
 include('model/prvd_datos.model.php');
 include('model/art_tipo.model.php');
 include('model/us_prvd.model.php');
-
+include('model/art_codigo_barra.model.php');
+include('model/art_lote.model.php');
+include('model/art_lote_local.model.php');
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');
 include('php_recurso/filtrar/class.inputfilter.php');

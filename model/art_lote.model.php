@@ -20,8 +20,30 @@ class art_lote {
         $this->id_carga = $id_carga;
     }
 
-    public static function generar_lote(){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc, $id_proveedor = 'null', $descripion = 'null'){
+        global $baseDatos;
         
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_lote = art_lote::ultimo_id_lote();
+        
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion')";
+        $res = $baseDatos->query($sql);
+        if ($res) {
+             
+            return $id_lote;
+        }else{
+
+            return false;
+        }
+
+    }
+    public static function ultimo_id_lote(){
+        global $baseDatos;
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_lote'";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+        
+        return $res_fil['LastId'];
     }
 
     public function getId_lote()

@@ -97,8 +97,8 @@ $(document).ready(function()
                     for (var i = 0 ; i < locales.length; i++) {
                         //$("#art_local_cantidad_" + i).on('keyup', function(){
                          
-                        locales[i].value = 0;
-                         
+                        locales[i].value = null;
+                        event.preventDefault();
                         
                         //}).keyup();
                     }

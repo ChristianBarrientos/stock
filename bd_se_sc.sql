@@ -169,11 +169,10 @@ CREATE TABLE  us_mark (
      ) ENGINE=InnoDB;
 
 CREATE TABLE  art_codigo_barra (
-     id_cb INTEGER AUTO_INCREMENT NOT NULL,
+     id_cb INTEGER (13)AUTO_INCREMENT NOT NULL,
      cb INTEGER,
      KEY (id_cb)
      ) ENGINE=InnoDB;
-
 
 
 CREATE TABLE  art_categoria (
@@ -194,19 +193,55 @@ CREATE TABLE  art_grupo_categoria (
 CREATE TABLE  art_carga (
      id_carga INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora DATETIME NOT NULL,
-     id_usuarios INTEGER NOT NULL,
-     FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     id_usuario INTEGER NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_carga)
      ) ENGINE=InnoDB;
+
+CREATE TABLE  art_marca (
+     id_marca INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(50) NOT NULL,
+     descripcion VARCHAR(100),
+     KEY (id_marca)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  art_articulo (
+     id_articulo INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100),
+     descripcion VARCHAR(200),
+     KEY (id_articulo)
+     ) ENGINE=InnoDB;
+
+
+CREATE TABLE  art_tipo (
+     id_tipo INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100),
+     descripcion VARCHAR(100),
+     KEY (id_tipo)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  art_conjunto (
+     id_art_conjunto INTEGER AUTO_INCREMENT NOT NULL,
+     id_articulo INTEGER NOT NULL,
+     id_marca INTEGER,
+     id_tipo INTEGER NOT NULL,
+     FOREIGN KEY (id_articulo) REFERENCES art_articulo(id_articulo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_marca) REFERENCES art_marca(id_marca) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_tipo) REFERENCES art_tipo(id_tipo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_art_conjunto)
+     ) ENGINE=InnoDB;
+
 
 
 CREATE TABLE  art_lote (
      id_lote INTEGER AUTO_INCREMENT NOT NULL,
+     id_art_conjunto INTEGER,
      id_provedor INTEGER ,
      cantidad_total INTEGER NOT NULL,
      id_cb INTEGER ,
      id_gc INTEGER NOT NULL,
      descripcion VARCHAR(100) ,
+     FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cb) REFERENCES art_codigo_barra(id_cb) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -230,57 +265,21 @@ CREATE TABLE  art_lote_local (
 CREATE TABLE  art_venta (
      id_venta INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora DATETIME NOT NULL,
-     id_local INTEGER NOT NULL,
      id_usuarios INTEGER NOT NULL,
-     FOREIGN KEY (id_local) REFERENCES art_local(id_local) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;
 
 CREATE TABLE  art_unico (
      id_unico INTEGER AUTO_INCREMENT NOT NULL,
-     id_lote INTEGER NOT NULL,
+     id_lote_local INTEGER NOT NULL,
      id_venta INTEGER NOT NULL,
-     FOREIGN KEY (id_lote) REFERENCES art_lote(id_lote) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_venta) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_unico)
      ) ENGINE=InnoDB;
 
-CREATE TABLE  art_marca (
-     id_marca INTEGER AUTO_INCREMENT NOT NULL,
-     nombre VARCHAR(50) NOT NULL,
-     descripcion VARCHAR(100),
-     id_lote INTEGER,
-     FOREIGN KEY (id_lote) REFERENCES art_lote(id_lote) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_marca)
-     ) ENGINE=InnoDB;
 
-CREATE TABLE  art_articulo (
-     id_articulo INTEGER AUTO_INCREMENT NOT NULL,
-     nombre VARCHAR(100),
-     id_marca INTEGER,
-     FOREIGN KEY (id_marca) REFERENCES art_marca(id_marca) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_articulo)
-     ) ENGINE=InnoDB;
-
-CREATE TABLE  art_art_marca (
-     id_art_art_marca INTEGER AUTO_INCREMENT NOT NULL,
-     nombre VARCHAR(100),
-     id_marca INTEGER,
-     id_articulo INTEGER,
-     FOREIGN KEY (id_marca) REFERENCES art_marca(id_marca) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_articulo) REFERENCES art_articulo(id_articulo) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_art_art_marca)
-     ) ENGINE=InnoDB;
-
-CREATE TABLE  art_tipo (
-     id_tipo INTEGER AUTO_INCREMENT NOT NULL,
-     nombre VARCHAR(100),
-     descripcion VARCHAR(100),
-     id_marca INTEGER,
-     FOREIGN KEY (id_marca) REFERENCES art_marca(id_marca) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_tipo)
-     ) ENGINE=InnoDB;
 
 
 

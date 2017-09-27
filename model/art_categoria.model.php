@@ -33,6 +33,32 @@ class art_categoria {
         }
     }
 
+    public static function alta_art_categoria($nombre,$valor,$descripcion = 'null'){
+        global $baseDatos;
+        
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_categoria = art_categoria::ultimo_id_categoria();
+        
+        $sql = "INSERT INTO `art_categoria`(`id_categoria`, `nombre`, `valor`, `descripcion`) VALUES (0,'$nombre','$valor','$descripcion')";
+        $res = $baseDatos->query($sql);
+        if ($res) {
+             
+            return $id_categoria;
+        }else{
+
+            return false;
+        }
+
+    }
+    public static function ultimo_id_categoria(){
+        global $baseDatos;
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_categoria'";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+        
+        return $res_fil['LastId'];
+    }
+
     public function getId_categoria()
     {
         return $this->id_categoria;
