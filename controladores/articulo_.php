@@ -6,8 +6,8 @@ class Articulo_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                         
-                        /*if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
-                            foreach ($_SESSION['locales_articulos'] as $key => $value) {
+                        if ($_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())) {
+                            foreach ($_SESSION['lotes'] as $key => $value) {
                                 print_r($value);
                                 echo "\n";
                                 /*$tpl->newBlock("con_articulos");
@@ -16,15 +16,15 @@ class Articulo_Controller{
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
                                 
-                            //}
-                            //$tpl->newBlock("agregar_local");
+                            }
+                            $tpl->newBlock("con_articulos");
                             
                                 
                                
-                        //}
-                        //else{
+                        }
+                        else{
                                $tpl->newBlock("sin_articulos");
-                        //}
+                        }
                 }
                 else{
                         return Ingreso_Controller::salir();
@@ -80,37 +80,38 @@ class Articulo_Controller{
                         
                         $cate =  $value->getNombre();
                         $des =  $value->getDescripcion();
-                        if (strcmp($cate, "Precio" ) == 0) {
+                        if (strcmp($cate, "Precio" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
                             $tpl->newBlock("art_precio_base");
                             
                         }
-                        if (strcmp($cate, "Tarjeta" ) == 0) {
+                        if (strcmp($cate, "Tarjeta" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
                             $tpl->newBlock("art_precio_tarjeta");
                             
                         }
 
-                         if (strcmp($cate, "CreditoP" ) == 0) {
+                         if (strcmp($cate, "CreditoP" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
                             $tpl->newBlock("art_precio_credito_argentino");
                             
                         }
 
-                        if (strcmp($cate, "Medida" ) == 0) {
+                        if (strcmp($cate, "Medida" ) == 0 && strcmp($des, "null" ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
                             $tpl->newBlock("art_medida");
                             
                         }
 
-                        if (strcmp($cate, "Color" ) == 0) {
+                        if (strcmp($cate, "Color" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
                             $tpl->newBlock("art_color");
+                            break;
                             
                         }
                        
@@ -222,7 +223,7 @@ class Articulo_Controller{
         /* inicializamos una variable vacia que contendra los datos */
         $lista_art_locales = array();
         /* Luego para cada campo y valor $_POST realizamos lo siguiente */
-
+        $nook = true;
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);
@@ -283,37 +284,71 @@ class Articulo_Controller{
         $id_cb = art_codigo_barra::alta_art_cb($art_cb);
 
         //cargar art_categorias y art_grupo_categoria
-       
+        
         $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
+
             foreach ($list_art_grupo_att as $key => $value) {
                         
                 $nombre =  $value->getNombre();
                 
                 if (strcmp($nombre, "Precio" ) == 0) {
-                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$valor);
+                 
+                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$art_precio_base,"En moneda local");
+                    #echo "PRECIO:";
+                    #echo $nombre .' '.$valor;
                     //Como precio entra primero, lo usamos como bandera para el id del grupo de categorias
                     $id_gc = art_grupo_categoria::alta_art_gc($id_categoria_precio);
+
                 }
 
-                if (strcmp($nombre, "Medida" ) == 0) {
-                    $id_categoria_medida = art_categoria::alta_art_categoria($nombre,$valor);
-                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_medida,$id_gc );
+
+                if (strcmp($nombre, "Medida" ) ==  0) {
+                 
+                    $id_categoria_medida = art_categoria::alta_art_categoria($nombre,$art_medida);
+                    #echo "MEDIDA:";
+                    #echo $nombre .' '.$valor;
+                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_medida);
+                    if ($ok) {
+                        $nook = false;
+                    }
+                    
                 }
 
-                if (strcmp($nombre, "Tarjeta" ) == 0) {
-                    $id_categoria_tarjeta = art_categoria::alta_art_categoria($nombre,$valor);
-                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_tarjeta,$id_gc );
+                if (strcmp($nombre, "Tarjeta" ) ==  0) {
+                     
+                    $id_categoria_tarjeta = art_categoria::alta_art_categoria($nombre,trim($art_precio_tarjeta,'%'),"En porcentaje");
+                    #echo "TARJETA:";
+                    #echo $nombre .' '.$valor;
+                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_tarjeta);
+                    if ($ok) {
+                        $nook = false;
+                    }
                 }
 
-                if (strcmp($nombre, "CreditoP" ) == 0) {
-                    $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,$valor);
-                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_creditop,$id_gc );
+                if (strcmp($nombre, "CreditoP" ) ==  0) {
+                 
+                    $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,trim($art_precio_cp,'%'),"En porcentaje");
+                    #echo "CREDITOP:";
+                    #echo $nombre .' '.$valor;
+                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_creditop);
+                    if ($ok) {
+                        $nook = false;
+                    }
                 }
 
-                if (strcmp($nombre, "Color" ) == 0) {
-                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$valor);
-                    $ok = art_grupo_categoria::alta_art_gc($id_categoria_color,$id_gc );
+                if (strcmp($nombre, "Color" ) ==  0) {
+                 
+                    #echo "COLOR:";
+                    #echo $nombre .' '.$valor;
+                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_color,'Color escrito');
+                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_color);
+                    if ($ok) {
+                        $nook = false;
+                    }
+                    break;
                 }
+
+            
 
             }
 
@@ -321,71 +356,34 @@ class Articulo_Controller{
         $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc, $id_proveedor);
 
         //cargar art_carga y art_lote_local
-        
+         
         foreach ($lista_art_locales as $key => $value) {
-           
+            /*$_fecha = trim($value['Fecha'],'AM');
+            $_fecha = trim($_fecha,'PM');
+            $_fecha = substr($_fecha, 0, -1);
+            $_fecha = $_fecha.':'.'00';
+            echo$_fecha;*/
+             
             $id_carga = art_carga::alta_art_carga($value['Fecha'], $_SESSION["usuario"]->getId_user());
             $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value['Id'],$value['Cantidad'],$id_carga);
         }
-        
-        /*foreach ($_SESSION['locales'] as $key => $value) {
-            
-            $cantidad_local = $_POST['art_local_cantidad_'.$value->getId_local()];
-            $fecha_carga = $_POST['art_carga_local_fecha_'.$value->getId_local()];
 
-            //$id_local = str_replace('art_local_cantidad_','',$id_local_0);
-            
-            
-        }
+        //cargar lote_us
+        $ok2 = $_SESSION["usuario"]->alta_lote_us($id_lote);
         
-        //Cargar en tabla us_datos
-        //ucwords(strtolower($_POST['empl_correo']))
-        echo "FECHA ALTA:";
-        echo $fecha_alta;
-        echo "NOMBRE";
-        echo $nombre;
-        echo "APELLIDO";
-        echo $apellido;
-        echo "FECHA ANCIMIENTO";
-        echo $fecha_nac;
-        echo "GENERO";
-        echo $genero;
-        echo "DNI";
-        echo $dni;
-        echo "%%";
-        echo $direccion;
-        echo $correo;
-        echo $telefono;
-        
-        $id_datos = us_datos::alta_datos($fecha_alta,$nombre,$apellido,$fecha_nac,$dni,2,$genero);
-        $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
-          
-        if ($id_datos && $id_contacto) {
-            $id_usuario = usuario::alta_usuario($id_datos,$id_contacto,'OPER',$usuario,$pass);
-            if ($id_usuario != 'null' OR $id_usuario != 0) {
-                 
-                foreach ($locales as $key) {
-                     
-                    $id_zona = mp_zona::obtener_zona($key);
-                    us_local::agregar_us_a_local($id_usuario,$id_zona);
-                }
-
-                $tpl = new TemplatePower("template/exito.html");
-                $tpl->prepare();
-            }
-            else{
-                echo "malusuario";
-                $tpl = new TemplatePower("template/error.html");
-                $tpl->prepare();
-
-            }
-        }
-        else{
-            echo "maldatoscontacto";
-            $tpl = new TemplatePower("template/error.html");
+        if ($ok && $ok2) {
+            $tpl = new TemplatePower("template/exito.html");
             $tpl->prepare();
         }
-        return $tpl->getOutputContent();*/
+        else
+        {
+               
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+
+        }
+        
+        return $tpl->getOutputContent();
     }
 
 

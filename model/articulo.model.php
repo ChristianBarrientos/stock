@@ -5,7 +5,7 @@ class articulo {
     private $nombre;
     private $id_marca;
 
-    public function __construct($id_articulo, $nombre, $id_marca)
+    public function __construct($id_articulo, $nombre, $id_marca = null)
     {
         $this->id_articulo = $id_articulo;
         $this->nombre = $nombre;
@@ -52,7 +52,7 @@ class articulo {
              
             foreach ($filas as $key => $value) {
                  
-                $art_nombres[]= new articulo($value['id_articulo'],$value['nombre'],$value['id_marca']);
+                $art_nombres[]= new articulo($value['id_articulo'],$value['nombre'] );
             }
             //$zona = mp_zona::obtener_zona__explicita($id_zona);
             
@@ -63,6 +63,21 @@ class articulo {
         }
         
     }
+
+    public static function generar_articulo($id_articulo){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_articulo` WHERE id_articulo = $id_articulo");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $articulo = new articulo($res_fil['id_articulo'],$res_fil['nombre'],$res_fil['descripcion']);
+            return $articulo;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
 
 
     public function getId_articulo()

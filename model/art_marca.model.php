@@ -66,6 +66,20 @@ class art_marca {
         return $res_fil['LastId'];
     }
 
+    public static function generar_marca($id_marca){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_marca` WHERE id_marca = $id_marca");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $marca = new art_marca($res_fil['id_marca'],$res_fil['nombre'] );
+            return $marca;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
 
     public function getId_marca()
     {

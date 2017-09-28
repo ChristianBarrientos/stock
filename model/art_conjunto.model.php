@@ -42,6 +42,25 @@ class art_conjunto {
         return $res_fil['LastId'];
     }
 
+    public static function generar_conjunto($id_art_conjunto){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_conjunto` WHERE id_art_conjunto = $id_art_conjunto");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $articulo = articulo::generar_articulo($res_fil['id_articulo']);   
+            $marca = art_marca::generar_marca($res_fil['id_marca']);  
+            $tipo = art_tipo::generar_tipo($res_fil['id_tipo']);  
+            //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
+            $conjunto = new art_conjunto($res_fil['id_art_conjunto'],$articulo,$marca,$tipo);
+            return $conjunto;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+
 
     public function getId_conjunto()
     {

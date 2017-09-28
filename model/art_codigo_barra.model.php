@@ -40,6 +40,20 @@ class art_codigo_barra {
         return $res_fil['LastId'];
     }
 
+    public static function generar_cb($id_cb){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_codigo_barra` WHERE id_cb = $id_cb");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $cb = new art_codigo_barra($res_fil['id_cb'],$res_fil['cb']);
+            return $cb;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
 
     public function getId_cb()
     {

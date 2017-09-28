@@ -22,7 +22,7 @@ class art_carga {
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_carga = art_carga::ultimo_id_carga();
         
-        $sql = "INSERT INTO `art_carga`(`id_carga`, `fecha_hora`, `id_usuario`) VALUES (0,'s$fecha_hora',$id_usuario)";
+        $sql = "INSERT INTO `art_carga`(`id_carga`, `fecha_hora`, `id_usuario`) VALUES (0,'$fecha_hora',$id_usuario)";
         $res = $baseDatos->query($sql);
         if ($res) {
              

@@ -6,11 +6,11 @@ class art_tipo {
     private $nombre;
     private $descripcion;
  
-
-    public function __construct($id,$id_marca, $nombre, $descripcion)
+    //$id_marca,
+    public function __construct($id, $nombre, $descripcion)
     {
         $this->id = $id;
-        $this->id_marca = $id_marca;
+        //$this->id_marca = $id_marca;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
          
@@ -64,6 +64,20 @@ class art_tipo {
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
+    }
+
+    public static function generar_tipo($id_tipo){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_tipo` WHERE id_tipo = $id_tipo");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $tipo = new art_tipo($res_fil['id_tipo'],$res_fil['nombre'],'null' );
+            return $tipo;
+        }
+        else{
+            
+            return false;
+        }
     }
 
 

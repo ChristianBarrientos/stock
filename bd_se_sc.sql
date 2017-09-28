@@ -184,7 +184,7 @@ CREATE TABLE  art_categoria (
      ) ENGINE=InnoDB;
 
 CREATE TABLE  art_grupo_categoria (
-     id_gc INTEGER NOT NULL,
+     id_gc INTEGER AUTO_INCREMENT NOT NULL,
      id_categoria INTEGER NOT NULL,
      FOREIGN KEY (id_categoria) REFERENCES art_categoria(id_categoria) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_gc)
@@ -258,6 +258,15 @@ CREATE TABLE  art_lote_local (
      FOREIGN KEY (id_local) REFERENCES art_local(id_local) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_carga) REFERENCES art_carga(id_carga) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_lote_local)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE lote_us (
+     id_lote_us INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     id_lote INTEGER NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_lote) REFERENCES art_lote(id_lote) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_lote_us)
      ) ENGINE=InnoDB;
 
 

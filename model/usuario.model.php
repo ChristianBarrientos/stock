@@ -135,6 +135,7 @@ class usuario {
             $locales = array();
             $locales_empleados = array();
             $locales_articulos = array();
+            
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                 $locales_empleados[] = art_local::generar_local_empleados($valor['id_zona']);
@@ -172,6 +173,52 @@ class usuario {
             return false;
         }
     }
+
+    public static function obtener_lote_us($id_user){
+        global $baseDatos;
+
+        $res = $baseDatos->query("SELECT * FROM `lote_us` WHERE id_usuario = $id_user");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        
+        if (count($filas) != 0) {
+            $lotes_us = array();
+            $lote_local = array();
+            print_r($filas);
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+                $lotes_us[] = art_lote::generar_lote($valor['id_lote']);  
+                $lote_local[] = art_lote_local::generar_lote_local($valor['id_lote']); 
+            }
+
+            //$res_fil['id_zona'];    
+            $_SESSION["lote_local"] = $lote_local;
+            $_SESSION["lotes"] = $lotes_us;
+            return true;
+        }
+        else{
+            echo "aca";
+            return false;
+        }
+    }
+
+    public static function alta_lote_us($id_lote){
+        global $baseDatos;
+        
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        //$id_lote = art_lote::ultimo_id_lote();
+        $id_usuario = $_SESSION['usuario']->getId_user();
+        $sql = "INSERT INTO `lote_us`(`id_lote_us`, `id_usuario`, `id_lote`) VALUES (0,$id_usuario,$id_lote)";
+        $res = $baseDatos->query($sql);
+        if ($res) {
+             
+            return true;
+        }else{
+
+            return false;
+        }
+
+    }
+
 
     public static function alta_usuario($id_dato,$id_contacto,$acceso,$usuario,$pass){
         global $baseDatos;

@@ -4,20 +4,20 @@ class art_lote {
 	private $id_lote;
     private $id_proveedor;
     private $cantidad;
-    private $id_local;
+    private $id_art_conjunto;
     private $id_cb;
     private $id_gc;
-    private $id_carga;
+ 
 
-    public function __construct($id_lote, $id_proveedor, $cantidad,$id_local,$id_cb,$id_gc,$id_carga)
+    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc)
     {
         $this->id_lote = $id_lote;
         $this->id_proveedor = $id_proveedor;
         $this->cantidad = $cantidad;
-        $this->id_local = $id_local;
+        $this->id_art_conjunto = $id_art_conjunto;
         $this->id_cb = $id_cb;
         $this->id_gc = $id_gc;
-        $this->id_carga = $id_carga;
+      
     }
 
     public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc, $id_proveedor = 'null', $descripion = 'null'){
@@ -45,6 +45,41 @@ class art_lote {
         
         return $res_fil['LastId'];
     }
+
+    public static function generar_lote($id_lote){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_lote` WHERE id_lote = $id_lote");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $id_art_conjunto = art_lote::obtener_art_conjunto($res_fil['id_art_conjunto']);   
+            //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
+            return $lote;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+    public static function obtener_art_conjunto($id_art_conjunto){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `id_art_conjunto` WHERE id_art_conjunto = $id_art_conjunto");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $conjunto = art_conjunto::generar_conjunto($res_fil['id_art_conjunto']);   
+            $prvd = proveedor::generar_prvd($res_fil['id_provedor']);
+            $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
+            $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
+            //$id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc
+            $lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$conjunto,$cb,$gc);
+            return $lote;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
 
     public function getId_lote()
     {
@@ -79,14 +114,14 @@ class art_lote {
         return $this;
     }
 
-    public function getId_local()
+    public function getId_art_conjunto()
     {
-        return $this->id_local;
+        return $this->id_art_conjunto;
     }
     
-    public function setId_local($id_local)
+    public function setId_art_conjunto($id_art_conjunto)
     {
-        $this->id_local = $id_local;
+        $this->id_art_conjunto = $id_art_conjunto;
         return $this;
     }
 

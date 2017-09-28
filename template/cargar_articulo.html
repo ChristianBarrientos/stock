@@ -221,22 +221,22 @@
 
 					<!-- START BLOCK : art_precio_tarjeta -->
 					 
-					<input required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
+					<input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
 					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
 					<!-- END BLOCK : art_precio_tarjeta -->
 
 					<!-- START BLOCK : art_precio_credito_argentino -->
 					 
-					<input required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
+					<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
 					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
 					<!-- END BLOCK : art_precio_credito_argentino -->
 
 					<!-- START BLOCK : art_medida --> 
-					<input required  type="text" class="form-control" id="art_medida" placeholder="Ingrese el talle." name="art_medida">
+					<input autocomplete="off" required  type="text" class="form-control" id="art_medida" placeholder="Ingrese el talle." name="art_medida">
 					<!-- END BLOCK : art_medida -->
 
 					<!-- START BLOCK : art_color --> 
-					<input required  type="text" class="form-control" id="art_color" placeholder="Ingrese nombre del color" name="art_color">
+					<input autocomplete="off" required  type="text" class="form-control" id="art_color" placeholder="Ingrese nombre del color" name="art_color">
 					<!-- END BLOCK : art_color -->
 
 				    
@@ -330,7 +330,10 @@
 				    $(function () {
 				    	
 				        $('#datetimepicker{nombre_local_art}').datetimepicker({
-				        	format: 'YYYY-MM-DD'
+				        	//
+				        	format: 'YYYY-MM-DD HH:MM:SS'
+
+
 				        });
 				    });
 				</script>

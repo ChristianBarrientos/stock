@@ -59,6 +59,21 @@ class art_categoria {
         return $res_fil['LastId'];
     }
 
+    public static function generar_categoria($id_categoria){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_categoria` WHERE id_categoria = $id_categoria");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            //$id_categoria, $nombre, $valor,$descripcion
+            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['$descripcion']);
+            return $categoria;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
     public function getId_categoria()
     {
         return $this->id_categoria;
