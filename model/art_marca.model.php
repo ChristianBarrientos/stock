@@ -4,14 +4,14 @@ class art_marca {
 	private $id_marca;
     private $nombre;
     private $descripcion;
-    private $id_lote;
+   
 
-    public function __construct($id_marca, $nombre, $descripcion,$id_lote)
+    public function __construct($id_marca, $nombre, $descripcion)
     {
         $this->id_marca = $id_marca;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
-        $this->id_lote = $id_lote;
+      
     
        
     }
@@ -39,20 +39,19 @@ class art_marca {
         
     }
 
-    public static function alta_art_marca($nombre,$descripcion = 'null',$id_lote = 'null'){
+    public static function alta_art_marca($nombre,$descripcion = 'null'){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_marca_ = art_marca::ultimo_id_marca();
         
-        $sql = "INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`, `id_lote`) 
-                VALUES (0,'$nombre','$descripcion',$id_lote)";
+        $sql = "INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`) VALUES (0,'$nombre','$descripcion')";
         $res = $baseDatos->query($sql);
         if ($res) {
-           
+            
             return $id_marca_;
         }else{
-
+           
             return false;
         }
 
@@ -71,7 +70,7 @@ class art_marca {
         $res = $baseDatos->query("SELECT * FROM `art_marca` WHERE id_marca = $id_marca");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $marca = new art_marca($res_fil['id_marca'],$res_fil['nombre'] );
+            $marca = new art_marca($res_fil['id_marca'],$res_fil['nombre'], 'Sin descripcion.' );
             return $marca;
         }
         else{

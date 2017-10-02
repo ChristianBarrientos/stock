@@ -30,7 +30,7 @@ class art_lote_local {
              
             return $$id_lote_local;
         }else{
-
+            
             return false;
         }
 
@@ -42,6 +42,78 @@ class art_lote_local {
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
+    }
+
+    public static function generar_lote_local($id_lote){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote = $id_lote");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            //$id_categoria, $nombre, $valor,$descripcion
+            $id_lote = art_lote::generar_lote($res_fil['id_lote_local']);
+            $id_local = art_local::generar_local_2($res_fil['id_local']);
+            $id_carga = art_carga::generar_carga($res_fil['id_carga']);
+
+            $lote_local = new art_categoria($res_fil['id_lote_local'],$id_lote,$id_local,$res_fil['cantidad_parcial'],$id_carga);
+            return $lote_local;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+    public function getId_lote_local()
+    {
+        return $this->id_lote_local;
+    }
+    
+    public function setId_lote_local($id_lote_local)
+    {
+        $this->id_lote_local = $id_lote_local;
+        return $this;
+    }
+
+    public function getId_lote()
+    {
+        return $this->id_lote;
+    }
+    
+    public function setId_lote($id_lote)
+    {
+        $this->id_lote = $id_lote;
+        return $this;
+    }
+    public function getId_local()
+    {
+        return $this->id_local;
+    }
+    
+    public function setId_local($id_local)
+    {
+        $this->id_local = $id_local;
+        return $this;
+    }
+    public function getCantidad_parcial()
+    {
+        return $this->cantidad_parcial;
+    }
+    
+    public function setCantidad_parcial($cantidad_parcial)
+    {
+        $this->cantidad_parcial = $cantidad_parcial;
+        return $this;
+    }
+
+    public function getId_carga()
+    {
+        return $this->id_carga;
+    }
+    
+    public function setId_carga($id_carga)
+    {
+        $this->id_carga = $id_carga;
+        return $this;
     }
 
 }

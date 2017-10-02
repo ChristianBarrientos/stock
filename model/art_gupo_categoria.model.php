@@ -45,10 +45,10 @@ class art_grupo_categoria {
         $sql = "INSERT INTO `art_grupo_categoria`(`id_gc`, `id_categoria`) VALUES ($id_gc_,$id_categoria)";
         $res = $baseDatos->query($sql);
         if ($res) {
-             
+              
             return $id_gc;
         }else{
-
+             
             return false;
         }
 
@@ -90,7 +90,8 @@ class art_grupo_categoria {
             $gc = array();
             $categoria = array();
             foreach ($res_fil as $key => $value) {
-                $categoria []= art_categoria::generar_categoria($value['id_categoria']);
+                 
+                $categoria []= art_categoria::generar_categoria($value);
                 
             }
             $gc = new art_grupo_categoria($res_fil['id_gc'],$categoria);

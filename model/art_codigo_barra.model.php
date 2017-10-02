@@ -1,4 +1,4 @@
-<?php
+ <?php
 class art_codigo_barra {
 	
 	private $id_cb;
@@ -26,7 +26,7 @@ class art_codigo_barra {
              
             return $id_cb;
         }else{
-
+             
             return false;
         }
 

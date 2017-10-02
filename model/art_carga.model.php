@@ -25,10 +25,10 @@ class art_carga {
         $sql = "INSERT INTO `art_carga`(`id_carga`, `fecha_hora`, `id_usuario`) VALUES (0,'$fecha_hora',$id_usuario)";
         $res = $baseDatos->query($sql);
         if ($res) {
-             
+              
             return $id_carga;
         }else{
-
+             
             return false;
         }
 
@@ -40,6 +40,28 @@ class art_carga {
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
+    }
+
+    public static function generar_carga($id_carga){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `art_carga` WHERE id_carga = $id_carga");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $id_us = usuario::obtener_tabla_usuario($res_fil['id_usuario']);
+            
+            $carga = new art_carga($res_fil['id_carga'],$res_fil['fecha_hora'],$id_us);
+            return $carga;
+        }
+        else{
+            
+            return false;
+        }
+       
+
+
     }
 
 

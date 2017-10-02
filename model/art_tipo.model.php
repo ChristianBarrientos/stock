@@ -40,19 +40,19 @@ class art_tipo {
         
     }
 
-    public static function alta_art_tipo($nombre,$descripcion = 'null', $id_marca = 'null'){
+    public static function alta_art_tipo($nombre,$descripcion = 'null'){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_tipo_ = art_tipo::ultimo_id_tipo();
         
-        $sql = "INSERT INTO `art_tipo`(`id_tipo`, `nombre`, `descripcion`, `id_marca`) VALUES (0,'$nombre','$descripcion',$id_marca)";
+        $sql = "INSERT INTO `art_tipo`(`id_tipo`, `nombre`, `descripcion`) VALUES (0,'$nombre','$descripcion')";
         $res = $baseDatos->query($sql);
         if ($res) {
-            echo $id_tipo_;
+            
             return $id_tipo_;
         }else{
-
+            
             return false;
         }
 

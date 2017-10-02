@@ -45,7 +45,7 @@ class art_categoria {
              
             return $id_categoria;
         }else{
-
+              
             return false;
         }
 
@@ -65,7 +65,7 @@ class art_categoria {
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
-            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['$descripcion']);
+            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['descripcion']);
             return $categoria;
         }
         else{

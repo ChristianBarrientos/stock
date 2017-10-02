@@ -1,4 +1,4 @@
-<?php
+ <?php
 class art_conjunto {
 	
 	private $id_conjunto;
@@ -28,7 +28,7 @@ class art_conjunto {
              
             return $id_conjunto;
         }else{
-
+             
             return false;
         }
 

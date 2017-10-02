@@ -15,19 +15,19 @@ class articulo {
     }
 
 
-    public static function alta_art_general($nombre,$id_marca = 'null'){
+    public static function alta_art_general($nombre,$des = 'null'){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_articulo_ = articulo::ultimo_id_articulo();
         
-        $sql = "INSERT INTO `art_articulo`(`id_articulo`, `nombre`, `id_marca`) VALUES (0,'$nombre',$id_marca)";
+        $sql = "INSERT INTO `art_articulo`(`id_articulo`, `nombre`, `descripcion`) VALUES (0,'$nombre','$des')";
         $res = $baseDatos->query($sql);
         if ($res) {
-            
+            echo "OK Articulo";
             return $id_articulo_;
         }else{
-
+            echo "NO OK Articulo";
             return false;
         }
 
