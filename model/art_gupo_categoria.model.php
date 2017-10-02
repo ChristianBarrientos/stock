@@ -85,16 +85,17 @@ class art_grupo_categoria {
     public static function generar_gc($id_gc){
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM `art_grupo_categoria` WHERE id_gc = $id_gc");  
-        $res_fil = $res->fetch_assoc();
-        if (count($res_fil) != 0) {
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
             $gc = array();
             $categoria = array();
-            foreach ($res_fil as $key => $value) {
-                 
-                $categoria []= art_categoria::generar_categoria($value);
+             
+            foreach ($filas as $key => $value) {
+                
+                $categoria []= art_categoria::generar_categoria($value['id_categoria']);
                 
             }
-            $gc = new art_grupo_categoria($res_fil['id_gc'],$categoria);
+            $gc = new art_grupo_categoria($filas['id_gc'],$categoria);
             return $gc;
         }
         else{

@@ -2,14 +2,14 @@
 
 CREATE TABLE  us_prvd_contacto_tel (
      id_contacto_tel INTEGER AUTO_INCREMENT NOT NULL,
-     nro_caracteristica INTEGER NOT NULL,
-     nro_telefono INTEGER NOT NULL,
+     nro_caracteristica INTEGER ,
+     nro_telefono INTEGER ,
      KEY (id_contacto_tel)
      ) ENGINE=InnoDB;
 
 CREATE TABLE  us_prvd_fecha_ab (
      id_fecha_ab INTEGER AUTO_INCREMENT NOT NULL,
-     alta DATE NOT NULL,
+     alta DATE,
      baja DATE,
      KEY (id_fecha_ab)
      ) ENGINE=InnoDB;
@@ -33,7 +33,7 @@ CREATE TABLE  prvd_datos (
 
 CREATE TABLE  us_prvd_contacto (
      id_contacto INTEGER AUTO_INCREMENT NOT NULL,
-     id_contacto_tel INTEGER NOT NULL,
+     id_contacto_tel INTEGER,
      direccion VARCHAR(100),
      correo VARCHAR(50),
      FOREIGN KEY (id_contacto_tel) REFERENCES us_prvd_contacto_tel(id_contacto_tel) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -42,8 +42,8 @@ CREATE TABLE  us_prvd_contacto (
 
 CREATE TABLE  prvd_provedor (
      id_provedor INTEGER AUTO_INCREMENT NOT NULL,
-     id_contacto INTEGER NOT NULL,
-     id_datos_prvd INTEGER NOT NULL,
+     id_contacto INTEGER ,
+     id_datos_prvd INTEGER ,
      descripcion VARCHAR(100),
      FOREIGN KEY (id_contacto) REFERENCES us_prvd_contacto(id_contacto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_datos_prvd) REFERENCES prvd_datos(id_datos_prvd) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -113,11 +113,11 @@ CREATE TABLE  us_datos (
      id_datos INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(50) NOT NULL, 
      apellido VARCHAR(50) NOT NULL, 
-     fecha_nac DATE NOT NULL, 
-     dni INTEGER (8) NOT NULL,
+     fecha_nac DATE , 
+     dni INTEGER (8) ,
      id_foto INTEGER NOT NULL,
      genero ENUM('M','F'),
-     id_fecha_ab INTEGER NOT NULL,
+     id_fecha_ab INTEGER ,
      FOREIGN KEY (id_foto) REFERENCES us_prvd_foto(id_foto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_fecha_ab) REFERENCES us_prvd_fecha_ab(id_fecha_ab) ON DELETE NO ACTION ON UPDATE CASCADE,
      key(id_datos)
@@ -125,8 +125,8 @@ CREATE TABLE  us_datos (
 
 CREATE TABLE  usuarios (
      id_usuarios INTEGER AUTO_INCREMENT NOT NULL,
-     id_datos INTEGER NOT NULL,
-     id_contacto INTEGER NOT NULL,
+     id_datos INTEGER ,
+     id_contacto INTEGER ,
      acceso ENUM('ADMIN', 'OPER'),
      usuario VARCHAR (15) NOT NULL,
      pass VARCHAR(20) NOT NULL,

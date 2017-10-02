@@ -50,12 +50,48 @@ class Empleado_Controller{
 							$empleados_si = true;
 							$tpl->newBlock("con_empleados");
 							$tpl->assign("empl_nombre", $valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
-							$tpl->assign("empl_fecha_alta", $valor->getId_datos()->getFecha_alta());
-							$tpl->assign("empl_dni", $valor->getId_datos()->getDni());
-							$tpl->assign("empl_fecha_nac", $valor->getId_datos()->getFecha_nac());
-							$tpl->assign("empl_direccion", $valor->getId_contacto()->getDireccion());
-							$tpl->assign("empl_correo", $valor->getId_contacto()->getCorreo());
-							$tpl->assign("empl_telefono", $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono());
+                            $fecha_alta = $valor->getId_datos()->getFecha_alta();
+                            //if (strcmp($fecha_alta, "0000-00-0" ) == 0 ) {
+                            if ($fecha_alta ==  0000-00-0 ) {
+                                $tpl->assign("empl_fecha_alta", 'Sin Definir.');
+                            }else{
+
+                                $tpl->assign("empl_fecha_alta", $fecha_alta);    
+                            }
+							$empl_dni = $valor->getId_datos()->getDni();
+                            if ($empl_dni == null) {
+                                $tpl->assign("empl_dni", 'Sin Definir.');
+                            }
+                            else{
+                                $tpl->assign("empl_dni",$empl_dni );
+                            }
+							$fecha_nac = $valor->getId_datos()->getFecha_nac();
+                            if ($fecha_nac == 0000-00-0) {
+                                $tpl->assign("empl_fecha_nac", 'Sin Definir.');
+                            }
+                            else{
+                                $tpl->assign("empl_fecha_nac",$fecha_nac );
+                            }
+							$empl_direccion = $valor->getId_contacto()->getDireccion();
+                            if ($empl_direccion == 'NULL') {
+                                $tpl->assign("empl_direccion", 'Sin Definir.');
+                            }else{
+                                $tpl->assign("empl_direccion",$empl_direccion );
+                            }
+							$empl_correo = $valor->getId_contacto()->getCorreo();
+                            if ($empl_correo == 'NULL') {
+                                $tpl->assign("empl_correo", 'Sin Definir.');
+                            }
+                            else{
+                                $tpl->assign("empl_correo",$empl_correo );
+                            }
+							$empl_telefono = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
+                            if ($empl_telefono == '0-') {
+                                $tpl->assign("empl_telefono", 'Sin Definir.');
+                            }else{
+                                $tpl->assign("empl_telefono",$empl_telefono );
+                            }
+							
 							$tpl->assign("empl_foto", $valor->getId_datos()->getFoto());
 						}
 					}
@@ -93,6 +129,25 @@ class Empleado_Controller{
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
+        if ($dni == null) {
+            $dni = 'NULL';
+        }
+        if ($fecha_nac == null) {
+            $fecha_nac = 'NULL';
+        }
+        if ($fecha_alta == null) {
+            $fecha_alta = 'NULL';
+        }
+        if ($direccion == null) {
+            $direccion = 'NULL';
+        }
+        if ($correo == null) {
+            $correo = 'NULL';
+        }
+        if ($telefono == null) {
+            $telefono = 'NULL';
+        }
+
         //Cargar en tabla us_datos
         //ucwords(strtolower($_POST['empl_correo']))
         /*echo "FECHA ALTA:";

@@ -73,9 +73,7 @@ button.agregar{
 }
 
 /*Carga de Articulos*/
-#seleccionar_local_empl{
-  border:1px solid red;
-}
+
  
 
 footer{
@@ -87,7 +85,5 @@ footer{
   display: inline-block;
    
 }
-#cargar_articuloe #form_flotante{
-  border:1px solid red;
-}
+ 
  

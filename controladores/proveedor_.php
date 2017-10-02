@@ -16,16 +16,49 @@ class Proveedor_Controller{
                                     
                                     $tpl->newBlock("con_proveedores");
                                     $tpl->assign("prvd_nombre", $value->getid_datos_prvd()->getNombre());
-                                     
-                                    $tpl->assign("descripcion", $value->getDescripcion());
-                                    $tpl->assign("prvd_foto", $value->getid_datos_prvd()->getId_foto());
-                                    $tpl->assign("prvd_fecha_alta", $value->getid_datos_prvd()->getFecha_alta());
-                                    $tpl->assign("prvd_cuit",$value->getid_datos_prvd()->getCuit());
-                                    $tpl->assign("prvd_direccion",$value->getId_contacto()->getDireccion());
-                                    $tpl->assign("prvd_correo",$value->getId_contacto()->getCorreo());
-                                    $tpl->assign("prvd_telefono",$value->getId_contacto()->getNro_telefono());
+                                    $des = $value->getDescripcion();
+                                    if ($des == null) {
+                                        $tpl->assign("descripcion",'Sin definir.' );
+                                    }else{
+                                        $tpl->assign("descripcion", $des);
+                                    }
                                     
-                                } 
+                                    $tpl->assign("prvd_foto", $value->getid_datos_prvd()->getId_foto());
+                                    $fecha_a = $value->getid_datos_prvd()->getFecha_alta();
+                                    if ($fecha_a == 0000-00-0) {
+                                        $tpl->assign("prvd_fecha_alta", 'Sin Definir' );
+                                    }
+                                    else{
+                                        $tpl->assign("prvd_fecha_alta", $fecha_a );
+                                    }
+                                    $cuit = $value->getid_datos_prvd()->getCuit();
+                                    if ($cuit == null) {
+                                        $tpl->assign("prvd_cuit",'Sin Definir.');
+                                    }else{
+                                        $tpl->assign("prvd_cuit",$cuit);
+                                    }
+                                    $direccion = $value->getId_contacto()->getDireccion();
+                                    if ($direccion == 'NULL') {
+                                        $tpl->assign("prvd_direccion",'Sin Definir.');
+                                    }else{
+                                        $tpl->assign("prvd_direccion",$direccion);
+                                    }
+                                    $correo = $value->getId_contacto()->getCorreo();
+                                    if ($correo == 'NULL') {
+                                        $tpl->assign("prvd_correo",'Sin Definir.');
+                                    }else{
+                                        $tpl->assign("prvd_correo",$correo);
+                                    }
+                                    $telefono = $value->getId_contacto()->getNro_telefono();
+                                    if ($telefono == null) {
+                                        $tpl->assign("prvd_telefono",'Sin Definir.');
+                                    }
+                                    else{
+                                        $tpl->assign("prvd_telefono",$telefono);
+
+                                    
+                                        } 
+                                    }
                             }
      
                         }
@@ -75,6 +108,30 @@ class Proveedor_Controller{
         $correo = $_POST['prvd_correo'];
         $telefono = $_POST['prvd_telefono'];
         $descripcion = $_POST['prvd_descripcion'];
+
+        if ($cuit == null) {
+            $cuit = 'NULL';
+        }
+
+        if ($fecha_alta == null) {
+            $fecha_alta = 'NULL';
+        }
+
+        if ($direccion == null) {
+            $direccion = 'NULL';
+        }
+
+        if ($correo == null) {
+            $correo = 'NULL';
+        }
+
+        if ($telefono == null) {
+            $telefono = 'NULL';
+        }
+
+        if ($descripcion == null) {
+            $descripcion = 'NULL';
+        }
 
         $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
         $id_datos = prvd_datos::alta_datos($fecha_alta,$nombre,$cuit,1);

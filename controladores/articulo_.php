@@ -5,7 +5,7 @@ class Articulo_Controller{
                 $tpl = new TemplatePower("template/seccion_admin_articulos.html");
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
-                        
+                         
                         if ($_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())) {
                             foreach ($_SESSION['lotes'] as $key => $value) {
                                  
@@ -13,82 +13,93 @@ class Articulo_Controller{
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.' '.$marca.' '.$tipo;
-                                $tpl->newBlock("con_articulos");
-                                $tpl->assign("nombre",$nombre_);
-                                $tpl->assign("prvd",$value->getId_proveedor());
-                                $tpl->assign("cantidad_total",$value->getCantidad());
-                                $tpl->assign("cb",$value->getId_cb()->getcb());
+                                /*$si_arra = $value->getId_gc()->getId_categoria();
+                                print_r($si_arra[0]->getId_categoria());
+                                echo "string";
+                                */
+                                
+                                if (True) {
+                                    # code...
+                                
+                                    $tpl->newBlock("con_articulos");
+                                    $tpl->assign("nombre",$nombre_);
+                                    $tpl->assign("prvd",$value->getId_proveedor());
+                                    $tpl->assign("cantidad_total",$value->getCantidad());
+                                    $tpl->assign("cb",$value->getId_cb()->getcb());
 
-                                $gc = $value->getId_gc()->getId_categoria();
-                                print_r($gc);
-                                foreach ($gc as $clave => $valor) {
-                                    if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
-                                        $medida = $valor->getValor();
-                                        
+                                    $gc = $value->getId_gc()->getId_categoria();
+                                     
+                                    foreach ($gc as $clave => $valor) {
+                                        if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                                            $medida = $valor->getValor();
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                                            $precio_base = $valor->getValor();
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
+                                            $por_ciento_t =  $valor->getValor();
+                                            $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            
+                                            $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
+                                             
+
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
+                                            $por_ciento_p = $valor->getValor();
+                                            $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                            $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
+                                            $art_color = $valor->getValor();
+                                            
+                                        }
+                                    }
+                                    if ($precio_base != null) {
+                                        $tpl->assign("precio_base",$precio_base);
+                                    }
+                                    else{
+                                        $tpl->assign("precio_base",'Sin Definir');
                                     }
 
-                                    if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
-                                        $precio_base = $valor->getValor();
-                                        
+                                    if ($medida != null) {
+                                        $tpl->assign("art_medida",$medida);
+                                    }
+                                    else{
+                                        $tpl->assign("art_medida",'Sin Definir');
                                     }
 
-                                    if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
-                                        $por_ciento_t = $valor->getValor();
-                                        $precio_tarjeta = $precio_base * ((int)$precio_base * (int)$por_ciento_t);
-                                         
-
-                                        
+                                    if ($precio_tarjeta != null) {
+                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'(%'.$por_ciento_t.')');
+                                    }
+                                    else{
+                                        $tpl->assign("precio_tarjeta",'Sin Definir');
                                     }
 
-                                    if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
-                                        $por_ciento_p = $valor->getValor();
-                                        $credito_personal = $precio_base * ((int)$precio_base * (int)$por_ciento_p);
-                                        
+                                    if ($credito_personal != null) {
+                                        $tpl->assign("credito_personal",$credito_personal.'(%'.$por_ciento_p.')');
+                                    }
+                                    else{
+                                        $tpl->assign("credito_personal",'Sin Definir');
                                     }
 
-                                    if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
-                                        $art_color = $valor->getValor();
-                                        
+                                    if ($art_color != null) {
+                                        $tpl->assign("art_color",$art_color);
                                     }
-                                }
-                                if ($precio_base != null) {
-                                    $tpl->assign("precio_base",$precio_base);
-                                }
-                                else{
-                                    $tpl->assign("precio_base",'Sin Definir');
-                                }
-
-                                if ($medida != null) {
-                                    $tpl->assign("art_medida",$medida);
-                                }
-                                else{
-                                    $tpl->assign("art_medida",'Sin Definir');
-                                }
-
-                                if ($precio_tarjeta != null) {
-                                    $tpl->assign("precio_tarjeta",$precio_tarjeta.'(%'.$por_ciento_t.')');
-                                }
-                                else{
-                                    $tpl->assign("precio_tarjeta",'Sin Definir');
-                                }
-
-                                if ($credito_personal != null) {
-                                    $tpl->assign("credito_personal",$credito_personal.'(%'.$por_ciento_p.')');
-                                }
-                                else{
-                                    $tpl->assign("credito_personal",'Sin Definir');
-                                }
-
-                                if ($art_color != null) {
-                                    $tpl->assign("art_color",$art_color);
-                                }
-                                else{
-                                    $tpl->assign("art_color",'Sin Definir');
-                                }
+                                    else{
+                                        $tpl->assign("art_color",'Sin Definir');
+                                    }
                                 /*$tpl->assign("descripcion", $value->getDescripcion());
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
-                                
+                                }
                             }
                             //Lote de Articulos por Local
                             //$_SESSION["lote_local"] 
@@ -96,7 +107,7 @@ class Articulo_Controller{
                             //$_SESSION["lotes"]  
                             //print_r($_SESSION["lote_local"]);
                             //print_r($_SESSION["lotes"]);
-                            $tpl->newBlock("con_articulos");
+                            
                             
                                 
                                

@@ -210,10 +210,10 @@ class usuario {
         $sql = "INSERT INTO `lote_us`(`id_lote_us`, `id_usuario`, `id_lote`) VALUES (0,$id_usuario,$id_lote)";
         $res = $baseDatos->query($sql);
         if ($res) {
-             echo "OK lote usuario";
+              
             return true;
         }else{
-            echo "No OK lote usuario";
+             
             return false;
         }
 

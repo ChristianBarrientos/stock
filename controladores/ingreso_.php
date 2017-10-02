@@ -120,10 +120,28 @@ class Ingreso_Controller{
 		if (Ingreso_Controller::es_admin()) {
 			$tpl = new TemplatePower("template/menu_admin.html");
 			$tpl->prepare();
-			 
+			$total_empl = 0;
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
+				foreach ($_SESSION['locales'] as $key => $value) {
+                
+                $total_empl = $total_empl + $value->getCantidad_empl() -1;
+                                
+            }
+            	$tpl->newBlock("con_sucursales");
+				$tpl->assign("titulo", ' Locales');
+				$tpl->assign("total", count($_SESSION['locales']));
 
 				$tpl->newBlock("con_sucursales");
+				$tpl->assign("titulo", ' Empleados');
+				$tpl->assign("total", $total_empl );
+
+				$tpl->newBlock("con_sucursales");
+				$tpl->assign("titulo", ' Proveedores');
+				$tpl->assign("total", count($_SESSION["proveedores"]) );
+
+				$tpl->newBlock("con_sucursales");
+				$tpl->assign("titulo", ' Articulos');
+				$tpl->assign("total", count($_SESSION["lotes"]));
 			}
 			else{
 				$tpl->newBlock("sin_sucursales");
