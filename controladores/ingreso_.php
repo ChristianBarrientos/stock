@@ -180,8 +180,20 @@ class Ingreso_Controller{
 			$tpl = new TemplatePower("template/menu_oper.html");
 			$tpl->prepare();
 			$locales = us_local::obtener_locales_usuario($_SESSION["usuario"]->getId_user());
+			$tpl->newBlock("con_sucursales");
 			foreach ($locales as $key => $value) {
-				$local_ingo = 
+				//tenes que recorrer el array de lcoales y omstrar la informatcion asi lo pueda eleguir.
+				
+				$zona = mp_zona::obtener_zona__explicita_2($value["id_zona"]);
+				
+				$local = us_local::obtener_empleados_local($zona["id_zona"]);
+				$locales_info_id = art_local::obtener_id_local($zona["id_zona"]);
+				$local_ok = art_local::generar_local_2($locales_info_id);
+				print_r();
+				$tpl->newBlock("emp_sucursales");
+				$tpl->assign("titulo", $local_ok->getNombre());
+				$tpl->assign("descripcion", $local_ok->getDescripcion());
+				
 			}
 			
 

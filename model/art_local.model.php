@@ -85,6 +85,26 @@ class art_local {
 
     }
 
+    public static function obtener_id_local($id_zona){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM art_local WHERE id_zona = $id_zona");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            return $res_fil['id_local'];
+        }
+        else{
+            
+            return false;
+        }
+       
+
+
+    }
+
     
 
   

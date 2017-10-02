@@ -57,6 +57,25 @@ class mp_zona {
         }
     }
 
+    public static function obtener_zona__explicita_2($id_zona){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM mp_zona WHERE id_zona = $id_zona");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+
+            $pais = mp_zona::obtener_pais($res_fil['id_pais']);
+            $provincia = mp_zona::obtener_provincia($res_fil['id_provincia']);
+            $localidad = mp_zona::obtener_localidad($res_fil['id_localidad']);
+            $zona_completa = ["id_zona" => $res_fil['id_zona'],"pais" => $pais, "provincia" => $provincia, "localidad" => $localidad];
+            return $zona_completa;
+        }
+        else{
+            return false;
+        }
+    }
+
      public static function obtener_pais($id_pais){
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM mp_pais WHERE id_pais = $id_pais");  
