@@ -8,6 +8,10 @@ class Ingreso_Controller{
         	if ($_SESSION["permiso"] == 'ADMIN') {
         		return Ingreso_Controller::menu_admin();
         	}
+
+        	if ($_SESSION["permiso"] == 'OPER') {
+        		return Ingreso_Controller::menu_operador();
+        	}
         	
         	
         }
@@ -155,10 +159,34 @@ class Ingreso_Controller{
 		return $tpl->getOutputContent();
 	}
 
+	public static function menu_operador(){
+
+		if (Ingreso_Controller::es_oper()) {
+			$tpl = new TemplatePower("template/menu_oper.html");
+			$tpl->prepare();
+			echo "aca";
+
+		}
+		else{
+			return Ingreso_Controller::salir();
+		}
+		
+		return $tpl->getOutputContent();
+	}
+
 	
 
 	public static function es_admin(){
 		if ($_SESSION["permiso"] == 'ADMIN') {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public static function es_oper(){
+		if ($_SESSION["permiso"] == 'OPER') {
 			return true;
 		}
 		else{

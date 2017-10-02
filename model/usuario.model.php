@@ -150,6 +150,8 @@ class usuario {
             $_SESSION["locales_empleados"] = unique_multidim_array($locales_empleados,'id_usuarios'); 
             //$_SESSION["locales_empleados"] = $locales_empleados;
             $_SESSION["locales_articulos"] = $locales_articulos;
+
+             
             return true;
         }
         else{
@@ -241,6 +243,39 @@ class usuario {
         return $res_fil['LastId'];
     }
 
+    function verificar_existencia ($user){
+
+        global $baseDatos;
+         
+        $res = $baseDatos->query("SELECT * FROM usuarios WHERE usuario = '$user'");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+
+    function verificar_dni ($dni){
+
+        global $baseDatos;
+         
+        $res = $baseDatos->query("SELECT * FROM us_datos WHERE dni = $dni");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
 
 
 

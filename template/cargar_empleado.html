@@ -2,12 +2,13 @@
 	<div class="container">
 	  <h2>Alta de Empleados</h2>
 	  <h3>Datos generales</h3>
-	  <!-- START BLOCK : error_dni -->
+	  <!-- START BLOCK : error_usuario -->
 	    <div class="alert alert-danger center-block">
-			<h3>Ya existe una persona con ese DNI.</h3>
+			<h3>Ya existe una persona con ese DNI o con ese nombre de USUARIO.</h3>
 					
 		</div>
-	    <!-- END BLOCK : error_dni -->
+	    
+	    <!-- END BLOCK : error_usuario -->
 	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_empelado" method="post">
 	    <div class="form-group">
 	      <label class="control-label col-sm-2" for="empl_nombre">Nombre:</label>

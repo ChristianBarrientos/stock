@@ -95,7 +95,7 @@ class art_grupo_categoria {
                 $categoria []= art_categoria::generar_categoria($value['id_categoria']);
                 
             }
-            $gc = new art_grupo_categoria($filas['id_gc'],$categoria);
+            $gc = new art_grupo_categoria($id_gc,$categoria);
             return $gc;
         }
         else{
