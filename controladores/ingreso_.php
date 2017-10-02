@@ -30,7 +30,7 @@ class Ingreso_Controller{
 		$tpl = new TemplatePower("template/menu_bar.html");
 		$tpl->prepare();
 		
-		if (isset($_SESSION["usuario"])){
+		if (isset($_SESSION["usuario"]) && Ingreso_Controller::es_admin()){
 			$tpl->newBlock("dentro"); 
 			if ($seccion == "Local::mostrar") {
 				     
@@ -64,6 +64,11 @@ class Ingreso_Controller{
 			 
 			$tpl->assign("usuario", $_SESSION['usuario']->getUsuario());
 		}
+		/*if ($_SESSION["permiso"] == 'OPER') {
+			$tpl->newBlock("operador"); 
+			$tpl->assign("usuario", $_SESSION["usuario"]->getUsuario());
+			$tpl->assign("select_menu", $active);
+		}*/
 		else{
 			$tpl->newBlock("fuera");    
 		}
@@ -78,6 +83,7 @@ class Ingreso_Controller{
 		//$filtro = new InputFilter();
 		//$nombre = $filtro->process($_POST['usuario']);
 		if (isset($_POST['usuario']) && isset($_POST['pass'])) {
+
 			 
 			/*$user = mysqli_real_escape_string($baseDatos,$_POST['usuario']);
 			$pass = mysqli_real_escape_string($baseDatos,$_POST['pass']);*/
@@ -91,6 +97,7 @@ class Ingreso_Controller{
 			//$nombre = $baseDatos->real_escape_string($_POST['nombre']);
 			$usuario = new usuario($user, $pass);
 			if($usuario -> verificar_user()){
+				
 				//if ($usuario -> obtener_us_datos() && $usuario -> obtener_us_prvd_contacto()) {
 				$usuario -> obtener_us_datos();
 				$usuario -> obtener_us_prvd_contacto();
@@ -102,10 +109,17 @@ class Ingreso_Controller{
 				//}
 				
 				//$tpl->newBlock("error_login");
-				return Ingreso_Controller::menu_admin();
+				if ($_SESSION["permiso"] == 'OPER') {
+					return Ingreso_Controller::menu_operador();
+				}
+				else{
+					return Ingreso_Controller::menu_admin();
+				}
+				
 	
 			}
 			else{
+				
 				$tpl = new TemplatePower("template/login.html");
 				$tpl->prepare();
 				$tpl->newBlock("error_login");
@@ -114,6 +128,7 @@ class Ingreso_Controller{
 			}
 		}
 		else{
+			
 			return 'falso';
 		}
 		
@@ -164,7 +179,11 @@ class Ingreso_Controller{
 		if (Ingreso_Controller::es_oper()) {
 			$tpl = new TemplatePower("template/menu_oper.html");
 			$tpl->prepare();
-			echo "aca";
+			$locales = us_local::obtener_locales_usuario($_SESSION["usuario"]->getId_user());
+			foreach ($locales as $key => $value) {
+				$local_ingo = 
+			}
+			
 
 		}
 		else{

@@ -57,6 +57,21 @@ class us_local {
         return $res;
     }
 
+    public static function obtener_locales_usuario($id_usuarios){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = '$id_usuarios'");  
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            
+            return $filas;
+        }
+        else{
+            return false;
+        }
+    }
+
     public function getId_usuario_local()
     {
         return $this->id_usuario_local;
