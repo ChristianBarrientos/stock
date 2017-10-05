@@ -28,7 +28,7 @@ class art_tipo {
              
             foreach ($filas as $key => $value) {
                 
-                $art_tipos[]= new art_tipo($value['id_tipo'],$value['id_marca'],$value['nombre'],$value['descripcion']);
+                $art_tipos[]= new art_tipo($value['id_tipo'],$value['nombre'],$value['descripcion']);
             }
             //$zona = mp_zona::obtener_zona__explicita($id_zona);
             
@@ -52,7 +52,7 @@ class art_tipo {
             
             return $id_tipo_;
         }else{
-            
+             
             return false;
         }
 

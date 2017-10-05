@@ -2,17 +2,21 @@
 class Articulo_Controller{
 
 	public static function mostrar(){
+                $opc_list = $_GET['opcion_list'];
                 $tpl = new TemplatePower("template/seccion_admin_articulos.html");
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                          
                         if ($_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())) {
+                            $tpl->newBlock("con_articulos_lista");
+                            $tpl->newBlock("con_articulos_lista_cabeza");
+                            $cantidad = 0;
                             foreach ($_SESSION['lotes'] as $key => $value) {
-                                 
+                                $cantidad = $cantidad + 1;
                                 $art = $value->getId_art_conjunto()->getId_articulo()->getNombre();
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
-                                $nombre_ = $art.' '.$marca.' '.$tipo;
+                                $nombre_ = $art.', '.$marca.', '.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                 print_r($si_arra[0]->getId_categoria());
                                 echo "string";
@@ -21,7 +25,10 @@ class Articulo_Controller{
                                 if (True) {
                                     # code...
                                 
-                                    $tpl->newBlock("con_articulos");
+                                    #$tpl->newBlock("con_articulos_nolista");
+                                     
+                                    $tpl->newBlock("con_articulos_lista_cuerpo");
+                                    $tpl->assign("numero",$cantidad);
                                     $tpl->assign("nombre",$nombre_);
                                     $tpl->assign("prvd",$value->getId_proveedor());
                                     $tpl->assign("cantidad_total",$value->getCantidad());

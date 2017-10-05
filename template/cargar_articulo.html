@@ -13,19 +13,21 @@
 									<h4 class="modal-title" id="myModalLabel">Agregar Articulo General</h4>
 								</div>
 								<div class="modal-body" id="agregar_ok">
+								<form action="#">
 									<div class="form_flotante" id="form_art_general">
 										
 											<div class="form-group">
 										      <label class="control-label col-sm-2" for="art_general">Valor:</label>
 										       
-										        <input required type="text" class="form-control" id="art_general" placeholder="Ingrese Valor General" name="art_general">   
+										        <input required type="text" class="form-control" id="art_general_chris" placeholder="Ingrese Valor General" name="art_general">   
 										    </div>
 										    <div class="form-group">    
-										    	 <button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_general">
+										    	 <button type="submit" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_general">
 										    	 Agregar	
 									        </div>
 										
 									</div>
+								</form>
 								</div>
 							</div>
 						</div>
@@ -130,7 +132,7 @@
 				    </div>  
 			        
 			        <div class="col-md-4 col-sm-3 ">
-				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general">
+				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general" id="cargar_general_btn">
 							Agregar
 						</button>
 			        </div>

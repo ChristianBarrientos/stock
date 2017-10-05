@@ -1,7 +1,19 @@
 
 
 $(document).ready(function()
-    {   
+    {   //Vuscador sincronico
+        document.getElementById('art_cantidad_total').focus();
+        $('#filtrar').keyup(function () {
+ 
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+ 
+                })
+
+
        
         $("#seleccionar_local_art input").on("click",function(e) {
                
@@ -165,8 +177,27 @@ $(document).ready(function()
             
         });
 
+        $("#cargar_general_btn").click(function () {
+            
+            $('#art_general').click();
+             
+
+        });
+
+
         $("#cargar_art_general").click(function () {
+            $('#art_general_chris').focus();
             //saco el valor accediendo a un input de tipo text y name = nombre
+             $(document).keyup(function(e) {
+                if(e.keyCode == 13) {
+                    alert('Has presionado ENTER');
+                }
+            });
+            //var pcart =document.getElementById('art_general_chris');
+            //setTimeout(function(){pcart.focus();}, 1);
+            
+            //$('#art_general_chris').on( "focus", handler )
+             
             valor = $('input:text[name=art_general]').val();
             //saco el valor accediendo al id del input = nombre
             $("#select_art_general").selectpicker();
