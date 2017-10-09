@@ -1,0 +1,148 @@
+<div class="cargar_empleado">
+	<div class="container">
+	  <h2>Modificacion de Empleado</h2>
+	  <h3>Datos generales</h3>
+	  <!-- START BLOCK : error_usuario -->
+	    <div class="alert alert-danger center-block">
+			<h3>Ya existe una persona con ese DNI o con ese nombre de USUARIO.</h3>
+					
+		</div>
+	    
+	    <!-- END BLOCK : error_usuario -->
+
+	  <!-- START BLOCK : form -->
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_modificacion&id_empleado={id_empleado}&nombre__={nombre__}&apellido__={apellido__}&dni__={dni__}&fecha_alt__={fecha_alt__}&fecha_nac__={fecha_nac__}&direccion__={direccion__}&correo__={correo__}&telefono__={telefono__}&usuario__={usuario__}&pass__={pass__}&locales__={locales__}&genero__={genero__}" method="post">
+	  <!-- END BLOCK : form -->
+	    <!-- START BLOCK : datos_modificar_empleado -->
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_nombre">Nombre:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required type="empl_nombre" value = "{nombre_}" class="form-control" id="empl_nombre" placeholder="Ingrese nombre del empleado" name="empl_nombre">
+	      </div>
+	    </div>
+	     <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_apellido">Apellido:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input required value = "{apellido_}" type="empl_apellido" class="form-control" id="empl_apellido" placeholder="Ingrese apellido del empleado" name="empl_apellido">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_genero">Genero:</label>
+	       <div class="col-md-5 col-sm-5">
+		       <select  name="empl_genero" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+			      
+			        <option value="M">Masculino</option>
+			        <option value="F">Femenino</option>
+			      
+			      </select>
+			</div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_dni">DNI:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input  value = "{dni_}" type="empl_dni" class="form-control" id="empl_dni" placeholder="Ingrese dni del empleado" name="empl_dni">
+	      </div>
+	    </div>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="empl_fecha_nac">Fecha de Nacimiento:</label>
+	       <div class='col-sm-6'>
+            
+            	<div class='input-group date' id='datetimepicker1'>
+            	    <input  value = "{fecha_nac_}" placeholder="AAAA-MM-DD" name='empl_fecha_nac' type='text' class="form-control" />
+            	    <span class="input-group-addon">
+            	        <span class="glyphicon glyphicon-calendar"></span>
+            	    </span>
+            	</div>
+            
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                	format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+	    </div>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2" for="empl_fecha_alta">Fecha de Alta:</label>
+	       <div class='col-sm-6'>
+            
+            	<div class='input-group date' id='datetimepicker2'>
+            	    <input  value = "{fecha_alt_}" placeholder="AAAA-MM-DD" name="empl_fecha_alta" type='text' class="form-control" />
+            	    <span class="input-group-addon">
+            	        <span class="glyphicon glyphicon-calendar"></span>
+            	    </span>
+            	</div>
+            
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker2').datetimepicker({
+                	format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+	    </div>
+	    <h3>Datos de Contacto</h3>
+	    
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_direccion">Direccion:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input  value = "{direccion_}" type="empl_direccion" class="form-control" id="empl_direccion" placeholder="Ingrese direccion del empleado" name="empl_direccion">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_correo">Correo:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input  value = "{correo_}" type="email" class="form-control" id="empl_correo" placeholder="Ingrese correo del empelado" name="empl_correo">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_telefono">Telefono:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input  value = "{telefono_}" type="empl_telefono" class="form-control" id="empl_telefono" placeholder="Ingrese telefono del empleado" name="empl_telefono">
+	      </div>
+	    </div>
+
+	    <h3>Datos de Usuario del Sistema</h3>
+	    
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_usuario">Usuario:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input value = "{usuario_}" required type="empl_usuario" class="form-control" id="empl_usuario" placeholder="Ingrese usuario para el empleado" name="empl_usuario">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2" for="empl_pass">Contraseña:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-10">
+	        <input value = "{pass_}" required type="empl_pass" class="form-control" id="empl_pass" placeholder="Ingrese contrasela para el usuario del empleado" name="empl_pass">
+	      </div>
+	    </div>
+
+	    <h3>Locales en los que trabaja</h3>
+	    
+	    <div class="form-group">
+	     	<!-- START BLOCK : locales_empleado_alta -->
+	        <div id="seleccionar_local_empl" class="checkbox">
+			  <label><input name="empl_local[]" type="checkbox" value="{id_local}">{nombre_local}</label>
+		    </div>
+		    <!-- END BLOCK : locales_empleado_alta -->
+		    <!-- START BLOCK : sin_locales_empl -->
+		    <div class="col-md-12 col-xs-12">
+				<div class="alert alert-warning center-block">
+					<h3>No puede dar de alta empleados sin tener antes un local cargado.</h3>
+					
+				</div>
+			</div>
+		    <!-- END BLOCK : sin_locales_empl -->
+	    </div>
+		
+		<!-- END BLOCK : datos_modificar_empleado -->
+	    <div class="form-group">        
+	      <div class="col-md-5 col-sm-offset-2 col-sm-5">
+	        <button type="submit" class="btn btn-default">Guardar Modificaciones</button>
+	      </div>
+	    </div>
+	  </form>
+	</div>
+</div>

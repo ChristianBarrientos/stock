@@ -25,6 +25,14 @@ class mp_zona {
         return $res;
     }
 
+    public static function update_zona($id_pais,$id_provincia,$id_localidad,$direccion){
+        global $baseDatos;
+        //momentaneo
+        $sql = "INSERT INTO mp_zona VALUES (0,$id_pais,$id_provincia,$id_localidad,'$direccion')";
+        $res = $baseDatos->query($sql);
+        return $res;
+    }
+
     public static function obtener_zona($direccion){
         global $baseDatos;
         

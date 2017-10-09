@@ -14,6 +14,7 @@ class Local_Controller{
                                 $tpl->assign("descripcion", htmlentities($value->getDescripcion(), ENT_QUOTES));
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl() -1 );
+                                $tpl->assign("id_local", $value->getId_local());
                                 
                             }
                             //$tpl->newBlock("agregar_local");
@@ -129,6 +130,89 @@ class Local_Controller{
                 }
 
                 return $tpl->getOutputContent();
+                
+              
+
+        }
+
+
+    function modificar (){
+        $id_local = $_GET['id_local'];
+        /*$tpl = new TemplatePower("template/modificar_local.html");
+        $tpl->prepare();*/
+        $tpl = new TemplatePower("template/modificar_local.html");
+        $tpl->prepare();
+        $tpl->assign("id_local", $id_local);
+        foreach ($_SESSION['locales'] as $key => $value) {
+                
+            if ($id_local == $value->getId_local()) {
+                //$tpl->newBlock("error_zona");
+
+                $nombre_ = $value->getNombre();
+                $descripcion_ = $value->getDescripcion();
+                $direccion_ = preg_split("/[,]+/", $value->getId_zona());
+                 
+                 
+                $tpl->assign("nombre_", $nombre_);
+                $tpl->assign("descripcion_", $descripcion_);
+                $tpl->assign("direccion_", $direccion_[3]);
+                                    
+                }                    
+                                
+        }
+
+        $paises = mp_zona::obtener_paises();
+        $provincias = mp_zona::obtener_provincias();
+        $localidades = mp_zona::obtener_localidades();
+                
+       
+                     
+        foreach ($paises as $key => $valor) {
+                    $tpl->newBlock("cargar_pais");
+                    $tpl->assign("valor_pais", $valor['valor']);
+                    $tpl->assign("valor_id_pais", $valor['id_pais']);
+                    $tpl->newBlock("cargar_provincia");
+                    $tpl->assign("valor_provincia", $provincias[$key]['valor']);
+                    $tpl->assign("valor_id_provincia", $provincias[$key]['id_provincia']);
+                    $tpl->newBlock("cargar_localidad");
+                    $tpl->assign("valor_localidad", $localidades[$key]['valor']);
+                    $tpl->assign("valor_id_localidad", $localidades[$key]['id_localidad']);
+            }
+
+   
+       
+        return $tpl->getOutputContent();
+    }
+
+    function alta_modificacion(){
+            $id_local = $_GET['id_local'];
+            $nombre = $_POST['scrs_nombre'];
+            $descripcion = $_POST['scrs_descripcion'];
+            $pais = $_POST['scrs_pais'];
+            $provincia = $_POST['scrs_provincia'];
+            $localidad = $_POST['scrs_localidad'];
+            $direccion = $_POST['scrs_direccion'];
+
+            //modificar nombre
+            $ok_up = art_local::update_($id_local, $nombre,$descripcion);
+            if ($ok_up) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+            }
+            else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+
+            }
+            //modificar descripcion
+            
+
+            
+            return $tpl->getOutputContent();
+              
+             
+                
+                
                 
               
 

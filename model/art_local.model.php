@@ -105,6 +105,18 @@ class art_local {
 
     }
 
+    public static function update_($id_local, $nombre, $descripcion){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_local` SET `nombre`='$nombre',`descripcion`='$descripcion' WHERE id_local = $id_local");  
+         
+        return $res;
+       
+
+
+    }
+
     
 
   

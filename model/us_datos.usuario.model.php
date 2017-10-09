@@ -65,7 +65,49 @@ class us_datos {
         
         return $res_fil['LastId'];
     }
+    
 
+    public static function up_nombre($id_datos, $nombre){
+        global $baseDatos;
+
+        $sql = "UPDATE `us_datos` SET  `nombre`= '$nombre' WHERE id_datos = $id_datos";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_apellido($id_datos, $apellido){
+        global $baseDatos;
+
+        $sql = "UPDATE `us_datos` SET  `apellido`= '$apellido' WHERE id_datos = $id_datos";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_genero($id_datos, $genero){
+        global $baseDatos;
+
+        $sql = "UPDATE `us_datos` SET  `genero`= '$genero' WHERE id_datos = $id_datos";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_dni($id_datos, $dni){
+        global $baseDatos;
+
+        $sql = "UPDATE `us_datos` SET  `dni`= $dni WHERE id_datos = $id_datos";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_fecha_nac($id_datos, $fecha_nac){
+        global $baseDatos;
+
+        $sql = "UPDATE `us_datos` SET  `fecha_nac`= $fecha_nac WHERE id_datos = $id_datos";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    
   
 
 	

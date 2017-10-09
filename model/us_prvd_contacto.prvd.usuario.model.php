@@ -59,6 +59,24 @@ class us_prvd_contacto {
         return $res_fil['LastId'];
     }
 
+    public static function up_direccion($id_contacto, $direccion){
+        global $baseDatos;
+        
+
+        $sql = "UPDATE `us_prvd_contacto` SET `direccion`= '$direccion' WHERE id_contacto = $id_contacto";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_correo($id_contacto, $correo){
+        global $baseDatos;
+        
+
+        $sql = "UPDATE `us_prvd_contacto` SET `correo`= '$correo' WHERE id_contacto = $id_contacto";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
     public function getId_contacto()
     {
         return $this->id_contacto;

@@ -159,6 +159,30 @@ class usuario {
         }
     }
 
+    public static function obtener_locales_empleado($id_empleado){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `us_local` WHERE `id_usuarios` = $id_empleado");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+
+        if (count($filas) != 0) {
+            $locales_empleados = array();
+            foreach ($filas as $clave => $valor) {
+                 
+                $locales_empleados[] = array(
+                            "id_us_local" =>  $valor['id_usuarios_local'],
+                            "id_usuario" =>  $valor['id_usuarios'],
+                            "id_zona" =>  $valor['id_zona'],
+                        );
+            }
+            return $locales_empleados;
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
     public static function obtener_tabla_usuario($id_usuario){
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM usuarios WHERE id_usuarios = $id_usuario");  
@@ -276,6 +300,27 @@ class usuario {
         }
         
     }
+
+
+    public static function up_usuario($id_usuarios, $usuario){
+        global $baseDatos;
+        
+        //`pass`=[value-6] WHERE 1
+        $sql = "UPDATE `usuarios` SET `usuario`='$usuario'  WHERE $id_usuarios = $id_usuarios";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    public static function up_pass($id_usuarios, $pass){
+        global $baseDatos;
+        
+        //`pass`=[value-6] WHERE 1
+        $sql = "UPDATE `usuarios` SET `pass`='$pass'  WHERE $id_usuarios = $id_usuarios";
+        $res = $baseDatos->query($sql);
+        return $res;   
+    }
+
+    
 
 
 
