@@ -16,7 +16,7 @@ class art_marca {
        
     }
 
-        public static function obtener_marcas(){
+    public static function obtener_marcas(){
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM art_marca");  
 

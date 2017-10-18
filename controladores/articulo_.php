@@ -316,6 +316,33 @@ class Articulo_Controller{
         
         $total_locales = sizeof($_SESSION['locales']);
 
+        //$fotos_art = $_FILES['fotos_art'];
+         
+        //print_r($_FILES['fotos_art']);
+        
+
+        //Cargar Archivo
+        $nombre_art_general_generado = articulo::generar_articulo($art_general);
+        $nombre_art_marca_generado = art_marca::generar_marca($art_marca);
+        $nombre_art_tipo_generado = art_tipo::generar_tipo($art_tipo);
+        $hoy = getdate();
+        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre().'_'.$hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].'-'.$hoy['hours'].'-'.$hoy['minutes'];
+
+        /*
+        [seconds] => 40
+        [minutes] => 58
+        [hours]   => 21
+        [mday]    => 17
+        [wday]    => 2
+        [mon]     => 6
+        [year]    => 2003
+        [yday]    => 167
+        [weekday] => Tuesday
+        [month]   => June
+        [0]       => 1055901520
+        */
+        archivo::cargar_datos ($_FILES["fotos_art"]["name"], $_FILES["fotos_art"]["size"],$_FILES["fotos_art"]["type"],$_FILES["fotos_art"]["tmp_name"], $art_nombre);
+
         $contador = 1;
         $salto = 0;
         /* inicializamos una variable vacia que contendra los datos */

@@ -15,7 +15,7 @@ include('model/us_prvd_contacto.prvd.usuario.model.php');
 include('model/mp_zona.model.php');
 include('model/art_local.model.php');
 include('model/us_local.model.php');
-
+include('model/archivos.model.php');
 include('model/art_carga.model.php');
 include('model/art_categoria.model.php');
 include('model/art_grupo_sub_categoria.model.php');
