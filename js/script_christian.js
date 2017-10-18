@@ -1,10 +1,10 @@
 
 
 $(document).ready(function()
-    {   //Vuscador sincronico
-        document.getElementById('art_cantidad_total').focus();
+    {   //Buscador sincronico
+        //document.getElementById('art_cantidad_total').focus();
         $('#filtrar').keyup(function () {
- 
+                     
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {
@@ -183,16 +183,69 @@ $(document).ready(function()
              
 
         });
+        //AGREGAR GENERAL ENTEROK
+        $("#cargar_general_btn").click(function() {
 
-
-        $("#cargar_art_general").click(function () {
             $('#art_general_chris').focus();
-            //saco el valor accediendo a un input de tipo text y name = nombre
+
              $(document).keyup(function(e) {
                 if(e.keyCode == 13) {
-                    alert('Has presionado ENTER');
+                    //alert("enter");
+
+                    document.getElementById('cargar_art_general').click();
+                    //$('#cargar_art_marca').trigger('click');
+                    //alert("ok")
+                    $('#cerrar_modal').trigger('click');
                 }
             });
+
+
+        });
+
+        //AGREGAR MARCA ENTEROK
+        $("#cargar_marca_btn").click(function() {
+
+            $('#art_marca').focus();
+            
+             $(document).keyup(function(e) {
+                if(e.keyCode == 13) {
+                    //alert("enter");
+
+                    document.getElementById('cargar_art_marca').click();
+                    //$('#cargar_art_marca').trigger('click');
+                    //alert("ok")
+                    $('#cerrar_modal1').trigger('click');
+                }
+            });
+
+
+        });
+
+        //AGREGAR TIPO ENTEROK
+        $("#cargar_tipo_btn").click(function() {
+
+            $('#art_tipo').focus();
+            
+             $(document).keyup(function(e) {
+                if(e.keyCode == 13) {
+                    //alert("enter");
+
+                    document.getElementById('cargar_art_tipo').click();
+                    //$('#cargar_art_marca').trigger('click');
+                    //alert("ok")
+                    $('#cerrar_modal2').trigger('click');
+                }
+            });
+
+
+        });
+
+        $("#cargar_art_general").click(function () {
+            //$('#art_general_chris').focus(function(){
+               
+            //});
+            //saco el valor accediendo a un input de tipo text y name = nombre
+            
             //var pcart =document.getElementById('art_general_chris');
             //setTimeout(function(){pcart.focus();}, 1);
             

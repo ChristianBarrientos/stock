@@ -84,14 +84,14 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_tarjeta != null) {
-                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'(%'.$por_ciento_t.')');
+                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'('.$por_ciento_t.'%)');
                                     }
                                     else{
                                         $tpl->assign("precio_tarjeta",'Sin Definir');
                                     }
 
                                     if ($credito_personal != null) {
-                                        $tpl->assign("credito_personal",$credito_personal.'(%'.$por_ciento_p.')');
+                                        $tpl->assign("credito_personal",$credito_personal.'('.$por_ciento_p.'%)');
                                     }
                                     else{
                                         $tpl->assign("credito_personal",'Sin Definir');

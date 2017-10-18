@@ -13,9 +13,11 @@
 		<div class="row">
 			<div class="col-md-4 col-xs-6">
 				<span class="input-group-addon" id="basic-addon1">Buscar</span>
-	  			<input type="text" id="filtrar" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingresa la canción de este Disco que deseas Buscar...">
 				
 			</div>
+			
+
 			<div class="col-md-4 col-md-offset-4 col-xs-6">
 					<a href="index.php?action=Articulo::cargar_deposito">
 						<button type="button" class="agregar btn btn-primary">Agregar</button>
@@ -84,10 +86,11 @@
         	</tr>
         	</thead>
         	<tbody class="buscar">
-        	<tr>
+        	
 			<!-- END BLOCK : con_articulos_lista_cabeza -->
 			
 			<!-- START BLOCK : con_articulos_lista_cuerpo -->
+			<tr>
 				<td>{numero}</td>
 	            <td>{nombre}</td>
 	            <td>{cantidad_total}</td>
@@ -95,10 +98,11 @@
 	            <td>{precio_base}</td>
 	            <td>{precio_tarjeta}</td>
 	            <td>{credito_personal}</td>
+	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->
 			 
 	            
-	        </tr>
+	        
 	        </tbody>
 	        </table>
 			<!-- END BLOCK : con_articulos_lista -->
