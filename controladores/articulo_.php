@@ -10,10 +10,22 @@ class Articulo_Controller{
                         if ($_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())) {
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
+                            
+                            $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
+                            
                             foreach ($_SESSION['lotes'] as $key => $value) {
+                            $vueltas = 0;
+                            //foreach ($_SESSION["lote_local"] as $key => $value) {
+                                //print_r($value[1]);
+
+                                //foreach ($value as $key2 => $value2) {
                                 $cantidad = $cantidad + 1;
+                                
+
                                 $art = $value->getId_art_conjunto()->getId_articulo()->getNombre();
+
+                               
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.', '.$marca.', '.$tipo;
@@ -25,20 +37,56 @@ class Articulo_Controller{
                                 if (True) {
                                     # code...
                                 
-                                    #$tpl->newBlock("con_articulos_nolista");
+                                    
+                                    //Para el modal galery
+                                    $tpl->newBlock("modal_galery_fotos");
+                                    
+                                    $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
                                      
+                                    $fotos_array = $value->getId_art_fotos();
+                                    
+                                    foreach ($fotos_array as $fot => $foto) {
+                                        
+                                        $tpl->newBlock("modal_galery_fotos_path");
+                                        
+                                        $tpl->assign("path_foto",$foto->getPath_foto());
+                                         
+                                    }
+                                    //Fin del modal galery
                                     $tpl->newBlock("con_articulos_lista_cuerpo");
                                     $tpl->assign("numero",$cantidad);
                                     $tpl->assign("nombre",$nombre_);
                                     $tpl->assign("prvd",$value->getId_proveedor());
-                                    $tpl->assign("cantidad_total",$value->getCantidad());
-                                    $tpl->assign("cb",$value->getId_cb()->getcb());
+                                    $nom_local__ = array();
+                                    $cantidad_parcial_local__ = array();
+                                    foreach ($_SESSION["lote_local"] as $key2 => $value2) {
+                                        $cantidad_articulos_total_por_lot;
+                                        foreach ($value2 as $key3 => $value3) {
+                                            
+                                            if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
+                                                //print_r($value3->getId_local());
+                                                $nom_local__[] = $value3->getId_local()->getNombre();
+                                                $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                                 
+                                            }
+                                        }
+                                    }
+                                    $cantodad_final_lote_local = $value->getCantidad().'  (Total)';
+                                    $cantodad_final_lote_local .= '<br>';
+                                    $contadori = 0;
+                                    foreach ($nom_local__ as $key4 => $value4) {
+                                        $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'  ('.$value4.')';
+                                        $cantodad_final_lote_local .= '<br>';
+                                        $contadori = $contadori + 1;
+                                    }
+                                    
+                                    $tpl->assign("cantidad_total",$cantodad_final_lote_local);
 
                                     $gc = $value->getId_gc()->getId_categoria();
-                                     
                                     foreach ($gc as $clave => $valor) {
                                         if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
                                             $medida = $valor->getValor();
+
                                             
                                         }
 
@@ -68,7 +116,8 @@ class Articulo_Controller{
                                             $art_color = $valor->getValor();
                                             
                                         }
-                                    }
+                                    } 
+
                                     if ($precio_base != null) {
                                         $tpl->assign("precio_base",$precio_base);
                                     }
@@ -103,10 +152,13 @@ class Articulo_Controller{
                                     else{
                                         $tpl->assign("art_color",'Sin Definir');
                                     }
+
+                                    $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
                                 /*$tpl->assign("descripcion", $value->getDescripcion());
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
-                                }
+                                    }
+                                //}
                             }
                             //Lote de Articulos por Local
                             //$_SESSION["lote_local"] 
@@ -321,47 +373,11 @@ class Articulo_Controller{
         //print_r($_FILES['fotos_art']);
         
 
-        //Cargar Archivo
-        $nombre_art_general_generado = articulo::generar_articulo($art_general);
-        $nombre_art_marca_generado = art_marca::generar_marca($art_marca);
-        $nombre_art_tipo_generado = art_tipo::generar_tipo($art_tipo);
-        $hoy = getdate();
-        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre();
-
-        /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        */
        
 
-        //$files = array_filter($_FILES['upload']['name']); 
-        $total = count($_FILES['fotos_art']['name']);
-        $id_fotos = array();
-        // Loop through each file
-        for($i=0; $i<$total; $i++) {
-          //Get the temp file path
-          print_r($_FILES['fotos_art']['tmp_name'][$i]);
-         
-          $id_fotos [] =  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
-                                 $_FILES["fotos_art"]["size"][$i],
-                                 $_FILES["fotos_art"]["type"][$i],
-                                 $_FILES["fotos_art"]["tmp_name"][$i], 
-                                 $art_nombre.'-'.$i);
 
-          
-        }
 
-        //Alta art_fotos
-        print_r($id_fotos);
+      
     
 
         
@@ -500,11 +516,59 @@ class Articulo_Controller{
 
             }
 
-        //cargar art_lote
+        /*
+        [seconds] => 40
+        [minutes] => 58
+        [hours]   => 21
+        [mday]    => 17
+        [wday]    => 2
+        [mon]     => 6
+        [year]    => 2003
+        [yday]    => 167
+        [weekday] => Tuesday
+        [month]   => June
+        [0]       => 1055901520
+        */
+       
+         //Cargar Archivo
+        $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
+        $nombre_art_marca_generado = art_marca::generar_marca($id_marca);
+        $nombre_art_tipo_generado = art_tipo::generar_tipo($id_tipo);
+        $hoy = getdate();
+        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre();
+        //$files = array_filter($_FILES['upload']['name']); 
+        $total = count($_FILES['fotos_art']['name']);
+        $id_fotos = array();
+        // Loop through each file
+        $okok_salto = 0;
+        //Alta art_fotos
+        for($i=0; $i<$total; $i++) {
+          //Get the temp file path
+          print_r($_FILES['fotos_art']['tmp_name'][$i]);
+         
+          $path=  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
+                                 $_FILES["fotos_art"]["size"][$i],
+                                 $_FILES["fotos_art"]["type"][$i],
+                                 $_FILES["fotos_art"]["tmp_name"][$i], 
+                                 $art_nombre.'-'.$i);
+            $id_foto = us_prvd_foto::alta_foto($path);
+            if ($okok_salto == 0) {
+                $id_art_fotos = art_fotos::agregar_foto_a_lote($id_foto);
+                //$id_fotos[] = $id_art_fotos;
+                $okok_salto = 1;
+            }else
+            {
+                art_fotos::agregar_foto_a_lote_2($id_art_fotos ,$id_foto);
+            }
+            
+          
+        }
+        //agregar a Lote
+        print_r($id_art_fotos);
         if ($id_proveedor != null) {
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc, $id_proveedor);
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos, $id_proveedor);
         }else{
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc);
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos);
         }   
         
 

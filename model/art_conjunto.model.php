@@ -52,6 +52,7 @@ class art_conjunto {
             $tipo = art_tipo::generar_tipo($res_fil['id_tipo']);  
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             $conjunto = new art_conjunto($res_fil['id_art_conjunto'],$articulo,$marca,$tipo);
+            
             return $conjunto;
         }
         else{

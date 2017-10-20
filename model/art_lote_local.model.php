@@ -46,21 +46,50 @@ class art_lote_local {
 
     public static function generar_lote_local($id_lote){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote = $id_lote");  
-        $res_fil = $res->fetch_assoc();
+        
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote = $id_lote"); 
+        
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        
+        if (count($filas) != 0) {
+            
+            $lote_local = array();
+            
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+
+                $id_lote = art_lote::generar_lote($valor['id_lote']);
+                $id_local = art_local::generar_local_2($valor['id_local']);
+                $id_carga = art_carga::generar_carga($valor['id_carga']); 
+                //echo $valor['id_lote_local'];
+                $lote_local[] = new art_lote_local($valor['id_lote_local'],
+                                $id_lote,$id_local,$valor['cantidad_parcial'],$id_carga);
+            }
+
+            //$res_fil['id_zona'];    
+            //print_r($lote_local[1]);
+            return $lote_local;
+        }
+        else{
+           
+            return false;
+        }
+
+       /* $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
             $id_lote = art_lote::generar_lote($res_fil['id_lote_local']);
             $id_local = art_local::generar_local_2($res_fil['id_local']);
             $id_carga = art_carga::generar_carga($res_fil['id_carga']);
 
-            $lote_local = new art_categoria($res_fil['id_lote_local'],$id_lote,$id_local,$res_fil['cantidad_parcial'],$id_carga);
+            $lote_local = new art_lote_local($res_fil['id_lote_local'],$id_lote,$id_local,$res_fil['cantidad_parcial'],$id_carga);
+            //print_r($res_fil ['id_lote_local']);
             return $lote_local;
         }
         else{
             
             return false;
-        }
+        }*/
     }
 
     public function getId_lote_local()

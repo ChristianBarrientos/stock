@@ -28,6 +28,7 @@ public static function  cargar_datos ($nom, $size, $tipo, $archivo_tmp_name, $ar
 		$archivo->archivo_tmp_name = $archivo_tmp_name;
 		$archivo->art_nombre = $art_nombre;
 		
+		return $destino;
 
 		//$sql = "SELECT MAX(id) AS id FROM archivos";
 		//$this -> id = $sql +1;

@@ -184,12 +184,12 @@ class art_lote {
 
     public function getId_art_fotos()
     {
-        return $this->fotos;
+        return $this->id_art_fotos;
     }
     
-    public function setId_art_fotos($fotos)
+    public function setId_art_fotos($id_art_fotos)
     {
-        $this->fotos = $fotos;
+        $this->id_art_fotos = $id_art_fotos;
         return $this;
     }
 

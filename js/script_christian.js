@@ -192,9 +192,10 @@ $(document).ready(function()
                 if(e.keyCode == 13) {
                     //alert("enter");
 
-                    document.getElementById('cargar_art_general').click();
+                    //document.getElementById('cargar_art_general').click();
                     //$('#cargar_art_marca').trigger('click');
                     //alert("ok")
+                    $('#cargar_art_general').trigger('click');
                     $('#cerrar_modal').trigger('click');
                 }
             });
@@ -211,9 +212,10 @@ $(document).ready(function()
                 if(e.keyCode == 13) {
                     //alert("enter");
 
-                    document.getElementById('cargar_art_marca').click();
+                    //document.getElementById('cargar_art_marca').click();
                     //$('#cargar_art_marca').trigger('click');
                     //alert("ok")
+                    $('#cargar_art_marca').trigger('click');
                     $('#cerrar_modal1').trigger('click');
                 }
             });

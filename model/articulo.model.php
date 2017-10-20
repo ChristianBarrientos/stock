@@ -69,6 +69,7 @@ class articulo {
         $res = $baseDatos->query("SELECT * FROM `art_articulo` WHERE id_articulo = $id_articulo");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
+             
             $articulo = new articulo($res_fil['id_articulo'],$res_fil['nombre'],$res_fil['descripcion']);
             return $articulo;
         }

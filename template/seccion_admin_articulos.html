@@ -1,28 +1,58 @@
 <div class="menu_articulos_admin">
-	<div class="container-fluid">
+<!-- START BLOCK : modal_galery_fotos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="{id_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Fotos del Articulo</h4>
+					</div>
+					<div class="modal-body">
+					 	<ul class="modal_galery first">
+					 	<!-- START BLOCK : modal_galery_fotos_path -->
+						    <li class="li_sin_puntos">
+						        <img class="col-md-12 col-xs-4" alt="Night away"  src="{path_foto}">
+									        
+						    </li>
+						<!-- END BLOCK : modal_galery_fotos_path -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_galery_fotos -->
+
+	<div class="container">
+	<!--container-fluid-->
 		<div class="row encabezado">
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-6 col-xs-4">
 				<div class="titulo-secciones panel-heading">Deposito</div>
 
 			</div>
-			<div class="col-md-4 col-md-offset-4 col-xs-12">
-				
+			<div class="col-md-4 col-xs-12">
+					<a href="index.php?action=Articulo::cargar_deposito">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
 			</div>
 		</div>
 
 		<div class="row">
+		<!-- START BLOCK : buscador_visible -->
 			<div class="col-md-4 col-xs-12">
 				<span class="input-group-addon" id="basic-addon1">Buscar</span>
 	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
 				
 			</div>
+		<!-- END BLOCK : buscador_visible -->
 			
 
-			<div class="col-md-4 col-md-offset-4 col-xs-12">
-					<a href="index.php?action=Articulo::cargar_deposito">
-						<button type="button" class="agregar btn btn-primary">Agregar</button>
-					</a>
-			</div>
+			
 			
 		</div>
 		<div class="row">
@@ -83,6 +113,8 @@
 	            <th>Precio Base</th>
 	            <th>Precio Tarjeta</th>
 	            <th>Credito Personal</th>
+	            <th>Fotos</th>
+	            <th>Vender</th>
         	</tr>
         	</thead>
         	<tbody class="buscar">
@@ -98,6 +130,10 @@
 	            <td>{precio_base}</td>
 	            <td>{precio_tarjeta}</td>
 	            <td>{credito_personal}</td>
+	            <td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+							Ver
+						</button></td>
+	            <td><button class="btn btn-primary">Vender</button></td>
 	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->
 			 

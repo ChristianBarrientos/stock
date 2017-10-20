@@ -90,5 +90,18 @@ table{
   
   background-color: #FFFFFF;
 }
+
+/*GALEROA MODAL ARTICULOS*/
+
+div#modal_galeri_backcolor{
+  background-color: #C1C1C1;
+
+}
+ ul.modal_galery{
+  text-decoration: none;
+  list-style:none;
+  
+
+ }
  
- 
+
