@@ -233,6 +233,13 @@ CREATE TABLE  art_conjunto (
 
 
 
+CREATE TABLE art_fotos (
+     id_art_fotos INTEGER AUTO_INCREMENT NOT NULL,
+     id_foto INTEGER NOT NULL,
+     FOREIGN KEY (id_foto) REFERENCES us_prvd_foto(id_foto) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_art_fotos)
+     ) ENGINE=InnoDB;
+
 CREATE TABLE  art_lote (
      id_lote INTEGER AUTO_INCREMENT NOT NULL,
      id_art_conjunto INTEGER,
@@ -240,11 +247,13 @@ CREATE TABLE  art_lote (
      cantidad_total INTEGER NOT NULL,
      id_cb INTEGER ,
      id_gc INTEGER NOT NULL,
-     descripcion VARCHAR(100) ,
+     descripcion VARCHAR(100),
+     id_art_fotos INTEGER,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cb) REFERENCES art_codigo_barra(id_cb) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_art_fotos) REFERENCES art_fotos(id_art_fotos) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_lote)
      ) ENGINE=InnoDB;
 

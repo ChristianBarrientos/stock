@@ -326,7 +326,7 @@ class Articulo_Controller{
         $nombre_art_marca_generado = art_marca::generar_marca($art_marca);
         $nombre_art_tipo_generado = art_tipo::generar_tipo($art_tipo);
         $hoy = getdate();
-        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre().'_'.$hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].'-'.$hoy['hours'].'-'.$hoy['minutes'];
+        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre();
 
         /*
         [seconds] => 40
@@ -341,7 +341,30 @@ class Articulo_Controller{
         [month]   => June
         [0]       => 1055901520
         */
-        archivo::cargar_datos ($_FILES["fotos_art"]["name"], $_FILES["fotos_art"]["size"],$_FILES["fotos_art"]["type"],$_FILES["fotos_art"]["tmp_name"], $art_nombre);
+       
+
+        //$files = array_filter($_FILES['upload']['name']); 
+        $total = count($_FILES['fotos_art']['name']);
+        $id_fotos = array();
+        // Loop through each file
+        for($i=0; $i<$total; $i++) {
+          //Get the temp file path
+          print_r($_FILES['fotos_art']['tmp_name'][$i]);
+         
+          $id_fotos [] =  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
+                                 $_FILES["fotos_art"]["size"][$i],
+                                 $_FILES["fotos_art"]["type"][$i],
+                                 $_FILES["fotos_art"]["tmp_name"][$i], 
+                                 $art_nombre.'-'.$i);
+
+          
+        }
+
+        //Alta art_fotos
+        print_r($id_fotos);
+    
+
+        
 
         $contador = 1;
         $salto = 0;

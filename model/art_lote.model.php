@@ -7,9 +7,10 @@ class art_lote {
     private $id_art_conjunto;
     private $id_cb;
     private $id_gc;
+    private $id_art_fotos;
  
 
-    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc)
+    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos)
     {
         $this->id_lote = $id_lote;
         $this->id_proveedor = $id_proveedor;
@@ -17,10 +18,11 @@ class art_lote {
         $this->id_art_conjunto = $id_art_conjunto;
         $this->id_cb = $id_cb;
         $this->id_gc = $id_gc;
+        $this->id_art_fotos = $id_art_fotos;
       
     }
 
-    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc,$id_proveedor = 'NULL' ,$descripcion = 'null'){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc,$id_art_fotos,$id_proveedor = 'NULL' ,$descripcion = 'null'){
         global $baseDatos;
         /*echo "%%";
         echo $id_art_conjunto;
@@ -39,7 +41,7 @@ class art_lote {
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion')";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`,`id_art_fotos`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion',$id_art_fotos)";
         $res = $baseDatos->query($sql);
         if ($res) {
              
@@ -73,9 +75,10 @@ class art_lote {
             }
             $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
             $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
+            $fotos = art_fotos::generar_fotos($res_fil['id_art_fotos']);
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             //$lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
-            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
+            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc,$fotos);
             return $lote;
         }
         else{
@@ -176,6 +179,17 @@ class art_lote {
     public function setId_carga($id_carga)
     {
         $this->id_carga = $id_carga;
+        return $this;
+    }
+
+    public function getId_art_fotos()
+    {
+        return $this->fotos;
+    }
+    
+    public function setId_art_fotos($fotos)
+    {
+        $this->fotos = $fotos;
         return $this;
     }
 

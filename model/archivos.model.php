@@ -5,7 +5,6 @@ class archivo {
 	private $nombre;
 	private $titulo;
 	private $ubicacion;
-
 	private $size;
 	private $tipo;
 	private $archivo_tmp_name;

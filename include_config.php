@@ -34,6 +34,7 @@ include('model/art_codigo_barra.model.php');
 include('model/art_lote.model.php');
 include('model/art_lote_local.model.php');
 include('model/lote_us.model.php');
+include('model/art_fotos.model.php');
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');
 include('php_recurso/filtrar/class.inputfilter.php');
