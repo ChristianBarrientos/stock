@@ -48,13 +48,14 @@
 										<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::venta_articulo" method="post">
 											<div id="seleccionar_local_art" class="checkbox">
 
-											  <label id="label_h" for="check_art_locales">
+											  <label id="label_h" for="art_ventas_radio">
 											<!-- START BLOCK : locales_seleccion_venta_art -->
 									       
-											  	<input  class="check_art_locales"  name="art_local_venta" type="radio" value="{id_local}">{nombre_local}
+											  	<input  class="art_ventas_radio"  name="art_local_venta" type="radio" value="{id_lote_local}" id='art_ventas_radio'>{nombre_local}
 											 	</label>
-										    
+										     
 											<!-- END BLOCK : locales_seleccion_venta_art -->
+											<br>
 											<button class="agregar btn btn-primary" type="submit">Continuar</button>
 											</div>
 										</form>

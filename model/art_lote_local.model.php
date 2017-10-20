@@ -1,20 +1,23 @@
 <?php
 class art_lote_local {
 	
-	private $id_lote_local;
+	
     private $id_lote;
     private $id_local;
     private $cantidad_parcial;
     private $id_carga;
+    private $id_lote_local;
   
 
     public function __construct($id_lote_local, $id_lote, $id_local,$cantidad_parcial,$id_carga)
     {
-        $this->$id_lote_local = $id_lote_local;
+         
+        $this->id_lote_local = $id_lote_local;
         $this->id_lote = $id_lote;
         $this->id_local = $id_local;
         $this->cantidad_parcial = $cantidad_parcial;
         $this->id_carga = $id_carga;
+
         
     }
 
@@ -62,34 +65,41 @@ class art_lote_local {
                 $id_local = art_local::generar_local_2($valor['id_local']);
                 $id_carga = art_carga::generar_carga($valor['id_carga']); 
                 //echo $valor['id_lote_local'];
+                //echo "aca";
+                 
                 $lote_local[] = new art_lote_local($valor['id_lote_local'],
                                 $id_lote,$id_local,$valor['cantidad_parcial'],$id_carga);
-            }
 
-            //$res_fil['id_zona'];    
-            //print_r($lote_local[1]);
+            }
             return $lote_local;
         }
         else{
            
             return false;
         }
+    }
+    
 
-       /* $res_fil = $res->fetch_assoc();
+    public static function generar_lote_local_id_($id_lote_local){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM art_lote_local WHERE id_lote_local = id_lote_local");  
+
+        $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            //$id_categoria, $nombre, $valor,$descripcion
-            $id_lote = art_lote::generar_lote($res_fil['id_lote_local']);
+             $id_lote = art_lote::generar_lote($res_fil['id_lote']);
             $id_local = art_local::generar_local_2($res_fil['id_local']);
-            $id_carga = art_carga::generar_carga($res_fil['id_carga']);
-
-            $lote_local = new art_lote_local($res_fil['id_lote_local'],$id_lote,$id_local,$res_fil['cantidad_parcial'],$id_carga);
-            //print_r($res_fil ['id_lote_local']);
+            $id_carga = art_carga::generar_carga($res_fil['id_carga']); 
+                //echo $valor['id_lote_local'];
+                //echo "aca";
+                 
+            $lote_local = new art_lote_local($res_fil['id_lote_local'],
+                                $id_lote,$id_local,$res_fil['cantidad_parcial'],$id_carga);
             return $lote_local;
         }
         else{
-            
             return false;
-        }*/
+        }
     }
 
     public function getId_lote_local()

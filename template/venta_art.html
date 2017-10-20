@@ -1,0 +1,100 @@
+<div class="art_venta">
+	<div class="container">
+		<div class="row encabezado">
+			<div class="col-md-6 col-xs-4">
+				<div class="titulo-secciones panel-heading">Vender</div>
+
+			</div>
+			
+		</div>
+	<div class="form-group">
+		<div class="row">
+		
+			<div class="col-md-8 col-xs-12 alert alert-info">
+				<h2>Confirmar Venta</h2>
+	  			<h3>Datos generales</h3>
+				  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::confirmar_venta" method="post">
+				    <div class="form-group">
+				      <label class="control-label col-sm-2 col-xs-12" for="scrs_nombre">Nombre:</label>
+				      <div class="col-md-5 col-sm-5 col-xs-12">
+				        <label for="">{art_nombre}</label>
+				      </div>
+				    </div>
+				    <div class="form-group">
+				      <label class="control-label col-sm-2 col-xs-12" for="scrs_descripcion">Medida:</label>
+				      
+			  		  <div class="col-md-5 col-sm-5 col-xs-12">
+				        <label for="">{art_medida}</label>
+				      </div>
+
+				    </div>
+				    
+				    <h3>Forma de Pago</h3>
+				    <div class="form-group">        
+				      <label class="control-label col-sm-2 col-xs-12" for="art_venta_formas_pago">Eleguir:</label>
+				      <div class="col-md-5 col-sm-5 col-xs-12">
+				      	
+					      <!--<select name="art_venta_formas_pago" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+					      
+					        <option value="{valor_pago}">{nombre_pago}</option>
+					      
+					      </select>-->
+
+					     	<select class="selectpicker">
+					     	<!-- START BLOCK : forma_pago_venta -->
+							  <optgroup label="{nombre_pago}">
+							  	<!-- START BLOCK : forma_pago_venta_opciones -->
+							    <option value="{id_cat_gc_art_vendido}">{valor_pago}</option>
+							    <!-- END BLOCK : forma_pago_venta_opciones -->
+							  </optgroup>
+						  	<!-- END BLOCK : forma_pago_venta -->
+							</select>
+
+					      
+				      </div>
+
+				    </div>
+					<!--<div class="form-group">
+						
+				      <label class="control-label col-sm-2 col-xs-12" for="art_venta_formas_pago">Cuotas:</label>
+				      <div class="col-md-5 col-sm-5 col-xs-12">
+				      	
+					      <input autocomplete="off" required  type="number" class="form-control" id="cantidad_cuotas" placeholder="Precio tarjeta, en porcentaje." name="cantidad_cuotas">
+								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="cantidad_cuotas">:</label>
+					      
+				      </div>
+					</div>-->
+				    <h3>Stock Futuro</h3>
+				   
+				    <div class="form-group">        
+				      <label class="control-label col-sm-2 col-xs-12" for="scrs_pais">Nombre Local:</label>
+				      <div class="col-md-5 col-sm-5">
+				      	
+					     <label for="">{local_nombre}</label>
+					      
+				      </div>
+				    </div>
+				    <div class="form-group">        
+				      <label class="control-label col-sm-2 col-xs-12" for="scrs_pais">Cantidad del producto:</label>
+				      <div class="col-md-5 col-sm-5">
+				      	
+					     <label for="">{cantidad_art_local}</label>
+					      
+				      </div>
+				    </div>
+
+
+				    <div class="form-group">        
+				      <div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+				        <button type="submit" disabled class="btn btn-success">Aceptar</button>
+				      </div>
+				    </div>
+				  </form>
+
+			</div>
+			
+			
+		</div>
+	</div>
+	</div>
+</div>

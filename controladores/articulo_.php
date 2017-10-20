@@ -65,12 +65,15 @@ class Articulo_Controller{
                                     $nom_local__ = array();
                                     $id_local_ventas_art_ = array();
                                     $cantidad_parcial_local__ = array();
+                                    $id_lote_local_venta__ = array();
+                                    //print_r($_SESSION["lote_local"]);
                                     foreach ($_SESSION["lote_local"] as $key2 => $value2) {
                                         $cantidad_articulos_total_por_lot;
                                         foreach ($value2 as $key3 => $value3) {
-                                            
+                                           
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
                                                 //print_r($value3->getId_local());
+                                                $id_lote_local_venta__[] = $value3->getId_lote_local();
                                                 $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
                                                 $nom_local__[] = $value3->getId_local()->getNombre();
                                                 $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
@@ -82,21 +85,12 @@ class Articulo_Controller{
                                     $cantodad_final_lote_local = $value->getCantidad().'  (Total)';
                                     $cantodad_final_lote_local .= '<br>';
                                     $contadori = 0;
-                                    $tpl->newBlock("modal_venta_art");
-                                    $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
+                                    
                                     foreach ($nom_local__ as $key4 => $value4) {
                                         $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'  ('.$value4.')';
                                         $cantodad_final_lote_local .= '<br>';
                                         $contadori = $contadori + 1;
-                                        //Modal venta
-                                        /*$tpl->gotoBlock("_ROOT");
-                                        
-                                        $tpl->newBlock("locales_seleccion_venta_art");
-                                        $tpl->assign("id_local",$id_local_ventas_art_[$contadori]);
-                                        $tpl->assign("nombre",$value4);*/
-                                        
-                                        
-                                        //Fin Modal Venta
+                                       
                                     }
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
@@ -175,6 +169,26 @@ class Articulo_Controller{
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
                                    
                                     $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
+
+                                    $tpl->newBlock("modal_venta_art");
+                                    $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
+                                    $contadori = 0;
+                                    
+                                    foreach ($nom_local__ as $key5 => $value5) {
+                                        
+                                        //Modal venta
+                                        $tpl->gotoBlock("_ROOT");
+                                        
+                                        $tpl->newBlock("locales_seleccion_venta_art");
+                                        //$tpl->assign("id_localfor",$id_local_ventas_art_[$contadori]);
+                                        $tpl->assign("id_lote_local",$id_lote_local_venta__[$contadori]);
+                                        //$tpl->assign("id_localid",$id_local_ventas_art_[$contadori]);
+                                        $tpl->assign("nombre_local",$value5);
+                                        $contadori = $contadori + 1;
+                                        
+                                        
+                                        //Fin Modal Venta
+                                    }
                                 /*$tpl->assign("descripcion", $value->getDescripcion());
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
@@ -566,7 +580,7 @@ class Articulo_Controller{
         //Alta art_fotos
         for($i=0; $i<$total; $i++) {
           //Get the temp file path
-          print_r($_FILES['fotos_art']['tmp_name'][$i]);
+          //print_r($_FILES['fotos_art']['tmp_name'][$i]);
          
           $path=  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
                                  $_FILES["fotos_art"]["size"][$i],
@@ -586,7 +600,7 @@ class Articulo_Controller{
           
         }
         //agregar a Lote
-        print_r($id_art_fotos);
+        //print_r($id_art_fotos);
         if ($id_proveedor != null) {
             $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos, $id_proveedor);
         }else{
@@ -627,9 +641,75 @@ class Articulo_Controller{
 
 
     public static function venta_articulo(){
-        $id_art_vendido = $_GET['id_lote_venta'];
-        echo $id_art_vendido;
+         
+        $id_lote_local = $_POST['art_local_venta'];
+        
+        $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
 
+        $tpl = new TemplatePower("template/venta_art.html");
+        $tpl->prepare();
+        
+        //print_r($lote_local->getId_lote()->getId_art_conjunto()->getId_articulo());
+        //$nombre_art_completo = $lote_local->getId_lote()->getId_gc()->getId_categoria()->getNombre();
+        //echo "&&";
+        //echo $nombre_art_completo;
+
+        $art_nombre = $lote_local->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+        $art_marca =  $lote_local->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+        $art_tipo = $lote_local->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+        $tpl->assign("art_nombre",(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo );
+
+        $art_cb = $lote_local->getId_lote()->getId_gc()->getId_categoria();
+        //print_r($art_cb);
+        foreach ($art_cb as $key => $value) {
+            
+             if (strcmp($value->getNombre(), "Medida" ) == 0 ) {
+                             
+                            $tpl->assign("art_medida", $value->getValor());
+                             
+                            
+                        }
+        }
+
+        foreach ($art_cb as $key => $value) {
+            
+            if (strcmp($value->getNombre(), "Precio" ) == 0 ) {
+                $precio_base_venta =  $value->getValor();
+                $tpl->newBlock("forma_pago_venta");
+                
+                $tpl->assign("nombre_pago", 'Precio Base' );
+                
+                $tpl->newBlock("forma_pago_venta_opciones");
+                $tpl->assign("valor_pago", '$'.$precio_base_venta);
+                $tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
+                
+                
+            }
+            if (strcmp($value->getNombre(), "Tarjeta" ) == 0 ) {
+                $tpl->newBlock("forma_pago_venta"); 
+                $tpl->assign("nombre_pago", 'Precio Tarjeta de Credito' );
+                 
+                $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
+                for ($i=1; $i <= 12 ; $i++) { 
+                    $tpl->newBlock("forma_pago_venta_opciones");
+                    $tpl->assign("valor_pago", $i . ' x '.' $'.round($precio_tarjeta/$i,2));
+                    $tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
+                }
+            }
+            if (strcmp($value->getNombre(), "CreditoP" ) == 0 ) {
+                $tpl->newBlock("forma_pago_venta"); 
+                $tpl->assign("nombre_pago", 'Credito Personal' );
+                 
+                $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
+                for ($i=1; $i <= 12 ; $i++) { 
+                    $tpl->newBlock("forma_pago_venta_opciones");
+                    $tpl->assign("valor_pago", $i . ' x '.' $'.round($precio_tarjeta/$i,2));
+                    $tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
+                }
+            }
+        }
+
+        return $tpl->getOutputContent();
     }
 
 
