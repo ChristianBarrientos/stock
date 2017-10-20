@@ -154,6 +154,7 @@ class Articulo_Controller{
                                     }
 
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
+                                    $tpl->assign("id_lote_venta",$value->getId_lote());
                                 /*$tpl->assign("descripcion", $value->getDescripcion());
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
@@ -601,6 +602,13 @@ class Articulo_Controller{
         }
         
         return $tpl->getOutputContent();
+    }
+
+
+    public static function venta_articulo(){
+        $id_art_vendido = $_GET['id_lote_venta'];
+        echo $id_art_vendido;
+        
     }
 
 

@@ -28,6 +28,35 @@
 </div>
 <!-- END BLOCK : modal_galery_fotos -->
 
+<!-- START BLOCK : modal_venta_art -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="{id_art_venta}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Fotos del Articulo</h4>
+					</div>
+					<div class="modal-body">
+					 	<ul class="modal_galery first">
+					 	<!-- START BLOCK : modal_galery_fotos_path -->
+						    <li class="li_sin_puntos">
+						        <img class="col-md-12 col-xs-4" alt="Night away"  src="{path_foto}">
+									        
+						    </li>
+						<!-- END BLOCK : modal_galery_fotos_path -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_venta_art -->
+
 	<div class="container">
 	<!--container-fluid-->
 		<div class="row encabezado">
@@ -133,7 +162,12 @@
 	            <td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
 							Ver
 						</button></td>
-	            <td><button class="btn btn-primary">Vender</button></td>
+	            <td>
+	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">
+	            	<button class="btn btn-primary">Vender</button>
+	            </a>
+	            
+	            </td>
 	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->
 			 
