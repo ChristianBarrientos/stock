@@ -53,11 +53,17 @@ class Articulo_Controller{
                                          
                                     }
                                     //Fin del modal galery
+
+                                    
                                     $tpl->newBlock("con_articulos_lista_cuerpo");
+
+                                    
+
                                     $tpl->assign("numero",$cantidad);
                                     $tpl->assign("nombre",$nombre_);
                                     $tpl->assign("prvd",$value->getId_proveedor());
                                     $nom_local__ = array();
+                                    $id_local_ventas_art_ = array();
                                     $cantidad_parcial_local__ = array();
                                     foreach ($_SESSION["lote_local"] as $key2 => $value2) {
                                         $cantidad_articulos_total_por_lot;
@@ -65,19 +71,32 @@ class Articulo_Controller{
                                             
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
                                                 //print_r($value3->getId_local());
+                                                $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
                                                 $nom_local__[] = $value3->getId_local()->getNombre();
                                                 $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
                                                  
                                             }
                                         }
                                     }
+
                                     $cantodad_final_lote_local = $value->getCantidad().'  (Total)';
                                     $cantodad_final_lote_local .= '<br>';
                                     $contadori = 0;
+                                    $tpl->newBlock("modal_venta_art");
+                                    $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
                                     foreach ($nom_local__ as $key4 => $value4) {
                                         $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'  ('.$value4.')';
                                         $cantodad_final_lote_local .= '<br>';
                                         $contadori = $contadori + 1;
+                                        //Modal venta
+                                        /*$tpl->gotoBlock("_ROOT");
+                                        
+                                        $tpl->newBlock("locales_seleccion_venta_art");
+                                        $tpl->assign("id_local",$id_local_ventas_art_[$contadori]);
+                                        $tpl->assign("nombre",$value4);*/
+                                        
+                                        
+                                        //Fin Modal Venta
                                     }
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
@@ -154,7 +173,8 @@ class Articulo_Controller{
                                     }
 
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
-                                    $tpl->assign("id_lote_venta",$value->getId_lote());
+                                   
+                                    $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
                                 /*$tpl->assign("descripcion", $value->getDescripcion());
                                 $tpl->assign("direccion", $value->getId_zona());
                                 $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
@@ -536,7 +556,8 @@ class Articulo_Controller{
         $nombre_art_marca_generado = art_marca::generar_marca($id_marca);
         $nombre_art_tipo_generado = art_tipo::generar_tipo($id_tipo);
         $hoy = getdate();
-        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre();
+        
+        $art_nombre = $nombre_art_general_generado->getNombre().'_'.$nombre_art_marca_generado->getNombre().'_'.$nombre_art_tipo_generado->getNombre().'_'.$hoy['year'].'_'.$hoy['mon'].'_'.$hoy['mday'].'_'.$hoy['hours'].'_'.$hoy['minutes'].'_'.$hoy['seconds'];
         //$files = array_filter($_FILES['upload']['name']); 
         $total = count($_FILES['fotos_art']['name']);
         $id_fotos = array();
@@ -608,7 +629,7 @@ class Articulo_Controller{
     public static function venta_articulo(){
         $id_art_vendido = $_GET['id_lote_venta'];
         echo $id_art_vendido;
-        
+
     }
 
 
