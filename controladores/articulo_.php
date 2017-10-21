@@ -73,10 +73,12 @@ class Articulo_Controller{
                                            
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
                                                 //print_r($value3->getId_local());
-                                                $id_lote_local_venta__[] = $value3->getId_lote_local();
-                                                $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
-                                                $nom_local__[] = $value3->getId_local()->getNombre();
-                                                $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                                if ($value3->getCantidad_parcial() > 0) {
+                                                    $id_lote_local_venta__[] = $value3->getId_lote_local();
+                                                    $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
+                                                    $nom_local__[] = $value3->getId_local()->getNombre();
+                                                    $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                                }
                                                  
                                             }
                                         }
@@ -563,6 +565,7 @@ class Articulo_Controller{
         [weekday] => Tuesday
         [month]   => June
         [0]       => 1055901520
+        $hoy = getdate();
         */
        
          //Cargar Archivo
@@ -643,8 +646,9 @@ class Articulo_Controller{
     public static function venta_articulo(){
          
         $id_lote_local = $_POST['art_local_venta'];
-        
+        //echo $id_lote_local;
         $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
+        //print_r($lote_local);
         $tpl = new TemplatePower("template/venta_art.html");
         $tpl->prepare();
         $art_nombre = $lote_local->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -680,7 +684,7 @@ class Articulo_Controller{
             }
             if (strcmp($value->getNombre(), "Tarjeta" ) == 0 ) {
                 $tpl->newBlock("forma_pago_venta"); 
-                $tpl->assign("nombre_pago", 'Precio Tarjeta de Credito' );
+                $tpl->assign("nombre_pago", 'Tarjeta de Credito' );
                  
                 $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
                 for ($i=1; $i <= 12 ; $i++) { 
@@ -708,15 +712,81 @@ class Articulo_Controller{
         $lote_local->getId_lote()->setCantidad($lote_local->getId_lote()->getCantidad()-1);
         $stock_actual = $lote_local->getCantidad_parcial();
          
+        
+
         $tpl->newBlock("stock_futuro_on");
         $tpl->assign("local_nombre",$local->getNombre());
         $tpl->assign("cantidad_art_local",$stock_actual);
-        $_SESSION["lotes"] = $lote_local;
-         
+        $_SESSION["art_lote_local"] = $lote_local;
+        //print_r($_SESSION["art_lote_local"]);
         return $tpl->getOutputContent();
     }
 
     public static function venta_finalizar(){
+        $bandera = false;
+        $medio = $_POST['medio_art_venta'];
+        $total = $_POST['cuotas_art_venta'];
+        $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+        $tpl->prepare();
+        /*
+        [seconds] => 40
+        [minutes] => 58
+        [hours]   => 21
+        [mday]    => 17
+        [wday]    => 2
+        [mon]     => 6
+        [year]    => 2003
+        [yday]    => 167
+        [weekday] => Tuesday
+        [month]   => June
+        [0]       => 1055901520
+        
+        */
+        $hoy = getdate();
+        $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].'-'.$hoy['seconds'];
+        $id_usuario = $_SESSION["usuario"]->getId_user();
+        
+        //alta en art_venta
+        $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total);
+        //alta en art unico
+        $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
+        
+        $id_unico = art_unico::alta_art_unico($id_lote_local,$id_venta);
+        
+
+        if ($id_venta != false && $id_lote_local != false  && $id_unico != false ) {
+            //Actualizar Stock
+            $cantidad_total_art_lote = $_SESSION["art_lote_local"]->getId_lote()->getCantidad();
+            $cantidad_parcial_art_lote_local =$_SESSION["art_lote_local"]->getCantidad_parcial();
+
+            $okokok = art_lote_local::actualiza_($cantidad_total_art_lote,$cantidad_parcial_art_lote_local);
+            if ($okokok) {
+                $art_nombre = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+                $art_marca =  $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+                $art_tipo = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+                $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+                $tpl->newBlock("exito");
+                
+                $tpl->assign("nombre_usuario",$_SESSION["usuario"]->getUsuario());
+                $tpl->assign("nombre_completo_art",$nombre_completo_art);
+                $tpl->assign("precio",$total);
+                $tpl->assign("fecha_hora_venta",$fecha_venta);
+            }
+            else{
+                $bandera = true;
+            }
+            
+        }
+        else{
+            
+            $bandera = true;
+        }
+        if ($bandera) {
+            
+            $tpl->newBlock("fracaso");
+        }
+
+        return $tpl->getOutputContent();
 
     }
 

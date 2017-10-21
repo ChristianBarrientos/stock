@@ -1,0 +1,57 @@
+
+<!-- START BLOCK : exito -->
+<div class="exito">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-success center-block">
+					<h3>Articulo vendido con Exito!</h3>
+					<h4>Vendedor: {nombre_usuario}</h4>
+					<h4>Articulo: {nombre_completo_art}</h4>
+					<h4>Precio: {precio}</h4>
+					<h4>Fecha y Hora: {fecha_hora_venta}</h4>
+					<a href="index.php?action=Articulo::mostrar">
+   					<button  type="submit" class="btn btn-default">Entendido</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<!-- END BLOCK : exito -->
+
+<!-- START BLOCK : fracaso -->
+<div class="fracaso">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-warning center-block">
+					<h2>Error al cargar los datos en el sistema!</h2>
+					<h3>Por favor realice los siguientes pasos:</h3>
+					<ol>
+						<li>Anote los sigueintes datos en un papel:
+							<ul>
+								<li>Articulo vendido.</li>
+								<li>Local en el que se encuentra</li>
+								<li>Fecha y Hora en este momento.</li>
+								<li>Medio de pago que eligio el cliente.</li>
+								<li>Cantidad de cuotas.</li>
+							</ul>
+						</li>
+						<li>Llame al dueño del local, comentarle lo sucedido y pasarle los datos anotados.</li>
+
+					</ol>
+					<a href="index.php?action=Articulo::mostrar">
+   					<button  type="submit" class="btn btn-default">Entendido</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<!-- END BLOCK : fracaso -->
+	

@@ -303,18 +303,23 @@ $(document).ready(function()
         });
         //Finalizar Venta, enviar valor
         $('.forma_pago_select').on('change',function() {
-             
+            //alert('aca');
             var selected = $(':selected', this);
 
             var optgroup = selected.parent().attr('label');
-            var option = $(this).val();
+            var acas = selected.text();
+             
+            //var option = $(this).val();
             //alert(optgroup);
             //alert(selected.closest('optgroup').attr('label'));
              
-            var input = ','.concat(option);
-            var output = optgroup.concat(input);
+            //var input = ','.concat(option);
+            var option = $('#forma_pago_select').find(":selected").text();
              
-            $("#medio_cuotas_art_venta").val(output);
+
+            $("#medio_art_venta").val(optgroup);
+
+            $("#cuotas_art_venta").val(option);
              
  
         });

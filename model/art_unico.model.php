@@ -14,6 +14,50 @@ class art_unico {
        
     }
 
+    public static function alta_art_unico($id_lote,$id_venta){
+        global $baseDatos;
+        
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_unico = art_unico::ultimo_id_unico();
+        
+        $sql = "INSERT INTO `art_unico`(`id_unico`, `id_lote_local`, `id_venta`) VALUES (0,$id_lote,$id_venta)";
+
+        $res = $baseDatos->query($sql);
+       
+        if ($res) {
+             
+            return $id_unico;
+        }else{
+               
+            return false;
+        }
+
+    }
+    public static function ultimo_id_unico(){
+        global $baseDatos;
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_unico'";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+        
+        return $res_fil['LastId'];
+    }
+
+    public static function generar_categoria($id_categoria){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_categoria` WHERE id_categoria = $id_categoria");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            //$id_categoria, $nombre, $valor,$descripcion
+            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['descripcion']);
+            return $categoria;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+
     public function getId_unico()
     {
         return $this->id_unico;

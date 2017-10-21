@@ -284,6 +284,8 @@ CREATE TABLE  art_venta (
      id_venta INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora DATETIME NOT NULL,
      id_usuarios INTEGER NOT NULL,
+     medio VARCHAR(100) NOT NULL,
+     total VARCHAR(100) NOT NULL,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;

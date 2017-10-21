@@ -2,31 +2,83 @@
 class art_venta {
 	
 	private $id_venta;
-    private $fecha_hora;
-    private $id_local;
+    private $fecha_hora; 
     private $id_usuario;
-    private $medio_pago;
-    private $cuotas;
+    private $medio;
+    private $total;
 
-    public function __construct($id_venta, $fecha_hora, $id_local,$id_usuario,$medio_pago,$cuotas = 1)
+    public function __construct($id_venta, $fecha_hora,$id_usuario,$medio,$total)
     {
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
-        $this->id_local = $id_local;
         $this->id_usuario = $id_usuario;
         $this->medio_pago = $medio_pago;
-        $this->cuotas = $cuotas;
+        $this->total_pagar = $total_pagar;
        
     }
 
-    public function getMedio_pago()
+    public static function alta_art_venta($fecha_hora,$id_usuario,$medio,$total){
+        global $baseDatos;
+        
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_venta = art_venta::ultimo_id_venta();
+        
+        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuarios` ,`medio`,`total`) VALUES (0,'$fecha_hora',$id_usuario,'$medio','$total')";
+
+        $res = $baseDatos->query($sql);
+        if ($res) {
+             
+            return $id_venta;
+        }else{
+              
+            return false;
+        }
+
+    }
+    public static function ultimo_id_venta(){
+        global $baseDatos;
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta'";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+        
+        return $res_fil['LastId'];
+    }
+
+    public static function generar_categoria($id_categoria){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_categoria` WHERE id_categoria = $id_categoria");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            //$id_categoria, $nombre, $valor,$descripcion
+            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['descripcion']);
+            return $categoria;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+
+    public function getMedio()
     {
-        return $this->id_venta;
+        return $this->medio;
     }
     
-    public function setCuotas($id_venta)
+    public function setMedio($medio)
     {
-        $this->id_venta = $id_venta;
+        $this->medio = $medio;
+        return $this;
+    }
+
+    public function getTotal()
+    {
+        return $this->total;
+    }
+    
+    public function setTotal($total)
+    {
+        $this->total = $total;
         return $this;
     }
 
