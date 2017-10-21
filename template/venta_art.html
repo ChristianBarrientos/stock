@@ -40,11 +40,11 @@
 					      
 					      </select>-->
 
-					     	<select class="selectpicker">
+					     	<select id="forma_pago_select" class="selectpicker forma_pago_select">
 					     	<!-- START BLOCK : forma_pago_venta -->
 							  <optgroup label="{nombre_pago}">
 							  	<!-- START BLOCK : forma_pago_venta_opciones -->
-							    <option value="{id_cat_gc_art_vendido}">{valor_pago}</option>
+							    <option value="{valor_pago}">{valor_pago}</option>
 							    <!-- END BLOCK : forma_pago_venta_opciones -->
 							  </optgroup>
 						  	<!-- END BLOCK : forma_pago_venta -->
@@ -54,16 +54,7 @@
 				      </div>
 
 				    </div>
-					<!--<div class="form-group">
-						
-				      <label class="control-label col-sm-2 col-xs-12" for="art_venta_formas_pago">Cuotas:</label>
-				      <div class="col-md-5 col-sm-5 col-xs-12">
-				      	
-					      <input autocomplete="off" required  type="number" class="form-control" id="cantidad_cuotas" placeholder="Precio tarjeta, en porcentaje." name="cantidad_cuotas">
-								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="cantidad_cuotas">:</label>
-					      
-				      </div>
-					</div>-->
+					<!-- START BLOCK : stock_futuro_on -->
 				    <h3>Stock Futuro</h3>
 				   
 				    <div class="form-group">        
@@ -82,13 +73,23 @@
 					      
 				      </div>
 				    </div>
-
+					<!-- END BLOCK : stock_futuro_on -->
 
 				    <div class="form-group">        
-				      <div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
-				        <button type="submit" disabled class="btn btn-success">Aceptar</button>
-				      </div>
+				    	<div class="row">
+					    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+					        	
+				
+					        	 
+					        	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#agregar_art_valor_general" id="cargar_general_btn">Aceptar</button>
+
+					        	<button type="sybmit" disabled class="btn btn-danger">Cancelar</button>
+							
+						
+					     	</div>
+				    	</div>
 				    </div>
+				     
 				  </form>
 
 			</div>
@@ -97,4 +98,44 @@
 		</div>
 	</div>
 	</div>
+</div>
+
+<div class="container-fluid">
+	  <div class="row">
+	  	<div class="col-md-4">
+	  			<div class="form-group">
+			    	<div class="modal fade" id="agregar_art_valor_general" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Finalizar Venta</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										<form novalidate class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::venta_finalizar" method="post">
+											<div class="form-group">
+										      <p>Reciba el dinero por el valor del producto.</p>  
+										      <p>Si todos es correcto, por favor haga clic en el boton Finalizar.</p>
+										      <img class="img-rounded" width="304" height="236" src="imagenes/system/art_venta_preok.jpg" alt="">
+										    </div>
+										    <input type="text" id="medio_cuotas_art_venta" name="medio_cuotas_art_venta" >
+
+										    <div class="form-group">    
+										    	 <button class="btn btn-success btn-md " data-toggle="modal" >
+										    	 Finalizar	</button>
+									        </div>
+										</form>
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+	  	</div>
+	  </div>
 </div>

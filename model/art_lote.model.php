@@ -135,7 +135,7 @@ class art_lote {
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
-        return $this;
+         
     }
 
     public function getId_art_conjunto()

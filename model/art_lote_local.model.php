@@ -141,7 +141,7 @@ class art_lote_local {
     public function setCantidad_parcial($cantidad_parcial)
     {
         $this->cantidad_parcial = $cantidad_parcial;
-        return $this;
+        
     }
 
     public function getId_carga()

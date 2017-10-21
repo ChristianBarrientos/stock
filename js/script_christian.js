@@ -301,6 +301,23 @@ $(document).ready(function()
             
 
         });
+        //Finalizar Venta, enviar valor
+        $('.forma_pago_select').on('change',function() {
+             
+            var selected = $(':selected', this);
+
+            var optgroup = selected.parent().attr('label');
+            var option = $(this).val();
+            //alert(optgroup);
+            //alert(selected.closest('optgroup').attr('label'));
+             
+            var input = ','.concat(option);
+            var output = optgroup.concat(input);
+             
+            $("#medio_cuotas_art_venta").val(output);
+             
+ 
+        });
 });
 
 

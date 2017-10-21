@@ -645,15 +645,8 @@ class Articulo_Controller{
         $id_lote_local = $_POST['art_local_venta'];
         
         $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
-
         $tpl = new TemplatePower("template/venta_art.html");
         $tpl->prepare();
-        
-        //print_r($lote_local->getId_lote()->getId_art_conjunto()->getId_articulo());
-        //$nombre_art_completo = $lote_local->getId_lote()->getId_gc()->getId_categoria()->getNombre();
-        //echo "&&";
-        //echo $nombre_art_completo;
-
         $art_nombre = $lote_local->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
         $art_marca =  $lote_local->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
         $art_tipo = $lote_local->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
@@ -709,7 +702,22 @@ class Articulo_Controller{
             }
         }
 
+        
+        $local = $lote_local->getId_local();
+        $lote_local->setCantidad_parcial($lote_local->getCantidad_parcial()- 1);
+        $lote_local->getId_lote()->setCantidad($lote_local->getId_lote()->getCantidad()-1);
+        $stock_actual = $lote_local->getCantidad_parcial();
+         
+        $tpl->newBlock("stock_futuro_on");
+        $tpl->assign("local_nombre",$local->getNombre());
+        $tpl->assign("cantidad_art_local",$stock_actual);
+        $_SESSION["lotes"] = $lote_local;
+         
         return $tpl->getOutputContent();
+    }
+
+    public static function venta_finalizar(){
+
     }
 
 
