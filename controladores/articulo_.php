@@ -242,7 +242,7 @@ class Articulo_Controller{
                 $tpl = new TemplatePower("template/seccion_operador_articulos.html");
                 $tpl->prepare();
                 if (isset($_SESSION['usuario'])) {
-                         
+                        echo "Id usuario Jefe" + $id_usuario_jefe;
                         if ($_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)) {
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
@@ -589,7 +589,7 @@ class Articulo_Controller{
 
 
         public static function alta_articulo(){
-
+        $datos_no_recibidos = false;
         $art_general = ucwords(strtolower($_POST['select_art_general']));
         $art_marca = ucwords(strtolower($_POST['art_marca']));
         $art_tipo = ucwords(strtolower($_POST['art_tipo']));
@@ -604,15 +604,20 @@ class Articulo_Controller{
         $art_precio_cp= $_POST['art_precio_credito_argentino'];
         $art_medida = ucwords(strtolower($_POST['art_medida']));
         $art_color =$_POST['art_color'];
-
-
         $art_proveedor = $_POST['art_prvd'];
+
+        if ($art_general == null || $art_marca == null || $art_tipo == null
+                || $art_cantidad_total == null || $art_cb == null || $art_prvd == null
+                || $art_precio_base == null || $art_precio_tarjeta == null 
+                || $art_precio_cp == null || $art_medida == null || $art_color == null
+                || $art_proveedor == null) {
+            $datos_no_recibidos = true;
+            
+        }
         
         $total_locales = sizeof($_SESSION['locales']);
 
-        //$fotos_art = $_FILES['fotos_art'];
-         
-        //print_r($_FILES['fotos_art']);
+        
         
 
        
@@ -832,7 +837,7 @@ class Articulo_Controller{
         //cargar lote_us
         $ok2 = $_SESSION["usuario"]->alta_lote_us($id_lote);
         
-        if ($ok && $ok2) {
+        if ($ok && $ok2 || $datos_no_recibidos = false) {
             $tpl = new TemplatePower("template/exito.html");
             $tpl->prepare();
         }
@@ -852,10 +857,13 @@ class Articulo_Controller{
          
         $id_lote_local = $_POST['art_local_venta'];
         $id_art_lotte_loccal = $_GET['id_art_lote_locas'];
-        echo $id_lote_local;
-        echo "na";
-        echo $id_art_lotte_loccal;
-        $lote_local = art_lote_local::generar_lote_local_id_($id_art_lotte_loccal);
+        if ($_SESSION["permiso"] == 'OPER') {
+            $lote_local = art_lote_local::generar_lote_local_id_($id_art_lotte_loccal);
+        }
+        else{
+            $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
+        }
+        
         //print_r($lote_local);
         $tpl = new TemplatePower("template/venta_art.html");
         $tpl->prepare();

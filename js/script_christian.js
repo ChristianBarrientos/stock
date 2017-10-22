@@ -103,7 +103,9 @@ $(document).ready(function()
                 
                 //}).keyup();
             }
-            
+            alert("aca");
+            alert(cantidad_total);
+            alert(cantidad_parcial_total);
             if (cantidad_total != cantidad_parcial_total ) {
                     alert("La sumatoria parcial de la distribucion por local no puede ser diferente a la cantidad total del deposito.");
                     for (var i = 0 ; i < locales.length; i++) {
