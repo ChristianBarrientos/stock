@@ -41,6 +41,35 @@ class art_local {
 
     }
 
+    public static function obtener_locales_usuario_operador(){
+        //obtener empleados por local
+        global $baseDatos;
+        $id_usuarios = $_SESSION["usuario"]->getId_user();
+         
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = $id_usuarios");  
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+
+        if (count($filas) != 0) {
+            $locales_operador = array();
+            foreach ($filas as $clave => $valor) {
+                 
+                $locales_operador[] = array(
+                            "id_us_local" =>  $valor['id_usuarios_local'],
+                            "id_usuario" =>  $valor['id_usuarios'],
+                            "id_zona" =>  $valor['id_zona'],
+                        );
+            }
+            return $locales_operador;
+        }
+        else{
+            return false;
+        }
+       
+
+
+    }
+
       public static function generar_local($id_zona,$cant_empl = 0){
         //obtener empleados por local
         global $baseDatos;
@@ -88,7 +117,8 @@ class art_local {
     public static function obtener_id_local($id_zona){
         //obtener empleados por local
         global $baseDatos;
-        
+        echo "id_zona";
+        echo $id_zona;
         $res = $baseDatos->query("SELECT * FROM art_local WHERE id_zona = $id_zona");  
 
         $res_fil = $res->fetch_assoc();

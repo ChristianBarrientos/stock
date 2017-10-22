@@ -69,7 +69,7 @@ class Articulo_Controller{
                                     $id_lote_local_venta__ = array();
                                     //print_r($_SESSION["lote_local"]);
                                     foreach ($_SESSION["lote_local"] as $key2 => $value2) {
-                                        $cantidad_articulos_total_por_lot;
+
                                         foreach ($value2 as $key3 => $value3) {
                                            
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
@@ -237,12 +237,14 @@ class Articulo_Controller{
                     
                 }
                 //print_r($_SESSION['usuario']->getId_user());
+
                 $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
-                 
+                echo "aca";
+                print_r($id_usuario_jefe);
                 $tpl = new TemplatePower("template/seccion_operador_articulos.html");
                 $tpl->prepare();
                 if (isset($_SESSION['usuario'])) {
-                        echo "Id usuario Jefe" + $id_usuario_jefe;
+                         
                         if ($_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)) {
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
@@ -607,27 +609,20 @@ class Articulo_Controller{
         $art_proveedor = $_POST['art_prvd'];
 
         if ($art_general == null || $art_marca == null || $art_tipo == null
-                || $art_cantidad_total == null || $art_cb == null || $art_prvd == null
+                || $art_cantidad_total == null || $art_cb == null 
                 || $art_precio_base == null || $art_precio_tarjeta == null 
-                || $art_precio_cp == null || $art_medida == null || $art_color == null
-                || $art_proveedor == null) {
+                || $art_precio_cp == null || $art_medida == null 
+                ) {
             $datos_no_recibidos = true;
+           
+            
+            
+
+            return Ingreso_Controller::salir();
             
         }
         
-        $total_locales = sizeof($_SESSION['locales']);
-
-        
-        
-
-       
-
-
-
-      
-    
-
-        
+        $total_locales = art_local::obtener_locales_usuario_operador();
 
         $contador = 1;
         $salto = 0;
@@ -635,30 +630,40 @@ class Articulo_Controller{
         $lista_art_locales = array();
         /* Luego para cada campo y valor $_POST realizamos lo siguiente */
         $nook = true;
+        echo "valor del array de locales por operador";
+        print_r($total_locales);
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);
             echo "%%";
             print_r($valor);*/
-            for ($i=1; $i <=$total_locales ; $i++) { 
-                if ($i <= $total_locales) {
+            for ($i=0; $i <=$total_locales ; $i++) { 
                 //Revisar el contador nos va a dar falsos positivos!!!
                 //Utilizar exoresie¡
-                $name_local_cantidad = "art_local_cantidad_".$i;
-                $name_local_fecha = "art_carga_local_fecha_".$i;
-                 
-                if (strcmp($campo, $name_local_cantidad ) == 0) {
+                if ($total_locales[$i]['id_zona'] != null) {
+                    $id_local_oper = art_local::obtener_id_local($total_locales[$i]['id_zona']);
+                    $name_local_cantidad = "art_local_cantidad_".$id_local_oper;
+                    $name_local_fecha = "art_carga_local_fecha_".$id_local_oper;
+                    
+                    if (strcmp($campo, $name_local_cantidad ) == 0) {
 
-                    if ($_POST[$name_local_fecha] != null) {
-                        $lista_art_locales[]=["Id" => $i,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
+                        if ($_POST[$name_local_fecha] != null) {
+                            $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
                          
                         }
                     }
                 }
+                else{
+                    break;
+                }
+
+                
             }
             
            
         }
+        echo "aca";
+        print_r($lista_art_locales);
         
 
         //Agregar art_general
@@ -835,6 +840,7 @@ class Articulo_Controller{
         }
 
         //cargar lote_us
+
         $ok2 = $_SESSION["usuario"]->alta_lote_us($id_lote);
         
         if ($ok && $ok2 || $datos_no_recibidos = false) {

@@ -242,17 +242,24 @@ class usuario {
             
             //$usuario_prvd = array(0);
             
+            $bandera = false;
             foreach ($filas as $clave => $valor) {
                 $local = art_local::generar_local($valor['id_zona']);
                  
                 $usuarios_por_zona_us_locales = us_local::obtener_tabla_us_local_operador($valor['id_zona']);
+
                 foreach ($usuarios_por_zona_us_locales as $key2 => $value2) {
                     $user  = usuario::generar_usuario($value2['id_usuarios']);  
+
                     if (strcmp($user->getAcceso(), "ADMIN" ) == 0){
                         $id_admin = $user->getId_user();
-                        
+                        $bandera = true;
                         break;
                     }
+                }
+                if ($bandera == true) {
+                    # code...
+                    break;
                 }
                     
 

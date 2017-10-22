@@ -80,7 +80,9 @@ $(document).ready(function()
             $(".check_art_locales").each(function(){
                 var value_check_ok = $(this).val()
                     if ($(this).prop('checked') ) {
+
                         var siok = value_check_ok.substring(18,20);
+                        
                         locales_check_ok.push(siok);
                     }
                 
@@ -91,7 +93,9 @@ $(document).ready(function()
                  
                 //$("#art_local_cantidad_" + i).on('keyup', function(){
                 for (var x = 0; x <= locales_check_ok.length; x++) {
-
+                    
+                    console.log(locales[i].value)
+                    alert(locales[i-1].value);
                     if (locales_check_ok[x] == i) {
                         
                         var cantidad_parcial_total = cantidad_parcial_total + parseInt(locales[i-1].value);
@@ -103,9 +107,7 @@ $(document).ready(function()
                 
                 //}).keyup();
             }
-            alert("aca");
-            alert(cantidad_total);
-            alert(cantidad_parcial_total);
+           
             if (cantidad_total != cantidad_parcial_total ) {
                     alert("La sumatoria parcial de la distribucion por local no puede ser diferente a la cantidad total del deposito.");
                     for (var i = 0 ; i < locales.length; i++) {
