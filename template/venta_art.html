@@ -41,8 +41,10 @@
 					      </select>-->
 
 					     	<select id="forma_pago_select" class="selectpicker forma_pago_select">
+					     		<option value="null" selected >Elija un valor</option>
 					     	<!-- START BLOCK : forma_pago_venta -->
 							  <optgroup label="{nombre_pago}">
+
 							  	<!-- START BLOCK : forma_pago_venta_opciones -->
 							    <option value="{valor_pago}">{valor_pago}</option>
 							    <!-- END BLOCK : forma_pago_venta_opciones -->
@@ -124,9 +126,10 @@
 										      <p>Si todos es correcto, por favor haga clic en el boton Finalizar.</p>
 										      <img class="img-rounded" width="304" height="236" src="imagenes/system/art_venta_preok.jpg" alt="">
 										    </div>
-										    <input type="text" id="medio_art_venta" name="medio_art_venta" >
-										    <input type="text" id="cuotas_art_venta" name="cuotas_art_venta" >
-
+										    <div style="display:n" id="oculta_inputs">
+										    	<input type="text" id="medio_art_venta" name="medio_art_venta" >
+										    	<input type="text" id="cuotas_art_venta" name="cuotas_art_venta" >
+											</div>
 										    <div class="form-group">    
 										    	 <button class="btn btn-success btn-md " data-toggle="modal" >
 										    	 Finalizar	</button>

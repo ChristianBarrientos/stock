@@ -1,0 +1,212 @@
+<div class="menu_articulos_admin">
+<!-- START BLOCK : modal_galery_fotos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="{id_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Fotos del Articulo</h4>
+					</div>
+					<div class="modal-body">
+					 	<ul class="modal_galery first">
+					 	<!-- START BLOCK : modal_galery_fotos_path -->
+						    <li class="li_sin_puntos">
+						        <img class="img-rounded" width="304" height="236"  alt="Night away"  src="{path_foto}">
+								        
+						    </li>
+						    <br>	
+						<!-- END BLOCK : modal_galery_fotos_path -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_galery_fotos -->
+
+<!-- START BLOCK : modal_venta_art -->
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="form-group">
+			    	<div class="modal fade" id="venta_{selecionar_local_venta}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Sin Stock</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										<!--<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::venta_articulo" method="post"></form>-->
+									<div class="alert alert-info">
+										
+										<h2>El local en donde te encuentras, no posee Stock.</h2>
+										<h2>Locales en los que existe el articulo:</h2>
+											
+											<ul>
+											<!-- START BLOCK : locales_seleccion_venta_art -->
+												<li value="{id_lote_local}"><h3>{nombre_local}</h3></li>
+											<!-- END BLOCK : locales_seleccion_venta_art -->
+											</ul>
+											  
+											<br>
+									</div>
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>	
+	</div>
+</div>
+
+<!-- END BLOCK : modal_venta_art -->
+
+
+	<div class="container-fluid">
+	<!--container-fluid-->
+		<div class="row encabezado">
+			<div class="col-md-6 col-xs-4">
+				<div class="titulo-secciones panel-heading">Vender</div>
+				
+			</div>
+			
+		</div>
+
+		<div class="row">
+		<!-- START BLOCK : buscador_visible -->
+			<div class="col-md-6 col-xs-12">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
+				
+			</div>
+		<!-- END BLOCK : buscador_visible -->
+			
+
+			
+			
+		</div>
+		<br><br>
+		<div class="row">
+
+			<!-- START BLOCK : sin_articulos -->
+			<div class="col-md-6 col-md-offset-2 col-xs-12">
+				<div class="alert alert-warning center-block">
+					<h3>No posee articulos en el deposito.</h3>
+					
+				</div>
+			</div>
+			<!-- END BLOCK : sin_articulos -->
+		</div>
+		<!--table-responsive  crea una barra horizontal de navegacion en talbets-->
+		<div class="row ">
+		<!-- START BLOCK : con_articulos_nolista -->
+
+			<div class="col-md-6 col-xs-12">
+			 
+			
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  </div>
+				  <div class="panel panel-default">
+					  <div class="panel-heading"><strong>{nombre}</strong></div>
+					  <div class="panel-body">
+					    <p><img class="img-circle img-responsive" id="empleado_foto" src="{empl_foto}" alt=""></p>
+					  </div>
+					  <ul class="list-group">
+					    <li class="list-group-item"><strong>Proveedor:</strong>  {prvd}</li>
+					    <li class="list-group-item"><strong>Cantidad Total:</strong> {cantidad_total}</li>
+					    <li class="list-group-item"><strong>Codigo de Barra:</strong> {cb}</li>
+					    <li class="list-group-item"><strong>Medida:</strong> {art_medida}</li>
+					    <li class="list-group-item"><strong>Precio Base:</strong> {precio_base}</li>
+					    <li class="list-group-item"><strong>Precio Tarjeta:</strong> {precio_tarjeta}</li>
+					    <li class="list-group-item"><strong>Credito Personal:</strong> {credito_personal}</li>
+					    <li class="list-group-item"><strong>Color:</strong> {art_color}</li>
+					  </ul>
+					</div>
+					<div class="panel-footer">
+						<button type="button" class="btn btn-info">Modificar</button>
+					</div>
+				</div>
+
+			</div>
+			<!-- END BLOCK : con_articulos_nolista -->
+			
+	
+			<!-- START BLOCK : con_articulos_lista -->
+			<table cellpadding="15" class="table table-bordered " align="center">
+			<thead>
+			<!-- START BLOCK : con_articulos_lista_cabeza -->
+			 <tr>
+	            <th>Numero</th>
+	            <th>Articulo</th>
+	            <!-- colspan="2"-->
+	            <th>Stock</th>
+	            <th>Medida</th>            
+	            <th>Precio Base</th>
+	            <th>Precio Tarjeta</th>
+	            <th>Credito Personal</th>
+	            <th>Fotos</th>
+	            <th>Vender</th>
+        	</tr>
+        	</thead>
+        	<tbody class="buscar">
+        	
+			<!-- END BLOCK : con_articulos_lista_cabeza -->
+			
+			<!-- START BLOCK : con_articulos_lista_cuerpo -->
+			<tr>
+				<td>{numero}</td>
+	            <td>{nombre}</td>
+	            <td>{cantidad_total}</td>
+	            <td>{art_medida}</td>
+	            <td>{precio_base}</td>
+	            <td>{precio_tarjeta}</td>
+	            <td>{credito_personal}</td>
+	            <td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+							Ver
+						</button></td>
+	            <td>
+	            <!-- START BLOCK : boton_con_stock -->
+	            <form action="index.php?action=Articulo::venta_articulo&id_art_lote_locas={id_lote_local}" method="post">
+
+					<!--<input  class="art_ventas_radio"  name="art_local_venta" type="radio" value="{id_lote_local}" id='art_ventas_radio'>{id_lote_local}-->
+											 	
+					<button type="submit" class="btn btn-primary btn-md">
+							Vender
+					</button>
+				</form>
+	            	
+				<!-- END BLOCK : boton_con_stock -->
+
+				<!-- START BLOCK : boton_sin_con_stock -->
+	            	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#venta_{selecionar_local_venta_sin_stock}">
+							Vender
+						</button>
+				<!-- END BLOCK : boton_sin_con_stock -->
+	            
+	            
+	            </td>
+	        </tr>
+			<!-- END BLOCK : con_articulos_lista_cuerpo -->
+			 
+	            
+	        
+	        </tbody>
+	        </table>
+			<!-- END BLOCK : con_articulos_lista -->
+
+			
+		</div>
+	</div>
+</div>

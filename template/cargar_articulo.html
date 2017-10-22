@@ -105,7 +105,7 @@
 	    </div>
 	  </div>
 </div>
-<div class="container-fluid">
+<div class="container">
 	
 	  <h2>Alta de Articulos</h2>
 	  <h3>Datos generales</h3>
@@ -120,12 +120,12 @@
 	     
 	    <div class="row">
 	    <div class="form-group">
-	    	<div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
 	    		<label  for="select_art_general">General:</label>
 	    	</div>
 		    <!--</div>-->
 		     
-			<div class="col-md-12 col-sm-3 col-xs-12">
+			<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
   				<select id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
   				<!-- START BLOCK : cargar_articulo_nombre -->
@@ -137,7 +137,7 @@
 
 			        <!--<div class="clearfix"></div>
 			        col-sm-offset-2-->
-			<div class="col-sm-offset-1 col-md-12 col-sm-3 col-xs-12">
+			<div class="col-sm-offset-1 col-sm-3 col-xs-12">
 			 	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general" id="cargar_general_btn">
 							Agregar
 				</button>
@@ -151,10 +151,10 @@
 	    
 	     <div class="row">
 	     	<div class="form-group">
-	     <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+	     <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
 	      <label for="art_marca">Marca:</label>
 	      </div>
-	      		<div class="col-md-12 col-sm-3 col-xs-12">
+	      		<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
 				      <select name="art_marca" id = "select_art_marca" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 				      <!-- START BLOCK : cargar_articulo_marca -->
@@ -163,7 +163,7 @@
 				      </select>
 				      
 			    </div>
-			     <div class="col-sm-offset-1 col-md-12 col-sm-3 col-xs-12">
+			     <div class="col-sm-offset-1 col-sm-3 col-xs-12">
 				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_marca" id="cargar_marca_btn">
 							Agregar
 						</button>
@@ -173,10 +173,10 @@
 
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
 	      <label  for="art_tipo">Tipo:</label>
 	     </div>
-	            <div class="col-md-12 col-sm-3 col-xs-12">
+	            <div class="col-md-4 col-sm-3 col-xs-12">
 				      <select name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 				      <!-- START BLOCK : cargar_articulo_tipo -->
 				        <option value="{valor_id_tipo}">{tipo_articulo}</option>
@@ -184,7 +184,7 @@
 				      </select>
 				      
 			    </div>
-			     <div class="col-sm-offset-1 col-md-12 col-sm-3 col-xs-12">
+			     <div class="col-sm-offset-1 col-sm-3 col-xs-12">
 				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_tipo" id="cargar_tipo_btn">
 							Agregar
 						</button>
@@ -193,10 +193,10 @@
 	    </div>
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-12">
+	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-12">
 	      <label for="art_cantidad_total">Cantidad Total:</label>
 	     </div>
-	            <div class="col-md-12 col-sm-3 col-xs-12">
+	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
 				    <input required min="1" type="number" class="form-control" id="art_cantidad_total" placeholder="Ingrese cantidad total del articulos" name="art_cantidad_total">
 				      
@@ -207,10 +207,10 @@
 
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-12">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
 	      <label for="art_cantidad_total">Codigo de Barras:</label>
 	     </div>	
-	            <div class="col-md-12 col-sm-3 col-xs-12">
+	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
 				    <input required min="0000000000000" max="9999999999999" type="number" class="form-control" id="art_codigo_barras" placeholder="Ingrese el codigo de barras del articulo." name="art_codigo_barras">
 				      
@@ -225,11 +225,11 @@
 	    <!-- START BLOCK : cargar_articulo_grupo -->
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
 	      <label  for="art_grupo_att">{des_cat}:</label>
 	     </div>
 	    
-	      	<div class="col-md-12 col-sm-3 col-xs-8">
+	      	<div class="col-md-4 col-sm-3 col-xs-8">
 							         
 					<!-- START BLOCK : art_precio_base -->
 					 
@@ -292,7 +292,7 @@
 	    </div>
 	    <div class="form-group">
 	     <div class="row">
-	     <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-12">
+	     <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
 	      <label  for="art_tipo">Proveedor:</label>
 	      </div>
 	      
@@ -327,10 +327,10 @@
 	      
 	      
 		    <div  id="fotos_art">
-		    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+		    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
 		    <label for="art_grupo_att">Agregar Fotos</label>
 		    </div>
-		    	<div class="col-md-12 col-sm-3 col-xs-8">
+		    	<div class="col-md-4 col-sm-3 col-xs-8">
 				   <input id="input-b3" name="fotos_art[]" type="file" class="file"  
 					    data-show-upload="false" multiple=true data-show-caption="true" 
 					    data-msg-placeholder="Seleccione las fotos a subir..">
@@ -347,7 +347,7 @@
 	     
 	   	<!-- START BLOCK : locales_empleado_alta -->
 	        <div id="seleccionar_local_art" class="checkbox">
-	        <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
+	        <div class="  control-label  col-sm-2 col-xs-4">
 			  <label id="label_h" for="check_art_locales"><input  class="check_art_locales"  name="art_local[]" type="checkbox" value="check_art_locales_{id_local_}">{nombre_local}</label>
 			 </div>
 		    </div>
@@ -358,11 +358,12 @@
 	     <div hidden class="row div_oculto" id="check_art_locales_{id_local_}"> 
 	     <div class="row">
 
-	     <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">   
-		    <label  for="art_local">{nombre_local}:</label>
-		  </div>
-			<div class="clearfix"></div>
-	      		<div class="col-md-12 col-sm-3 col-xs-8">
+	     	<div class="  control-label  col-sm-2 col-xs-4">   
+			    <label  for="art_local">{nombre_local}:</label>
+			  </div>
+			</div>
+			<div class="row">
+	      		<div class=" col-sm-6 col-xs-8">
 			      	
 				      
 				    <input required min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
@@ -374,8 +375,8 @@
 			                <span class="glyphicon glyphicon-calendar"></span>
 			            </span>
 			        </div>
-			            
-			    
+			    </div>        
+			    </div>
 				<script type="text/javascript">
 				    $(function () {
 				    	
@@ -388,8 +389,8 @@
 				    });
 				</script>
 
-				</div>      
-			</div>  
+				     
+			  
 			</div> 	 
 		    <!-- END BLOCK : locales_alta -->
 		    <!-- START BLOCK : sin_locales_empl -->

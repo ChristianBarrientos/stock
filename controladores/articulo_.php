@@ -2,7 +2,8 @@
 class Articulo_Controller{
 
 	public static function mostrar(){
-                $opc_list = $_GET['opcion_list'];
+               
+                
                 $tpl = new TemplatePower("template/seccion_admin_articulos.html");
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
@@ -221,6 +222,210 @@ class Articulo_Controller{
 
         }
 
+        public static function pre_mostrar_operador(){
+            $id_empleado_venta_local_art = $_GET['id_local'];
+            $_SESSION['usuario']->setLocal_Actual($id_empleado_venta_local_art);
+            return Articulo_Controller::mostrar_operador();
+        }
+
+        public static function mostrar_operador(){
+                $id_empleado_venta_local_art = $_GET['id_local'];
+
+                if (isset($id_empleado_venta_local_art) && $id_empleado_venta_local_art == null) {
+                    
+                    Ingreso_Controller::salir();
+                    
+                }
+                //print_r($_SESSION['usuario']->getId_user());
+                $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+                 
+                $tpl = new TemplatePower("template/seccion_operador_articulos.html");
+                $tpl->prepare();
+                if (isset($_SESSION['usuario'])) {
+                         
+                        if ($_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)) {
+                            $tpl->newBlock("con_articulos_lista");
+                            $tpl->newBlock("con_articulos_lista_cabeza");
+                            
+                            $tpl->newBlock("buscador_visible");
+                            $cantidad = 0;
+                            
+                            foreach ($_SESSION['lotes'] as $key => $value) {
+                                $vueltas = 0;
+                                $cantidad = $cantidad + 1;
+                                $art = $value->getId_art_conjunto()->getId_articulo()->getNombre();
+                                $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
+                                $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
+                                $nombre_ = $art.', '.$marca.', '.$tipo;
+                                if (True) {
+                                    $tpl->newBlock("modal_galery_fotos");
+                                    $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
+                                    $fotos_array = $value->getId_art_fotos();
+                                    
+                                    foreach ($fotos_array as $fot => $foto) {
+                                        $tpl->newBlock("modal_galery_fotos_path");
+                                        $tpl->assign("path_foto",$foto->getPath_foto());
+                                    }
+                                    $tpl->newBlock("con_articulos_lista_cuerpo");
+                                    $tpl->assign("numero",$cantidad);
+                                    $tpl->assign("nombre",$nombre_);
+                                    $tpl->assign("prvd",$value->getId_proveedor());
+                                    $nom_local__ = array();
+                                    $id_local_ventas_art_ = array();
+                                    $cantidad_parcial_local__ = array();
+                                    $id_lote_local_venta__ = array();
+                                    $id_lote_local_venta_art_en_cero = array();
+                                    foreach ($_SESSION["lote_local"] as $key2 => $value2) {
+                                        $cantidad_articulos_total_por_lot;
+                                        foreach ($value2 as $key3 => $value3) {
+                                           
+                                            if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
+                                                //print_r($value3->getId_local());
+                                                if ($value3->getCantidad_parcial() > 0) {
+                                                    $id_lote_local_venta__[] = $value3->getId_lote_local();
+                                                    $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
+                                                    $nom_local__[] = $value3->getId_local()->getNombre();
+                                                    $cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                                }
+                                                else{
+                                                    $id_lote_local_venta_art_en_cero[]=$value3->getId_local();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $cantodad_final_lote_local = $value->getCantidad().'  (Total)';
+                                    $cantodad_final_lote_local .= '<br>';
+                                    $contadori = 0;
+                                    
+                                    foreach ($nom_local__ as $key4 => $value4) {
+                                        $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'  ('.$value4.')';
+                                        $cantodad_final_lote_local .= '<br>';
+                                        $contadori = $contadori + 1;
+                                       
+                                    }
+                                    
+                                    $tpl->assign("cantidad_total",$cantodad_final_lote_local);
+
+                                    $gc = $value->getId_gc()->getId_categoria();
+                                    foreach ($gc as $clave => $valor) {
+                                        if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                                            $medida = $valor->getValor();
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                                            $precio_base = $valor->getValor();
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
+                                            $por_ciento_t =  $valor->getValor();
+                                            $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            
+                                            $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
+                                            $por_ciento_p = $valor->getValor();
+                                            $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                            $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
+                                            
+                                        }
+
+                                        if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
+                                            $art_color = $valor->getValor();
+                                            
+                                        }
+                                    } 
+
+                                    if ($precio_base != null) {
+                                        $tpl->assign("precio_base",$precio_base);
+                                    }
+                                    else{
+                                        $tpl->assign("precio_base",'Sin Definir');
+                                    }
+
+                                    if ($medida != null) {
+                                        $tpl->assign("art_medida",$medida);
+                                    }
+                                    else{
+                                        $tpl->assign("art_medida",'Sin Definir');
+                                    }
+
+                                    if ($precio_tarjeta != null) {
+                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'('.$por_ciento_t.'%)');
+                                    }
+                                    else{
+                                        $tpl->assign("precio_tarjeta",'Sin Definir');
+                                    }
+
+                                    if ($credito_personal != null) {
+                                        $tpl->assign("credito_personal",$credito_personal.'('.$por_ciento_p.'%)');
+                                    }
+                                    else{
+                                        $tpl->assign("credito_personal",'Sin Definir');
+                                    }
+
+                                    if ($art_color != null) {
+                                        $tpl->assign("art_color",$art_color);
+                                    }
+                                    else{
+                                        $tpl->assign("art_color",'Sin Definir');
+                                    }
+
+                                    $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
+                                   
+                                   ///Tocar por aca para no mostrar locales que nos sea en el que se encuentra el empelado
+                                    $no_puede_vender = false;
+                                    foreach ($id_lote_local_venta_art_en_cero as $key_fin => $value_fin) {
+                                        $id_local_art_en0 = $value_fin->getId_local();
+                                        if ($id_empleado_venta_local_art == $id_local_art_en0) {
+                                            $no_puede_vender = true;
+                                        }
+                                    }
+                                    //agrega !
+                                    if ($no_puede_vender) {
+                                         
+                                        $tpl->newBlock("boton_sin_con_stock");
+                                        $tpl->assign("selecionar_local_venta_sin_stock",$value->getId_lote());
+
+                                        $tpl->newBlock("modal_venta_art");
+                                        $tpl->assign("selecionar_local_venta",$value->getId_lote());
+                                        $contadori = 0;
+                                        foreach ($nom_local__ as $key5 => $value5) {
+                                            $tpl->gotoBlock("_ROOT");
+                                            $tpl->newBlock("locales_seleccion_venta_art");
+                                            $tpl->assign("id_lote_local",$id_lote_local_venta__[$contadori]);
+                                            $tpl->assign("nombre_local",$value5);
+                                            $contadori = $contadori + 1;
+                                        //Fin Modal Venta
+                                        }
+                                    }
+                                    else{
+                                        
+                                        $tpl->newBlock("boton_con_stock");
+                                        $id_lote_local_fin = art_lote_local::obtener_lote_local_oper($value->getId_lote(),$id_empleado_venta_local_art);
+                                        //echo $value->getId_lote();
+                                        //echo $id_empleado_venta_local_art;
+                                        $tpl->assign("id_lote_local",$id_lote_local_fin);
+                                        //$tpl->assign("selecionar_local_venta_stock",$value->getId_lote());
+                                    }
+                                }
+                            }
+                            }
+                        else{
+
+                               $tpl->newBlock("sin_articulos");
+                        }
+                }
+                else{
+                        return Ingreso_Controller::salir();
+                }
+
+                return $tpl->getOutputContent();
+
+        }
+
         public static function cargar_deposito(){
             if (isset($_SESSION["usuario"])){
             if ($_SESSION["permiso"] == 'ADMIN') {
@@ -325,7 +530,7 @@ class Articulo_Controller{
                     print_r($value);
                 }*/
                 foreach ($_SESSION['locales'] as $key => $value) {
-                       
+                        
                         $tpl->newBlock("locales_empleado_alta");
                         $cadena = $value->getId_zona();
                         $direccion = after_last (',', $cadena);
@@ -646,8 +851,11 @@ class Articulo_Controller{
     public static function venta_articulo(){
          
         $id_lote_local = $_POST['art_local_venta'];
-        //echo $id_lote_local;
-        $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
+        $id_art_lotte_loccal = $_GET['id_art_lote_locas'];
+        echo $id_lote_local;
+        echo "na";
+        echo $id_art_lotte_loccal;
+        $lote_local = art_lote_local::generar_lote_local_id_($id_art_lotte_loccal);
         //print_r($lote_local);
         $tpl = new TemplatePower("template/venta_art.html");
         $tpl->prepare();
@@ -726,6 +934,9 @@ class Articulo_Controller{
         $bandera = false;
         $medio = $_POST['medio_art_venta'];
         $total = $_POST['cuotas_art_venta'];
+        if ($total == 'null' ||  $medio == null) {
+            $bandera = true;
+        }
         $tpl = new TemplatePower("template/exito_fracaso_venta.html");
         $tpl->prepare();
         /*
@@ -743,7 +954,7 @@ class Articulo_Controller{
         
         */
         $hoy = getdate();
-        $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].'-'.$hoy['seconds'];
+        $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
         $id_usuario = $_SESSION["usuario"]->getId_user();
         
         //alta en art_venta
@@ -754,7 +965,7 @@ class Articulo_Controller{
         $id_unico = art_unico::alta_art_unico($id_lote_local,$id_venta);
         
 
-        if ($id_venta != false && $id_lote_local != false  && $id_unico != false ) {
+        if ($id_venta != false && $id_lote_local != false  && $id_unico != false && $bandera == false) {
             //Actualizar Stock
             $cantidad_total_art_lote = $_SESSION["art_lote_local"]->getId_lote()->getCantidad();
             $cantidad_parcial_art_lote_local =$_SESSION["art_lote_local"]->getCantidad_parcial();
@@ -765,35 +976,47 @@ class Articulo_Controller{
                 $art_marca =  $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
                 $art_tipo = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
                 $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
-                $tpl->newBlock("exito");
-                
-                $tpl->assign("nombre_usuario",$_SESSION["usuario"]->getUsuario());
-                $tpl->assign("nombre_completo_art",$nombre_completo_art);
-                $tpl->assign("precio",$total);
-                $tpl->assign("fecha_hora_venta",$fecha_venta);
+                if (Ingreso_Controller::es_admin()) {
+                    $tpl->newBlock("exito");
+                    $tpl->assign("nombre_usuario",$_SESSION["usuario"]->getUsuario());
+                    $tpl->assign("nombre_completo_art",$nombre_completo_art);
+                    $tpl->assign("precio",$total);
+                    $tpl->assign("fecha_hora_venta",$fecha_venta);
+                    $tpl->assign("id_local",$_SESSION["usuario"]->getLocal_Actual());
+                }
+                else{
+                    $tpl->newBlock("exito_oper");
+                    $tpl->assign("nombre_usuario",$_SESSION["usuario"]->getUsuario());
+                    $tpl->assign("nombre_completo_art",$nombre_completo_art);
+                    $tpl->assign("precio",$total);
+                    $tpl->assign("fecha_hora_venta",$fecha_venta);
+                    $tpl->assign("id_local",$_SESSION["usuario"]->getLocal_Actual());
+                }
+                    
             }
             else{
                 $bandera = true;
             }
-            
         }
         else{
             
             $bandera = true;
         }
         if ($bandera) {
-            
-            $tpl->newBlock("fracaso");
+            if (Ingreso_Controller::es_admin()) {
+                $tpl->newBlock("fracaso");
+            }
+            else{
+                $tpl->newBlock("fracaso_oper");
+            }
+                
         }
 
         return $tpl->getOutputContent();
+        }
 
-    }
-
-
-
-
-        public static function cargar_art_general(){
+    //}
+       public static function cargar_art_general(){
             if (isset($nombre)) {
                  
                 $nombre = ucwords(strtolower($_POST['art_general']));

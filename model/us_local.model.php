@@ -24,14 +24,29 @@ class us_local {
         
         $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = '$id_usuarios' AND id_zona = '$id_zona'");  
 
-        $res_fil = $res->fetch_assoc();
-        if (count($res_fil) != 0) {
-            return $res_fil['id_zona'];
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            return $filas;
         }
         else{
             return false;
         }
     }
+
+    public static function obtener_tabla_us_local_operador($id_zona){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_zona = '$id_zona'");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            return $res_fil;
+        }
+        else{
+            return false;
+        }
+    }
+
 
     public static function obtener_empleados_local($id_zona){
         global $baseDatos;

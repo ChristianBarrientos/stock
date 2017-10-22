@@ -64,11 +64,11 @@ class Ingreso_Controller{
 			 
 			$tpl->assign("usuario", $_SESSION['usuario']->getUsuario());
 		}
-		/*if ($_SESSION["permiso"] == 'OPER') {
+		if ($_SESSION["permiso"] == 'OPER') {
 			$tpl->newBlock("operador"); 
 			$tpl->assign("usuario", $_SESSION["usuario"]->getUsuario());
 			$tpl->assign("select_menu", $active);
-		}*/
+		}
 		else{
 			$tpl->newBlock("fuera");    
 		}
@@ -181,16 +181,18 @@ class Ingreso_Controller{
 			$tpl->prepare();
 			$locales = us_local::obtener_locales_usuario($_SESSION["usuario"]->getId_user());
 			$tpl->newBlock("con_sucursales");
+			
 			foreach ($locales as $key => $value) {
 				//tenes que recorrer el array de lcoales y omstrar la informatcion asi lo pueda eleguir.
 				
 				$zona = mp_zona::obtener_zona__explicita_2($value["id_zona"]);
-				
 				$local = us_local::obtener_empleados_local($zona["id_zona"]);
 				$locales_info_id = art_local::obtener_id_local($zona["id_zona"]);
 				$local_ok = art_local::generar_local_2($locales_info_id);
-				print_r();
+				
 				$tpl->newBlock("emp_sucursales");
+				
+				$tpl->assign("id_local_art", $local_ok->getId_local());
 				$tpl->assign("titulo", $local_ok->getNombre());
 				$tpl->assign("descripcion", $local_ok->getDescripcion());
 				

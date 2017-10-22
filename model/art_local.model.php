@@ -41,7 +41,7 @@ class art_local {
 
     }
 
-      public static function generar_local($id_zona,$cant_empl){
+      public static function generar_local($id_zona,$cant_empl = 0){
         //obtener empleados por local
         global $baseDatos;
         

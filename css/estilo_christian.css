@@ -106,8 +106,10 @@ div#modal_galeri_backcolor{
 
  /*Ocultar input finalizar*/
  
- #medio_cuotas_art_venta{
+
+
+ #oculta_inputs{
   opacity: 0;
  }
- 
+
 

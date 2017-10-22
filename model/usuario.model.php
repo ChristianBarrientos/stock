@@ -7,8 +7,9 @@ class usuario {
 	private $usuario;
     private $pass;
     private $acceso;
+    private $local_actual;
 	
-    public function __construct($usuario, $pass, $id_user = null,$id_datos = null,$id_contacto = null, $acceso = null)
+    public function __construct($usuario, $pass, $id_user = null,$id_datos = null,$id_contacto = null, $acceso = null, $local_actual = null)
     {
         $this->usuario = $usuario;
         $this->pass = $pass;
@@ -16,6 +17,8 @@ class usuario {
         $this->id_datos = $id_datos;
         $this->id_contacto = $id_contacto;
         $this->acceso = $acceso;
+
+        $this->local_actual = $local_actual;
         
     }
 
@@ -227,6 +230,56 @@ class usuario {
         }
     }
 
+    public static function obtener_jefe($id_usuario_oper){
+        global $baseDatos;
+
+        $res = $baseDatos->query("SELECT `id_usuarios_local`, `id_usuarios`, `id_zona` FROM `us_local` WHERE id_usuarios = $id_usuario_oper ");    
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        
+        if (count($filas) != 0){
+            
+            
+            
+            //$usuario_prvd = array(0);
+            
+            foreach ($filas as $clave => $valor) {
+                $local = art_local::generar_local($valor['id_zona']);
+                 
+                $usuarios_por_zona_us_locales = us_local::obtener_tabla_us_local_operador($valor['id_zona']);
+                foreach ($usuarios_por_zona_us_locales as $key2 => $value2) {
+                    $user  = usuario::generar_usuario($value2['id_usuarios']);  
+                    if (strcmp($user->getAcceso(), "ADMIN" ) == 0){
+                        $id_admin = $user->getId_user();
+                        
+                        break;
+                    }
+                }
+                    
+
+            }
+            return $id_admin;
+        }
+        else{
+           
+            return false;
+        }
+    }
+
+    public static function generar_usuario($id_usuarios){
+            global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM usuarios WHERE id_usuarios = $id_usuarios");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $user = new usuario($res_fil['usuario'],$res_fil['pass'],$res_fil['id_usuarios'],$res_fil['id_datos'],$res_fil['id_contacto'],$res_fil['acceso']);
+            return $user;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+
     public static function alta_lote_us($id_lote){
         global $baseDatos;
         
@@ -386,6 +439,17 @@ class usuario {
     public function setAcceso($acceso)
     {
         $this->acceso = $acceso;
+        return $this;
+    }
+
+    public function getLocal_Actual()
+    {
+        return $this->local_actual;
+    }
+    
+    public function setLocal_Actual($local_actual)
+    {
+        $this->local_actual = $local_actual;
         return $this;
     }
 }

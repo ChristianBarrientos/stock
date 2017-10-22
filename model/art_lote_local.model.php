@@ -126,6 +126,26 @@ class art_lote_local {
 
     }
 
+    public static function obtener_lote_local_oper($id_lote,$id_local){
+       
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote = $id_lote AND id_local = $id_local");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            return $res_fil['id_lote_local'];
+        }
+        else{
+            return false;
+        }
+        
+          
+    
+
+    }
+
     public static function actualiza_lote_cantidad($nuevo){
         global $baseDatos;
         $id_lote = $_SESSION["art_lote_local"]->getId_lote()->getId_lote();

@@ -465,5 +465,10 @@ class Empleado_Controller{
 
         return $tpl->getOutputContent();
     }
+
+    function art_vender_empelado(){
+        $tpl = new TemplatePower("template/exito.html");
+        $tpl->prepare();
+    }
 }
 ?>

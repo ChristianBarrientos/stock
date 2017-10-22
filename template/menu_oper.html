@@ -1,8 +1,8 @@
 <div class="menu_articulos_admin">
 	<div class="container">
 		<div class="row encabezado">
-			<div class="col-md-4 col-xs-6">
-				<div class="titulo-secciones panel-heading">Bienvenido!</div>
+			<div class="col-md-12 col-xs-12">
+				<div class="titulo-secciones panel-heading">¿En donde te encuentras?</div>
 
 			</div>
 			
@@ -15,25 +15,21 @@
 			
 			<div class="col-md-6 col-md-offset-2">
 				<div class="alert alert-success center-block">
-					<h3>Selecciona el Lugar en donde te encuentras.</h3>
-					
+					<h3>Selecciona un local</h3><br>
+					<!-- START BLOCK : emp_sucursales -->
+				
+					 <div class="list-group">
+					  <a href="index.php?action=Articulo::pre_mostrar_operador&id_local={id_local_art}" class="list-group-item active">
+					    <h4 class="list-group-item-heading">{titulo}</h4>
+					    <p class="list-group-item-text">{descripcion}</p>
+					  </a>
+					</div>
+					<!-- END BLOCK : emp_sucursales -->
 				</div>
 			</div>
 			
 		</div>
-		<!-- START BLOCK : emp_sucursales -->
-			<div class="col-md-3 col-xs-6">
-				 <div class="list-group">
-				  <a href="#" class="list-group-item active">
-				    <h4 class="list-group-item-heading">{titulo}</h4>
-				    <p class="list-group-item-text">{descripcion}</p>
-				  </a>
-				</div>
-				
-			</div>
-
-			
-			<!-- END BLOCK : emp_sucursales -->
+		
 			<!-- END BLOCK : con_sucursales -->
 
 			<!-- START BLOCK : sin sucursales -->
