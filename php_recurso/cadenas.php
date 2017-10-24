@@ -58,4 +58,24 @@ function unique_multidim_array($array, $key) {
     
     return $temp_array; 
 } 
+
+function unique_multidim_array_2($array, $key) { 
+    $temp_array = array(); 
+    $i = 0; 
+    $key_array = array(); 
+
+    foreach ($array as $key => $value) {
+       
+        if (!in_array($value->getId_local(), $key_array)) { 
+           
+            $key_array[$i] = $value->getId_local(); 
+            $temp_array[$i] = $value; 
+
+        } 
+    }
+ 
+    
+    
+    return $temp_array; 
+} 
 ?>

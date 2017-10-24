@@ -1,4 +1,47 @@
 <div class="menu_articulos_admin">
+
+
+<!-- START BLOCK : modal_actualiza_stock -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="actualiza_{id_art_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Actualizar Stock</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualiza_stock&id_art_lote_stock_actual={id_art_lote_stock_actual}" method="post">
+								<h3>Cantidadde actuales por Local:</h3>
+								 <!-- START BLOCK : actualiza_sin_stock_locales_cant -->
+								<div class="form-group">
+									<label id="label_h" class="col-lg-2 control-label" for="art_ventas_radio">{nombre_local}</label>
+									 <div class="col-lg-10">
+										<input id="oculta_inputs" class="art_ventas_radio"  name="actualiza_nombre_local[]" type="text" value="{id_local}">
+											
+										<input  class="art_ventas_radio"  name="actualiza_cantidad_local[]" type="number" value="{cantidad_local}" id='art_ventas_radio'>
+									</div>
+								</div>
+								<!-- END BLOCK : actualiza_sin_stock_locales_cant -->
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Actualizar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_actualiza_stock -->
+
 <!-- START BLOCK : modal_galery_fotos -->
 <div class="container-fluid">
 	<div class="row">
@@ -160,8 +203,8 @@
 	            <th>Precio Base</th>
 	            <th>Precio Tarjeta</th>
 	            <th>Credito Personal</th>
-	            <th>Fotos</th>
-	            <th>Vender</th>
+	            <th>Operaciones</th>
+	             
         	</tr>
         	</thead>
         	<tbody class="buscar">
@@ -177,17 +220,30 @@
 	            <td>{precio_base}</td>
 	            <td>{precio_tarjeta}</td>
 	            <td>{credito_personal}</td>
-	            <td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
-							Ver
-						</button></td>
-	            <td>
-	            <!--<a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
-	            	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
+
+	            <td> 
+	            	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+							Ver Fotos
+					</button>
+					<br>
+					
+					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
 							Vender
-						</button>
-	            <!--</a>-->
+					</button>
+					<br>
+					<!-- START BLOCK : actualiza_stock_boton -->
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
+					<br>
+					<!-- START BLOCK : actualiza_stock_boton -->
+					<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>
+
+				</td>
+	            <!--<td>
+	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
+	            	
+	            <!--</a>
 	            
-	            </td>
+	            </td>-->
 	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->
 			 

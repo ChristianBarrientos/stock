@@ -14,7 +14,7 @@ class Articulo_Controller{
                             
                             $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
-                            
+                             
                             foreach ($_SESSION['lotes'] as $key => $value) {
                             $vueltas = 0;
                             //foreach ($_SESSION["lote_local"] as $key => $value) {
@@ -67,6 +67,8 @@ class Articulo_Controller{
                                     $id_local_ventas_art_ = array();
                                     $cantidad_parcial_local__ = array();
                                     $id_lote_local_venta__ = array();
+                                    $art_lote_local_actual_stock = array();
+                                    //$locales_todos = usuario::obtener_locales($_SESSION['usuario']->getId_user());
                                     //print_r($_SESSION["lote_local"]);
                                     foreach ($_SESSION["lote_local"] as $key2 => $value2) {
 
@@ -74,7 +76,9 @@ class Articulo_Controller{
                                            
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
                                                 //print_r($value3->getId_local());
+                                                 
                                                 if ($value3->getCantidad_parcial() > 0) {
+                                                    $art_lote_local_actual_stock = $value2;
                                                     $id_lote_local_venta__[] = $value3->getId_lote_local();
                                                     $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
                                                     $nom_local__[] = $value3->getId_local()->getNombre();
@@ -175,8 +179,9 @@ class Articulo_Controller{
 
                                     $tpl->newBlock("modal_venta_art");
                                     $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
-                                    $contadori = 0;
                                     
+                                    $contadori = 0;
+                                   
                                     foreach ($nom_local__ as $key5 => $value5) {
                                         
                                         //Modal venta
@@ -192,11 +197,88 @@ class Articulo_Controller{
                                         
                                         //Fin Modal Venta
                                     }
-                                /*$tpl->assign("descripcion", $value->getDescripcion());
-                                $tpl->assign("direccion", $value->getId_zona());
-                                $tpl->assign("cantidad_empl", $value->getCantidad_empl());*/
+
+
+                                    //Actualizar stock Modal
+                                    //Todos los locales locales_todos
+                                    
+                                    //$tpl->assign("id_art_lote_local_stock_actual",);
+                                    //Locales en el que tiene el articulo nom_local__
+                                    
+                                    /* ($art_lote_local_actual_stock as $key10 => $value10) {
+                                        print_r($value10->getId_lote());
+                                    }*/
+                                    $tpl->newBlock("actualiza_stock_boton");
+                                    $tpl->assign("id_art_lote",$value->getId_lote());
+                                    $tpl->newBlock("modal_actualiza_stock");
+                                    $tpl->assign("id_art_lote",$value->getId_lote());
+                                    $tpl->assign("id_art_lote_stock_actual",$value->getId_lote());
+                                    $contadori = 0;
+                                    //Mostrar con local
+                                    foreach ($nom_local__ as $key6 => $value6) {
+                                        
+                                        //Modal venta
+                                       
+                                         
+                                        $tpl->newBlock("actualiza_sin_stock_locales_cant");
+                                        $tpl->assign("nombre_local",$value6);
+                                        $tpl->assign("id_local",$id_lote_local_venta__[$contadori]);
+                                        $tpl->assign("cantidad_local",$cantidad_parcial_local__[$contadori]);
+                                        $contadori = $contadori + 1;
+                                        
+                                        
+                                        //Fin Modal Venta
                                     }
-                                //}
+                                    $tpl->gotoBlock("_ROOT");
+                                    
+                                    $contadori = 0;
+                                    $actualiza_stock_bandera = 0;
+                                   //) print_r($_SESSION["locales"]);
+                                    $actualiza_stock_locales_sinart = array();
+                                    foreach ($_SESSION["locales"] as $key7 => $value7) {
+                                        
+                                        //Modal venta
+                                        $nombre_local_sin = $value7->getNombre();
+                                        for ($i=0; $i < count($nom_local__) ; $i++) { 
+                                            $nombre_local_con = $nom_local__[$i];
+                                            if (!(strcmp($nombre_local_con, $nombre_local_sin ) == 0)) {
+                                               
+                                                 
+                                                
+                                            }else{
+                                                $actualiza_stock_bandera = $actualiza_stock_bandera + 1;
+                                            }
+                                             
+                                        }
+                                      
+
+                                        if ($actualiza_stock_bandera == 0) {
+                                            
+                                            //print_r($value7);
+                                           
+                                            $actualiza_stock_locales_sinart = $value7;
+                                            $tpl->newBlock("actualiza_sin_stock_locales_cant");
+                                            $tpl->assign("nombre_local",$value7->getNombre());
+                                            $tpl->assign("id_local",$value7->getId_local());
+                                            $tpl->assign("cantidad_local",0);
+                                            $actualiza_stock_bandera = 0;
+                                            # code...
+                                        }else{
+                                             $actualiza_stock_bandera = 0;
+                                        }
+                                    }
+                                    //print_r($_SESSION["locales"]);
+                                    
+                                    //echo "aca";
+                                    //print_r($actualiza_stock_locales_sinart);
+                                    //$id_lote_local_venta__[] = $value3->getId_lote_local();
+                                    //$id_local_ventas_art_[] = $value3->getId_local()->getId_local();
+                                    //$nom_local__[] = $value3->getId_local()->getNombre();
+                                    //$cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                  
+                                
+                                    }
+                               
                             }
                             //Lote de Articulos por Local
                             //$_SESSION["lote_local"] 
@@ -1029,7 +1111,23 @@ class Articulo_Controller{
         return $tpl->getOutputContent();
         }
 
+
+
     //}
+        public static function actualiza_stock(){
+            $id_local = $_POST['actualiza_nombre_local'];
+            $cantidad_actualizar = $_POST['actualiza_cantidad_local'];
+            $id_lote = $_GET['id_art_lote_stock_actual'];
+         
+            
+           
+
+
+            $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+            $tpl->prepare();
+
+        }
+
        public static function cargar_art_general(){
             if (isset($nombre)) {
                  

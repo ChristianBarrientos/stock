@@ -331,7 +331,7 @@ class usuario {
 
         global $baseDatos;
          
-        $res = $baseDatos->query("SELECT * FROM usuarios WHERE usuario = '$user'");  
+        $res = $baseDatos->query("SELECT * FROM usuarios WHERE usuario LIKE '$user'");  
 
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
@@ -339,6 +339,7 @@ class usuario {
             return false;
         }
         else{
+            
             return true;
         }
         
@@ -366,7 +367,8 @@ class usuario {
         global $baseDatos;
         
         //`pass`=[value-6] WHERE 1
-        $sql = "UPDATE `usuarios` SET `usuario`='$usuario'  WHERE $id_usuarios = $id_usuarios";
+        $id_usuarios = 2;
+        $sql = "UPDATE `usuarios` SET `usuario`='$usuario'  WHERE id_usuarios = $id_usuarios";
         $res = $baseDatos->query($sql);
         return $res;   
     }
@@ -375,7 +377,7 @@ class usuario {
         global $baseDatos;
         
         //`pass`=[value-6] WHERE 1
-        $sql = "UPDATE `usuarios` SET `pass`='$pass'  WHERE $id_usuarios = $id_usuarios";
+        $sql = "UPDATE `usuarios` SET `pass`='$pass'  WHERE id_usuarios = $id_usuarios";
         $res = $baseDatos->query($sql);
         return $res;   
     }

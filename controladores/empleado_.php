@@ -373,6 +373,14 @@ class Empleado_Controller{
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
 
+         
+        if (!(usuario::verificar_existencia($usuario))) {
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+            return $tpl->getOutputContent();
+        }else{
+             
+        }
         $datos_nuevos = array($nombre,$apellido,$genero,$dni,$fecha_nac,$fecha_alta,$direccion,$correo,$telefono,$usuario,$pass,$locales);
          
         $locales_empleado = usuario::obtener_locales_empleado($id_usuario_empleado);
@@ -436,6 +444,7 @@ class Empleado_Controller{
                         break;
                     case 9:
                         # cambiar usuario
+
                         $ok_up = usuario::up_usuario($id_usuario_empleado,$datos_nuevos[$i]);
                         break;
                     case 10:
@@ -460,6 +469,7 @@ class Empleado_Controller{
         else{
             $tpl = new TemplatePower("template/error.html");
             $tpl->prepare();
+
 
         }
 
