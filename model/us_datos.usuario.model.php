@@ -43,6 +43,19 @@ class us_datos {
         }
         
     }
+    public static function generar_us_datos($id_datos){
+          global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM us_datos WHERE id_datos = $id_datos");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            $us_datos = new us_datos($res_fil['id_datos'],$res_fil['nombre'],$res_fil['apellido'],$res_fil['fecha_nac'],$res_fil['dni'],$res_fil['id_foto'],$res_fil['genero'],$res_fil['id_fecha_ab']);
+            return $us_datos;
+        }
+        else{
+            return false;
+        }
+    }
 
     public static function alta_fecha_ab($alta, $baja = null){
         global $baseDatos;

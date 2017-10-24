@@ -9,7 +9,7 @@ class us_prvd_contacto {
     
 
 
-    public function __construct($id_contacto, $direccion, $correo,$nro_caracteristica,$nro_telefono)
+    public function __construct($id_contacto, $direccion, $correo,$nro_caracteristica = null,$nro_telefono = null)
     {
         $this->id_contacto = $id_contacto;
         $this->direccion = $direccion;
@@ -19,6 +19,20 @@ class us_prvd_contacto {
        
         
         
+    }
+
+    public static function generar_us_contacto($id_contacto){
+          global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM us_prvd_contacto WHERE id_contacto = $id_contacto");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            $us_prvd_contacto = new us_prvd_contacto($res_fil['id_contacto'],$res_fil['direccion'],$res_fil['correo']);
+            return $us_prvd_contacto;
+        }
+        else{
+            return false;
+        }
     }
 
     public static function alta_contacto($direccion,$correo,$telefono){

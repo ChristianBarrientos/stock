@@ -306,11 +306,13 @@ class usuario {
     }
 
     public static function generar_usuario($id_usuarios){
-            global $baseDatos;
+        global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM usuarios WHERE id_usuarios = $id_usuarios");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $user = new usuario($res_fil['usuario'],$res_fil['pass'],$res_fil['id_usuarios'],$res_fil['id_datos'],$res_fil['id_contacto'],$res_fil['acceso']);
+            $id_datos = us_datos::generar_us_datos($res_fil['id_datos']);
+            $id_contacto = us_prvd_contacto::generar_us_contacto($res_fil['id_contacto']);
+            $user = new usuario($res_fil['usuario'],$res_fil['pass'],$res_fil['id_usuarios'],$id_datos,$id_contacto,$res_fil['acceso']);
             return $user;
         }
         else{

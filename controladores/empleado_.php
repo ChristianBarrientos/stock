@@ -36,11 +36,11 @@ class Empleado_Controller{
 	}
 
 	public static function menu(){
-			if (Ingreso_Controller::es_admin()) {
+			if (!(Ingreso_Controller::es_admin())) {
 				$tpl = new TemplatePower("template/seccion_admin_empleado.html");
 				$tpl->prepare();
-			$empleados_si = false;
-   
+			    $empleados_si = false;
+            }
              
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
 
@@ -50,12 +50,13 @@ class Empleado_Controller{
 
 					//foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
 						//print_r($valor->getId_datos()->getFecha_alta());
-                        print_r($valor->getAcceso());
+                        
 
 						if ($valor->getAcceso() == 'OPER') {
+                            
 							$empleados_si = true;
 							$tpl->newBlock("con_empleados");
-							$tpl->assign("empl_nombre", $valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
+							$tpl->assign("empl_nombre",$valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
                             $fecha_alta = $valor->getId_datos()->getFecha_alta();
                             //if (strcmp($fecha_alta, "0000-00-0" ) == 0 ) {
                             if ($fecha_alta ==  0000-00-0 ) {
@@ -111,10 +112,6 @@ class Empleado_Controller{
             
 			if (!($empleados_si)) {
 				$tpl->newBlock("sin_empleados");
-			}
-			
-			
-
 			}
 			else{
 				return Ingreso_Controller::salir();
