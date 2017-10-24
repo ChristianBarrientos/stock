@@ -36,9 +36,10 @@ class Empleado_Controller{
 	}
 
 	public static function menu(){
-			if (!(Ingreso_Controller::es_admin())) {
-				$tpl = new TemplatePower("template/seccion_admin_empleado.html");
-				$tpl->prepare();
+            $tpl = new TemplatePower("template/seccion_admin_empleado.html");
+            $tpl->prepare();
+			if (Ingreso_Controller::es_admin()) {
+				
 			    $empleados_si = false;
             }
              
