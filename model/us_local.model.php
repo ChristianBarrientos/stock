@@ -54,6 +54,7 @@ class us_local {
         $res = $baseDatos->query("SELECT * FROM us_local WHERE id_zona = '$id_zona'");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
+         
         if (count($filas) != 0) {
             
             return $filas;

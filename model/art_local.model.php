@@ -34,7 +34,10 @@ class art_local {
         foreach ($empleados as $key => $value) {
             $empleados_lista[] = usuario::obtener_tabla_usuario($value['id_usuarios']);
 
+
         }
+        
+       
         return $empleados_lista;
        
 

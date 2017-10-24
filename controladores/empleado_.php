@@ -40,15 +40,17 @@ class Empleado_Controller{
 				$tpl = new TemplatePower("template/seccion_admin_empleado.html");
 				$tpl->prepare();
 			$empleados_si = false;
-
+   
+             
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
 
 				
+                //print_r($_SESSION["locales_empleados"][0]);
+				foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
 
-				foreach ($_SESSION["locales_empleados"] as $key => $value) {
-
-					foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
+					//foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
 						//print_r($valor->getId_datos()->getFecha_alta());
+                        print_r($valor->getAcceso());
 
 						if ($valor->getAcceso() == 'OPER') {
 							$empleados_si = true;
@@ -100,7 +102,7 @@ class Empleado_Controller{
 
                             $tpl->assign("id_empleado", $valor->getId_user());
 						}
-					}	
+					//}	
 				}
 				
 				

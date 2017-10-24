@@ -138,7 +138,7 @@ class usuario {
             $locales = array();
             $locales_empleados = array();
             $locales_articulos = array();
-            
+           // print_r($filas);
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                 $locales_empleados[] = art_local::generar_local_empleados($valor['id_zona']);
@@ -150,10 +150,43 @@ class usuario {
             
             $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
             $_SESSION["locales"] = $locales;
-            $_SESSION["locales_empleados"] = unique_multidim_array($locales_empleados,'id_usuarios'); 
+            $array_id_empelados = array();
+            foreach ($locales_empleados as $key3 => $value3) {
+                foreach ($value3 as $key4 => $value4) {
+                    //array_push($array_id_empelados, $value4->getId_user())
+                    $array_id_empelados[] = $value4->getId_user();
+
+                }
+
+                
+            }
+             
+            $okok_empleados = array_unique($array_id_empelados);
+            $okok_empleados_fin = array();
+            foreach ($okok_empleados as $key5 => $value5) {
+ 
+                $okok_empleados_fin[] = usuario::generar_usuario($value5);
+            }
+            //print_r($okok_empleados_fin);
+            $_SESSION["locales_empleados"] = $okok_empleados_fin;
+         
+            //$_SESSION["locales_empleados"] =  $locales_empleados; 
             //$_SESSION["locales_empleados"] = $locales_empleados;
             $_SESSION["locales_articulos"] = $locales_articulos;
-
+            
+            /*foreach ($locales_empleados as $key => $value3) {
+                foreach ($value3 as $key => $value4) {
+                    print_r($value4->getId_user());
+                }
+                
+            }
+            echo "&&";
+            foreach ($_SESSION["locales_empleados"] as $key => $value) {
+                foreach ($value as $key2 => $value2) {
+                    print_r($value2->getId_user());
+                }
+                
+            }*/
              
             return true;
         }
