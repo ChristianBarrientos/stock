@@ -25,7 +25,7 @@ class art_carga {
         $sql = "INSERT INTO `art_carga`(`id_carga`, `fecha_hora`, `id_usuario`) VALUES (0,'$fecha_hora',$id_usuario)";
         $res = $baseDatos->query($sql);
         if ($res) {
-              
+             
             return $id_carga;
         }else{
              

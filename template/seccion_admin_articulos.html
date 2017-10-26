@@ -25,7 +25,28 @@
 											
 										<input  class="art_ventas_radio"  name="actualiza_cantidad_local[]" type="number" value="{cantidad_local}" id='art_ventas_radio'>
 									</div>
+
 								</div>
+								<!-- START BLOCK : actualiza_stock_fecha_art -->
+								<div class='input-group date' id='datetimepicker{nombre_local_art_2}'>
+			            			<input placeholder="AAAA-MM-DD" name="art_carga_local_fecha_[]" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#datetimepicker{nombre_local_art}').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD HH:MM:SS'
+
+
+								        });
+								    });
+								</script>
+								<!-- END BLOCK : actualiza_stock_fecha_art -->
 								<!-- END BLOCK : actualiza_sin_stock_locales_cant -->
 										     
 									

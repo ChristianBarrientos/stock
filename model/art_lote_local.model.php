@@ -146,6 +146,44 @@ class art_lote_local {
 
     }
 
+    public static function cantidad_parcial_modificada($id_lote_local,$cantidad_parcial){
+       
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote_local = $id_lote_local ");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            if ($res_fil['cantidad_parcial'] == $cantidad_parcial) {
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        else{
+            return false;
+        }
+        
+          
+    
+
+    }
+
+    public static function update_cantidad_parcial($id_lote_local,$cantidad_parcial){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_lote_local` SET `cantidad_parcial`='$cantidad_parcial' WHERE id_lote_local = $id_lote_local");  
+         
+        return $res;
+       
+
+
+    }
+
+
+
     public static function actualiza_lote_cantidad($nuevo){
         global $baseDatos;
         $id_lote = $_SESSION["art_lote_local"]->getId_lote()->getId_lote();

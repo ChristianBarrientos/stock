@@ -104,6 +104,32 @@ class art_lote {
         }
     }
 
+    public static function obtener_cantidad_total($id_lote){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_lote` WHERE id_lote = $id_lote");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            
+            return $res_fil['cantidad_total'];
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+    public static function update_cantidad_total($id_lote,$cantidad_total){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_lote` SET `cantidad_total`='$cantidad_total' WHERE id_lote = $id_lote");  
+         
+        return $res;
+       
+
+
+    }
+
 
     public function getId_lote()
     {
