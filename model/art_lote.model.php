@@ -24,20 +24,7 @@ class art_lote {
 
     public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc,$id_art_fotos,$id_proveedor = 'NULL' ,$descripcion = 'null'){
         global $baseDatos;
-        /*echo "%%";
-        echo $id_art_conjunto;
-        echo "&&";
-        echo $cantidad_total;
-        echo "&&";
-        echo $id_cb;
-        echo "&&";
-        echo $id_gc;
-        echo "&&";
-        echo $id_proveedor;
-        echo "&&";
-        echo $descripcion;
-        echo "&&";
-        echo "%%";*/
+       
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         

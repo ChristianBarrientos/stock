@@ -32,7 +32,7 @@ class Articulo_Controller{
                                 $nombre_ = $art.', '.$marca.', '.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                 print_r($si_arra[0]->getId_categoria());
-                                echo "string";
+                                
                                 */
                                 
                                 if (True) {
@@ -217,15 +217,13 @@ class Articulo_Controller{
                                     $tpl->assign("id_art_lote_stock_actual",$value->getId_lote());
                                     $contadori = 0;
                                     //Mostrar con local
-                                    print_r($id_lote_local_venta__);
+                                   
                                     foreach ($nom_local__ as $key6 => $value6) {
                                         
                                         //Modal venta
                                         $tpl->newBlock("actualiza_sin_stock_locales_cant");
                                         $tpl->assign("nombre_local",$value6);
-                                        echo "&&";
-                                        echo $id_local_ventas_art_[$contadori];
-                                        echo "&&";
+                                       
                                         $tpl->assign("id_local",$id_local_ventas_art_[$contadori]);
                                         $tpl->assign("cantidad_local",$cantidad_parcial_local__[$contadori]);
                                         
@@ -269,9 +267,7 @@ class Articulo_Controller{
                                             $actualiza_stock_locales_sinart = $value7;
                                             $tpl->newBlock("actualiza_sin_stock_locales_cant");
                                             $tpl->assign("nombre_local",$value7->getNombre());
-                                            echo "%%";
-                                            echo $value7->getId_local();
-                                            echo "%%";
+                                            
                                             $tpl->assign("id_local",$value7->getId_local());
                                             $tpl->assign("cantidad_local",0);
                                             //$tpl->newBlock("actualiza_stock_fecha_art");
@@ -302,8 +298,7 @@ class Articulo_Controller{
                                     $actualiza_stock_bandera = 0;
                                     $contadori = 0;
                                     //print_r($_SESSION["locales"]);
-                                    
-                                    //echo "aca";
+                                
                                     //print_r($actualiza_stock_locales_sinart);
                                     //$id_lote_local_venta__[] = $value3->getId_lote_local();
                                     //$id_local_ventas_art_[] = $value3->getId_local()->getId_local();
@@ -550,8 +545,7 @@ class Articulo_Controller{
                                         
                                         $tpl->newBlock("boton_con_stock");
                                         $id_lote_local_fin = art_lote_local::obtener_lote_local_oper($value->getId_lote(),$id_empleado_venta_local_art);
-                                        //echo $value->getId_lote();
-                                        //echo $id_empleado_venta_local_art;
+                                       
                                         $tpl->assign("id_lote_local",$id_lote_local_fin);
                                         //$tpl->assign("selecionar_local_venta_stock",$value->getId_lote());
                                     }
@@ -777,7 +771,7 @@ class Articulo_Controller{
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);
-            echo "%%";
+             
             print_r($valor);*/
             for ($i=0; $i <=$total_locales ; $i++) { 
                 //Revisar el contador nos va a dar falsos positivos!!!
@@ -851,8 +845,7 @@ class Articulo_Controller{
                 if (strcmp($nombre, "Precio" ) == 0) {
                  
                     $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$art_precio_base,"En moneda local");
-                    #echo "PRECIO:";
-                    #echo $nombre .' '.$valor;
+                     
                     //Como precio entra primero, lo usamos como bandera para el id del grupo de categorias
                     $id_gc = art_grupo_categoria::alta_art_gc($id_categoria_precio);
 
@@ -862,8 +855,8 @@ class Articulo_Controller{
                 if (strcmp($nombre, "Medida" ) ==  0) {
                  
                     $id_categoria_medida = art_categoria::alta_art_categoria($nombre,$art_medida);
-                    #echo "MEDIDA:";
-                    #echo $nombre .' '.$valor;
+                    
+
                     $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_medida);
                     if ($ok) {
                         $nook = false;
@@ -874,8 +867,8 @@ class Articulo_Controller{
                 if (strcmp($nombre, "Tarjeta" ) ==  0) {
                      
                     $id_categoria_tarjeta = art_categoria::alta_art_categoria($nombre,trim($art_precio_tarjeta,'%'),"En porcentaje");
-                    #echo "TARJETA:";
-                    #echo $nombre .' '.$valor;
+                    
+
                     $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_tarjeta);
                     if ($ok) {
                         $nook = false;
@@ -884,9 +877,8 @@ class Articulo_Controller{
 
                 if (strcmp($nombre, "CreditoP" ) ==  0) {
                  
-                    $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,trim($art_precio_cp,'%'),"En porcentaje");
-                    #echo "CREDITOP:";
-                    #echo $nombre .' '.$valor;
+                     $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,trim($art_precio_cp,'%'),"En porcentaje");
+
                     $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_creditop);
                     if ($ok) {
                         $nook = false;
@@ -895,8 +887,7 @@ class Articulo_Controller{
 
                 if (strcmp($nombre, "Color" ) ==  0) {
                  
-                    #echo "COLOR:";
-                    #echo $nombre .' '.$valor;
+                
                     $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_color,'Color escrito');
                     $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_color);
                     if ($ok) {
@@ -974,7 +965,7 @@ class Articulo_Controller{
             $_fecha = trim($_fecha,'PM');
             $_fecha = substr($_fecha, 0, -1);
             $_fecha = $_fecha.':'.'00';
-            echo$_fecha;*/
+            */
              
             $id_carga = art_carga::alta_art_carga($value['Fecha'], $_SESSION["usuario"]->getId_user());
             $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value['Id'],$value['Cantidad'],$id_carga);
@@ -1206,18 +1197,10 @@ class Articulo_Controller{
                           
                             if ($id_carga) {
                         //Crear registro en art_lote_local
-                            //echo "%%";
-                            //echo $id_lote;
-                            echo "&&";
-                            echo $value;
-                            echo "&&";
-                            //echo $cantidad_actualizar[$contador];
-                            //echo "&&";
-                            //echo $id_carga;
-                            //echo "%%";
+                            
 
                                 $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value,$cantidad_actualizar[$contador],$id_carga);
-                                echo $id_lote_local;
+                                
                         //Update art_lote cantidad total
                                 $cantidad_total_actual = art_lote::obtener_cantidad_total($id_lote);
                                 $cantidad_final = $cantidad_total_actual + $cantidad_actualizar[$contador];
@@ -1256,12 +1239,12 @@ class Articulo_Controller{
             if (isset($nombre)) {
                  
                 $nombre = ucwords(strtolower($_POST['art_general']));
-                #echo $nombre;
+                
                 
                 $res = articulo::alta_art($nombre);
                 
                 if ($res) {
-                    echo "okok";
+                    
                 }
 
             }
@@ -1270,14 +1253,14 @@ class Articulo_Controller{
         public static function cargar_art_marca(){
 
         $nombre = ucwords(strtolower($_POST['art_marca']));
-        echo $nombre;
+       
 
         }
 
         public static function cargar_art_tipo(){
 
         $nombre = ucwords(strtolower($_POST['art_tipo']));
-        echo $nombre;
+       
 
         }
 

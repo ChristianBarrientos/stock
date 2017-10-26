@@ -120,8 +120,7 @@ class art_local {
     public static function obtener_id_local($id_zona){
         //obtener empleados por local
         global $baseDatos;
-        echo "id_zona";
-        echo $id_zona;
+        
         $res = $baseDatos->query("SELECT * FROM art_local WHERE id_zona = $id_zona");  
 
         $res_fil = $res->fetch_assoc();

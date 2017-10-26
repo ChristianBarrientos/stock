@@ -28,10 +28,9 @@ class us_acceso {
                 VALUES (0,$id_local,$id_usuario,'$fecha_hora_inicio','$fecha_hora_fin',$id_zona)";
         $res = $baseDatos->query($sql);
         if ($res) {
-            echo "si";
+            
         }else{
-            echo $baseDatos->error;
-            echo "no";
+            
         }
         return $id_acceso;
          

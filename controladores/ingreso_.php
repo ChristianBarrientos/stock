@@ -89,10 +89,10 @@ class Ingreso_Controller{
 			$pass = mysqli_real_escape_string($baseDatos,$_POST['pass']);*/
 			$user =  $_POST['usuario'];
 			$pass =  $_POST['pass'];
-			/*echo $user;
+			/*
 			$user = htmlentities($_GET["usuario"], ENT_QUOTES);
 			$pass = htmlentities($_GET["pass"], ENT_QUOTES);
-			echo $user;*/
+			*/
 			//ucwords(strtolower($bar));
 			//$nombre = $baseDatos->real_escape_string($_POST['nombre']);
 			$usuario = new usuario($user, $pass);
@@ -369,7 +369,7 @@ $chartColours = array(
 
     public static function reporte_av($fecha_desde,$fecha_hasta){
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	//print_r($respuesta);
+    	// 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -410,7 +410,7 @@ $chartColours = array(
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 		foreach ($respuesta as $key => $value) {
-			//print_r($value);
+			// 
 			$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
 			$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
 			$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
@@ -505,7 +505,7 @@ $chartColours = array(
     public static function reporte_vt($fecha_desde,$fecha_hasta){
     	//$respuesta = reporte::reporte_vt($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	//print_r($respuesta);
+    	// 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -546,7 +546,7 @@ $chartColours = array(
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 		foreach ($respuesta as $key => $value) {
-			//print_r($value);
+			// 
 			$medio_pago = $value->getId_venta()->getMedio();
 			if (strcmp($medio_pago, "Tarjeta de Credito")  == 0 ) {
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -644,7 +644,7 @@ $chartColours = array(
     public static function reporte_vc($fecha_desde,$fecha_hasta){
     	//$respuesta = reporte::reporte_vc($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	//print_r($respuesta);
+    	// 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -685,7 +685,7 @@ $chartColours = array(
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 		foreach ($respuesta as $key => $value) {
-			//print_r($value);
+			// 
 			$medio_pago = $value->getId_venta()->getMedio();
 			if (strcmp($medio_pago, "Credito Personal")  == 0 ) {
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -783,7 +783,7 @@ $chartColours = array(
     public static function reporte_co($fecha_desde,$fecha_hasta){
     	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	//print_r($respuesta);
+    	//p 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -824,7 +824,8 @@ $chartColours = array(
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 		foreach ($respuesta as $key => $value) {
-			//print_r($value);
+			// 
+
 			$medio_pago = $value->getId_venta()->getMedio();
 			if (strcmp($medio_pago, "Precio Base")  == 0 ) {
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -923,7 +924,7 @@ $chartColours = array(
     public static function reporte_vem($fecha_desde,$fecha_hasta){
     	//$respuesta = reporte::reporte_vem($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	//print_r($respuesta);
+    	// 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -960,7 +961,7 @@ $chartColours = array(
 		$respuesta_final = array();
 		 
 		foreach ($respuesta as $key => $value) {
-			//print_r($value);
+			// 
 			 
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
 				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
@@ -1069,7 +1070,7 @@ $chartColours = array(
 	 	$numero_cont = 1;
 	 	 
 		foreach ($respuesta as $key2 => $value2) {
-			//print_r($value);
+			// 
 		
 			foreach ($value2 as $key => $value) {
 				# code...

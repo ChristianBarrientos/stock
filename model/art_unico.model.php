@@ -53,7 +53,7 @@ class art_unico {
             $id_lote_local =  art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
             $id_venta = art_venta::generar_venta($res_fil['id_venta']);
             $unico = new art_unico($res_fil['id_unico'],$id_lote_local,$id_venta);
-            //print_r($unico);
+            
             return $unico;
         }
         else{

@@ -48,11 +48,10 @@ class Empleado_Controller{
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
 
 				
-                //print_r($_SESSION["locales_empleados"][0]);
 				foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
 
 					//foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
-						//print_r($valor->getId_datos()->getFecha_alta());
+						
                         
 
 						if ($valor->getAcceso() == 'OPER') {
@@ -157,23 +156,7 @@ class Empleado_Controller{
         }
         //Cargar en tabla us_datos
         //ucwords(strtolower($_POST['empl_correo']))
-        /*echo "FECHA ALTA:";
-        echo $fecha_alta;
-        echo "NOMBRE";
-        echo $nombre;
-        echo "APELLIDO";
-        echo $apellido;
-        echo "FECHA ANCIMIENTO";
-        echo $fecha_nac;
-        echo "GENERO";
-        echo $genero;
-        echo "DNI";
-        echo $dni;
-        echo "%%";
-        echo $direccion;
-        echo $correo;
-        echo $telefono;
-        */
+       
         $id_datos = us_datos::alta_datos($fecha_alta,$nombre,$apellido,$fecha_nac,$dni,2,$genero);
         $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
           
@@ -190,13 +173,13 @@ class Empleado_Controller{
                 $tpl->prepare();
             }
             else{
-                echo "malusuario";
+               
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
             }
         }
         else{
-            echo "maldatoscontacto";
+            
             $tpl = new TemplatePower("template/error.html");
             $tpl->prepare();
         }
@@ -260,14 +243,14 @@ class Empleado_Controller{
         	else{
         		
         		
-                echo "maldatoscontacto";
+               
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
 
         	}
         }
         else{
-            echo "malusuariodni";
+            
         	$tpl = new TemplatePower("template/cargar_empleado.html");
             $tpl->prepare();
             $tpl->newBlock("error_usuario");
@@ -280,11 +263,11 @@ class Empleado_Controller{
         $tpl = new TemplatePower("template/modificar_empleado.html");
         $tpl->prepare();
         
-        //print_r($_SESSION["locales_empleados"]);
+        
         foreach ($_SESSION["locales_empleados"] as $key => $valor) {
              
                // foreach ($value as $clave => $valor) {
-                        //print_r($valor->getId_datos()->getFecha_alta());
+                       
                    
                     if ($id_usuario == $valor->getId_user()) {
 
@@ -391,7 +374,7 @@ class Empleado_Controller{
         foreach ($_SESSION["locales_empleados"] as $key => $value) {
 
                 foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
-                        //print_r($valor->getId_datos()->getFecha_alta());
+                      
                    
                     if ($id_usuario_empleado == $valor->getId_user()) {
                          
