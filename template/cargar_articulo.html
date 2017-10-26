@@ -115,7 +115,8 @@
 					
 		</div>
 	    <!-- END BLOCK : error_cb -->
-	  <form novalidate class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_articulo" method="post">
+ 
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_articulo" method="post">
 
 	     
 	    <div class="row">
@@ -331,7 +332,7 @@
 		    <label for="art_grupo_att">Agregar Fotos</label>
 		    </div>
 		    	<div class="col-md-4 col-sm-3 col-xs-8">
-				   <input id="input-b3" name="fotos_art[]" type="file" class="file"  
+				   <input accept="image/*" capture id="input-b3" name="fotos_art[]" type="file" class="file"  
 					    data-show-upload="false" multiple=true data-show-caption="true" 
 					    data-msg-placeholder="Seleccione las fotos a subir..">
 			    </div>
