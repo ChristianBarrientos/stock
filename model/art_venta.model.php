@@ -46,12 +46,14 @@ class art_venta {
 
     public static function generar_venta($id_venta){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_categoria = $id_categoria");  
+        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_venta = $id_venta");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
-            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['descripcion']);
-            return $categoria;
+            $id_usuario = usuario::generar_usuario($res_fil['id_usuarios']);
+
+            $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$res_fil['medio'],$res_fil['total']);
+            return $venta;
         }
         else{
             

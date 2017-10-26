@@ -49,8 +49,9 @@ class art_unico {
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
             $id_lote_local =  art_lote_local::generar_lote_local($res_fil['id_lote_local']);
-            $categoria = new art_unico($res_fil['id_unico'],$id_lote_local,$res_fil['valor']);
-            return $categoria;
+            $id_venta = art_venta::generar_venta($res_fil['id_venta']);
+            $unico = new art_unico($res_fil['id_unico'],$id_lote_local,$id_venta);
+            return $unico;
         }
         else{
             
