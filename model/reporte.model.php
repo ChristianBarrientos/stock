@@ -38,6 +38,26 @@ class reporte {
     	
     }
     public static function reporte_aem(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * 
+                                FROM `art_lote_local`");  
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+       
+        if (count($filas) != 0) {
+            $art_lotelocal = array();
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+               
+                $art_lotelocal[] = art_lote_local::generar_lote_local($valor['id_lote_local']);
+            }
+            return $art_lotelocal;
+        }
+        else{
+           
+            return false;
+        }
     	
     }
     public static function reporte_sa(){
