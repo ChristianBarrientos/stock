@@ -12,8 +12,8 @@ class art_venta {
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
-        $this->medio_pago = $medio_pago;
-        $this->total_pagar = $total_pagar;
+        $this->medio = $medio;
+        $this->total = $total;
        
     }
 
@@ -53,6 +53,8 @@ class art_venta {
             $id_usuario = usuario::generar_usuario($res_fil['id_usuarios']);
 
             $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$res_fil['medio'],$res_fil['total']);
+
+            
             return $venta;
         }
         else{

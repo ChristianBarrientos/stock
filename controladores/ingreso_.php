@@ -276,7 +276,7 @@ class Ingreso_Controller{
 
 
 	public static function reportes (){
-		Ingreso_Controller::setear_conf();
+		//Ingreso_Controller::setear_conf();
         $clave_reporte = $_GET['clave_reporte'];
         $fecha_desde = $_POST['fecha_desde'];
         $fecha_hasta = $_POST['fecha_hasta'];
@@ -324,7 +324,7 @@ class Ingreso_Controller{
 
     
 
-    public static function setear_conf(){
+    /*public static function setear_conf(){
     	$textColour = array( 0, 0, 0 );
 $headerColour = array( 100, 100, 100 );
 $tableHeaderTopTextColour = array( 255, 255, 255 );
@@ -358,41 +358,672 @@ $chartColours = array(
                   array( 255, 255, 100 ),
                 );
 
-$data = array(
+		$data = array(
           array( 9940, 10100, 9490, 11730 ),
           array( 19310, 21140, 20560, 22590 ),
           array( 25110, 26260, 25210, 28370 ),
           array( 27650, 24550, 30040, 31980 ),
         );
 
-    }
+    }*/
 
     public static function reporte_av($fecha_desde,$fecha_hasta){
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
-    	 
-    	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	//print_r($respuesta);
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
-    	$pdf->SetFont( 'Arial', 'B', 24 );
-    	$pdf->Ln( 100 );
-    	 
-		$pdf->SetFont( 'Arial', '', 20 );
-		$pdf->Write( 19, "2009 Was A Good Year" );
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+		foreach ($respuesta as $key => $value) {
+			//print_r($value);
+			$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+			$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+			$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
+			$nom_completo = $nom_marca.','.$nom_tipo;
+			$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
+			$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+
+			$medio_pago = $value->getId_venta()->getMedio();
+			 
+			
+			
+			$precio_final = $value->getId_venta()->getTotal();
+
+			$medio_sin = str_replace('$','',$precio_final);
+
+			 
+			$porciones = explode("x", $medio_sin);
+			
+			 
+		 
+			 
+			if (count($porciones) >1) {
+				$cantidad_cuotas = $porciones[0];
+				$precio_base = $porciones[1];
+				$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
+			}else{
+				//entra sin cuotas
+				$precio_final_final = $porciones[0];
+			}
+			$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
+			$medio_limpio[] = $medio_sin;
+			$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+			$numero_cont = $numero_cont + 1;
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "report.pdf", "I" );
+    	
     }
 
     public static function reporte_vt($fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_vt($fecha_desde,$fecha_hasta);
+    	//$respuesta = reporte::reporte_vt($fecha_desde,$fecha_hasta);
+    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    	//print_r($respuesta);
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+		foreach ($respuesta as $key => $value) {
+			//print_r($value);
+			$medio_pago = $value->getId_venta()->getMedio();
+			if (strcmp($medio_pago, "Tarjeta de Credito")  == 0 ) {
+				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
+				$nom_completo = $nom_marca.','.$nom_tipo;
+				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
+				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+
+			
+			 
+			
+			
+				$precio_final = $value->getId_venta()->getTotal();
+
+				$medio_sin = str_replace('$','',$precio_final);
+
+			 
+				$porciones = explode("x", $medio_sin);
+			
+			 
+		 
+			 
+				if (count($porciones) >1) {
+					$cantidad_cuotas = $porciones[0];
+					$precio_base = $porciones[1];
+					$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
+				}else{
+				//entra sin cuotas
+					$precio_final_final = $porciones[0];
+				}
+				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
+				$medio_limpio[] = $medio_sin;
+				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+				$numero_cont = $numero_cont + 1;
+			}
+			
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "reportvt.pdf", "I" );
     	
     }
     public static function reporte_vc($fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_vc($fecha_desde,$fecha_hasta);
+    	//$respuesta = reporte::reporte_vc($fecha_desde,$fecha_hasta);
+    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    	//print_r($respuesta);
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+		foreach ($respuesta as $key => $value) {
+			//print_r($value);
+			$medio_pago = $value->getId_venta()->getMedio();
+			if (strcmp($medio_pago, "Credito Personal")  == 0 ) {
+				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
+				$nom_completo = $nom_marca.','.$nom_tipo;
+				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
+				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+
+			
+			 
+			
+			
+				$precio_final = $value->getId_venta()->getTotal();
+
+				$medio_sin = str_replace('$','',$precio_final);
+
+			 
+				$porciones = explode("x", $medio_sin);
+			
+			 
+		 
+			 
+				if (count($porciones) >1) {
+					$cantidad_cuotas = $porciones[0];
+					$precio_base = $porciones[1];
+					$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
+				}else{
+				//entra sin cuotas
+					$precio_final_final = $porciones[0];
+				}
+				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
+				$medio_limpio[] = $medio_sin;
+				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+				$numero_cont = $numero_cont + 1;
+			}
+			
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
     public static function reporte_co($fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
+    	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
+    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    	//print_r($respuesta);
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+		foreach ($respuesta as $key => $value) {
+			//print_r($value);
+			$medio_pago = $value->getId_venta()->getMedio();
+			if (strcmp($medio_pago, "Precio Base")  == 0 ) {
+				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
+				$nom_completo = $nom_marca.','.$nom_tipo;
+				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
+				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+
+			
+			 
+			
+			
+				$precio_final = $value->getId_venta()->getTotal();
+
+				$medio_sin = str_replace('$','',$precio_final);
+
+			 
+				$porciones = explode("x", $medio_sin);
+			
+			 
+		 
+			 
+				if (count($porciones) >1) {
+					$cantidad_cuotas = $porciones[0];
+					$precio_base = $porciones[1];
+					$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
+				}else{
+				//entra sin cuotas
+					$precio_final_final = $porciones[0];
+				}
+				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
+				$medio_limpio[] = $medio_sin;
+				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+				$numero_cont = $numero_cont + 1;
+			}
+			
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "reportvc.pdf", "I" );
+
     	
     }
     public static function reporte_vem($fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_vem($fecha_desde,$fecha_hasta);
+    	//$respuesta = reporte::reporte_vem($fecha_desde,$fecha_hasta);
+    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    	//print_r($respuesta);
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['Empleado','Articulo','Local','Fecha y Hora'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			
+			 
+			
+				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+			
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		 
+		foreach ($respuesta as $key => $value) {
+			//print_r($value);
+			 
+				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
+				$nom_completo = $nom_marca.','.$nom_tipo;
+				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
+				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+
+				$venta_fecha = $value->getId_venta()->getFecha_hora();
+				
+				$respuesta_final[] = [$vendedor,$nom_completo,$local_venta,$venta_fecha];
+				 
+			
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				
+	  					
+	  				
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				
+	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		//$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
     public static function reporte_aem($fecha_desde,$fecha_hasta){

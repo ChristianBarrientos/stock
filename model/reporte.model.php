@@ -10,7 +10,7 @@ class reporte {
                                 AND au.id_venta = av.id_venta");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-        
+       
         if (count($filas) != 0) {
             $art_unico = array();
             //$usuario_prvd = array(0);

@@ -2,25 +2,25 @@
 class art_unico {
 	
 	private $id_unico;
-    private $id_lote;
+    private $id_lote_local;
     private $id_venta;
     
 
-    public function __construct($id_unico, $id_lote, $id_venta)
+    public function __construct($id_unico, $id_lote_local, $id_venta)
     {
         $this->id_unico = $id_unico;
-        $this->id_lote = $id_lote;
+        $this->id_lote_local = $id_lote_local;
         $this->id_venta = $id_venta;
        
     }
 
-    public static function alta_art_unico($id_lote,$id_venta){
+    public static function alta_art_unico($id_lote_local,$id_venta){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_unico = art_unico::ultimo_id_unico();
         
-        $sql = "INSERT INTO `art_unico`(`id_unico`, `id_lote_local`, `id_venta`) VALUES (0,$id_lote,$id_venta)";
+        $sql = "INSERT INTO `art_unico`(`id_unico`, `id_lote_local`, `id_venta`) VALUES (0,$id_lote_local,$id_venta)";
 
         $res = $baseDatos->query($sql);
        
@@ -46,11 +46,14 @@ class art_unico {
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM `art_unico` WHERE id_unico = $id_unico");  
         $res_fil = $res->fetch_assoc();
+
+         
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
-            $id_lote_local =  art_lote_local::generar_lote_local($res_fil['id_lote_local']);
+            $id_lote_local =  art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
             $id_venta = art_venta::generar_venta($res_fil['id_venta']);
             $unico = new art_unico($res_fil['id_unico'],$id_lote_local,$id_venta);
+            //print_r($unico);
             return $unico;
         }
         else{
@@ -71,14 +74,14 @@ class art_unico {
         return $this;
     }
 
-    public function getId_lote()
+    public function getId_lote_local()
     {
-        return $this->id_lote;
+        return $this->id_lote_local;
     }
     
-    public function setId_lote($id_lote)
+    public function setId_lote_local($id_lote_local)
     {
-        $this->id_lote = $id_lote;
+        $this->id_lote_local = $id_lote_local;
         return $this;
     }
 
