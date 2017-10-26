@@ -773,8 +773,7 @@ class Articulo_Controller{
         $lista_art_locales = array();
         /* Luego para cada campo y valor $_POST realizamos lo siguiente */
         $nook = true;
-        echo "valor del array de locales por operador";
-        print_r($total_locales);
+        
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);

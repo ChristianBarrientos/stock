@@ -16,7 +16,11 @@ public static function  cargar_datos ($nom, $size, $tipo, $archivo_tmp_name, $ar
             $tipo_a = substr(strrchr($nom, "."), 1);
             //nombre archivo destino $_SESSION["usuario"]->getId_user()
             $autor = $_SESSION["usuario"]->getId_user();
-            $destino = "imagenes/art/" . $autor . "_" . "_" . $art_nombre . "." . $tipo_a;
+            $wind = "imagenes/art/";
+            $linux = "/var/www/html/stock/imagenes/art";
+            $destino =  $wind. $autor . "_" . "_" . $art_nombre . "." . $tipo_a;
+			
+			
 
             copy($ruta, $destino);
             $archivo->ubicacion = $destino;
