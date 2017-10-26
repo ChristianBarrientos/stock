@@ -299,6 +299,19 @@ CREATE TABLE  art_unico (
      KEY (id_unico)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  us_acceso (
+     id_acceso INTEGER AUTO_INCREMENT NOT NULL,
+     id_local INTEGER NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     fecha_hora_inicio DATETIME NOT NULL,
+     fecha_hora_fin DATETIME,
+     id_zona INTEGER,
+     FOREIGN KEY (id_local) REFERENCES art_local(id_local) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_zona) REFERENCES mp_zona(id_zona) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_acceso)
+     ) ENGINE=InnoDB;
+
 
 
 

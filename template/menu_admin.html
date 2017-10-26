@@ -37,5 +37,560 @@
 
 			
 		</div>
+
+		<div class="row encabezado">
+			<div class="col-md-4 col-xs-6">
+				<div class="titulo-secciones panel-heading">Reportes</div>
+				
+			</div>
+			
+		</div>
+
+		<div class="row">
+				<div  class="col-md-2 col-xs-6">
+					
+					<!--id = av_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#av_">Articulos Vendidos</button>
+					
+				</div>
+				<div class="col-md-2 col-xs-6">
+					
+					<!--id = vt_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vt_">Ventas Tarjeta</button>
+					
+				</div>
+				<div class="col-md-2 col-xs-6">
+					
+					<!--id = vc_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vc_">Ventas Credito</button>
+					
+				</div>
+				<div class="col-md-2 col-xs-6">
+					
+					<!--id = vco_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vco_">Ventas Contado</button>
+					
+				</div>
+
+			</div>
+			<br>
+		<div class="row">
+				<div  class="col-md-2 col-xs-6">
+					
+					<!--id = vem_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vem_">Ventas Empleado</button>
+					
+				</div>
+				<div class="col-md-2 col-xs-6">
+					
+					<!--id = aem_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#aem_">Asistencia Empleados</button>
+					
+				</div>
+				<div class="col-md-2 col-xs-6">
+					
+					<!--id = sa_-->
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#sa_">Stock Articulos</button>
+					
+				</div>
+				<!--<div class="col-md-2 col-xs-6">
+					<a href="">
+						<button class="btn btn-info">Ventas Contado</button>
+					</a>
+				</div>-->
+
+			</div>	
+
+	</div>
+</div>
+
+<!--Ventanas MOdals -->
+<!--Reporde de Articulos Vendidos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="av_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=1" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='av_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#av_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='av_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#av_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Ventas con Tarjeta -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="vt_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=2" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='vt_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vt_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='vt_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vt_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Ventas Credito Personal -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="vc_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=3" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='vc_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vc_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='vc_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vc_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Ventas con Contado -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="vco_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=4" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='vco_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vco_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='vco_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vco_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Ventas por Empleado -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="vem_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=5" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='vem_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vem_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='vem_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#vem_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Asistencia Empleados -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="aem_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=6" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='aem_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#aem_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='aem_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#aem_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<!--Reporde de Stock Articulos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="sa_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=7" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='sa_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#sa_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='sa_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#sa_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+							 
+										     
+									
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
 	</div>
 </div>

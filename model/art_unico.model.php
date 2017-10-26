@@ -42,13 +42,14 @@ class art_unico {
         return $res_fil['LastId'];
     }
 
-    public static function generar_categoria($id_categoria){
+    public static function generar_unico($id_unico){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_categoria` WHERE id_categoria = $id_categoria");  
+        $res = $baseDatos->query("SELECT * FROM `art_unico` WHERE id_unico = $id_unico");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
-            $categoria = new art_categoria($res_fil['id_categoria'],$res_fil['nombre'],$res_fil['valor'],$res_fil['descripcion']);
+            $id_lote_local =  art_lote_local::generar_lote_local($res_fil['id_lote_local']);
+            $categoria = new art_unico($res_fil['id_unico'],$id_lote_local,$res_fil['valor']);
             return $categoria;
         }
         else{

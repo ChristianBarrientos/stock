@@ -245,6 +245,7 @@ class Ingreso_Controller{
 
 		$_SESSION["usuario"] = $usuario;
 		$_SESSION["permiso"] = $usuario->getAcceso();
+		
 
 	}
 
@@ -260,11 +261,93 @@ class Ingreso_Controller{
 	}
 
 	public static function salir(){
+		if ($_SESSION["permiso"] == 'OPER') {
+			$id_acceso = $_SESSION['usuario']->getId_Acceso();
+			$hoy = getdate();
+            $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+            us_acceso::update_fecha_hora_fina($id_acceso,$ahora);
+           
+        }
 		session_unset();
 		session_destroy();
 
 		return Ingreso_Controller::login();
 	}
+
+
+	public static function reportes (){
+        $clave_reporte = $_GET['clave_reporte'];
+        $fecha_desde = $_POST['fecha_desde'];
+        $fecha_hasta = $_POST['fecha_hasta'];
+        if (isset($_SESSION["usuario"])){
+        	if ($_SESSION["permiso"] != 'ADMIN') {
+        		return Ingreso_Controller::salir();
+        	}
+ 		}
+ 		
+        switch ($clave_reporte) {
+        	case 1:
+        		# Reporte Articulos Vendidos
+        		Ingreso_Controller::reporte_av($fecha_desde,$fecha_hasta);
+        		break;
+        	case 2:
+        		# Reporte Ventas Tarjetas
+        		Ingreso_Controller::reporte_vt($fecha_desde,$fecha_hasta);
+        		break;
+        	case 3:
+        		# Reporte Ventas Credito
+        		Ingreso_Controller::reporte_vc($fecha_desde,$fecha_hasta);
+        		break;
+        	case 4:
+        		# Reporte Ventas Contado
+        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta);
+        		break;
+        	case 5:
+        		# Reporte Ventas Empleado
+        		Ingreso_Controller::reporte_vem($fecha_desde,$fecha_hasta);
+        		break;
+        	case 6:
+        		# Reporte Asistencia Empleado
+        		Ingreso_Controller::reporte_aem($fecha_desde,$fecha_hasta);
+        		break;
+        	case 7:
+        		# Reporte Stock Articulo
+        		Ingreso_Controller::reporte_sa($fecha_desde,$fecha_hasta);
+        		break;
+        	
+        	default:
+        		# code...
+        		break;
+        }
+    }
+
+    public static function reporte_av($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    }
+    public static function reporte_vt($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_vt($fecha_desde,$fecha_hasta);
+    	
+    }
+    public static function reporte_vc($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_vc($fecha_desde,$fecha_hasta);
+    	
+    }
+    public static function reporte_co($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
+    	
+    }
+    public static function reporte_vem($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_vem($fecha_desde,$fecha_hasta);
+    	
+    }
+    public static function reporte_aem($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_aem($fecha_desde,$fecha_hasta);
+    	
+    }
+    public static function reporte_sa($fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_sa($fecha_desde,$fecha_hasta);
+    	
+    }
 
 	
 

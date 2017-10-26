@@ -41,6 +41,8 @@ class Empleado_Controller{
 			if (Ingreso_Controller::es_admin()) {
 				
 			    $empleados_si = false;
+            }else{
+                return Ingreso_Controller::salir();
             }
              
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
@@ -114,9 +116,9 @@ class Empleado_Controller{
 			if (!($empleados_si)) {
 				$tpl->newBlock("sin_empleados");
 			}
-			else{
-				return Ingreso_Controller::salir();
-			}
+			//else{
+			//	return Ingreso_Controller::salir();
+			//}
 		
 			return $tpl->getOutputContent();
 	}
@@ -278,13 +280,14 @@ class Empleado_Controller{
         $tpl = new TemplatePower("template/modificar_empleado.html");
         $tpl->prepare();
         
-
-        foreach ($_SESSION["locales_empleados"] as $key => $value) {
-
-                foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
+        //print_r($_SESSION["locales_empleados"]);
+        foreach ($_SESSION["locales_empleados"] as $key => $valor) {
+             
+               // foreach ($value as $clave => $valor) {
                         //print_r($valor->getId_datos()->getFecha_alta());
                    
                     if ($id_usuario == $valor->getId_user()) {
+
                         $nombre_ = $valor->getId_datos()->getNombre();
                         $apellido_ = $valor->getId_datos()->getApellido();
                         $dni_ = $valor->getId_datos()->getDni();
@@ -327,6 +330,7 @@ class Empleado_Controller{
 
 
                     }
+
                     
                 }
                 foreach ($_SESSION['locales'] as $key => $value) {
@@ -336,7 +340,7 @@ class Empleado_Controller{
                     $tpl->assign("id_local", $direccion);
                     $tpl->assign("nombre_local", $value->getNombre());
                 }
-        }   
+        //}   
     return $tpl->getOutputContent();    
 
     }

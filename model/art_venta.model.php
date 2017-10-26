@@ -44,9 +44,9 @@ class art_venta {
         return $res_fil['LastId'];
     }
 
-    public static function generar_categoria($id_categoria){
+    public static function generar_venta($id_venta){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_categoria` WHERE id_categoria = $id_categoria");  
+        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_categoria = $id_categoria");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion

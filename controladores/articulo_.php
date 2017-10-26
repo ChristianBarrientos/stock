@@ -339,8 +339,36 @@ class Articulo_Controller{
         }
 
         public static function pre_mostrar_operador(){
+
             $id_empleado_venta_local_art = $_GET['id_local'];
             $_SESSION['usuario']->setLocal_Actual($id_empleado_venta_local_art);
+            $id_usuario_oo = $_SESSION['usuario']->getId_user();
+            /*
+        [seconds] => 40
+        [minutes] => 58
+        [hours]   => 21
+        [mday]    => 17
+        [wday]    => 2
+        [mon]     => 6
+        [year]    => 2003
+        [yday]    => 167
+        [weekday] => Tuesday
+        [month]   => June
+        [0]       => 1055901520
+        $hoy = getdate();
+        */
+            $hoy = getdate();
+            $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+            //Tomar asistencia
+            if ($_SESSION["permiso"] == 'OPER') {
+
+                $id_acceso = us_acceso::insert_us_acceso($id_empleado_venta_local_art,$id_usuario_oo,$ahora);
+                $_SESSION['usuario']->setId_Acceso($id_acceso);
+
+               
+            }else{
+                return Ingreso_Controller::salir();
+            }
             return Articulo_Controller::mostrar_operador();
         }
 
@@ -355,8 +383,7 @@ class Articulo_Controller{
                 //print_r($_SESSION['usuario']->getId_user());
 
                 $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
-                echo "aca";
-                print_r($id_usuario_jefe);
+                
                 $tpl = new TemplatePower("template/seccion_operador_articulos.html");
                 $tpl->prepare();
                 if (isset($_SESSION['usuario'])) {

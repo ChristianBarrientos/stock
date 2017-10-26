@@ -8,6 +8,7 @@ class usuario {
     private $pass;
     private $acceso;
     private $local_actual;
+    private $id_acceso;
 	
     public function __construct($usuario, $pass, $id_user = null,$id_datos = null,$id_contacto = null, $acceso = null, $local_actual = null)
     {
@@ -495,6 +496,17 @@ class usuario {
     {
         $this->local_actual = $local_actual;
         return $this;
+    }
+
+    public function setId_Acceso($id_acceso)
+    {
+        $this->id_acceso = $id_acceso;
+        return $this;
+    }
+
+    public function getId_Acceso()
+    {
+        return $this->id_acceso;
     }
 }
 ?>
