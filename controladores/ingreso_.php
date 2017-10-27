@@ -146,6 +146,8 @@ class Ingreso_Controller{
                 $total_empl = $total_empl + $value->getCantidad_empl() -1;
                                 
             }
+            	
+
             	$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Locales');
 				$tpl->assign("total", count($_SESSION['locales']));
@@ -161,9 +163,13 @@ class Ingreso_Controller{
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Articulos');
 				$tpl->assign("total", count($_SESSION["lotes"]));
+
+				$tpl->newBlock("con_datos_reportes");
 			}
 			else{
 				$tpl->newBlock("sin_sucursales");
+				$tpl->newBlock("sin_datos_reportes");
+				
 			}
 
 		}
