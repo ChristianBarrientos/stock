@@ -270,24 +270,7 @@ class Articulo_Controller{
                                             
                                             $tpl->assign("id_local",$value7->getId_local());
                                             $tpl->assign("cantidad_local",0);
-                                            //$tpl->newBlock("actualiza_stock_fecha_art");
-                                            /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        $hoy = getdate();
-        */  
-                                            //$hoy = getdate();
-                                            //$tpl->assign("nombre_local_art_2", $hoy['seconds'].$hoy['minutes'].$id_lote_local_venta__[$contadori]);
-                                            //$tpl->assign("nombre_local_art", $hoy['seconds'].$hoy['minutes'].$id_lote_local_venta__[$contadori]);
+                                        
                                             $contadori = $contadori + 1;
                                             $actualiza_stock_bandera = 0;
                                             # code...
@@ -297,16 +280,16 @@ class Articulo_Controller{
                                     }
                                     $actualiza_stock_bandera = 0;
                                     $contadori = 0;
-                                    //print_r($_SESSION["locales"]);
-                                
-                                    //print_r($actualiza_stock_locales_sinart);
-                                    //$id_lote_local_venta__[] = $value3->getId_lote_local();
-                                    //$id_local_ventas_art_[] = $value3->getId_local()->getId_local();
-                                    //$nom_local__[] = $value3->getId_local()->getNombre();
-                                    //$cantidad_parcial_local__ [] =  $value3->getCantidad_parcial();
+                                    //Actualizar Precio Modal
+                                    $tpl->gotoBlock("_ROOT");
+                                    $tpl->newBlock("modal_actualizar_precio");
+                                    $tpl->assign("id_art_lote",$value->getId_lote());
+                                    $tpl->newBlock("actualiza_precio_boton");
+                                    $tpl->assign("id_art_lote",$value->getId_lote());
+                                   
                                   
                                 
-                                    }
+                                }
                                
                             }
                             //Lote de Articulos por Local

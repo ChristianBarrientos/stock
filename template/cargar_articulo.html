@@ -122,7 +122,7 @@
 	    <div class="row">
 	    <div class="form-group">
 	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	    		<label  for="select_art_general">General:</label>
+	    		<label  for="select_art_general">General (*):</label>
 	    	</div>
 		    <!--</div>-->
 		     
@@ -153,7 +153,7 @@
 	     <div class="row">
 	     	<div class="form-group">
 	     <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	      <label for="art_marca">Marca:</label>
+	      <label for="art_marca">Marca (*):</label>
 	      </div>
 	      		<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
@@ -175,7 +175,7 @@
 	    <div class="form-group">
 	    <div class="row">
 	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	      <label  for="art_tipo">Tipo:</label>
+	      <label  for="art_tipo">Tipo (*):</label>
 	     </div>
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				      <select name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
@@ -221,18 +221,20 @@
 	      	<div class="col-md-4 col-sm-3 col-xs-8">
 							         
 					<!-- START BLOCK : art_precio_base -->
-					 
+					  (*)
 					<input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
 					<!-- END BLOCK : art_precio_base -->  
 
 					<!-- START BLOCK : art_precio_tarjeta -->
-					 
+					  (*)
+					<input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
+					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
 					<input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
 					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
 					<!-- END BLOCK : art_precio_tarjeta -->
 
 					<!-- START BLOCK : art_precio_credito_argentino -->
-					 
+					  (*)
 					<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
 					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
 					<!-- END BLOCK : art_precio_credito_argentino -->

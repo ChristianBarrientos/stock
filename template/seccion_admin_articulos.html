@@ -1,6 +1,43 @@
 <div class="menu_articulos_admin">
 
 
+<!-- START BLOCK : modal_actualizar_precio -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="precio_{id_art_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Actualizar Precio</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualiza_precio&id_art_lote={id_art_lote}" method="post">
+								<h3>Precio Base</h3>
+								 <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
+								<h3>Tarjeta Credito</h3>
+								 <input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
+								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
+
+								<h3>Credito Personal</h3>
+								<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
+								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
+
+								<button class="agregar btn btn-primary" type="submit">Actualizar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_actualizar_precio -->
+
 <!-- START BLOCK : modal_actualiza_stock -->
 <div class="container-fluid">
 	<div class="row">
@@ -254,11 +291,16 @@
 					<br>
 					<!-- START BLOCK : actualiza_stock_boton -->
 					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
-					<br>
 					<!-- START BLOCK : actualiza_stock_boton -->
+					<br>
+					<!-- START BLOCK : actualiza_precio_boton -->
+					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#precio_{id_art_lote}">Actualizar Precio</button>
+					<!-- START BLOCK : actualiza_precio_boton -->
 					<!--<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->
 
 				</td>
+
+
 	            <!--<td>
 	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
 	            	
