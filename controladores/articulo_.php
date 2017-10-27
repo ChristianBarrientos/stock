@@ -733,6 +733,7 @@ class Articulo_Controller{
         $art_marca = ucwords(strtolower($_POST['art_marca']));
         $art_tipo = ucwords(strtolower($_POST['art_tipo']));
         $art_cantidad_total = $_POST['art_cantidad_total'];
+
         $art_cb =$_POST['art_codigo_barras'];
         
        
@@ -742,14 +743,12 @@ class Articulo_Controller{
         $art_precio_tarjeta = $_POST['art_precio_tarjeta'];
         $art_precio_cp= $_POST['art_precio_credito_argentino'];
         $art_medida = ucwords(strtolower($_POST['art_medida']));
+
         $art_color =$_POST['art_color'];
         $art_proveedor = $_POST['art_prvd'];
 
-        if ($art_general == null || $art_marca == null || $art_tipo == null
-                || $art_cantidad_total == null || $art_cb == null 
-                || $art_precio_base == null || $art_precio_tarjeta == null 
-                || $art_precio_cp == null || $art_medida == null 
-                ) {
+        if (    $art_general == null || $art_marca == null || $art_tipo == null
+                || $art_cantidad_total == null ||  $art_precio_base == null || $art_precio_tarjeta == null || $art_precio_cp == null ) {
             $datos_no_recibidos = true;
            
             
@@ -832,6 +831,13 @@ class Articulo_Controller{
             $id_proveedor = null;
         }
         //cargar codigo de barras
+        if ($art_cb == null) {
+            $id_cb = '000000000001';
+            echo "aca";
+           
+        }else{
+            echo "noooo";
+        }
         $id_cb = art_codigo_barra::alta_art_cb($art_cb);
 
         //cargar art_categorias y art_grupo_categoria
@@ -885,7 +891,7 @@ class Articulo_Controller{
                     }
                 }
 
-                if (strcmp($nombre, "Color" ) ==  0) {
+                if (strcmp($nombre, "Color" ) ==  0 ) {
                  
                 
                     $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_color,'Color escrito');
@@ -900,22 +906,7 @@ class Articulo_Controller{
 
             }
 
-        /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        $hoy = getdate();
-        */
        
-         //Cargar Archivo
         $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
         $nombre_art_marca_generado = art_marca::generar_marca($id_marca);
         $nombre_art_tipo_generado = art_tipo::generar_tipo($id_tipo);
@@ -1170,20 +1161,37 @@ class Articulo_Controller{
             $id_lote = $_GET['id_art_lote_stock_actual'];
             $cortar = false;
             $contador = 0;
-            print_r($id_local);
+            //print_r($id_local);
             //Preguntar si existe un art_lote_local para id_lote y id_local
             foreach ($id_local as $key => $value) {
                 $id_lote_local = art_lote_local::obtener_lote_local_oper($id_lote,$value);
                 if ($id_lote_local) {
                     $cantidad_parcial_cambio = art_lote_local::cantidad_parcial_modificada($id_lote_local,$cantidad_actualizar[$contador]);
-                    if ($cantidad_parcial_modificada) {
-                       
+                    //if ($cantidad_parcial_modificada) {
+                    if ($cantidad_parcial_cambio != $cantidad_actualizar[$contador]) {
+                        art_lote_local::update_cantidad_parcial($id_lote_local,$cantidad_actualizar[$contador]);
                     //update cantidad_parcial
-                            art_lote_local::update_cantidad_parcial($id_lote_local,$cantidad_actualizar[$contador]);
+                        if ($cantidad_actualizar[$contador] < $cantidad_parcial_cambio) {
+                            
+                            //$cantidad_actualizar[$contador] = $cantidad_actualizar[$contador] * -1;
+                        }
+                      
                     //update cantidad total
-                            $cantidad_total_actual = art_lote::obtener_cantidad_total($id_lote);
-                         $cantidad_final = $cantidad_total_actual + $cantidad_actualizar[$contador];
-                            art_lote::update_cantidad_total($id_lote,$cantidad_final);
+                        $cantidad_total_actual = art_lote::obtener_cantidad_total($id_lote);
+                        
+                         
+                        if ($cantidad_actualizar[$contador] < $cantidad_parcial_cambio) {
+                            //Difetencia entre la cantitad total y la cantidad ingresada
+                            $cantidad_diferencia = $cantidad_parcial_cambio - $cantidad_actualizar[$contador];
+                            $cantidad_final_final =  $cantidad_total_actual - $cantidad_diferencia;
+                        }else{
+                            //Difetencia entre la cantitad total y la cantidad ingresada
+                            $cantidad_diferencia = $cantidad_actualizar[$contador] - $cantidad_parcial_cambio;
+
+                            $cantidad_final_final = $cantidad_diferencia + $cantidad_total_actual;
+                        }
+                        
+                        art_lote::update_cantidad_total($id_lote,$cantidad_final_final);
 
                         
                     }

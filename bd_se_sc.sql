@@ -185,7 +185,7 @@ CREATE TABLE  art_categoria (
 
 CREATE TABLE  art_grupo_categoria (
      id_gc INTEGER AUTO_INCREMENT NOT NULL,
-     id_categoria INTEGER NOT NULL,
+     id_categoria INTEGER,
      FOREIGN KEY (id_categoria) REFERENCES art_categoria(id_categoria) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_gc)
      ) ENGINE=InnoDB;

@@ -151,8 +151,10 @@ class art_lote_local {
         $res = $baseDatos->query("SELECT * FROM `art_lote_local` WHERE id_lote_local = $id_lote_local ");  
 
         $res_fil = $res->fetch_assoc();
+
         if (count($res_fil) != 0) {
-            if ($res_fil['cantidad_parcial'] == $cantidad_parcial) {
+            return $res_fil['cantidad_parcial'] ;
+            if ($res_fil['cantidad_parcial'] != $cantidad_parcial) {
                 return true;
             }else{
                 return false;
