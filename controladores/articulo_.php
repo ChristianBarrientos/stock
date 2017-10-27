@@ -729,10 +729,11 @@ class Articulo_Controller{
 
         public static function alta_articulo(){
         $datos_no_recibidos = false;
+        //$art_cantidad_total = $_POST['art_cantidad_total'];
         $art_general = ucwords(strtolower($_POST['select_art_general']));
         $art_marca = ucwords(strtolower($_POST['art_marca']));
         $art_tipo = ucwords(strtolower($_POST['art_tipo']));
-        $art_cantidad_total = $_POST['art_cantidad_total'];
+        
 
         $art_cb =$_POST['art_codigo_barras'];
         
@@ -748,7 +749,7 @@ class Articulo_Controller{
         $art_proveedor = $_POST['art_prvd'];
 
         if (    $art_general == null || $art_marca == null || $art_tipo == null
-                || $art_cantidad_total == null ||  $art_precio_base == null || $art_precio_tarjeta == null || $art_precio_cp == null ) {
+                 ||  $art_precio_base == null || $art_precio_tarjeta == null || $art_precio_cp == null ) {
             $datos_no_recibidos = true;
            
             
@@ -766,7 +767,7 @@ class Articulo_Controller{
         $lista_art_locales = array();
         /* Luego para cada campo y valor $_POST realizamos lo siguiente */
         $nook = true;
-        
+        $art_cantidad_total = 0;
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
             print_r($campo);
@@ -784,6 +785,7 @@ class Articulo_Controller{
 
                         if ($_POST[$name_local_fecha] != null) {
                             $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
+                            $art_cantidad_total = $art_cantidad_total + $_POST[$name_local_cantidad];
                          
                         }
                     }

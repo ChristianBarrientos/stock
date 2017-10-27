@@ -192,19 +192,7 @@
 			        </div>
 		</div>	    
 	    </div>
-	    <div class="form-group">
-	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-12">
-	      <label for="art_cantidad_total">Cantidad Total:</label>
-	     </div>
-	            <div class="col-md-4 col-sm-3 col-xs-12">
-				         
-				    <input required min="1" type="number" class="form-control" id="art_cantidad_total" placeholder="Ingrese cantidad total del articulos" name="art_cantidad_total">
-				      
-			    </div>
-			      
-		</div>	    
-	    </div>
+	    
 
 	    <div class="form-group">
 	    <div class="row">
@@ -280,7 +268,7 @@
 	    </div>
 		<!-- END BLOCK : cargar_articulo_grupo -->
 	     <h3>Datos de Proveedor</h3>
-	     <div class="form-group">
+	     <!--<div class="form-group">
 	    <div class="row">
 	    <div class=" col-sm-offset-2 control-label col-md-12 col-sm-2 col-xs-4">
 	      <label  ></label>
@@ -290,14 +278,14 @@
 		    </div>
 			      
 		</div>	    
-	    </div>
+	    </div>-->
 	    <div class="form-group">
 	     <div class="row">
 	     <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
 	      <label  for="art_tipo">Proveedor:</label>
 	      </div>
 	      
-		    <div  hidden id="con_prvd_">
+		    <div  id="con_prvd_">
 		    	<div class="col-md-3 col-sm-2 col-xs-12">
 				      <select name="art_prvd" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 				      <!-- START BLOCK : cargar_articulo_prvd -->
@@ -307,12 +295,12 @@
 				      </select>
 				      
 			    </div>
-			    <div class="col-md-4 col-sm-3 col-xs-12">
+			    <!--<div class="col-md-4 col-sm-3 col-xs-12">
 			     <a href="index.php?action=Proveedor::cargar_proveedor">
 				      	<button type="button" class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre">
 							Agregar
 						</button></a>
-			    </div>
+			    </div>-->
 		    </div>
 	            
 		</div>	
@@ -347,18 +335,18 @@
 	    <div class="form-group">
 	     
 	   	<!-- START BLOCK : locales_empleado_alta -->
-	        <div id="seleccionar_local_art" class="checkbox">
+	        <!--<div id="seleccionar_local_art" class="checkbox">
 	        <div class="  control-label  col-sm-2 col-xs-4">
 			  <label id="label_h" for="check_art_locales">
 			  <input  class="check_art_locales"  name="art_local[]" type="checkbox" value="check_art_locales_{id_local_}">{nombre_local}
 			  </label>
 			 </div>
-		    </div>
+		    </div>-->
 		<!-- END BLOCK : locales_empleado_alta -->
 
 		<!-- START BLOCK : locales_alta -->
 	    
-	     <div hidden class="row div_oculto" id="check_art_locales_{id_local_}"> 
+	     <div class="row" id="check_art_locales_{id_local_}"> 
 	     <div class="row">
 
 	     	<div class="  control-label  col-sm-2 col-xs-4">   
@@ -369,11 +357,11 @@
 	      		<div class=" col-sm-6 col-xs-8">
 			      	
 				    
-				    <input required min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
+				    <input  min="1" type="number" class="art_local_cantidad_ form-control" id="art_local_cantidad_" placeholder="Ingrese cantidad de articulos" name="art_local_cantidad_{id_art_local}">
 				     
 			            
 			        <div class='input-group date' id='datetimepicker{nombre_local_art_2}'>
-			            <input required placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
+			            <input  placeholder="AAAA-MM-DD" name="art_carga_local_fecha_{id_art_local}" type='text' class="form-control" />
 			            <span class="input-group-addon">
 			                <span class="glyphicon glyphicon-calendar"></span>
 			            </span>
@@ -424,6 +412,27 @@
 	    <!-- END BLOCK : sin_locales_empl_2 -->     
 	      
 	    </div>
+
+	    <!--<div class="form-group">
+	    <div class="row">
+	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-12">
+	      <label for="art_cantidad_total">Cantidad Total:</label>
+	     </div>
+	            <div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				    <input required min="1" type="number" class="form-control" id="art_cantidad_total" placeholder="Ingrese cantidad total del articulos" name="art_cantidad_total">
+				      
+			    </div>
+			      
+		</div>	
+
+		<input id="art_cantidad_total" class="oculta_inputs2" name="art_cantidad_total">
+		<label class="col-md-12 control-label col-sm-3" id ="mostrar_cantidad_total">:</label>    
+	    </div>-->
+
+
+
+
 	  </form>
 	</div>
 

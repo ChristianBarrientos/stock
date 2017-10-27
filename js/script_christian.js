@@ -15,7 +15,7 @@ $(document).ready(function()
 
 
        
-        $("#seleccionar_local_art input").on("click",function(e) {
+         /*$("#seleccionar_local_art input").on("click",function(e) {
                
               // Aquí pones el código que se ejecutará.
               
@@ -34,7 +34,7 @@ $(document).ready(function()
                     //$('#' + valor).css('display','none');
                 }
             });
-        /*$("#check_art_locales_"),click(function(){
+       $("#check_art_locales_"),click(function(){
             
             alert("ok")
             
@@ -51,7 +51,7 @@ $(document).ready(function()
             }
            
           
-        });*/
+        });
       
         //PARA VERIFICAR SI LA CANTIDAD TODAL ES MENOR QUE LA CANTIDAD PARCIAL
        $("#art_carga_btn").click(function(){
@@ -95,10 +95,10 @@ $(document).ready(function()
                 for (var x = 0; x <= locales_check_ok.length; x++) {
                     
                     console.log(locales[i].value)
-                    alert(locales[i-1].value);
-                    if (locales_check_ok[x] == i) {
+                     
+                    if (locales_check_ok[x] == i ) {
                         
-                        var cantidad_parcial_total = cantidad_parcial_total + parseInt(locales[i-1].value);
+                        var cantidad_parcial_total = cantidad_parcial_total + parseInt(locales[i].value);
 
                     }
                 }
@@ -107,8 +107,10 @@ $(document).ready(function()
                 
                 //}).keyup();
             }
-           
-            if (cantidad_total != cantidad_parcial_total ) {
+            alert(cantidad_parcial_total); 
+            $("#art_cantidad_total").text("Cantidad Total:" + cantidad_parcial_total);
+            
+            /*if (cantidad_total != cantidad_parcial_total ) {
                     alert("La sumatoria parcial de la distribucion por local no puede ser diferente a la cantidad total del deposito.");
                     for (var i = 0 ; i < locales.length; i++) {
                         //$("#art_local_cantidad_" + i).on('keyup', function(){
@@ -121,7 +123,68 @@ $(document).ready(function()
                 }
             
         });
-      
+
+       $(".art_local_cantidad_").blur(function(){
+           var locales = document.getElementsByClassName("art_local_cantidad_");
+            
+            //console.log($(locales).parents('div'));
+            var padres = $(locales).parents('div');
+            // Convertimos el HTMLCollection a array
+            //console.log([].slice.call(locales));
+            var id_div =  [];
+
+            for (var i = 0; i < padres.length; i++) {
+                var id_padre = $(padres[i]).attr("id");
+                if(/check_art_locales_/.test(id_padre)) {
+                    id_div.push(id_padre);
+                }                
+                
+            }
+            
+            var locales_check =  $(".check_art_locales");
+            var locales_check_ok = [];
+           
+            $(".check_art_locales").each(function(){
+                var value_check_ok = $(this).val()
+                    if ($(this).prop('checked') ) {
+
+                        var siok = value_check_ok.substring(18,20);
+                        
+                        locales_check_ok.push(siok);
+                    }
+                
+            });
+             
+            cantidad_parcial_total = 0;
+            console.log(locales)
+            for (var i = 0 ; i < locales.length; i++) {
+                 
+                //$("#art_local_cantidad_" + i).on('keyup', function(){
+                for (var x = 0; x < locales_check_ok.length; x++) {
+                    
+                    //console.log(locales[i].value)
+                    if (locales[i].value != '') {
+                        valor_cantidad_xxx = parseInt(locales[i].value);
+                        if (locales_check_ok[x] == i ) {
+                            console.log(cantidad_parcial_total);
+                            console.log(valor_cantidad_xxx);
+                        
+                            var cantidad_parcial_total = cantidad_parcial_total + valor_cantidad_xxx;
+
+                        }
+                    }
+                    
+                }
+                
+                 
+                
+                //}).keyup();
+            }
+            //alert(cantidad_parcial_total); 
+            $("#art_cantidad_total").text("Cantidad Total:" + cantidad_parcial_total);
+            
+        });
+      */
      
       
      
