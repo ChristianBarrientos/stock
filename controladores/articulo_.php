@@ -286,6 +286,18 @@ class Articulo_Controller{
                                     $tpl->assign("id_art_lote",$value->getId_lote());
                                     $tpl->newBlock("actualiza_precio_boton");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
+                                    
+                                    
+                                    $tpl->newBlock("actualiza_precio_base");
+                                    $tpl->assign("precio_base_",$precio_base);
+
+                                    $tpl->newBlock("actualiza_precio_tarjeta");
+                                    $tpl->assign("precio_tarjeta_",$por_ciento_t);
+
+                                    $tpl->newBlock("actualiza_precio_credito");
+                                    $tpl->assign("precio_credito_",$por_ciento_p);
+
+
                                    
                                   
                                 
@@ -594,6 +606,7 @@ class Articulo_Controller{
                         
                         $cate =  $value->getNombre();
                         $des =  $value->getDescripcion();
+                        
                         if (strcmp($cate, "Precio" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
@@ -1226,6 +1239,46 @@ class Articulo_Controller{
 
             return $tpl->getOutputContent();
 
+        }
+
+        public static function actualiza_precio(){
+            $id_lote = $_GET['id_art_lote'];
+            $precio_base = $_POST['art_precio_base'];
+            $precio_tarjeta = $_POST['art_precio_tarjeta'];
+            $precio_credito = $_POST['art_precio_credito_argentino'];
+
+            $lote = art_lote::generar_lote($id_lote);
+            $id_gc = $lote->getId_gc();
+            foreach ($id_gc->getId_categoria() as $key => $valor) {
+                
+                if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                    $id_precio = $valor->getId_categoria();
+                }
+                if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
+                    $id_tarjeta = $valor->getId_categoria();
+                }
+                if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
+                    $id_creditop = $valor->getId_categoria();
+                }
+            }
+            /*echo "Precio";
+            echo $id_precio;
+            echo "Tarjeta";
+            echo $id_tarjeta;
+            echo "Credito";
+            echo $id_creditop;*/
+            $ok_precio_base = art_categoria::update_valores($id_precio,$precio_base);
+            $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
+            $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);
+
+            if ($ok_precio_base && $ok_precio_tarjeta && $ok_precio_credito) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+            }else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+            }
+            return $tpl->getOutputContent();
         }
 
        public static function cargar_art_general(){

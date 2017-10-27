@@ -198,7 +198,8 @@ $(document).ready(function()
                 var precio_tarjeta_aux = (porciento * preciobase) / 100;
             
                 $("#valor_calculado_tarjeta").text("Pesos Argentinos: " + (parseInt(precio_tarjeta_aux) + parseInt(preciobase)));
-                $(this).val(porciento + '%')
+                //$(this).val(porciento + '%')
+                $(this).val(porciento)
             }
             
           
@@ -225,7 +226,8 @@ $(document).ready(function()
                 var precio_tarjeta_aux = (porciento * preciobase) / 100;
             
                 $("#valor_calculado_credito_personal").text("Pesos Argentinos: " + (parseInt(precio_tarjeta_aux) + parseInt(preciobase)));
-                $(this).val(porciento + '%')
+                //$(this).val(porciento + '%')
+                $(this).val(porciento)
             }
             
         });

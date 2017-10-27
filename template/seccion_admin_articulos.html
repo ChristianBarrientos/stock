@@ -17,13 +17,19 @@
 					 	<div class="form_flotante" id="form_art_general">
 							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualiza_precio&id_art_lote={id_art_lote}" method="post">
 								<h3>Precio Base</h3>
-								 <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
-								<h3>Tarjeta Credito</h3>
-								 <input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta">
+								<!-- START BLOCK : actualiza_precio_base -->
+								 <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base" value="{precio_base_}">
+								<!-- END BLOCK : actualiza_precio_base -->
+								<h3>Tarjeta Credito(Porcentaje)</h3>
+								<!-- START BLOCK : actualiza_precio_tarjeta -->
+								 <input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta" value="{precio_tarjeta_}">
+								 <!-- END BLOCK : actualiza_precio_tarjeta -->
 								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
-
-								<h3>Credito Personal</h3>
-								<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino">
+								
+								<h3>Credito Personal(Porcentaje)</h3>
+								<!-- START BLOCK : actualiza_precio_credito -->
+								<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." value="{precio_credito_}" name="art_precio_credito_argentino">
+								<!-- END BLOCK : actualiza_precio_credito -->
 								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
 
 								<button class="agregar btn btn-primary" type="submit">Actualizar</button>

@@ -74,6 +74,16 @@ class art_categoria {
         }
     }
 
+    public static function update_valores($id_categoria,$valor){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query("UPDATE `art_categoria` SET `valor`='$valor'
+                                  WHERE id_categoria = $id_categoria");  
+         
+        return $res;
+    }
+
     public function getId_categoria()
     {
         return $this->id_categoria;

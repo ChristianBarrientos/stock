@@ -112,9 +112,6 @@ class art_lote {
         $res = $baseDatos->query(" UPDATE `art_lote` SET `cantidad_total`='$cantidad_total' WHERE id_lote = $id_lote");  
          
         return $res;
-       
-
-
     }
 
 
