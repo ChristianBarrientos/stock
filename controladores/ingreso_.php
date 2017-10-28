@@ -158,7 +158,12 @@ class Ingreso_Controller{
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Proveedores');
-				$tpl->assign("total", count($_SESSION["proveedores"]) );
+				if ($_SESSION["proveedores"] == false) {
+					$tpl->assign("total", 0 );
+				}else{
+					$tpl->assign("total", count($_SESSION["proveedores"]) );
+				}
+				
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Articulos');

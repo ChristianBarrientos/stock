@@ -9,8 +9,15 @@ class Proveedor_Controller{
                 if (Ingreso_Controller::admin_ok()) {
                         
                         if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
+
                             if (isset($_SESSION["proveedores"] )) {
                                 
+                                if ($_SESSION["proveedores"] == false) {
+                                    
+                                    $tpl->newBlock("sin_proveedores");
+                                }else{
+                                    
+                               
                            
                                 foreach ($_SESSION["proveedores"] as $key => $value) {
                                     
@@ -58,13 +65,12 @@ class Proveedor_Controller{
 
                                     
                                         } 
-                                    }
+                                }
+                             }
                             }
      
                         }
-                        else{
-                               $tpl->newBlock("sin_proveedores");
-                        }
+                        
                 }
                 else{
                         return Ingreso_Controller::salir();

@@ -7,27 +7,30 @@
 			</div>
 			
 		</div>
-	<div class="form-group">
-		<div class="row">
+		<div class="panel-body alert alert-info">
+			<h2>Confirmar Venta</h2>
+	  		<h3>Datos generales</h3>
 		
-			<div class="col-md-8 col-xs-12 alert alert-info">
-				<h2>Confirmar Venta</h2>
-	  			<h3>Datos generales</h3>
-				  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::confirmar_venta" method="post">
-				    <div class="form-group">
-				      <label class="control-label col-sm-2 col-xs-12" for="scrs_nombre">Nombre:</label>
-				      <div class="col-md-5 col-sm-5 col-xs-12">
-				        <label for="">{art_nombre}</label>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="control-label col-sm-2 col-xs-12" for="scrs_descripcion">Medida:</label>
+          <form enctype="multipart/form-data" action="index.php?action=Articulo::confirmar_venta" method="post" class="form-inline" role="form">
+            <div class="row">
+            	 <div class="form-group">
+				<label class="col-md-2 col-xs-12" for="scrs_nombre">Nombre:</label>
+				<div class="col-md-10 col-xs-12">
+				  <label for="">{art_nombre}</label>
+				</div>
+			</div>
+            </div>
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="control-label  col-xs-12" for="scrs_descripcion">Medida:</label>
 				      
-			  		  <div class="col-md-5 col-sm-5 col-xs-12">
-				        <label for="">{art_medida}</label>
-				      </div>
+		  		<div class="col-md-5 col-xs-12">
+			   		<label for="">{art_medida}</label>
+			  	</div>
 
-				    </div>
+			</div>
+           </div>
+			
 				    
 				    <h3>Forma de Pago</h3>
 				    <div class="form-group">        
@@ -87,16 +90,11 @@
 					     	</div>
 				    	</div>
 				    </div>
-				     
-				  </form>
-
-			</div>
-			
-			
-		</div>
-	</div>
+          </form>
+        </div>
 	</div>
 </div>
+
 
 <div class="container-fluid">
 	  <div class="row">

@@ -45,6 +45,7 @@ class proveedor {
        
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         if (count($filas) != 0) {
+           
             $prvds = array();
              
             foreach ($filas as $key => $value) {

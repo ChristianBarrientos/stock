@@ -149,7 +149,16 @@ class usuario {
             }
             //$res_fil['id_zona'];
             
-            $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
+           
+            if ($_SESSION["proveedores"] == false) {
+                # code...
+                
+                $_SESSION["proveedores"] = 0;
+               
+            }else{
+                $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
+            }
+            
             $_SESSION["locales"] = $locales;
             $array_id_empelados = array();
             foreach ($locales_empleados as $key3 => $value3) {
