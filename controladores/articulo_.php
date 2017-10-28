@@ -119,7 +119,13 @@ class Articulo_Controller{
 
                                         if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
                                             $por_ciento_t =  $valor->getValor();
-                                            $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            if ($por_ciento_t == 100) {
+                                                # code...
+                                                $por_ciento_t_2 = 1;
+                                            }else{
+                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            }
+                                            
                                             
                                             $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
                                              
@@ -129,7 +135,13 @@ class Articulo_Controller{
 
                                         if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
                                             $por_ciento_p = $valor->getValor();
-                                            $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                            if ($por_ciento_t == 100) {
+                                                # code...
+                                                $por_ciento_t_2 = 1;
+                                            }else{
+                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            }
+                                           
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
                                         }
@@ -779,11 +791,11 @@ class Articulo_Controller{
                     
                     if (strcmp($campo, $name_local_cantidad ) == 0) {
 
-                        if ($_POST[$name_local_fecha] != null) {
+                        //if ($_POST[$name_local_fecha] != null) {
                             $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
                             $art_cantidad_total = $art_cantidad_total + $_POST[$name_local_cantidad];
                          
-                        }
+                        //}
                     }
                 }
                 else{
@@ -831,10 +843,10 @@ class Articulo_Controller{
         //cargar codigo de barras
         if ($art_cb == null) {
             $id_cb = '000000000001';
-            echo "aca";
+            
            
         }else{
-            echo "noooo";
+            
         }
         $id_cb = art_codigo_barra::alta_art_cb($art_cb);
 

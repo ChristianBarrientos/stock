@@ -80,8 +80,9 @@ class art_lote_local {
     
 
     public static function generar_lote_local_id_($id_lote_local){
+       
         global $baseDatos;
-        
+       
         $res = $baseDatos->query("SELECT * FROM art_lote_local WHERE id_lote_local = $id_lote_local");  
 
         $res_fil = $res->fetch_assoc();

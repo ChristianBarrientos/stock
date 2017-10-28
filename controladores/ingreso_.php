@@ -504,7 +504,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "report.pdf", "D" );
+		$pdf->Output( "report.pdf", "I" );
     	
     }
 
@@ -644,7 +644,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvt.pdf", "D" );
+		$pdf->Output( "reportvt.pdf", "I" );
     	
     }
     public static function reporte_vc($fecha_desde,$fecha_hasta){
@@ -783,7 +783,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "D" );
+		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
     public static function reporte_co($fecha_desde,$fecha_hasta){
@@ -923,7 +923,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "D" );
+		$pdf->Output( "reportvc.pdf", "I" );
 
     	
     }
@@ -1030,7 +1030,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "D" );
+		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
     public static function reporte_sa($fecha_desde,$fecha_hasta){
@@ -1147,7 +1147,7 @@ $chartColours = array(
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "D" );
+		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
     public static function reporte_aem($fecha_desde,$fecha_hasta){
