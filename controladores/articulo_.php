@@ -135,11 +135,11 @@ class Articulo_Controller{
 
                                         if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
                                             $por_ciento_p = $valor->getValor();
-                                            if ($por_ciento_t == 100) {
+                                            if ($por_ciento_p == 100) {
                                                 # code...
-                                                $por_ciento_t_2 = 1;
+                                                $por_ciento_p_2 = 1;
                                             }else{
-                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                                $por_ciento_p_2 = '0.'.$por_ciento_t;
                                             }
                                            
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
@@ -153,7 +153,7 @@ class Articulo_Controller{
                                     } 
 
                                     if ($precio_base != null) {
-                                        $tpl->assign("precio_base",$precio_base);
+                                        $tpl->assign("precio_base",'$'.$precio_base);
                                     }
                                     else{
                                         $tpl->assign("precio_base",'Sin Definir');
@@ -167,14 +167,14 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_tarjeta != null) {
-                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'('.$por_ciento_t.'%)');
+                                        $tpl->assign("precio_tarjeta",'$'.$precio_tarjeta.'('.$por_ciento_t.'%)');
                                     }
                                     else{
                                         $tpl->assign("precio_tarjeta",'Sin Definir');
                                     }
 
                                     if ($credito_personal != null) {
-                                        $tpl->assign("credito_personal",$credito_personal.'('.$por_ciento_p.'%)');
+                                        $tpl->assign("credito_personal",'$'.$credito_personal.'('.$por_ciento_p.'%)');
                                     }
                                     else{
                                         $tpl->assign("credito_personal",'Sin Definir');
@@ -188,12 +188,17 @@ class Articulo_Controller{
                                     }
 
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
-                                   
+
+                                    //Modale ventana Venta
+                                    if ($cantodad_final_lote_local == 0) {
+                                        $tpl->assign("disabled_ok",'disabled');
+                                    }
+
                                     $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
 
                                     $tpl->newBlock("modal_venta_art");
                                     $tpl->assign("selecionar_local_venta",'art_vender_selec_local'.$value->getId_lote());
-                                    
+                                    ///Fin Modal Ventana Venta
                                     $contadori = 0;
                                    
                                     foreach ($nom_local__ as $key5 => $value5) {
@@ -363,7 +368,7 @@ class Articulo_Controller{
             $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
             //Tomar asistencia
             if ($_SESSION["permiso"] == 'OPER') {
-
+              
                 $id_acceso = us_acceso::insert_us_acceso($id_empleado_venta_local_art,$id_usuario_oo,$ahora);
                 $_SESSION['usuario']->setId_Acceso($id_acceso);
 
@@ -371,10 +376,15 @@ class Articulo_Controller{
             }else{
                 return Ingreso_Controller::salir();
             }
-            return Articulo_Controller::mostrar_operador();
+            //return Articulo_Controller::mostrar_operador();
         }
 
         public static function mostrar_operador(){
+                
+                if ($_SESSION['usuario']->getId_Acceso() == null) {
+                     
+                    Articulo_Controller::pre_mostrar_operador();
+                }
                 $id_empleado_venta_local_art = $_GET['id_local'];
 
                 if (isset($id_empleado_venta_local_art) && $id_empleado_venta_local_art == null) {
@@ -467,14 +477,24 @@ class Articulo_Controller{
 
                                         if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
                                             $por_ciento_t =  $valor->getValor();
-                                            $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            if ($por_ciento_t == 100) {
+                                                # code...
+                                                $por_ciento_t_2 = 1;
+                                            }else{
+                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                            }
                                             
                                             $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
                                         }
 
                                         if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
                                             $por_ciento_p = $valor->getValor();
-                                            $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                            if ($por_ciento_p == 100) {
+                                                # code...
+                                                $por_ciento_p_2 = 1;
+                                            }else{
+                                                $por_ciento_p_2 = '0.'.$por_ciento_t;
+                                            }
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
                                         }
@@ -486,7 +506,7 @@ class Articulo_Controller{
                                     } 
 
                                     if ($precio_base != null) {
-                                        $tpl->assign("precio_base",$precio_base);
+                                        $tpl->assign("precio_base",'$'.$precio_base);
                                     }
                                     else{
                                         $tpl->assign("precio_base",'Sin Definir');
@@ -500,14 +520,14 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_tarjeta != null) {
-                                        $tpl->assign("precio_tarjeta",$precio_tarjeta.'('.$por_ciento_t.'%)');
+                                        $tpl->assign("precio_tarjeta",'$'.$precio_tarjeta.'('.$por_ciento_t.'%)');
                                     }
                                     else{
                                         $tpl->assign("precio_tarjeta",'Sin Definir');
                                     }
 
                                     if ($credito_personal != null) {
-                                        $tpl->assign("credito_personal",$credito_personal.'('.$por_ciento_p.'%)');
+                                        $tpl->assign("credito_personal",'$'.$credito_personal.'('.$por_ciento_p.'%)');
                                     }
                                     else{
                                         $tpl->assign("credito_personal",'Sin Definir');
@@ -1016,11 +1036,17 @@ class Articulo_Controller{
         foreach ($art_cb as $key => $value) {
             
              if (strcmp($value->getNombre(), "Medida" ) == 0 ) {
-                             
-                            $tpl->assign("art_medida", $value->getValor());
-                             
+                
+                if ($value->getValor() == '') {
+                        $tpl->assign("art_medida", 'Sin Definir');
+                    } 
+                else{
+                    $tpl->assign("art_medida", $value->getValor());
+                }            
+                
                             
-                        }
+                            
+            }
         }
 
         foreach ($art_cb as $key => $value) {

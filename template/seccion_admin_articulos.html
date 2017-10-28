@@ -22,13 +22,13 @@
 								<!-- END BLOCK : actualiza_precio_base -->
 								<h3>Tarjeta Credito(Porcentaje)</h3>
 								<!-- START BLOCK : actualiza_precio_tarjeta -->
-								 <input autocomplete="off" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta" value="{precio_tarjeta_}">
+								 <input autocomplete="off" min="1" max="100" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta" value="{precio_tarjeta_}">
 								 <!-- END BLOCK : actualiza_precio_tarjeta -->
 								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
 								
 								<h3>Credito Personal(Porcentaje)</h3>
 								<!-- START BLOCK : actualiza_precio_credito -->
-								<input autocomplete="off" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." value="{precio_credito_}" name="art_precio_credito_argentino">
+								<input autocomplete="off" min="1" max="100" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." value="{precio_credito_}" name="art_precio_credito_argentino">
 								<!-- END BLOCK : actualiza_precio_credito -->
 								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
 
@@ -159,7 +159,7 @@
 											  <label id="label_h" for="art_ventas_radio">
 											<!-- START BLOCK : locales_seleccion_venta_art -->
 									       
-											  	<input  class="art_ventas_radio"  name="art_local_venta" type="radio" value="{id_lote_local}" id='art_ventas_radio'>{nombre_local}
+											  	<input  required class="art_ventas_radio"  name="art_local_venta" type="radio" value="{id_lote_local}" id='art_ventas_radio'>{nombre_local}
 											 	</label>
 										     
 											<!-- END BLOCK : locales_seleccion_venta_art -->
@@ -291,7 +291,7 @@
 					</button>
 					<br>
 					
-					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
+					<button type="button" {disabled_ok} class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
 							Vender
 					</button>
 					<br>

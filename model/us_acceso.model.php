@@ -6,26 +6,25 @@ class us_acceso {
     private $id_usuario;
     private $fecha_hora_inicio;
     private $fecha_hora_fin;
-    private $id_zona;
 
 
-    public function __construct($id_acceso, $id_local,$id_usuario,$fecha_hora_inicio, $fecha_hora_fin,$id_zona)
+
+    public function __construct($id_acceso, $id_local,$id_usuario,$fecha_hora_inicio, $fecha_hora_fin)
     {
         $this->id_acceso = $id_acceso;
         $this->id_local = $id_local;
         $this->id_usuario = $id_usuario;
         $this->fecha_hora_inicio = $fecha_hora_inicio;
         $this->fecha_hora_fin = $fecha_hora_fin;
-        $this->id_zona = $id_zona;
     
        
     }
 
-    public static function insert_us_acceso($id_local,$id_usuario,$fecha_hora_inicio, $fecha_hora_fin = 'null',$id_zona = null){
+    public static function insert_us_acceso($id_local,$id_usuario,$fecha_hora_inicio, $fecha_hora_fin = 'null'){
         global $baseDatos;
         $id_acceso = us_acceso::ultimo_id_us_acceso();
-        $sql = "INSERT INTO `us_acceso` (`id_acceso`, `id_local`, `id_usuario`, `fecha_hora_inicio`, `fecha_hora_fin`, `id_zona`) 
-                VALUES (0,$id_local,$id_usuario,'$fecha_hora_inicio','$fecha_hora_fin',$id_zona)";
+        $sql = "INSERT INTO `us_acceso` (`id_acceso`, `id_local`, `id_usuario`, `fecha_hora_inicio`, `fecha_hora_fin`) 
+                VALUES (0,$id_local,$id_usuario,'$fecha_hora_inicio','$fecha_hora_fin')";
         $res = $baseDatos->query($sql);
         if ($res) {
             
@@ -53,18 +52,6 @@ class us_acceso {
          
         return $res;
     }
-
-    public static function update_id_zona($id_acceso,$id_zona){
-        //obtener empleados por local
-        global $baseDatos;
-       
-        $res = $baseDatos->query(" UPDATE `us_acceso` SET `id_zona`='$id_zona' WHERE id_acceso = $id_acceso");  
-         
-        return $res;
-    }
-
-
-
   
 
     public static function generar_acceso($id_acceso){
@@ -73,24 +60,14 @@ class us_acceso {
         
         $res = $baseDatos->query("SELECT * FROM `us_acceso` WHERE id_acceso = $id_acceso");  
 
-        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        $filas = $res->fetch_assoc();
         
         if (count($filas) != 0) {
-            $us_acceso = array();
-            //$usuario_prvd = array(0);
-            foreach ($filas as $clave => $valor) {
-                $id_local = art_local::generar_local_2($valor['id_local']);
-                $id_usuario = usuario::generar_usuario($valor['id_usuario']);
-                if ($valor['id_zona'] != null) {
-                    $id_zona = mp_zona::obtener_zona__explicita_3($valor['id_usuario']);
-                    $us_acceso[] = new us_acceso($valor['id_acceso'],$id_local,$id_usuario,$valor['fecha_hora_inicio'],$valor['fecha_hora_fin'],$id_zona);
-                }else{
-                    $us_acceso[] = new us_acceso($valor['id_acceso'],$id_local,$id_usuario,$valor['fecha_hora_inicio'],$valor['fecha_hora_fin'],$valor['id_zona']);
-                }
-    
-                
+            $id_local = art_local::generar_local_2($filas['id_local']);
+            $id_usuario = usuario::generar_usuario($filas['id_usuario']);
                
-            }
+            $us_acceso = new us_acceso($filas['id_acceso'],$id_local,$id_usuario,$filas['fecha_hora_inicio'],$filas['fecha_hora_fin']);
+           
             return $us_acceso;
         }
         else{
@@ -113,37 +90,58 @@ class us_acceso {
 
     }
 
-
-    public function getId_art_fotos()
+    public function getId_acceso()
     {
-        return $this->id_art_fotos;
+        return $this->id_acceso;
     }
     
-    public function setId_art_fotos($id_art_fotos)
+    public function setId_acceso($id_acceso)
     {
-        $this->id_art_fotos = $id_art_fotos;
+        $this->id_acceso = $id_acceso;
         return $this;
     }
 
-    public function getId_foto()
+    public function getId_local()
     {
-        return $this->id_foto;
+        return $this->id_local;
     }
     
-    public function setId_foto($id_foto)
+    public function setId_local($id_local)
     {
-        $this->id_foto = $id_foto;
+        $this->id_local = $id_local;
         return $this;
     }
 
-    public function getPath_foto()
+    public function getUsuario()
     {
-        return $this->path_foto;
+        return $this->id_usuario;
     }
     
-    public function setPath_foto($path_foto)
+    public function setUsuario($id_usuario)
     {
-        $this->path_foto = $path_foto;
+        $this->id_usuario = $id_usuario;
+        return $this;
+    }
+
+    public function getFechaHora_Inicio()
+    {
+        return $this->fecha_hora_inicio;
+    }
+    
+    public function setFechaHora_Inicio($fecha_hora_inicio)
+    {
+        $this->fecha_hora_inicio = $fecha_hora_inicio;
+        return $this;
+    }
+
+    public function getFechaHora_Fin()
+    {
+        return $this->fecha_hora_fin;
+    }
+    
+    public function setFechaHora_Fin($fecha_hora_fin)
+    {
+        $this->fecha_hora_fin = $fecha_hora_fin;
         return $this;
     }
 

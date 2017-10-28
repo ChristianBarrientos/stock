@@ -37,22 +37,22 @@ class reporte {
     public static function reporte_vem(){
     	
     }
-    public static function reporte_aem(){
+    public static function reporte_aem($fecha_desde,$fecha_hasta){
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * 
-                                FROM `art_lote_local`");  
+        $res = $baseDatos->query("SELECT * FROM `us_acceso` 
+                                  WHERE fecha_hora_inicio BETWEEN '$fecha_desde' AND '$fecha_hasta'");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-       
+      
         if (count($filas) != 0) {
-            $art_lotelocal = array();
+            $us_acessos = array();
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                
-                $art_lotelocal[] = art_lote_local::generar_lote_local($valor['id_lote_local']);
+                $us_acessos[] = us_acceso::generar_acceso($valor['id_acceso']);
             }
-            return $art_lotelocal;
+            return $us_acessos;
         }
         else{
            
