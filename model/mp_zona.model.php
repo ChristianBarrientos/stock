@@ -206,6 +206,27 @@ class mp_zona {
 
     	
     }
+ 
+    public static function generar_zona($id_zona){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM mp_zona WHERE id_zona = $id_zona");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $zona = new mp_zona($res_fil['id_zona'],$res_fil['pais'],$res_fil['provincia'],$res_fil['localidad'],$res_fil['direccion']);
+           
+            return $zona;
+        }
+        else{
+            
+            return false;
+        }
+       
+
+
+    }
 
      public static function obtener_localidades(){
      	global $baseDatos;

@@ -117,6 +117,30 @@ class art_local {
 
     }
 
+    
+
+    public static function generar_local_3($id_local){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM art_local WHERE id_local = $id_local");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            $zona = mp_zona::generar_zona($res_fil['id_zona']);
+            $cant_empl = art_local::generar_local_empleados($res_fil['id_zona']);
+            $local = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
+            return $local;
+        }
+        else{
+            
+            return false;
+        }
+       
+
+
+    }
+
     public static function obtener_id_local($id_zona){
         //obtener empleados por local
         global $baseDatos;
@@ -147,6 +171,15 @@ class art_local {
        
 
 
+    }
+   
+    public static function update_zona($id_zona,$pais,$provincia,$localidad,$direccion){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `mp_zona` SET `id_pais`=$pais,`id_provincia`=$provincia,`id_localidad`=$localidad,`direccion`='$direccion' WHERE id_zona = $id_zona");  
+         
+        return $res;
     }
 
     

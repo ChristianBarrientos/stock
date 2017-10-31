@@ -193,9 +193,22 @@ class Local_Controller{
             $localidad = $_POST['scrs_localidad'];
             $direccion = $_POST['scrs_direccion'];
 
+            $local_generado = art_local::generar_local_3($id_local);
+  
             //modificar nombre
             $ok_up = art_local::update_($id_local, $nombre,$descripcion);
-            if ($ok_up) {
+            //Modifica Direccion
+            $id_zona = $local_generado->getId_zona()->getId_zona();
+            print_r($local_generado);
+            echo "pais";
+            echo $pais;
+            echo "provincia";
+            echo $provincia;
+            echo "localidades";
+            echo $localidad;
+            $ok_up_2 = art_local::update_zona($id_zona, $pais,$provincia,$localidad,$direccion);
+
+            if ($ok_up && $ok_up_2) {
                 $tpl = new TemplatePower("template/exito.html");
                 $tpl->prepare();
             }
@@ -209,13 +222,6 @@ class Local_Controller{
 
             
             return $tpl->getOutputContent();
-              
-             
-                
-                
-                
-              
-
         }
 
 }
