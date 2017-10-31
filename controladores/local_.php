@@ -199,13 +199,7 @@ class Local_Controller{
             $ok_up = art_local::update_($id_local, $nombre,$descripcion);
             //Modifica Direccion
             $id_zona = $local_generado->getId_zona()->getId_zona();
-            print_r($local_generado);
-            echo "pais";
-            echo $pais;
-            echo "provincia";
-            echo $provincia;
-            echo "localidades";
-            echo $localidad;
+            
             $ok_up_2 = art_local::update_zona($id_zona, $pais,$provincia,$localidad,$direccion);
 
             if ($ok_up && $ok_up_2) {
