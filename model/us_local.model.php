@@ -88,6 +88,34 @@ class us_local {
         }
     }
 
+    public static function empleado_local_esta($id_usuario,$id_zona){
+        global $baseDatos;
+     
+        
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = '$id_usuario' AND id_zona = '$id_zona'");  
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public static function borrar_registros($id_usuario){
+        global $baseDatos;
+     
+        
+        $res = $baseDatos->query("DELETE FROM us_local WHERE id_usuarios = '$id_usuario'");  
+
+        $res = $baseDatos->query($sql);
+        return $res;   
+        
+    }
+
+
     public function getId_usuario_local()
     {
         return $this->id_usuario_local;

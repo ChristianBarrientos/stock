@@ -122,9 +122,15 @@
 	    <h3>Locales en los que trabaja</h3>
 	    
 	    <div class="form-group">
+	    	<!-- START BLOCK : local_no_selecciono -->
+	       <div class="alert alert-danger">
+	       		<h3>Debe Seleccionar Almenos un Local!</h3>
+	       </div>
+		    <!-- END BLOCK : local_no_selecciono -->
+
 	     	<!-- START BLOCK : locales_empleado_alta -->
 	        <div id="seleccionar_local_empl" class="checkbox">
-			  <label><input name="empl_local[]" type="checkbox" value="{id_local}">{nombre_local}</label>
+			  <label><input name="empl_local[]" {checked_sel} type="checkbox" value="{id_local}">{nombre_local}</label>
 		    </div>
 		    <!-- END BLOCK : locales_empleado_alta -->
 		    <!-- START BLOCK : sin_locales_empl -->

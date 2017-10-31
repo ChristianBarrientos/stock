@@ -43,8 +43,8 @@ class Empleado_Controller{
 			    $empleados_si = false;
             }else{
                 return Ingreso_Controller::salir();
+
             }
-             
 			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
 
 				
@@ -258,7 +258,7 @@ class Empleado_Controller{
         return $tpl->getOutputContent();
 	}*/
 	
-    function modificar(){
+    function modificar($mal_local = false){
         $id_usuario = $_GET['id_empleado'];
         $tpl = new TemplatePower("template/modificar_empleado.html");
         $tpl->prepare();
@@ -305,7 +305,12 @@ class Empleado_Controller{
                         $tpl->assign("fecha_alt_", $fecha_alt_);
                         $tpl->assign("fecha_nac_", $fecha_nac_);
                         $tpl->assign("direccion_", $direccion_);
-                        $tpl->assign("correo_", $correo_);
+                        
+                        if ($correo_ == 'NULL') {
+                            $tpl->assign("correo_", '');
+                        }else{
+                            $tpl->assign("correo_", $correo_);
+                        }
                         $tpl->assign("telefono_", $telefono_);
                         $tpl->assign("usuario_", $usuario_);
                         $tpl->assign("pass_", $pass_);
@@ -316,12 +321,34 @@ class Empleado_Controller{
 
                     
                 }
+
+                if ($mal_local) {
+                    $tpl->newBlock("local_no_selecciono");
+                }
                 foreach ($_SESSION['locales'] as $key => $value) {
+
                     $tpl->newBlock("locales_empleado_alta");
                     $cadena = $value->getId_zona();
                     $direccion = after_last (',', $cadena);
-                    $tpl->assign("id_local", $direccion);
+                    $tpl->assign("id_local", $value->getId_local());
                     $tpl->assign("nombre_local", $value->getNombre());
+
+                  
+                    foreach ($_SESSION["locales_empleados"] as $key2 => $value2) {
+                       
+                       
+                        if ($id_usuario == $value2->getId_user()) {
+                            $local = art_local::generar_local($value->getId_local());
+                            $id_zona = $local->getId_local();
+                           
+                            if (us_local::empleado_local_esta($id_usuario,$id_zona)) {
+                                # code...
+                                
+                                $tpl->assign("checked_sel", 'checked');
+                            }
+                        }
+                        # code...
+                    }
                 }
         //}   
     return $tpl->getOutputContent();    
@@ -359,15 +386,54 @@ class Empleado_Controller{
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
-
-         
-        if (!(usuario::verificar_existencia($usuario))) {
-            $tpl = new TemplatePower("template/error.html");
-            $tpl->prepare();
-            return $tpl->getOutputContent();
-        }else{
-             
+ 
+       
+        $error = false;
+       
+        //Borrar en us_local
+       
+        if (count($locales) <= 0) {
+          
+            return Empleado_Controller::modificar(true);
         }
+        $borrado = us_local::borrar_registros($id_usuario_empleado);
+         
+        if (!($borrado)) {
+            //Cargar Nuevos Locales
+            foreach ($locales as $clave => $valor) {
+
+                $local = art_local::generar_local_3($valor);
+                 
+                $id_zona = $local->getId_zona()->getId_zona();
+                $alta_nueva_locales = us_local::agregar_us_a_local($id_usuario_empleado,$id_zona);
+              
+                if ($alta_nueva_locales) {
+                    # code...
+                }else{
+                  
+                    $error = true;
+                    break;
+                }
+            }
+            
+        }
+        
+        if (!(usuario::verificar_existencia($usuario)) && $usuario != $usuario__) {
+                echo "usuariomotherfuckers";
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+                return $tpl->getOutputContent();
+            
+            
+        }
+        if ($error)
+            {
+                
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+                return $tpl->getOutputContent();
+            }
+
         $datos_nuevos = array($nombre,$apellido,$genero,$dni,$fecha_nac,$fecha_alta,$direccion,$correo,$telefono,$usuario,$pass,$locales);
          
         $locales_empleado = usuario::obtener_locales_empleado($id_usuario_empleado);

@@ -160,6 +160,7 @@ class usuario {
             }
             
             $_SESSION["locales"] = $locales;
+             
             $array_id_empelados = array();
             foreach ($locales_empleados as $key3 => $value3) {
                 foreach ($value3 as $key4 => $value4) {
@@ -170,14 +171,15 @@ class usuario {
 
                 
             }
-             
+           
             $okok_empleados = array_unique($array_id_empelados);
+            
             $okok_empleados_fin = array();
             foreach ($okok_empleados as $key5 => $value5) {
  
                 $okok_empleados_fin[] = usuario::generar_usuario($value5);
             }
-            //print_r($okok_empleados_fin);
+             
             $_SESSION["locales_empleados"] = $okok_empleados_fin;
          
             //$_SESSION["locales_empleados"] =  $locales_empleados; 
