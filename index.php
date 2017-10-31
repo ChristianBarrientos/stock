@@ -82,8 +82,9 @@ if ($config["dbEngine"]=="MYSQL"){
     }
     else{
     	
-
+ 		 
     	$tpl->assign("contenido",$html);
+
     	
     }
     

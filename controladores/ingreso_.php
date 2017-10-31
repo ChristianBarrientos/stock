@@ -326,12 +326,68 @@ class Ingreso_Controller{
         		# Reporte Stock Articulo
         		Ingreso_Controller::reporte_sa($fecha_desde,$fecha_hasta);
         		break;
+        	case 8:
+        		# Ver listado de Ventas
+
+        		$tpl = Ingreso_Controller::registro_ventas();
+
+        		break;
         	
         	default:
         		# code...
         		break;
         }
+        return $tpl->getOutputContent();
     }
+
+    public static function registro_ventas(){
+
+    	$respuesta = reporte::reporte_av_todos();
+    	//print_r($respuesta);
+    	$tpl = new TemplatePower("template/seccion_admin_articulos_vendidos.html");
+		$tpl->prepare();
+		if ($respuesta <= 0) {
+
+			$tpl->newBlock("sin_articulos_lista");
+		}
+		else{
+
+			$contador = 1;
+			$tpl->newBlock("con_articulos_lista");
+			//$tpl->newBlock("con_articulos_lista_cabeza");
+			$tpl->newBlock("buscador_visible");
+			
+			foreach ($respuesta as $key => $value) {
+				$tpl->newBlock("con_articulos_lista_cuerpo");
+
+
+				$tpl->assign("numero", $contador);
+				$contador = $contador + 1;
+				//Nombre Articulo
+				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+				$nombre_art_vendido = $nom_marca.','.$nom_tipo;
+
+				$tpl->assign("art", $nombre_art_vendido);
+				$nom_usuario = $value->getId_venta()->getId_usuario()->getUsuario();
+
+				$tpl->assign("usuario", $nom_usuario);
+				$nom_local = $value->getId_lote_local()->getId_local()->getNombre();
+
+				$tpl->assign("local", $nom_local);
+				$fecha_venta = $value->getId_venta()->getFecha_hora();
+
+				$tpl->assign("fecha_venta", $fecha_venta);
+				$id_venta_ =  $value->getId_venta()->getId_venta();
+				$tpl->assign("id_venta", $id_venta_);
+
+
+			}
+		}
+
+		return $tpl;
+	}
 
     
 

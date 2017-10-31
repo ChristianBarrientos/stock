@@ -1319,6 +1319,15 @@ class Articulo_Controller{
             return $tpl->getOutputContent();
         }
 
+
+        public static function modificar_venta(){
+            $id_venta = $_GET['id_venta'];
+            $tpl = new TemplatePower("template/venta_art_modificar.html");
+            $tpl->prepare();
+            return $tpl->getOutputContent();
+            
+        }
+
        public static function cargar_art_general(){
             if (isset($nombre)) {
                  
