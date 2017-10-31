@@ -7,7 +7,8 @@
 //===========================================================================================================
 // INCLUDES |
 //-----------
-
+//Setear TimeZone
+date_default_timezone_set("America/Argentina/Catamarca");
 include("include_config.php");
 
 global $config;
