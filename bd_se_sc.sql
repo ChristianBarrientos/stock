@@ -303,7 +303,7 @@ CREATE TABLE  art_venta (
      id_medio INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
      id_cambio INTEGER,
-     FOREIGN KEY (id_medio) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_medio) REFERENCES id_medio(art_venta_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cambio) REFERENCES id_cambio(art_venta_cambio) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)

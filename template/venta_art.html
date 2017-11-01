@@ -50,6 +50,27 @@
 				      </div>
 
 				    </div>
+
+				    <div class="form-group">        
+				      <label class="control-label col-sm-2 col-xs-12" for="art_venta_formas_pago">Medio de Pago:</label>
+				      <div class="col-md-5 col-sm-5 col-xs-12">
+
+					     	<select required id="forma_pago_select" class="selectpicker forma_pago_select">
+					     	  <option value="null" selected >Elija un valor</option>
+					     	<!-- START BLOCK : medio_pago_venta_ok -->
+							  <optgroup label="{nombre_medio_pago}">
+
+							  	<!-- START BLOCK : medio_pago_venta_opciones -->
+							    <option value="{valor_medio_pago}">{valor_medio_pago}</option>
+							    <!-- END BLOCK : medio_pago_venta_opciones -->
+							  </optgroup>
+						  	<!-- END BLOCK : medio_pago_venta_ok -->
+							</select>
+
+					      
+				      </div>
+
+				    </div>
 					<!-- START BLOCK : stock_futuro_on -->
 				    <h3>Stock Futuro</h3>
 				   
