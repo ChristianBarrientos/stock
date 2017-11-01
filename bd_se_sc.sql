@@ -278,15 +278,34 @@ CREATE TABLE lote_us (
      KEY (id_lote_us)
      ) ENGINE=InnoDB;
 
+CREATE TABLE art_venta_medio (
+     id_medio INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     descripcion VARCHAR(100) NOT NULL,
+     KEY (id_medio)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE art_venta_cambio (
+     id_cambio INTEGER AUTO_INCREMENT NOT NULL,
+     fecha_hora DATETIME NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     id_lote_local INTEGER NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_cambio)
+     ) ENGINE=InnoDB;
 
 
 CREATE TABLE  art_venta (
      id_venta INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora DATETIME NOT NULL,
      id_usuarios INTEGER NOT NULL,
-     medio VARCHAR(100) NOT NULL,
+     id_medio INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
+     id_cambio INTEGER,
+     FOREIGN KEY (id_medio) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_cambio) REFERENCES id_cambio(art_venta_cambio) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;
 

@@ -139,7 +139,7 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_p_2 = 1;
                                             }else{
-                                                $por_ciento_p_2 = '0.'.$por_ciento_t;
+                                                $por_ciento_p_2 = '0.'.$por_ciento_p;
                                             }
                                            
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
