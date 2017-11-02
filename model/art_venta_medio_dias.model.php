@@ -5,55 +5,60 @@ class art_venta_medio_dias {
     private $dias;
     
 
-    public function __construct($id_dias_medio, $dias, $fecha_hora_fin)
+    public function __construct($id_dias_medio, $dias)
     {
         $this->id_dias_medio = $id_dias_medio;
         $this->dias = $dias;
     }
 
-    public static function alta_art_conjunto($nombre,$descripcion, $descuento){
+    public static function alta_art_venta_medio_dias($dias){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_medio = art_conjunto::ultimo_id_conjunto();
+        $id_dias_medio = art_venta_medio_dias::ultimo_id_dias_medio();
         
-        $sql = "INSERT INTO `art_conjunto`(`id_art_conjunto`, `nombre`, `descripcion`, `id_tipo`) VALUES (0,$nombre,$descripcion,$id_tipo)";
+        $sql = "INSERT INTO `art_venta_medio_dias`(`id_dias_medio`, `dias`) VALUES (0,'$dias')";
         $res = $baseDatos->query($sql);
         if ($res) {
              
-            return $id_medio;
+            return $id_dias_medio;
         }else{
              
             return false;
         }
 
     }
-    public static function ultimo_id_conjunto(){
+    public static function ultimo_id_dias_medio(){
         global $baseDatos;
-        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_conjunto'";
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta_medio_dias'";
         $res = $baseDatos->query($sql_fecha_ab);
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
     }
 
-    public static function generar_conjunto($id_art_conjunto){
+    public static function generar_medio_dias($id_dias_medio){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_conjunto` WHERE id_art_conjunto = $id_art_conjunto");  
+        $res = $baseDatos->query("SELECT * FROM `art_venta_medio_dias` WHERE id_dias_medio = $id_dias_medio");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $articulo = articulo::generar_articulo($res_fil['nombre']);   
-            $marca = art_marca::generar_marca($res_fil['descripcion']);  
-            $tipo = art_tipo::generar_tipo($res_fil['id_tipo']);  
-            //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
-            $conjunto = new art_conjunto($res_fil['id_art_conjunto'],$articulo,$marca,$tipo);
             
-            return $conjunto;
+            $dias = new art_venta_medio_dias($res_fil['id_dias_medio'],$res_fil['dias']);
+            return $dias;
         }
         else{
             
             return false;
         }
+    }
+
+    public static function update_dias($id_dias_medio,$dias){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_venta_medio_dias` SET `dias`='$dias' WHERE id_dias_medio = $id_dias_medio");  
+         
+        return $res;
     }
 
 

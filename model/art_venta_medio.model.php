@@ -22,13 +22,13 @@ class art_venta_medio {
        
     }
 
-    public static function alta_art_conjunto($nombre,$descripcion, $descuento){
+    public static function alta_art_venta_medio($nombre,$descripcion,$descuento,$id_fechas_medio,$id_dias_medio,$id_usuario){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_medio = art_conjunto::ultimo_id_conjunto();
+        $id_medio = art_venta_medio::ultimo_id_conjunto();
         
-        $sql = "INSERT INTO `art_conjunto`(`id_art_conjunto`, `nombre`, `descripcion`, `id_tipo`) VALUES (0,$nombre,$descripcion,$id_tipo)";
+        $sql = "INSERT INTO `art_venta_medio`(`id_medio`, `nombre`, `descripcion`, `descuento`, `id_fechas_medio`, `id_dias_medio`, `id_usuario`) VALUES (0,'$nombre','$descripcion',$descuento,$id_fechas_medio,$id_dias_medio,$id_usuario)";
         $res = $baseDatos->query($sql);
         if ($res) {
              
@@ -48,23 +48,73 @@ class art_venta_medio {
         return $res_fil['LastId'];
     }
 
-    public static function generar_conjunto($id_art_conjunto){
+    public static function generar_venta_medio($id_medio){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_conjunto` WHERE id_art_conjunto = $id_art_conjunto");  
+        $res = $baseDatos->query("SELECT * FROM `art_venta_medio` WHERE id_medio = $id_medio");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $articulo = articulo::generar_articulo($res_fil['nombre']);   
-            $marca = art_marca::generar_marca($res_fil['descripcion']);  
-            $tipo = art_tipo::generar_tipo($res_fil['id_tipo']);  
-            //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
-            $conjunto = new art_conjunto($res_fil['id_art_conjunto'],$articulo,$marca,$tipo);
+            $medio_fechas = art_venta_medio_fechas::generar_medio_fechas($res_fil['id_fechas_medio']);
+            $medio_dias = art_venta_medio_dias::generar_medio_dias($res_fil['id_dias_medio']);
+          
+            $venta_medio = new art_venta_medio($res_fil['id_medio'],$res_fil['nombre'],$res_fil['descripcion'],$res_fil['descuento'],$medio_fechas,$medio_dias,$res_fil['id_usuario']);
             
-            return $conjunto;
+            return $venta_medio;
         }
         else{
             
             return false;
         }
+    }
+
+    public static function obtener_medios(){
+        global $baseDatos;
+        $id_usuario = $_SESSION["usuario"]->getId_user();
+        $res = $baseDatos->query("SELECT * FROM art_venta_medio WHERE id_usuario = $id_usuario");  
+
+        
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+           $medios = array();
+             
+            foreach ($filas as $key => $value) {
+                $id_fechas_medio = art_venta_medio_fechas::generar_medio_fechas($value['id_fechas_medio']);
+                $id_dias_medio = art_venta_medio_dias::generar_medio_dias($value['id_dias_medio']);
+                $medios[]= new art_venta_medio($value['id_medio'],$value['nombre'],$value['descripcion'],$value['descuento'],$id_fechas_medio,$id_dias_medio,$value['id_usuario']);
+            }
+            
+            return $medios;
+        }
+        else{
+            return false;
+        }
+        
+    }
+
+    public static function update_nombre($id_medio,$nombre){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_venta_medio` SET `nombre`='$nombre' WHERE id_medio = $id_medio");  
+         
+        return $res;
+    }
+
+    public static function update_descripcion($id_medio,$descripcion){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_venta_medio` SET `descripcion`='$descripcion' WHERE id_medio = $id_medio");  
+         
+        return $res;
+    }
+
+    public static function update_descuento($id_medio,$descuento){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_venta_medio` SET `descuento`='$descuento' WHERE id_medio = $id_medio");  
+         
+        return $res;
     }
 
 

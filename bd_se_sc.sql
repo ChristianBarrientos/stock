@@ -280,8 +280,8 @@ CREATE TABLE lote_us (
 
 CREATE TABLE art_venta_medio_fechas (
      id_fechas_medio INTEGER AUTO_INCREMENT NOT NULL,
-     fecha_hora_inicio DATETIME NOT NULL,
-     fecha_hora_fin DATETIME NOT NULL,
+     fecha_hora_inicio DATE NOT NULL,
+     fecha_hora_fin DATE NOT NULL,
      KEY (id_fechas_medio)
      ) ENGINE=InnoDB;
 
