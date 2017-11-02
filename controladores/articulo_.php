@@ -1087,6 +1087,96 @@ class Articulo_Controller{
             }
         }
 
+        $medio_pago = art_venta_medio::obtener_medios();
+        //print_r($medio_pago);
+        foreach ($medio_pago as $key6 => $value6) {
+            $muestra = false;
+            
+            /*$dias_fin = '';
+            $dias1 = str_replace('1','Lunes',$dias);
+                    
+            $dias2 = str_replace('2','Martes',$dias1);
+                     
+            $dias3 = str_replace('3','Miercoles',$dias2);
+                     
+            $dias4 = str_replace('4','Jueves',$dias3);
+                     
+            $dias5 = str_replace('5','Viernes',$dias4);
+                    
+            $dias6 = str_replace('6','Sabado',$dias5);
+                    
+            $dias7 = str_replace('7','Domingo',$dias6);
+
+                    
+
+            $dias_fin = $dias1.','.$dias2.','.$dias3.','.$dias4.','.$dias5.','.$dias6.','.$dias7;
+            $dias_fin2 = str_replace('&',' ',$dias7);*7
+                
+                /*
+        [seconds] => 40
+        [minutes] => 58
+        [hours]   => 21
+        [mday]    => 17
+        [wday]    => 2
+        [mon]     => 6
+        [year]    => 2003
+        [yday]    => 167
+        [weekday] => Tuesday
+        [month]   => June
+        [0]       => 1055901520
+        
+        */
+        
+            $date_php = getdate();
+            $fecha_desde = $value6->getId_fechas_medio()->getFecha_hora_inicio();
+            $fecha_hasta = $value6->getId_fechas_medio()->getFecha_hora_fin();
+            $dias = $value6->getId_dias_medio()->getDias();
+            //$dia_hoy = $date_php['wday'];
+            $hoy = $date_php['year'].'-'.$date_php['mon'].'-'.$date_php['mday'];
+            $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
+            $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
+            //Verificar Fecha
+            if ($dias_faltantes_desde <= 0 && $dias_faltantes_hasta >=0) {
+                
+                $muestra = true;
+            }else{
+              
+                $muestra = false;
+            }
+            //Verificar Dia
+            $dia_hoy = $date_php['wday'];
+            $dias_array = explode ("&", $dias);
+            foreach ($dias_array as $keyd => $valued) {
+                # code...
+                if ($valued == $dia_hoy) {
+                    $muestra = true;
+                    
+                    break;
+                }else{
+                    
+                    $muestra = false;
+                }
+            }
+           
+            
+
+            if ($muestra) {
+                $tpl->newBlock("medio_pago_venta_opciones");
+                $descuento = $value6->getDescuento();
+                $tpl->assign("id_medio_pago",$value6->getId_medio());
+                if ($descuento != 0) {
+                    
+                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                }else{
+                    $tpl->assign("nombre_medio_pago",$value6->getNombre());
+                }
+                
+            }
+            $muestra = false;
+           
+            
+        }
+
         
         $local = $lote_local->getId_local();
         $lote_local->setCantidad_parcial($lote_local->getCantidad_parcial()- 1);
@@ -1102,6 +1192,34 @@ class Articulo_Controller{
         //print_r($_SESSION["art_lote_local"]);
         return $tpl->getOutputContent();
     }
+
+    public static function compararFechas($primera, $segunda){
+        $valoresPrimera = explode ("-", $primera);   
+        $valoresSegunda = explode ("-", $segunda); 
+
+        $diaPrimera    = $valoresPrimera[2];  
+        $mesPrimera  = $valoresPrimera[1];  
+        $anyoPrimera   = $valoresPrimera[0]; 
+
+        $diaSegunda   = $valoresSegunda[2];  
+        $mesSegunda = $valoresSegunda[1];  
+        $anyoSegunda  = $valoresSegunda[0];
+
+        $diasPrimeraJuliano = gregoriantojd($mesPrimera, $diaPrimera, $anyoPrimera);  
+        $diasSegundaJuliano = gregoriantojd($mesSegunda, $diaSegunda, $anyoSegunda);     
+
+        if(!checkdate($mesPrimera, $diaPrimera, $anyoPrimera)){
+    // "La fecha ".$primera." no es v&aacute;lida";
+           return 0;
+        }elseif(!checkdate($mesSegunda, $diaSegunda, $anyoSegunda)){
+    // "La fecha ".$segunda." no es v&aacute;lida";
+           return 0;
+         }else{
+          return  $diasPrimeraJuliano - $diasSegundaJuliano;
+         } 
+
+    }
+
 
     public static function venta_finalizar(){
         $bandera = false;
