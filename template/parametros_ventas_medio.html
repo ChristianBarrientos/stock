@@ -1,0 +1,122 @@
+<div class="cargar_empleado">
+	<div class="container-fluid">
+	  <h2>Ventas</h2>
+	  <h3>Parametros de Medio de Pago</h3>
+	  <p>Parametros de medio de pago hace referencia a los diferentes tipos de tarjetas de credito, descuentos especiales y cualquier otro medio de pago. </p>
+	  <p>Se debe ingresar:
+	  <ul>
+	  	<li>Nombre. Por ejemplo "Tarjeta Naranja plan Z".</li>
+	  	<li>Descripcion. Por ejemplo "Tarjeta de Credito".</li>
+	  	<li>Descuento. El descuentos es en porcentajes Por ejemplo '3' haria referencia al 3% del precio base. Normalmente para las tarjetas de credito no existe descuentos. Esto se lo uso para, por ejemplo, descuentos propios del local en epocas precisas como navidad, alo nuevo, etc.</li>
+	  	<li>Fechas(Inicio y Fin).Sera la fecha en la que estara disponible el medio de pago.</li>
+	  	<li>Dias(Dias de la Semana).Seran los Dias en los que estara disponible el medio de pago.</li>
+	  </ul> </p>
+	  
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Venta::confirmar_alta_parametros_medio" method="post">
+	  <h4>Datos Generales</h4>
+	    <div class="form-group">
+
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_nombre">Nombre:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input required type="venta_medio_parametro_nombre" class="form-control" id="venta_medio_parametro_nombre" placeholder="Ingrese nombre del medio de pago" name="venta_medio_parametro_nombre">
+	      </div>
+	    </div>
+	     <div class="form-group">
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descripcion">Descripcion:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input required type="venta_medio_parametro_descripcion" class="form-control" id="venta_medio_parametro_descripcion" placeholder="Descripcion del Medio." name="venta_medio_parametro_descripcion">
+	      </div>
+	    </div>
+	    
+	    <div class="form-group">
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descuento">Descuento:</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input  type="venta_medio_parametro_descuento" class="form-control" id="venta_medio_parametro_descuento" placeholder="Ingrese valores en porcentajes. Si no posee descuento ingrese 0." name="venta_medio_parametro_descuento">
+	      </div>
+	    </div>
+
+	    <h4>Fechas de Disponibilidad</h4>
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_fecha_inicio">Fecha Desde:</label>
+	       <div class='col-sm-6 col-xs-12'>
+            
+            	<div class='input-group date' id='datetimepicker1'>
+            	    <input  placeholder="AAAA-MM-DD" name='venta_medio_parametro_fecha_inicio' type='text' class="form-control" />
+            	    <span class="input-group-addon">
+            	        <span class="glyphicon glyphicon-calendar"></span>
+            	    </span>
+            	</div>
+            
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                	format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+	    </div>
+
+	    <div class="form-group">        
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_fecha_fin">Fecha Hasta:</label>
+	       <div class='col-sm-6 col-xs-12'>
+            
+            	<div class='input-group date' id='datetimepicker2'>
+            	    <input  placeholder="AAAA-MM-DD" name="venta_medio_parametro_fecha_fin" type='text' class="form-control" />
+            	    <span class="input-group-addon">
+            	        <span class="glyphicon glyphicon-calendar"></span>
+            	    </span>
+            	</div>
+            
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker2').datetimepicker({
+                	format: 'YYYY-MM-DD'
+                });
+            });
+        </script>
+	    </div>
+	    <h4>Dias de Disponibilidad</h4>
+	    
+	    
+
+		<div id="venta_medio_parametro_dias" class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="1">Lunes
+			  </label>
+
+			   <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="2">Martes
+			  </label>
+
+			  <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="3">Miercoles
+			  </label>
+
+			   <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="4">Jueves
+			  </label>
+
+			  <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="5">Viernes
+			  </label>
+
+			  <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="6">Sabado
+			  </label>
+
+			  <label class="form-check-label">
+			  	<input class="form-check-input" name="venta_medio_parametro_dias_[]" type="checkbox" value="7">Domingo
+			  </label>
+		</div>
+		
+		
+		<div class="form-group"> 
+			<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+	    	    	<button type="submit" class="btn btn-default">Cargar</button>
+	     	</div>
+	     </div>
+		</form>
+	</div>
+</div>

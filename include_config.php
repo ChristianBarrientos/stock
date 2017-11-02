@@ -8,6 +8,7 @@ include('controladores/local_.php');
 include('controladores/empleado_.php');
 include('controladores/articulo_.php');
 include('controladores/proveedor_.php');
+include('controladores/venta_.php');
 
 /*Modelos*/
 include('model/usuario.model.php');
@@ -39,6 +40,10 @@ include('model/art_fotos.model.php');
 include('model/us_prvd_foto.model.php');
 include('model/us_acceso.model.php');
 include('model/reporte.model.php');
+include('model/reporte.model.php');
+include('model/art_venta_medio.model.php');
+include('model/art_venta_medio_dias.model.php');
+include('model/art_venta_medio_fechas.model.php');
 
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');

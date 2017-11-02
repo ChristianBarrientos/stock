@@ -279,10 +279,10 @@ CREATE TABLE lote_us (
      ) ENGINE=InnoDB;
 
 CREATE TABLE art_venta_medio_fechas (
-     id_fecha_medio INTEGER AUTO_INCREMENT NOT NULL,
+     id_fechas_medio INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora_inicio DATETIME NOT NULL,
      fecha_hora_fin DATETIME NOT NULL,
-     KEY (id_fecha_medio)
+     KEY (id_fechas_medio)
      ) ENGINE=InnoDB;
 
 CREATE TABLE art_venta_medio_dias (
@@ -298,8 +298,10 @@ CREATE TABLE art_venta_medio (
      descuento INTEGER,
      id_fechas_medio INTEGER,
      id_dias_medio INTEGER,
-     FOREIGN KEY (id_fecha_medio) REFERENCES art_venta_medio_fechas(id_fecha_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     id_usuario INTEGER,
+     FOREIGN KEY (id_fechas_medio) REFERENCES art_venta_medio_fechas(id_fechas_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_dias_medio) REFERENCES art_venta_medio_dias(id_dias_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_medio)
      ) ENGINE=InnoDB;
 
@@ -322,9 +324,9 @@ CREATE TABLE  art_venta (
      id_medio INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
      id_cambio INTEGER,
-     FOREIGN KEY (id_medio) REFERENCES id_medio(art_venta_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_medio) REFERENCES art_venta_medio(id_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_cambio) REFERENCES id_cambio(art_venta_cambio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_cambio) REFERENCES art_venta_cambio(id_cambio) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;
 

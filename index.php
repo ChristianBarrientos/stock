@@ -57,6 +57,7 @@ if ($config["dbEngine"]=="MYSQL"){
 			}
 		}
 		else{
+			 
 			$html="La página solicitada no está disponible.";
 		}
 	}

@@ -1,4 +1,4 @@
- <?php
+<?php
 class art_conjunto {
 	
 	private $id_conjunto;
