@@ -1,4 +1,8 @@
 
+//Variables Globales
+var Valor_Medio_Pago = "";
+var Medio_Pago = "";
+var Valor_Total_Pago = "";
 
 $(document).ready(function()
     {   //Buscador sincronico
@@ -371,8 +375,8 @@ $(document).ready(function()
 
         });
         //Finalizar Venta, enviar valor
-        $('.forma_pago_select').on('change',function() {
-            //alert('aca');
+        $("#cargar_marca_btn").click(function() {
+            /*alert('aca');
             var selected = $(':selected', this);
 
             var optgroup = selected.parent().attr('label');
@@ -383,21 +387,25 @@ $(document).ready(function()
             //alert(selected.closest('optgroup').attr('label'));
              
             //var input = ','.concat(option);
-            var option = $('#forma_pago_select').find(":selected").text();
-             
+            var option = $('#forma_pago_select').find(":selected").text();*/
+            alert("aca");
+            alert(Valor_Medio_Pago);
+            alert(Medio_Pago);
+            alert(Valor_Total_Pago);
 
-            $("#medio_art_venta").val(optgroup);
+            $("#medio_art_venta").val(Medio_Pago);
 
-            $("#cuotas_art_venta").val(option);
+            $("#cuotas_art_venta").val(Valor_Medio_Pago);
+
+            $("#precio_final_art_venta").val(Valor_Total_Pago);
              
  
         });
+
+       
+
 });
 
-
- 
-
- 
 
 
 
@@ -424,3 +432,59 @@ function guardar_art_general(){
         }
     })
 }
+
+
+ function calcular_total(){
+             
+            //Realiza Venta. Calculo de TOTAL A PAGAR
+            //Valor Forma de PAGO
+           
+            $select_valor = document.getElementById("valor_pago_select");
+            $select_forma = document.getElementById("forma_pago_select");
+            $valor_valor = $select_valor.value;
+            $valor_forma = $select_forma.value;
+
+            $valor_valor_sin_x = $valor_valor.replace(/x/,"");
+            $valor_valor_sin_peso = $valor_valor_sin_x.replace(/\$/,"");
+
+            $cantidad_cuotas = $valor_valor_sin_peso.substr(0,2);
+            $valor_cuotas = $valor_valor_sin_peso.substr(2);
+            $valor_precio_ = Number($cantidad_cuotas) * Number($valor_cuotas);
+
+            $forma_pago_porciento = $valor_forma.substr(-5);
+            $forma_pago_sin_porciento = $forma_pago_porciento.replace(/%/,"");
+            $forma_pago_sin_menos = $forma_pago_sin_porciento.replace(/-/,"");
+            $porcentaje_final = $forma_pago_sin_menos.replace(/\(|\)/g,"");
+            
+
+            $valor_parcial_porciento = (Number($porcentaje_final) * Number($valor_precio_))/100;
+
+            $valor_finali_finali = Number($valor_precio_) - Number($valor_parcial_porciento);
+            $("#total_pagar").text("Pesos Argentinos:$" + $valor_finali_finali.toFixed(1));
+
+            var Valor_Medio_Pago = $valor_valor;
+            var Medio_Pago = $valor_forma;
+            var Valor_Total_Pago = $valor_finali_finali.toFixed(1);
+
+
+            
+           
+             
+        };
+function enviar_datos_venta(){
+    alert("aca");
+    alert(Valor_Medio_Pago);
+    alert(Medio_Pago);
+    alert(Valor_Total_Pago);
+
+    $("#medio_art_venta").val(Medio_Pago);
+
+    $("#cuotas_art_venta").val(Valor_Medio_Pago);
+
+    $("#precio_final_art_venta").val(Valor_Total_Pago);
+}
+
+
+ 
+
+ 

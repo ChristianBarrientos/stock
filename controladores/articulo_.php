@@ -1013,7 +1013,10 @@ class Articulo_Controller{
 
 
     public static function venta_articulo(){
-         
+        if (!(isset($_SESSION["usuario"])) || !(Ingreso_Controller::es_admin())){
+            return Ingreso_Controller::salir();
+
+        }
         $id_lote_local = $_POST['art_local_venta'];
         $id_art_lotte_loccal = $_GET['id_art_lote_locas'];
         if ($_SESSION["permiso"] == 'OPER') {
@@ -1050,12 +1053,12 @@ class Articulo_Controller{
         }
 
         foreach ($art_cb as $key => $value) {
-            
+         
             if (strcmp($value->getNombre(), "Precio" ) == 0 ) {
                 $precio_base_venta =  $value->getValor();
                 $tpl->newBlock("forma_pago_venta");
-                
-                $tpl->assign("nombre_pago", 'Precio Base' );
+                $porcentaje_contado = $value->getValor();
+                $tpl->assign("nombre_pago", 'Precio Base'.' (% 0)');
                 
                 $tpl->newBlock("forma_pago_venta_opciones");
                 $tpl->assign("valor_pago", '$'.$precio_base_venta);
@@ -1065,7 +1068,8 @@ class Articulo_Controller{
             }
             if (strcmp($value->getNombre(), "Tarjeta" ) == 0 ) {
                 $tpl->newBlock("forma_pago_venta"); 
-                $tpl->assign("nombre_pago", 'Tarjeta de Credito' );
+                $porcentaje_tarjeta = $value->getValor();
+                $tpl->assign("nombre_pago", 'Tarjeta de Credito'.' (% '.$porcentaje_tarjeta.')' );
                  
                 $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
                 for ($i=1; $i <= 12 ; $i++) { 
@@ -1076,7 +1080,8 @@ class Articulo_Controller{
             }
             if (strcmp($value->getNombre(), "CreditoP" ) == 0 ) {
                 $tpl->newBlock("forma_pago_venta"); 
-                $tpl->assign("nombre_pago", 'Credito Personal' );
+                $porcentaje_credito = $value->getValor();
+                $tpl->assign("nombre_pago", 'Credito Personal'.' (% '.$porcentaje_credito.')' );
                  
                 $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
                 for ($i=1; $i <= 12 ; $i++) { 
@@ -1163,7 +1168,8 @@ class Articulo_Controller{
             if ($muestra) {
                 $tpl->newBlock("medio_pago_venta_opciones");
                 $descuento = $value6->getDescuento();
-                $tpl->assign("id_medio_pago",$value6->getId_medio());
+                //$tpl->assign("id_medio_pago",$value6->getId_medio());
+                $tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
                 if ($descuento != 0) {
                     
                     $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
@@ -1223,8 +1229,16 @@ class Articulo_Controller{
 
     public static function venta_finalizar(){
         $bandera = false;
+        $cuotas = $_POST['cuotas_art_venta'];
         $medio = $_POST['medio_art_venta'];
-        $total = $_POST['cuotas_art_venta'];
+        $total = $_POST['precio_final_art_venta'];
+
+        echo $cuotas;
+        echo "&&";
+        echo $medio;
+        echo "&&";
+        echo $total;
+        echo "YY";
         if ($total == 'null' ||  $medio == null) {
             $bandera = true;
         }
