@@ -18,6 +18,16 @@ VALUES (0,'Catamarca',1);
 INSERT INTO `mp_localidad`(`id_localidad`, `valor`,`id_provincia`,`id_pais`) 
 VALUES (0,'San Fernando del Valle de Catamarca',1,1);
 
+INSERT INTO `art_venta_medio_fechas`(`id_fechas_medio`, `fecha_hora_inicio`, `fecha_hora_fin`) 
+VALUES (1,'0000-00-00','0000-00-00');
+
+INSERT INTO `art_venta_medio_dias`(`id_dias_medio`, `dias`) 
+VALUES (1,'1&2&3&4&5&6&7');
+
+INSERT INTO `art_venta_medio`(`id_medio`, `nombre`, `descripcion`, `descuento`, `id_fechas_medio`, `id_dias_medio`, `id_usuario`) 
+VALUES (1,'Contado','Contado',0,1,1,1);
+
+
 
 INSERT INTO `art_categoria`(`id_categoria`, `nombre`, `valor`, `descripcion`) 
 VALUES (1,'Precio',null,'Precio base.');
@@ -52,10 +62,3 @@ VALUES (1,5);
 
 INSERT INTO `art_articulo`(`id_articulo`, `nombre`,`descripcion`) 
 VALUES (0,'Pantalon', 'Pantalones convencionales');
-INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`) 
-VALUES (0,'Jonh Fose','Zapatillas Urbanas Unisex');
-INSERT INTO `art_articulo`(`id_articulo`, `nombre`) 
-VALUES (0,'Zapatilas');
-INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`) 
-VALUES (0,'Tavertini','Pantalon Urbano Unisex');
-INSERT INTO `art_tipo`(`id_tipo`, `nombre`, `descripcion`) VALUES (0,'Botita','Zapatillas Botitas Urbanas');

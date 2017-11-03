@@ -493,7 +493,7 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_p_2 = 1;
                                             }else{
-                                                $por_ciento_p_2 = '0.'.$por_ciento_t;
+                                                $por_ciento_p_2 = '0.'.$por_ciento_p;
                                             }
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
@@ -1013,11 +1013,13 @@ class Articulo_Controller{
 
 
     public static function venta_articulo(){
-        if (!(isset($_SESSION["usuario"])) || !(Ingreso_Controller::es_admin())){
+        if (!(isset($_SESSION["usuario"]))) {
             return Ingreso_Controller::salir();
 
         }
         $id_lote_local = $_POST['art_local_venta'];
+
+        
         $id_art_lotte_loccal = $_GET['id_art_lote_locas'];
         if ($_SESSION["permiso"] == 'OPER') {
             $lote_local = art_lote_local::generar_lote_local_id_($id_art_lotte_loccal);
@@ -1091,8 +1093,16 @@ class Articulo_Controller{
                 }
             }
         }
+        //obtener_admin_si es necesario
+        if (Ingreso_Controller::es_admin()) {
+            # code...
+            $id_usuario = $_SESSION["usuario"]->getId_user();
+        }else{
 
-        $medio_pago = art_venta_medio::obtener_medios();
+ 
+         $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+        }
+        $medio_pago = art_venta_medio::obtener_medios($id_usuario);
         //print_r($medio_pago);
         foreach ($medio_pago as $key6 => $value6) {
             $muestra = false;
@@ -1195,10 +1205,37 @@ class Articulo_Controller{
         $tpl->assign("local_nombre",$local->getNombre());
         $tpl->assign("cantidad_art_local",$stock_actual);
         $_SESSION["art_lote_local"] = $lote_local;
+        $tpl->newBlock("no_venta");
+        if ($id_lote_local != null) {
+            $tpl->assign("id_lote_local",$id_lote_local);
+        }else{
+            
+            $tpl->assign("id_lote_local",$id_art_lotte_loccal);
+        }
+        
+        
+
         //print_r($_SESSION["art_lote_local"]);
         return $tpl->getOutputContent();
     }
 
+    public static function no_venta(){
+        $id_loca_local = $_GET['id_lote_local'];
+        $id_usuario = $_SESSION['usuario']->getId_user();
+        $hoy = getdate();
+        $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds']; 
+        //Insertar en ART_NO_VENTA
+        
+        if (Ingreso_Controller::es_admin()) {
+            # code...
+            return Articulo_Controller::mostrar();
+        }else{
+            return Articulo_Controller::mostrar_operador();
+        }
+        
+        
+
+    }
     public static function compararFechas($primera, $segunda){
         $valoresPrimera = explode ("-", $primera);   
         $valoresSegunda = explode ("-", $segunda); 

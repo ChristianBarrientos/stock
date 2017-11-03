@@ -66,9 +66,9 @@ class art_venta_medio {
         }
     }
 
-    public static function obtener_medios(){
+    public static function obtener_medios($id_usuario){
         global $baseDatos;
-        $id_usuario = $_SESSION["usuario"]->getId_user();
+       
         $res = $baseDatos->query("SELECT * FROM art_venta_medio WHERE id_usuario = $id_usuario");  
 
         

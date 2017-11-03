@@ -1,19 +1,19 @@
 <?php
-class art_venta {
+class art_no_venta {
 	
-	private $id_venta;
+	private $id_no_venta;
     private $fecha_hora; 
     private $id_usuario;
-    private $medio;
-    private $total;
+    private $id_lote_local;
+    
 
-    public function __construct($id_venta, $fecha_hora,$id_usuario,$medio,$total)
+    public function __construct($id_no_venta, $fecha_hora,$id_usuario,$id_lote_local)
     {
-        $this->id_venta = $id_venta;
+        $this->id_no_venta = $id_no_venta;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
-        $this->medio = $medio;
-        $this->total = $total;
+        $this->id_lote_local = $id_lote_local;
+         
        
     }
 
@@ -63,39 +63,17 @@ class art_venta {
     }
 
 
-    public function getMedio()
+    public function getId_no_venta()
     {
-        return $this->medio;
+        return $this->id_no_venta;
     }
     
-    public function setMedio($medio)
+    public function setId_no_venta($id_no_venta)
     {
-        $this->medio = $medio;
+        $this->id_no_venta = $id_no_venta;
         return $this;
     }
 
-    public function getTotal()
-    {
-        return $this->total;
-    }
-    
-    public function setTotal($total)
-    {
-        $this->total = $total;
-        return $this;
-    }
-
-
-    public function getId_venta()
-    {
-        return $this->id_venta;
-    }
-    
-    public function setId_venta($id_venta)
-    {
-        $this->id_venta = $id_venta;
-        return $this;
-    }
 
     public function getFecha_hora()
     {
@@ -108,14 +86,14 @@ class art_venta {
         return $this;
     }
 
-    public function getId_local()
+    public function getId_lote_local()
     {
-        return $this->id_local;
+        return $this->id_lote_local;
     }
     
-    public function setId_local($id_local)
+    public function setId_lote_local($id_lote_local)
     {
-        $this->id_local = $id_local;
+        $this->id_lote_local = $id_lote_local;
         return $this;
     }
 
