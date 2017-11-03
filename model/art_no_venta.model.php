@@ -17,44 +17,44 @@ class art_no_venta {
        
     }
 
-    public static function alta_art_venta($fecha_hora,$id_usuario,$id_medio,$total,$cuotas = null,$id_cambio = 'null'){
+    public static function alta_art_no_venta($fecha_hora,$id_usuario,$id_lote_local){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_venta = art_venta::ultimo_id_venta();
-        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuarios`, `id_medio`, `total`,`cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_medio,'$total','$cuotas',$id_cambio)";
+        $id_no_venta = art_no_venta::ultimo_id_no_venta();
+        $sql = "INSERT INTO `art_no_venta`(`id_no_venta`, `fecha_hora`, `id_usuarios`, `id_lote_local`) VALUES (0,'$fecha_hora',$id_usuario,$id_lote_local)";
 
         $res = $baseDatos->query($sql);
         if ($res) {
             
-            return $id_venta;
+            return $id_no_venta;
         }else{
             
             return false;
         }
 
     }
-    public static function ultimo_id_venta(){
+    public static function ultimo_id_no_venta(){
         global $baseDatos;
-        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta'";
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_no_venta'";
         $res = $baseDatos->query($sql_fecha_ab);
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
     }
 
-    public static function generar_venta($id_venta){
+    public static function generar_no_venta($id_no_venta){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_venta = $id_venta");  
+        $res = $baseDatos->query("SELECT * FROM `art_no_venta` WHERE id_venta = $id_venta");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
             $id_usuario = usuario::generar_usuario($res_fil['id_usuarios']);
-
-            $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$res_fil['medio'],$res_fil['total']);
+            $id_lote_local = art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
+            $no_venta = new art_no_venta($res_fil['id_no_venta'],$res_fil['fecha_hora'],$id_usuario,$id_lote_local);
 
             
-            return $venta;
+            return $no_venta;
         }
         else{
             

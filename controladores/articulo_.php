@@ -18,7 +18,7 @@ class Articulo_Controller{
                             foreach ($_SESSION['lotes'] as $key => $value) {
                             $vueltas = 0;
                             //foreach ($_SESSION["lote_local"] as $key => $value) {
-                                //print_r($value[1]);
+                             
 
                                 //foreach ($value as $key2 => $value2) {
                                 $cantidad = $cantidad + 1;
@@ -31,7 +31,7 @@ class Articulo_Controller{
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.', '.$marca.', '.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
-                                print_r($si_arra[0]->getId_categoria());
+                               
                                 
                                 */
                                 
@@ -69,14 +69,14 @@ class Articulo_Controller{
                                     $id_lote_local_venta__ = array();
                                     $art_lote_local_actual_stock = array();
                                     //$locales_todos = usuario::obtener_locales($_SESSION['usuario']->getId_user());
-                                    //print_r($_SESSION["lote_local"]);
+                                  
 
                                     foreach ($_SESSION["lote_local"] as $key2 => $value2) {
 
                                         foreach ($value2 as $key3 => $value3) {
                                            
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
-                                                //print_r($value3->getId_local());
+                                               
                                                  
                                                 if ($value3->getCantidad_parcial() > 0) {
                                                     $art_lote_local_actual_stock = $value2;
@@ -225,7 +225,7 @@ class Articulo_Controller{
                                     //Locales en el que tiene el articulo nom_local__
                                     
                                     /* ($art_lote_local_actual_stock as $key10 => $value10) {
-                                        print_r($value10->getId_lote());
+                                      
                                     }*/
                                     $tpl->newBlock("actualiza_stock_boton");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
@@ -257,7 +257,7 @@ class Articulo_Controller{
                                     
                                     $contadori = 0;
                                     $actualiza_stock_bandera = 0;
-                                   //) print_r($_SESSION["locales"]);
+                                  
                                     $actualiza_stock_locales_sinart = array();
 
                                     foreach ($_SESSION["locales"] as $key7 => $value7) {
@@ -279,7 +279,7 @@ class Articulo_Controller{
 
                                         if ($actualiza_stock_bandera == 0) {
                                             
-                                            //print_r($value7);
+                                         
                                            
                                             $actualiza_stock_locales_sinart = $value7;
                                             $tpl->newBlock("actualiza_sin_stock_locales_cant");
@@ -325,8 +325,7 @@ class Articulo_Controller{
                             //$_SESSION["lote_local"] 
                             //Lote de Articulos en general
                             //$_SESSION["lotes"]  
-                            //print_r($_SESSION["lote_local"]);
-                            //print_r($_SESSION["lotes"]);
+                            
                             
                             
                                 
@@ -379,20 +378,24 @@ class Articulo_Controller{
             //return Articulo_Controller::mostrar_operador();
         }
 
-        public static function mostrar_operador(){
+        public static function mostrar_operador($id_lote_lote = null){
                 
                 if ($_SESSION['usuario']->getId_Acceso() == null) {
                      
                     Articulo_Controller::pre_mostrar_operador();
                 }
                 $id_empleado_venta_local_art = $_GET['id_local'];
-
+                if ($id_empleado_venta_local_art == null || isset($id_empleado_venta_local_art)) {
+                # code...
+                    
+                    $id_empleado_venta_local_art = $id_lote_lote;
+                }
                 if (isset($id_empleado_venta_local_art) && $id_empleado_venta_local_art == null) {
                     
                     Ingreso_Controller::salir();
                     
                 }
-                //print_r($_SESSION['usuario']->getId_user());
+                
 
                 $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
                 
@@ -437,7 +440,7 @@ class Articulo_Controller{
                                         foreach ($value2 as $key3 => $value3) {
                                            
                                             if ($value3->getId_lote()->getId_lote() == $value->getId_lote()) {
-                                                //print_r($value3->getId_local());
+                                                
                                                 if ($value3->getCantidad_parcial() > 0) {
                                                     $id_lote_local_venta__[] = $value3->getId_lote_local();
                                                     $id_local_ventas_art_[] = $value3->getId_local()->getId_local();
@@ -693,9 +696,7 @@ class Articulo_Controller{
                     
                 }
                                 
-                /*foreach ($lista_articulos_nombre as $key => $value) {
-                    print_r($value);
-                }*/
+              
                 foreach ($_SESSION['locales'] as $key => $value) {
                         
                         $tpl->newBlock("locales_empleado_alta");
@@ -798,9 +799,7 @@ class Articulo_Controller{
         $art_cantidad_total = 0;
         foreach ($_POST as $campo => $valor){
             /* en la variable $concatenamos juntamos el campo y su valor 
-            print_r($campo);
-             
-            print_r($valor);*/
+            ;*/
             for ($i=0; $i <=$total_locales ; $i++) { 
                 //Revisar el contador nos va a dar falsos positivos!!!
                 //Utilizar exoresie¡
@@ -951,7 +950,7 @@ class Articulo_Controller{
         //Alta art_fotos
         for($i=0; $i<$total; $i++) {
           //Get the temp file path
-          //print_r($_FILES['fotos_art']['tmp_name'][$i]);
+          
          
           $path=  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
                                  $_FILES["fotos_art"]["size"][$i],
@@ -971,7 +970,7 @@ class Articulo_Controller{
           
         }
         //agregar a Lote
-        //print_r($id_art_fotos);
+     
         if ($id_proveedor != null) {
             $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos, $id_proveedor);
         }else{
@@ -1028,7 +1027,7 @@ class Articulo_Controller{
             $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
         }
         
-        //print_r($lote_local);
+   
         $tpl = new TemplatePower("template/venta_art.html");
         $tpl->prepare();
         $art_nombre = $lote_local->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -1037,7 +1036,7 @@ class Articulo_Controller{
         $tpl->assign("art_nombre",(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo );
 
         $art_cb = $lote_local->getId_lote()->getId_gc()->getId_categoria();
-        //print_r($art_cb);
+       
         foreach ($art_cb as $key => $value) {
             
              if (strcmp($value->getNombre(), "Medida" ) == 0 ) {
@@ -1103,7 +1102,7 @@ class Articulo_Controller{
          $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
         }
         $medio_pago = art_venta_medio::obtener_medios($id_usuario);
-        //print_r($medio_pago);
+       
         foreach ($medio_pago as $key6 => $value6) {
             $muestra = false;
             
@@ -1215,23 +1214,33 @@ class Articulo_Controller{
         
         
 
-        //print_r($_SESSION["art_lote_local"]);
         return $tpl->getOutputContent();
     }
 
     public static function no_venta(){
-        $id_loca_local = $_GET['id_lote_local'];
+        $id_lote_local = $_GET['id_lote_local'];
         $id_usuario = $_SESSION['usuario']->getId_user();
         $hoy = getdate();
-        $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds']; 
+        $fecha_no_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds']; 
         //Insertar en ART_NO_VENTA
-        
-        if (Ingreso_Controller::es_admin()) {
+        $id_no_venta = art_no_venta::alta_art_no_venta($fecha_no_venta,$id_usuario,$id_lote_local);
+        if ($id_no_venta) {
             # code...
-            return Articulo_Controller::mostrar();
+            if (Ingreso_Controller::es_admin()) {
+            # code...
+                return Articulo_Controller::mostrar($id_lote_local);
+            }else{
+                $lote_local = art_lote_local::generar_lote_local_id_($id_lote_local);
+                $id_local = $lote_local->getId_lote()->getId_lote();
+
+                return Articulo_Controller::mostrar_operador($id_local);
+            }
         }else{
-            return Articulo_Controller::mostrar_operador();
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+                return $tpl->getOutputContent();
         }
+        
         
         
 
@@ -1345,13 +1354,14 @@ class Articulo_Controller{
 
 
     //}
-        public static function actualiza_stock(){
+        public static function actualiza_stock($id_lote_lote = null){
             $id_local = $_POST['actualiza_nombre_local'];
             $cantidad_actualizar = $_POST['actualiza_cantidad_local'];
             $id_lote = $_GET['id_art_lote_stock_actual'];
+
             $cortar = false;
             $contador = 0;
-            //print_r($id_local);
+           
             //Preguntar si existe un art_lote_local para id_lote y id_local
             foreach ($id_local as $key => $value) {
                 $id_lote_local = art_lote_local::obtener_lote_local_oper($id_lote,$value);
@@ -1424,6 +1434,7 @@ class Articulo_Controller{
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
 
+
             }
             
            
@@ -1453,12 +1464,7 @@ class Articulo_Controller{
                     $id_creditop = $valor->getId_categoria();
                 }
             }
-            /*echo "Precio";
-            echo $id_precio;
-            echo "Tarjeta";
-            echo $id_tarjeta;
-            echo "Credito";
-            echo $id_creditop;*/
+            
             $ok_precio_base = art_categoria::update_valores($id_precio,$precio_base);
             $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
             $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);

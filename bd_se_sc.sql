@@ -331,6 +331,16 @@ CREATE TABLE  art_venta (
      KEY (id_venta)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  art_no_venta (
+     id_no_venta INTEGER AUTO_INCREMENT NOT NULL,
+     fecha_hora DATETIME NOT NULL,
+     id_usuarios INTEGER NOT NULL,
+     id_lote_local INTEGER NOT NULL,
+     FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_no_venta)
+     ) ENGINE=InnoDB;
+
 CREATE TABLE  art_unico (
      id_unico INTEGER AUTO_INCREMENT NOT NULL,
      id_lote_local INTEGER NOT NULL,

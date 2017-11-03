@@ -343,7 +343,7 @@ class Ingreso_Controller{
     public static function registro_ventas(){
 
     	$respuesta = reporte::reporte_av_todos();
-    	//print_r($respuesta);
+     
     	$tpl = new TemplatePower("template/seccion_admin_articulos_vendidos.html");
 		$tpl->prepare();
 		if ($respuesta <= 0) {

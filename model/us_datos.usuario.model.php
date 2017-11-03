@@ -8,11 +8,11 @@ class us_datos {
     private $dni;
     private $foto;
     private $genero;
-    private $fecha_alta;
-    private $fecha_baja;
+    private $id_fecha_ab;
+    
 
 
-    public function __construct($id_datos, $nombre, $apellido,$fecha_nac,$dni,$foto,$genero,$fecha_alta,$fecha_baja)
+    public function __construct($id_datos, $nombre, $apellido,$fecha_nac,$dni,$foto,$genero,$id_fecha_ab)
     {
         $this->id_datos = $id_datos;
         $this->nombre = $nombre;
@@ -21,8 +21,8 @@ class us_datos {
         $this->dni = $dni;
         $this->foto = $foto;
         $this->genero = $genero;
-        $this->fecha_alta = $fecha_alta;
-        $this->fecha_baja = $fecha_baja;
+        $this->id_fecha_ab = $id_fecha_ab;
+        
         
     }
 
@@ -48,7 +48,7 @@ class us_datos {
         $res = $baseDatos->query("SELECT * FROM us_datos WHERE id_datos = $id_datos");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-           
+            
             $us_datos = new us_datos($res_fil['id_datos'],$res_fil['nombre'],$res_fil['apellido'],$res_fil['fecha_nac'],$res_fil['dni'],$res_fil['id_foto'],$res_fil['genero'],$res_fil['id_fecha_ab']);
             return $us_datos;
         }
