@@ -117,6 +117,8 @@ class art_venta_medio {
         return $res;
     }
 
+    
+
 
 
     public function getId_medio()

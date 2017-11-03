@@ -17,20 +17,31 @@ class art_venta {
        
     }
 
-    public static function alta_art_venta($fecha_hora,$id_usuario,$medio,$total){
+    public static function alta_art_venta($fecha_hora,$id_usuario,$id_medio,$total,$cuotas = null,$id_cambio = 'null'){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_venta = art_venta::ultimo_id_venta();
-        
-        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuarios` ,`medio`,`total`) VALUES (0,'$fecha_hora',$id_usuario,'$medio','$total')";
+        echo "%%";
+        echo $fecha_hora;
+        echo "&&";
+        echo $id_usuario;
+        echo "&&";
+        echo $id_medio;
+        echo "&&";
+        echo $total;
+        echo "&&";
+        echo $cuotas;
+        echo "%%";
+        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuarios`, `id_medio`, `total`,`cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_medio,'$total','$cuotas',$id_cambio)";
 
         $res = $baseDatos->query($sql);
         if ($res) {
-             
+            echo "aca";
             return $id_venta;
         }else{
-              
+            echo "ni";
+            print_r($baseDatos->error);
             return false;
         }
 

@@ -1168,8 +1168,8 @@ class Articulo_Controller{
             if ($muestra) {
                 $tpl->newBlock("medio_pago_venta_opciones");
                 $descuento = $value6->getDescuento();
-                //$tpl->assign("id_medio_pago",$value6->getId_medio());
-                $tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                $tpl->assign("id_medio_pago",$value6->getId_medio());
+                //$tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
                 if ($descuento != 0) {
                     
                     $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
@@ -1233,37 +1233,22 @@ class Articulo_Controller{
         $medio = $_POST['medio_art_venta'];
         $total = $_POST['precio_final_art_venta'];
 
-        echo $cuotas;
-        echo "&&";
-        echo $medio;
-        echo "&&";
-        echo $total;
-        echo "YY";
+       
+
         if ($total == 'null' ||  $medio == null) {
             $bandera = true;
         }
         $tpl = new TemplatePower("template/exito_fracaso_venta.html");
         $tpl->prepare();
-        /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        
-        */
+
         $hoy = getdate();
         $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+
         $id_usuario = $_SESSION["usuario"]->getId_user();
         
         //alta en art_venta
-        $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total);
+
+        $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total,$cuotas);
         //alta en art unico
         $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
         

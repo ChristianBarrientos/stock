@@ -323,6 +323,7 @@ CREATE TABLE  art_venta (
      id_usuarios INTEGER NOT NULL,
      id_medio INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
+     cuotas VARCHAR(100),
      id_cambio INTEGER,
      FOREIGN KEY (id_medio) REFERENCES art_venta_medio(id_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
