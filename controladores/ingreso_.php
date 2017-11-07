@@ -417,6 +417,7 @@ class Ingreso_Controller{
     public static function reporte_av($fecha_desde,$fecha_hasta){
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
     	// 
+    	
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -466,7 +467,10 @@ class Ingreso_Controller{
 			$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
 			$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
 
-			$medio_pago = $value->getId_venta()->getMedio();
+			//Medio Pago
+			$descuento = $value->getId_venta()->getMedio()->getDescuento();
+			$medio_pago = $value->getId_venta()->getMedio()->getNombre();
+			$medio_pago = $medio_pago.' (%'.$descuento.')';
 			 
 			
 			
@@ -574,7 +578,7 @@ class Ingreso_Controller{
 		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+		$columnas = ['Cant','Articulo','Medio de Pago','Cuotas','Precio Final'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
