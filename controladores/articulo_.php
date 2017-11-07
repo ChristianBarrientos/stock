@@ -1312,6 +1312,7 @@ class Articulo_Controller{
         $medio = $_POST['medio_art_venta'];
         $total = $_POST['precio_final_art_venta'];
 
+
        
 
         if ($total == 'null' ||  $medio == null) {
@@ -1325,8 +1326,7 @@ class Articulo_Controller{
 
         $id_usuario = $_SESSION["usuario"]->getId_user();
         
-        //alta en art_venta
-
+        //alta en art_venta  
         $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total,$cuotas);
         //alta en art unico
         $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();

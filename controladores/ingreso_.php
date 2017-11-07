@@ -451,7 +451,7 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'El simbolo (*) simboloza un cambio en la venta.' );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -521,8 +521,16 @@ class Ingreso_Controller{
 			}
 			$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
 			$medio_limpio[] = $medio_sin;
+			if ($value->getId_venta()->getId_cambio() != null) {
+				# code...
+				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor.' * ',$precio_final];
+			}else
+			{
+				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$precio_final];
+			}
+			
 			//Se saco medio de pago
-			$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$precio_final];
+			
 			$numero_cont = $numero_cont + 1;
 
 		}

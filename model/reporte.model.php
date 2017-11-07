@@ -34,8 +34,7 @@ class reporte {
                                 WHERE au.id_venta = av.id_venta");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-        echo "aca";
-        print_r($filas);
+        
         if (count($filas) != 0) {
             $art_unico = array();
             //$usuario_prvd = array(0);
