@@ -34,14 +34,18 @@ class reporte {
                                 WHERE au.id_venta = av.id_venta");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-       
+        
         if (count($filas) != 0) {
             $art_unico = array();
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                
                 $art_unico[] = art_unico::generar_unico($valor['id_unico']);
+
             }
+             
+            
+             
             return $art_unico;
         }
         else{

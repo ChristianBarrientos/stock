@@ -131,6 +131,7 @@
 				<!-- START BLOCK : datos_pasar -->
 				<input id="oculta_inputs" type="text" name="id_venta" value="{id_venta}">      
 				<input id="oculta_inputs" type="text" name="id_lote_local_cambio" value="{id_lote_local_cambio}">
+				<input id="oculta_inputs" type="text" name="id_lote_local_viejo" value="{id_lote_local_viejo}">
 				<input id="oculta_inputs" type="text" name="saldo_favor" value="{saldo_favor_2}">
 				<!-- END BLOCK : datos_pasar -->
 				
@@ -172,12 +173,12 @@
 							Confirmar Cambio
 						</button>
 				<!-- END BLOCK : cambio_no_ok -->
-					
+					<!-- START BLOCK : cancelar_boton -->
 					<a href="index.php?action=Articulo::modificar_venta&id_venta={id_venta_cancelar}&id_lote_local={id_lote_local_cancelar}">
 					<button type="button" class="btn btn-success btn-md"  id="cambio_venta_cancelar">Cancelar</button>
 						
 					</a>
-					        	
+					<!-- END BLOCK : cancelar_boton -->     	
 					</div>
 				</div>
 			</div>

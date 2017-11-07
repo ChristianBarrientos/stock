@@ -6,14 +6,18 @@ class art_venta {
     private $id_usuario;
     private $medio;
     private $total;
+    private $cuotas;
+    private $id_cambio;
 
-    public function __construct($id_venta, $fecha_hora,$id_usuario,$medio,$total)
+    public function __construct($id_venta, $fecha_hora,$id_usuario,$medio,$total,$cuotas,$id_cambio)
     {
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
         $this->medio = $medio;
         $this->total = $total;
+        $this->cuotas = $cuotas;
+        $this->id_cambio = $id_cambio;
        
     }
 
@@ -51,7 +55,15 @@ class art_venta {
             //$id_categoria, $nombre, $valor,$descripcion
             $id_usuario = usuario::generar_usuario($res_fil['id_usuarios']);
             $id_venta_medio = art_venta_medio::generar_venta_medio($res_fil['id_medio']);
-            $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_venta_medio,$res_fil['total']);
+            if ($res_fil['id_cambio'] != null) {
+                # code...
+                $art_unico_cambio = art_unico::generar_unico($res_fil['id_cambio']);
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_venta_medio,$res_fil['total'],$res_fil['cuotas'],$art_unico_cambio);
+
+            }else{
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_venta_medio,$res_fil['total'],$res_fil['cuotas'],$res_fil['id_cambio']);
+            }
+            
 
             
             return $venta;
@@ -60,6 +72,18 @@ class art_venta {
             
             return false;
         }
+    }
+
+    public static function update_id_cambio($id_venta,$id_cambio){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query(" UPDATE `art_venta` SET `id_cambio`='$id_cambio' WHERE id_venta = $id_venta");  
+         
+        return $res;
+       
+
+
     }
 
 
@@ -127,6 +151,28 @@ class art_venta {
     public function setId_usuario($id_usuario)
     {
         $this->id_usuario = $id_usuario;
+        return $this;
+    }
+
+    public function getCuotas()
+    {
+        return $this->cuotas;
+    }
+    
+    public function setCuotas($cuotas)
+    {
+        $this->cuotas = $cuotas;
+        return $this;
+    }
+
+    public function getId_cambio()
+    {
+        return $this->id_cambio;
+    }
+    
+    public function setId_cambio($id_cambio)
+    {
+        $this->id_cambio = $id_cambio;
         return $this;
     }
 

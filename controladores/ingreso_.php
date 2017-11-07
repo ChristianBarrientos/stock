@@ -356,7 +356,8 @@ class Ingreso_Controller{
 			$tpl->newBlock("con_articulos_lista");
 			//$tpl->newBlock("con_articulos_lista_cabeza");
 			$tpl->newBlock("buscador_visible");
-			foreach ($respuesta as $key => $value) {
+			$reversed = array_reverse($respuesta);
+			foreach ($reversed as $key => $value) {
 				$tpl->newBlock("con_articulos_lista_cuerpo");
 
 
@@ -380,7 +381,19 @@ class Ingreso_Controller{
 				$tpl->assign("fecha_venta", $fecha_venta);
 				$id_venta_ =  $value->getId_venta()->getId_venta();
 				//Obtener si ubo un cambio
-				
+			 	
+				if ($value->getId_venta()->getId_cambio() == null) {
+					# code...
+					$tpl->newBlock("fecha_cambio");
+					$tpl->assign("fecha_cambio","Sin Cambio");
+				}
+				else{
+					$tpl->newBlock("fecha_cambio");
+					$fecha_cambio = $value->getId_venta()->getId_cambio()->getId_venta()->getFecha_hora();
+					 
+					$tpl->assign("fecha_cambio",$fecha_cambio);
+				}
+				$tpl->newBlock("boton_cambio");
 				$tpl->assign("id_venta", $id_venta_);
 				$tpl->assign("id_lote_local", $value->getId_lote_local()->getId_lote_local());
 				

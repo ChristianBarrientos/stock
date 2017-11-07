@@ -41,16 +41,18 @@
 	            <td>{usuario}</td>
 	            <td>{local}</td>
 	           	<td>{fecha_venta}</td>
-				<td>{fecha_cambi}</td>
-
+	           	<!-- START BLOCK : fecha_cambio -->
+				<td>{fecha_cambio}</td>
+				<!-- END BLOCK : fecha_cambio -->
 
 	            <td> 
+	            <!-- START BLOCK : boton_cambio -->
 	            	<a href="index.php?action=Articulo::modificar_venta&id_venta={id_venta}&id_lote_local={id_lote_local}">
 	            		<button type="button" {disabled_ok} class="btn btn-primary btn-md" > <!--data-toggle="modal" data-target="#modifica_venta{id_venta2}"-->
 							Modificar Venta
 					</button>
 					</a>
-					 
+				<!-- END BLOCK : boton_cambio --> 
 				</td>
 	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->

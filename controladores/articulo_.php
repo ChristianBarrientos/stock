@@ -124,7 +124,13 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_t_2 = 1;
                                             }else{
-                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                                if ($por_ciento_t < 10) {
+                                                    # code...
+                                                    $por_ciento_t_2 = '0.0'.$por_ciento_t;
+                                                }else{
+                                                    $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                                }
+                                               
                                             }
                                             
                                             
@@ -140,9 +146,15 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_p_2 = 1;
                                             }else{
-                                                $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                                if ($por_ciento_p < 10) {
+                                                    # code...
+                                                    $por_ciento_p_2 = '0.0'.$por_ciento_p;
+                                                }else{
+                                                    $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                                }
+                                                
                                             }
-                                           
+                                          
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
                                         }
@@ -386,7 +398,8 @@ class Articulo_Controller{
                     Articulo_Controller::pre_mostrar_operador();
                 }
                 $id_empleado_venta_local_art = $_GET['id_local'];
-                if ($id_empleado_venta_local_art == null || isset($id_empleado_venta_local_art)) {
+
+                if ($id_empleado_venta_local_art == null ) {
                 # code...
                     
                     $id_empleado_venta_local_art = $id_lote_lote;
@@ -397,7 +410,7 @@ class Articulo_Controller{
                     
                 }
                 
-
+               
                 $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
                 
                 $tpl = new TemplatePower("template/seccion_operador_articulos.html");
@@ -485,10 +498,20 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_t_2 = 1;
                                             }else{
-                                                $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                                if ($por_ciento_t < 10) {
+                                                    # code...
+                                                    $por_ciento_t_2 = '0.0'.$por_ciento_t;
+                                                }else{
+                                                    $por_ciento_t_2 = '0.'.$por_ciento_t;
+                                                }
+                                               
                                             }
                                             
+                                            
                                             $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
+                                             
+
+                                            
                                         }
 
                                         if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
@@ -497,8 +520,15 @@ class Articulo_Controller{
                                                 # code...
                                                 $por_ciento_p_2 = 1;
                                             }else{
-                                                $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                                if ($por_ciento_p < 10) {
+                                                    # code...
+                                                    $por_ciento_p_2 = '0.0'.$por_ciento_p;
+                                                }else{
+                                                    $por_ciento_p_2 = '0.'.$por_ciento_p;
+                                                }
+                                                
                                             }
+                                          
                                             $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
                                         }
@@ -575,6 +605,7 @@ class Articulo_Controller{
                                     else{
                                         
                                         $tpl->newBlock("boton_con_stock");
+                                        
                                         $id_lote_local_fin = art_lote_local::obtener_lote_local_oper($value->getId_lote(),$id_empleado_venta_local_art);
                                        
                                         $tpl->assign("id_lote_local",$id_lote_local_fin);
@@ -1678,7 +1709,17 @@ class Articulo_Controller{
                 $saldo_favor = $precio_base_vender2 - $precio_base_vender;
 
             $tpl->assign("saldo_favor",'$'.$saldo_favor);
+            
+            $tpl->newBlock("datos_pasar");
+            $tpl->assign("id_venta",$id_venta);
+            $tpl->assign("id_lote_local_cambio",$id_lote_local_cambio);
+            $tpl->assign("id_lote_local_viejo",$id_lote_local_vendido);
 
+            $tpl->assign("saldo_favor_2",$saldo_favor);
+            
+            
+
+             $tpl->newBlock("cancelar_boton");
             $tpl->assign("id_venta_cancelar",$id_venta);
             $tpl->assign("id_lote_local_cancelar",$id_lote_local_vendido);
 
@@ -1758,7 +1799,103 @@ class Articulo_Controller{
         }
 
         public static function re_confirmar_venta(){
+            $error = false;
+
+            $id_venta_vieja = $_POST['id_venta'];
+            $venta_vieja = art_venta::generar_venta($id_venta_vieja);
+            $id_loca_local_id_viejo = $_POST['id_lote_local_viejo'];
             
+            $id_lote_local_viejo = art_lote_local::generar_lote_local_id_($id_loca_local_id_viejo);
+            //
+
+            $id_lote_local_nuevo = $_POST['id_lote_local_cambio'];
+            $lote_local_nuevo_ = art_lote_local::generar_lote_local_id_($id_lote_local_nuevo);
+            $saldo_favor = $_POST['saldo_favor'];
+            $id_medio_nuevo  = $_POST['id_medio_cambio'];
+            //Generar venta Nueva
+            $hoy = getdate();
+            $fecha_hora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+            $id_usuario = $_SESSION['usuario']->getId_user();
+            
+            $id_venta_nueva_alta = art_venta::alta_art_venta($fecha_hora,$id_usuario,$id_medio_nuevo,$saldo_favor);
+
+            if ($id_venta_nueva_alta) {
+                # code...
+                $id_unico_cambio = art_unico::alta_art_unico($id_lote_local_nuevo,$id_venta_nueva_alta);
+                if ($id_unico_cambio) {
+                    # code...
+                    
+                    $upp_cambio = art_venta::update_id_cambio($id_venta_vieja,$id_venta_nueva_alta);
+                     
+                }else{
+                    $error = true;
+                }
+                //Update a venta vieja con el id_venta nueva
+
+                if ($upp_cambio == 1 || $error == true) {
+                    //Agregar +1 en Stock dr lote viejo
+                   
+                    $id_lote_viejo = $id_lote_local_viejo->getId_lote();
+                    $cantidad_total_lote_viejo = $id_lote_viejo->getCantidad();
+                    $cantidad_total_lote_nuevo = $cantidad_total_lote_viejo + 1;
+                    $id_id_lote_viejo = $id_lote_viejo->getId_lote();
+                    $ok_up_total_cant = art_lote::update_cantidad_total($id_id_lote_viejo,$cantidad_total_lote_nuevo);
+                    //Agregar +1 en Stock lote_local viejo
+                    $id_id_lote_local = $id_lote_local_viejo->getId_lote_local();
+
+                    
+                    $cantidad_parcial_vieja = $id_lote_local_viejo->getCantidad_parcial();
+                    $cantidad_parcial_nueva = $cantidad_parcial_vieja + 1;
+                    $ok_up_cant_parcial = art_lote_local::update_cantidad_parcial($id_id_lote_local,$cantidad_parcial_nueva);
+                    //Restamos -1 en stock lote_local nuevo
+                    $cantidad_parcial_vieja_nueva = $lote_local_nuevo_->getCantidad_parcial();
+                    $cantidad_nueva_parcial = $cantidad_parcial_vieja_nueva - 1;
+                    $up_cantidad_parcial_nueva = art_lote_local::update_cantidad_parcial($lote_local_nuevo_->getId_lote_local(),$cantidad_nueva_parcial);
+                    //Restamos -1 en stock lote nuevo
+                    $cantidad_total_lote_nuevo = $lote_local_nuevo_->getId_lote()->getCantidad();
+                    $cantidad_total_nueva = $cantidad_total_lote_nuevo - 1 ;
+
+                    $up_cantidad_total_nueva = art_lote::update_cantidad_total($lote_local_nuevo_->getId_lote()->getId_lote(),$cantidad_total_nueva);
+
+                    if ($ok_up_total_cant || $ok_up_cant_parcial || $up_cantidad_total_nueva || $up_cantidad_parcial_nueva) {
+                        # code...
+                    }else{
+                         
+                        $error = true;
+                    }
+                }else{
+                     
+                    $error = true;
+                }
+
+            }else{
+                 
+                $error = true;
+            }
+            
+            //
+            if ($error) {
+                # code...
+                $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+                $tpl->prepare();
+                $tpl->newBlock("fracaso");
+            }else{
+                 $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+                $tpl->prepare();
+                $tpl->newBlock("exito_cambio");
+                $art_nombre = $lote_local_nuevo_->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+                $art_marca =  $lote_local_nuevo_->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+                $art_tipo = $lote_local_nuevo_->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+                $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+                $tpl->assign("nombre_completo_art",$nombre_completo_art);
+                $tpl->assign("saldo_favor",$saldo_favor);
+                $tpl->assign("fecha_hora_venta",$fecha_hora);
+
+            }
+
+            return $tpl->getOutputContent();
+
+
         }
 
        public static function cargar_art_general(){
