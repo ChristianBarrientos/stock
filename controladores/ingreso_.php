@@ -1140,7 +1140,7 @@ class Ingreso_Controller{
 		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['Num','Articulo','Stock','Local'];
+		$columnas = ['Num','Articulo','Medida','Stock','Local'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
@@ -1148,7 +1148,7 @@ class Ingreso_Controller{
 			}
 			 
 			else{
-				$pdf->Cell( 60, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
 			}
 		   
 		}
@@ -1171,9 +1171,17 @@ class Ingreso_Controller{
 				$nom_completo = $nom_marca.','.$nom_tipo;
 				$local_venta = $value->getId_local()->getNombre();
 				$canitdad_parcial = $value->getCantidad_parcial();
+				$gc = $value->getId_lote()->getId_gc()->getId_categoria();
+                foreach ($gc as $clave => $valor) {
+                    if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                        $medida = $valor->getValor();
+
+                                            
+                    }
+                }
 
 				
-				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$canitdad_parcial];
+				$respuesta_final[] = [$numero_cont,$nom_completo,$medida,$local_venta,$canitdad_parcial];
 				$numero_cont = $numero_cont + 1;
 			
 			}
@@ -1205,7 +1213,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 60, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
@@ -1215,7 +1223,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 60, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  

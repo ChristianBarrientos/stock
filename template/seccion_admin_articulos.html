@@ -1,6 +1,157 @@
 <div class="menu_articulos_admin">
 
 
+
+
+
+	<div class="container-fluid">
+	<!--container-fluid-->
+		<div class="row encabezado">
+			<div class="col-md-6 col-xs-4">
+				<div class="titulo-secciones panel-heading">Deposito</div>
+
+			</div>
+			<div class="col-md-4 col-xs-12">
+					<a href="index.php?action=Articulo::cargar_deposito">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
+			</div>
+		</div>
+
+		<div class="row">
+		<!-- START BLOCK : buscador_visible -->
+			<div class="col-md-6 col-xs-12">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
+				
+			</div>
+		<!-- END BLOCK : buscador_visible -->
+			
+
+			
+			
+		</div>
+		<br><br>
+		<div class="row">
+
+			<!-- START BLOCK : sin_articulos -->
+			<div class="col-md-6 col-md-offset-2 col-xs-12">
+				<div class="alert alert-warning center-block">
+					<h3>No posee articulos en el deposito.</h3>
+					
+				</div>
+			</div>
+			<!-- END BLOCK : sin_articulos -->
+		</div>
+		<!--table-responsive  crea una barra horizontal de navegacion en talbets-->
+		<div class="row ">
+		<!-- START BLOCK : con_articulos_nolista -->
+
+			<div class="col-md-6 col-xs-12">
+			 
+			
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  </div>
+				  <div class="panel panel-default">
+					  <div class="panel-heading"><strong>{nombre}</strong></div>
+					  <div class="panel-body">
+					    <p><img class="img-circle img-responsive" id="empleado_foto" src="{empl_foto}" alt=""></p>
+					  </div>
+					  <ul class="list-group">
+					    <li class="list-group-item"><strong>Proveedor:</strong>  {prvd}</li>
+					    <li class="list-group-item"><strong>Cantidad Total:</strong> {cantidad_total}</li>
+					    <li class="list-group-item"><strong>Codigo de Barra:</strong> {cb}</li>
+					    <li class="list-group-item"><strong>Medida:</strong> {art_medida}</li>
+					    <li class="list-group-item"><strong>Precio Base:</strong> {precio_base}</li>
+					    <li class="list-group-item"><strong>Precio Tarjeta:</strong> {precio_tarjeta}</li>
+					    <li class="list-group-item"><strong>Credito Personal:</strong> {credito_personal}</li>
+					    <li class="list-group-item"><strong>Color:</strong> {art_color}</li>
+					  </ul>
+					</div>
+					<div class="panel-footer">
+						<button type="button" class="btn btn-info">Modificar</button>
+					</div>
+				</div>
+
+			</div>
+			<!-- END BLOCK : con_articulos_nolista -->
+			
+	
+			<!-- START BLOCK : con_articulos_lista -->
+			<table cellpadding="15" class="table table-bordered " align="center">
+			<thead>
+			<!-- START BLOCK : con_articulos_lista_cabeza -->
+			 <tr>
+	            <th>Numero</th>
+	            <th>Articulo</th>
+	            <!-- colspan="2"-->
+	            <th>Stock</th>
+	            <th>Medida</th>            
+	            <th>Precio Base</th>
+	            <th>Precio Tarjeta</th>
+	            <th>Credito Personal</th>
+	            <th>Operaciones</th>
+	             
+        	</tr>
+        	</thead>
+        	<tbody class="buscar">
+        	
+			<!-- END BLOCK : con_articulos_lista_cabeza -->
+			
+			<!-- START BLOCK : con_articulos_lista_cuerpo -->
+			<tr>
+				<td>{numero}</td>
+	            <td>{nombre}</td>
+	            <td>{cantidad_total}</td>
+	            <td>{art_medida}</td>
+	            <td>{precio_base}</td>
+	            <td>{precio_tarjeta}</td>
+	            <td>{credito_personal}</td>
+
+	            <td> 
+	            	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+							Ver Fotos
+					</button>
+					<br>
+					
+					<button type="button" {disabled_ok} class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
+							Vender
+					</button>
+					<br>
+					<!-- START BLOCK : actualiza_stock_boton -->
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
+					<!-- START BLOCK : actualiza_stock_boton -->
+					<br>
+					<!-- START BLOCK : actualiza_precio_boton -->
+					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#precio_{id_art_lote}">Actualizar Precio</button>
+					<!-- START BLOCK : actualiza_precio_boton -->
+					<!--<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->
+
+				</td>
+
+
+	            <!--<td>
+	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
+	            	
+	            <!--</a>
+	            
+	            </td>-->
+	        </tr>
+			<!-- END BLOCK : con_articulos_lista_cuerpo -->
+			 
+	            
+	        
+	        </tbody>
+	        </table>
+			<!-- END BLOCK : con_articulos_lista -->
+
+			
+		</div>
+	</div>
+</div>
+
+
 <!-- START BLOCK : modal_actualizar_precio -->
 <div class="container-fluid">
 	<div class="row">
@@ -178,151 +329,3 @@
 </div>
 
 <!-- END BLOCK : modal_venta_art -->
-
-
-	<div class="container-fluid">
-	<!--container-fluid-->
-		<div class="row encabezado">
-			<div class="col-md-6 col-xs-4">
-				<div class="titulo-secciones panel-heading">Deposito</div>
-
-			</div>
-			<div class="col-md-4 col-xs-12">
-					<a href="index.php?action=Articulo::cargar_deposito">
-						<button type="button" class="agregar btn btn-primary">Agregar</button>
-					</a>
-			</div>
-		</div>
-
-		<div class="row">
-		<!-- START BLOCK : buscador_visible -->
-			<div class="col-md-6 col-xs-12">
-				<span class="input-group-addon" id="basic-addon1">Buscar</span>
-	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
-				
-			</div>
-		<!-- END BLOCK : buscador_visible -->
-			
-
-			
-			
-		</div>
-		<br><br>
-		<div class="row">
-
-			<!-- START BLOCK : sin_articulos -->
-			<div class="col-md-6 col-md-offset-2 col-xs-12">
-				<div class="alert alert-warning center-block">
-					<h3>No posee articulos en el deposito.</h3>
-					
-				</div>
-			</div>
-			<!-- END BLOCK : sin_articulos -->
-		</div>
-		<!--table-responsive  crea una barra horizontal de navegacion en talbets-->
-		<div class="row ">
-		<!-- START BLOCK : con_articulos_nolista -->
-
-			<div class="col-md-6 col-xs-12">
-			 
-			
-				<div class="panel panel-default">
-				  <div class="panel-body">
-				  </div>
-				  <div class="panel panel-default">
-					  <div class="panel-heading"><strong>{nombre}</strong></div>
-					  <div class="panel-body">
-					    <p><img class="img-circle img-responsive" id="empleado_foto" src="{empl_foto}" alt=""></p>
-					  </div>
-					  <ul class="list-group">
-					    <li class="list-group-item"><strong>Proveedor:</strong>  {prvd}</li>
-					    <li class="list-group-item"><strong>Cantidad Total:</strong> {cantidad_total}</li>
-					    <li class="list-group-item"><strong>Codigo de Barra:</strong> {cb}</li>
-					    <li class="list-group-item"><strong>Medida:</strong> {art_medida}</li>
-					    <li class="list-group-item"><strong>Precio Base:</strong> {precio_base}</li>
-					    <li class="list-group-item"><strong>Precio Tarjeta:</strong> {precio_tarjeta}</li>
-					    <li class="list-group-item"><strong>Credito Personal:</strong> {credito_personal}</li>
-					    <li class="list-group-item"><strong>Color:</strong> {art_color}</li>
-					  </ul>
-					</div>
-					<div class="panel-footer">
-						<button type="button" class="btn btn-info">Modificar</button>
-					</div>
-				</div>
-
-			</div>
-			<!-- END BLOCK : con_articulos_nolista -->
-			
-	
-			<!-- START BLOCK : con_articulos_lista -->
-			<table cellpadding="15" class="table table-bordered " align="center">
-			<thead>
-			<!-- START BLOCK : con_articulos_lista_cabeza -->
-			 <tr>
-	            <th>Numero</th>
-	            <th>Articulo</th>
-	            <!-- colspan="2"-->
-	            <th>Stock</th>
-	            <th>Medida</th>            
-	            <th>Precio Base</th>
-	            <th>Precio Tarjeta</th>
-	            <th>Credito Personal</th>
-	            <th>Operaciones</th>
-	             
-        	</tr>
-        	</thead>
-        	<tbody class="buscar">
-        	
-			<!-- END BLOCK : con_articulos_lista_cabeza -->
-			
-			<!-- START BLOCK : con_articulos_lista_cuerpo -->
-			<tr>
-				<td>{numero}</td>
-	            <td>{nombre}</td>
-	            <td>{cantidad_total}</td>
-	            <td>{art_medida}</td>
-	            <td>{precio_base}</td>
-	            <td>{precio_tarjeta}</td>
-	            <td>{credito_personal}</td>
-
-	            <td> 
-	            	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
-							Ver Fotos
-					</button>
-					<br>
-					
-					<button type="button" {disabled_ok} class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
-							Vender
-					</button>
-					<br>
-					<!-- START BLOCK : actualiza_stock_boton -->
-					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
-					<!-- START BLOCK : actualiza_stock_boton -->
-					<br>
-					<!-- START BLOCK : actualiza_precio_boton -->
-					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#precio_{id_art_lote}">Actualizar Precio</button>
-					<!-- START BLOCK : actualiza_precio_boton -->
-					<!--<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->
-
-				</td>
-
-
-	            <!--<td>
-	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
-	            	
-	            <!--</a>
-	            
-	            </td>-->
-	        </tr>
-			<!-- END BLOCK : con_articulos_lista_cuerpo -->
-			 
-	            
-	        
-	        </tbody>
-	        </table>
-			<!-- END BLOCK : con_articulos_lista -->
-
-			
-		</div>
-	</div>
-</div>
