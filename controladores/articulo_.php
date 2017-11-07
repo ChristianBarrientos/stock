@@ -1903,6 +1903,22 @@ class Articulo_Controller{
 
         }
 
+        public static function actualizar_precio_lote(){
+            if (isset($nombre)) {
+                 
+                $nombre = ucwords(strtolower($_POST['art_general']));
+                
+                
+                $res = articulo::alta_art($nombre);
+                
+                if ($res) {
+                    
+                }
+
+            }
+        }
+        
+
        public static function cargar_art_general(){
             if (isset($nombre)) {
                  
