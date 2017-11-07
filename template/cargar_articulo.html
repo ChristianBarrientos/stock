@@ -128,7 +128,7 @@
 		     
 			<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
-  				<select id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  				<select required id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
   				<!-- START BLOCK : cargar_articulo_nombre -->
   				  <option value="{valor_id_articulo}">{nombre_articulo}</option>
   				<!-- END BLOCK : cargar_articulo_nombre -->
@@ -157,7 +157,7 @@
 	      </div>
 	      		<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
-				      <select name="art_marca" id = "select_art_marca" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <select required name="art_marca" id = "select_art_marca" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 				      <!-- START BLOCK : cargar_articulo_marca -->
 				        <option value="{valor_id_marca}">{marca_articulo}</option>
 				      <!-- END BLOCK : cargar_articulo_marca -->
@@ -178,7 +178,7 @@
 	      <label  for="art_tipo">Tipo (*):</label>
 	     </div>
 	            <div class="col-md-4 col-sm-3 col-xs-12">
-				      <select name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+				      <select required name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 				      <!-- START BLOCK : cargar_articulo_tipo -->
 				        <option value="{valor_id_tipo}">{tipo_articulo}</option>
 				      <!-- END BLOCK : cargar_articulo_tipo -->

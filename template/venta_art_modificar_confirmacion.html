@@ -1,0 +1,233 @@
+<div class="art_venta_cambio_confirmacion">
+	<div class="container">
+		<div class="row encabezado">
+			<div class="col-md-12 col-sm-10 col-xs-12">
+				<div class="titulo-secciones panel-heading">Cambio Venta Realizada</div>
+
+			</div>
+			
+		</div>
+		<div class="panel-body alert alert-info">
+		 
+			<h2>Se cambia el Articulo:</h2>
+	  		
+	
+	  		 <div class="row">
+            	<div class="form-group">
+				<label class="col-md-2 col-xs-12" for="scrs_nombre">Nombre:</label>
+				<div class="col-md-6 col-xs-12">
+				  <label for="">{art_nombre}</label>
+				</div>
+				</div>
+            </div>
+           <!--<div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-1  col-xs-12" for="scrs_descripcion">Medida:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{art_medida}</label>
+			  	</div>
+
+			</div>
+           </div>-->
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Precio Base:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{art_precio_base}</label>
+			  	</div>
+
+			</div>
+           </div>
+
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Precio Vendido:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{art_precio}</label>
+			  	</div>
+
+			</div>
+           </div>
+
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Local de Venta:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{nombre_local}</label>
+			  	</div>
+
+			</div>
+           </div>
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Usuario Vendedor:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{usuario_vendedor}</label>
+			  	</div>
+
+			</div>
+           </div>
+
+            <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Fecha de Venta:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{fecha_venta}</label>
+			  	</div>
+
+			</div>
+           </div>
+		<h2>Por el Articulo:</h2>
+          
+           	<div class="row">
+            	<div class="form-group">
+				<label class="col-md-2 col-xs-12" for="scrs_nombre">Nombre:</label>
+				<div class="col-md-6 col-xs-12">
+				  <label for="">{art_nombre_2}</label>
+				</div>
+				</div>
+            </div>
+           <!--<div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-1  col-xs-12" for="scrs_descripcion">Medida:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{art_medida}</label>
+			  	</div>
+
+			</div>
+           </div>-->
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Precio Vendido:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{art_precio_2}</label>
+			  	</div>
+
+			</div>
+           </div>
+
+           <div class="row">
+           	<div class="form-group">
+			  	<label class="col-md-2  col-xs-12" for="scrs_descripcion">Saldo a Favor:</label>
+				      
+		  		<div class="col-md-6 col-xs-12">
+			   		<label for="">{saldo_favor}</label>
+			  	</div>
+
+			</div>
+           </div>
+           
+					
+			<form enctype="multipart/form-data" action="index.php?action=Articulo::re_confirmar_venta" method="post" role="form">
+			<div class="form-group">  
+				<!-- START BLOCK : datos_pasar -->
+				<input id="oculta_inputs" type="text" name="id_venta" value="{id_venta}">      
+				<input id="oculta_inputs" type="text" name="id_lote_local_cambio" value="{id_lote_local_cambio}">
+				<input id="oculta_inputs" type="text" name="saldo_favor" value="{saldo_favor_2}">
+				<!-- END BLOCK : datos_pasar -->
+				
+				<!-- START BLOCK : cambio_ok -->
+				<div class="row">        
+				      <label class="col-md-2 col-xs-12" for="art_venta_formas_pago">Medio de Pago:</label>
+				      <div class="col-md-6 col-sm-5 col-xs-12">
+
+					     	<select required name="id_medio_cambio" id="forma_pago_select" class="selectpicker">
+					     	  
+					     
+
+							  	<!-- START BLOCK : medio_pago_venta_opciones -->
+							    <option value="{id_medio_pago}">{nombre_medio_pago}</option>
+							    <!-- END BLOCK : medio_pago_venta_opciones -->
+							 
+						  	
+							</select>
+
+					      
+				      </div>
+
+				</div>
+				<br><br>
+				<div class="row">
+				
+
+    				<div class="col-md-12 col-sm-offset-2 col-sm-5 col-xs-12">
+					 <button type="submit" class="btn btn-primary btn-md"  id="cambio_venta_confirmar">
+							Confirmar Cambio
+						</button>
+				<!-- END BLOCK : cambio_ok -->
+				<!-- START BLOCK : cambio_no_ok -->
+					<div class="alert alert-danger">
+						<h3>Saldo a favor NO puede ser NEGATIVO.</h3>
+					</div>
+    				<div class="col-md-12 col-sm-offset-2 col-sm-5 col-xs-12">
+					 <button  disabled type="submit" class="btn btn-primary btn-md"  id="cambio_venta_confirmar">
+							Confirmar Cambio
+						</button>
+				<!-- END BLOCK : cambio_no_ok -->
+					
+					<a href="index.php?action=Articulo::modificar_venta&id_venta={id_venta_cancelar}&id_lote_local={id_lote_local_cancelar}">
+					<button type="button" class="btn btn-success btn-md"  id="cambio_venta_cancelar">Cancelar</button>
+						
+					</a>
+					        	
+					</div>
+				</div>
+			</div>
+          </form>
+        </div>
+	</div>
+</div>
+
+ 
+	
+<div class="container-fluid">
+	  <div class="row">
+	  	<div class="col-md-4">
+	  			<div class="form-group">
+			    	<div class="modal fade" id="agregar_art_valor_general" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Finalizar Venta</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										<form novalidate  class="form-inline" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::venta_finalizar" method="post">
+											<div class="form-group">
+										      <p>Reciba el dinero por el valor del producto.</p>  
+										      <p>Si todos es correcto, por favor haga clic en el boton Finalizar.</p>
+										      <img class="img-rounded" width="304" height="236" src="imagenes/system/art_venta_preok.jpg" alt="">
+										    </div>
+										    <div style="display:n" id="oculta_inputs">
+										    	<input type="text" id="medio_art_venta" name="medio_art_venta" >
+										    	<input type="text" id="cuotas_art_venta" name="cuotas_art_venta" >
+											</div>
+										    <div class="form-group">    
+										    	 <button class="btn btn-success btn-md " data-toggle="modal" >
+										    	 Finalizar	</button>
+									        </div>
+										</form>
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+	  	</div>
+	  </div>
+</div>
+
+

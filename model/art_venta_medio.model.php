@@ -70,7 +70,7 @@ class art_venta_medio {
         global $baseDatos;
        
         $res = $baseDatos->query("SELECT * FROM art_venta_medio WHERE id_usuario = $id_usuario");  
-
+       
         
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         if (count($filas) != 0) {

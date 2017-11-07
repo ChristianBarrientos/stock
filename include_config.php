@@ -44,6 +44,7 @@ include('model/art_venta_medio.model.php');
 include('model/art_venta_medio_dias.model.php');
 include('model/art_venta_medio_fechas.model.php');
 include('model/art_no_venta.model.php');
+include('model/art_venta_cambio.model.php');
 
 
 /*Templates-Vistas*/

@@ -15,6 +15,7 @@ class Articulo_Controller{
                             $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
                              
+
                             foreach ($_SESSION['lotes'] as $key => $value) {
                             $vueltas = 0;
                             //foreach ($_SESSION["lote_local"] as $key => $value) {
@@ -1482,9 +1483,281 @@ class Articulo_Controller{
 
         public static function modificar_venta(){
             $id_venta = $_GET['id_venta'];
+            $id_lote_local = $_GET['id_lote_local'];
+            $venta =  art_venta::generar_venta($id_venta);
+            $lote_local_vendido_ = art_lote_local::generar_lote_local($id_lote_local);
+            $lote_local_vendido = $lote_local_vendido_[0];
+             
+            $art_nombre = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+            $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+            $art_tipo = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+            $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+
+            $nombre_local = $lote_local_vendido->getId_local()->getNombre();
+            $gc = $lote_local_vendido->getId_lote()->getId_gc()->getId_categoria();
+            foreach ($gc as $clave => $valor) {
+                if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                        $medida = $valor->getValor();
+
+                    }
+
+                if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                        $precio_base = $valor->getValor();
+                                            
+                    }
+                if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
+                    $por_ciento_t =  $valor->getValor();
+                    if ($por_ciento_t == 100) {
+                                                # code...
+                        $por_ciento_t_2 = 1;
+                    }
+                    else{
+                        $por_ciento_t_2 = '0.'.$por_ciento_t;
+                        }
+                    $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
+                }
+
+                if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
+                    $por_ciento_p = $valor->getValor();
+                    if ($por_ciento_p == 100) {
+                        # code...
+                                                $por_ciento_p_2 = 1;
+                    }else{
+                        $por_ciento_p_2 = '0.'.$por_ciento_p;
+                    }
+                                           
+                    $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
+                                            
+                }
+
+                if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
+                    $art_color = $valor->getValor();
+                                            
+                }
+            }
+          
+            $nombre_medio = $venta->getMedio()->getNombre();
+            $descuento = $venta->getMedio()->getDescuento();
+            $precio_vendido = $venta->getTotal();
+            $fecha_venta = $venta->getFecha_hora();
+            $usuario = $venta->getId_usuario()->getUsuario();
             $tpl = new TemplatePower("template/venta_art_modificar.html");
             $tpl->prepare();
+           
+           
+            $tpl->assign("art_nombre",$nombre_completo_art);
+           
+
+            $tpl->assign("art_precio",'$'.$precio_vendido.' ('.$nombre_medio.' %'.$descuento.')');
+            $tpl->assign("nombre_local",$nombre_local);
+            $tpl->assign("usuario_vendedor",$usuario);
+            $tpl->assign("fecha_venta",$fecha_venta);
+
+            //cargar articulos 
+            
+           
+            ///Genera Lotes Locales
+            $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
+             
+            $lotes_localess = $_SESSION["lote_local"];
+            
+             
+            $tpl->assign("id_venta",$id_venta);
+            $tpl->assign("id_lote_local",$id_lote_local);
+
+            foreach ($lotes_localess as $key2 => $value2) {
+                
+                foreach ($value2 as $key => $value) {
+                    
+                    
+
+                    $cantidad_parcial = $value->getCantidad_parcial();
+                    if ($cantidad_parcial > 0 && $value->getId_lote_local() != $id_lote_local) {
+                        $tpl->newBlock("cargar_articulo");
+                        $tpl->assign("id_lote_local",$value->getId_lote_local());
+                        $art_nombre_2 = $value->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+                        $art_marca_2 =  $value->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+                        $art_tipo_2 = $value->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+                        $nombre_completo_art_2 =(string)$art_nombre_2.' ,'.$art_marca_2.' ,'.$art_tipo_2;
+
+                
+                        $nombre_local = $value->getId_local()->getNombre();
+                   
+                        $gc = $value->getId_lote()->getId_gc()->getId_categoria();
+                        foreach ($gc as $clave => $valor) {
+                
+
+                            if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                                $precio_base_vender = $valor->getValor();
+                                            
+                                }
+                
+                        }
+
+                        $tpl->assign("nombre_articulo",$nombre_completo_art_2.' ('.$nombre_local.' $'.$precio_base_vender.')');
+
+                        $art_nombre_2 = '';
+                        $art_marca_2 = '';
+                        $art_tipo_2= '';
+                        $nombre_completo_art_2 = '';
+                        }
+                    
+                    }
+                
+                  
+            }
+
+
+                            
             return $tpl->getOutputContent();
+            
+        }
+
+
+        public static function confirmar_venta(){
+            $id_venta = $_GET['id_venta'];
+            $id_lote_local_vendido = $_GET['id_lote_local'];
+            $id_lote_local_cambio = $_POST['art_venta_cambio'];
+            $venta =  art_venta::generar_venta($id_venta);
+
+            $lote_local_cambiar = art_lote_local::generar_lote_local($id_lote_local_cambio);
+
+            $lote_local_vendido_ = art_lote_local::generar_lote_local($id_lote_local_vendido);
+            $lote_local_vendido = $lote_local_vendido_[0];
+             
+            $art_nombre = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+            $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+            $art_tipo = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+            $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+            $gc = $lote_local_vendido->getId_lote()->getId_gc()->getId_categoria();
+                foreach ($gc as $clave => $valor) {
+                if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                    $precio_base_vender = $valor->getValor();
+                                            
+                    }
+                
+            }
+          
+            $nombre_local = $lote_local_vendido->getId_local()->getNombre();
+            $nombre_medio = $venta->getMedio()->getNombre();
+            $descuento = $venta->getMedio()->getDescuento();
+            $precio_vendido = $venta->getTotal();
+            $fecha_venta = $venta->getFecha_hora();
+            $usuario = $venta->getId_usuario()->getUsuario();
+
+
+            $lote_local_cambiar_ = $lote_local_cambiar[0];
+            $art_nombre2 = $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+            $art_marca2 =  $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+            $art_tipo2 = $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+            $nombre_completo_art2 =(string)$art_nombre2.' ,'.$art_marca2.' ,'.$art_tipo2;
+            $gc2 = $lote_local_cambiar_->getId_lote()->getId_gc()->getId_categoria();
+                foreach ($gc2 as $clave2 => $valor2) {
+                if (strcmp($valor2->getNombre(), "Precio" ) == 0 ) {
+                    $precio_base_vender2 = $valor2->getValor();
+                                            
+                    }
+                
+            }
+
+
+            $tpl = new TemplatePower("template/venta_art_modificar_confirmacion.html");
+            $tpl->prepare();
+            //Articulo Viejo
+            $tpl->assign("art_nombre",$nombre_completo_art);
+            $tpl->assign("art_precio_base",'$'.$precio_base_vender);
+            $tpl->assign("art_precio",'$'.$precio_vendido.' ('.$nombre_medio.' %'.$descuento.')');
+            $tpl->assign("nombre_local",$nombre_local);
+            $tpl->assign("usuario_vendedor",$usuario);
+            $tpl->assign("fecha_venta",$fecha_venta);
+
+            //Articulo Nuevo
+            $tpl->assign("art_nombre_2",$nombre_completo_art2);
+            $tpl->assign("art_precio_2",'$'.$precio_base_vender2);
+                //Calcular Saldo a Favor
+                $saldo_favor = $precio_base_vender2 - $precio_base_vender;
+
+            $tpl->assign("saldo_favor",'$'.$saldo_favor);
+
+            $tpl->assign("id_venta_cancelar",$id_venta);
+            $tpl->assign("id_lote_local_cancelar",$id_lote_local_vendido);
+
+            if ($saldo_favor >= 0) {
+                # code...
+                $tpl->newBlock("cambio_ok");
+
+                $medio_pago = art_venta_medio::obtener_medios($_SESSION['usuario']->getId_user());
+       
+        foreach ($medio_pago as $key6 => $value6) {
+            $muestra = false;
+            $date_php = getdate();
+            $fecha_desde = $value6->getId_fechas_medio()->getFecha_hora_inicio();
+            $fecha_hasta = $value6->getId_fechas_medio()->getFecha_hora_fin();
+            $dias = $value6->getId_dias_medio()->getDias();
+            //$dia_hoy = $date_php['wday'];
+            $hoy = $date_php['year'].'-'.$date_php['mon'].'-'.$date_php['mday'];
+            $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
+            $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
+            //Verificar Fecha
+                if ($dias_faltantes_desde <= 0 && $dias_faltantes_hasta >=0) {
+                
+                    $muestra = true;
+                }else{
+              
+                    $muestra = false;
+                }
+            //Verificar Dia
+                $dia_hoy = $date_php['wday'];
+                $dias_array = explode ("&", $dias);
+                foreach ($dias_array as $keyd => $valued) {
+                # code...
+                    if ($valued == $dia_hoy) {
+                        $muestra = true;
+                    
+                        break;
+                    }else{
+                    
+                        $muestra = false;
+                    }
+                }
+           
+            
+
+                if ($muestra) {
+                    $tpl->newBlock("medio_pago_venta_opciones");
+                    $descuento = $value6->getDescuento();
+                    $tpl->assign("id_medio_pago",$value6->getId_medio());
+                //$tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                    if ($descuento != 0) {
+                    
+                        $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                    }
+                    else
+                    {
+                        $tpl->assign("nombre_medio_pago",$value6->getNombre());
+                        }
+                
+                    }
+                $muestra = false;
+           
+            
+                }
+
+            }else{
+                $tpl->newBlock("cambio_no_ok");
+            }
+
+
+
+
+
+
+            return $tpl->getOutputContent();
+
+            
+        }
+
+        public static function re_confirmar_venta(){
             
         }
 

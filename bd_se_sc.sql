@@ -327,7 +327,7 @@ CREATE TABLE  art_venta (
      id_cambio INTEGER,
      FOREIGN KEY (id_medio) REFERENCES art_venta_medio(id_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_cambio) REFERENCES art_venta_cambio(id_cambio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_cambio) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;
 

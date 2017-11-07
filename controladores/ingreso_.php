@@ -356,7 +356,6 @@ class Ingreso_Controller{
 			$tpl->newBlock("con_articulos_lista");
 			//$tpl->newBlock("con_articulos_lista_cabeza");
 			$tpl->newBlock("buscador_visible");
-			
 			foreach ($respuesta as $key => $value) {
 				$tpl->newBlock("con_articulos_lista_cuerpo");
 
@@ -380,8 +379,19 @@ class Ingreso_Controller{
 
 				$tpl->assign("fecha_venta", $fecha_venta);
 				$id_venta_ =  $value->getId_venta()->getId_venta();
+				//Obtener si ubo un cambio
+				
 				$tpl->assign("id_venta", $id_venta_);
+				$tpl->assign("id_lote_local", $value->getId_lote_local()->getId_lote_local());
+				
+				
 
+				/*$tpl->assign("id_venta2", $id_venta_);
+				$tpl->newBlock("modal_modificar_venta");
+				$tpl->assign("id_venta2", $id_venta_);
+				$tpl->assign("id_venta", $id_venta_);
+				$tpl->assign("id_lote_local", $value->getId_lote_local()->getId_lote_local());*/
+				
 
 			}
 		}

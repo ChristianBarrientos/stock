@@ -1,60 +1,61 @@
 <?php
-class art_venta {
+class art_venta_cambio {
 	
-	private $id_venta;
+	private $id_cambio;
     private $fecha_hora; 
     private $id_usuario;
-    private $medio;
-    private $total;
+    private $id_lote_local;
+    private $saldo_favor;
 
-    public function __construct($id_venta, $fecha_hora,$id_usuario,$medio,$total)
+    public function __construct($id_cambio, $fecha_hora,$id_usuario,$id_lote_local,$saldo_favor)
     {
-        $this->id_venta = $id_venta;
+        $this->id_cambio = $id_cambio;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
-        $this->medio = $medio;
-        $this->total = $total;
+        $this->id_lote_local = $id_lote_local;
+        $this->saldo_favor = $saldo_favor;
        
     }
 
-    public static function alta_art_venta($fecha_hora,$id_usuario,$id_medio,$total,$cuotas = null,$id_cambio = 'null'){
+    public static function alta_art_venta_cambio($fecha_hora,$id_usuario,$id_lote_local,$saldo_favor){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_venta = art_venta::ultimo_id_venta();
-        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuarios`, `id_medio`, `total`,`cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_medio,'$total','$cuotas',$id_cambio)";
+        $id_cambio = art_venta_cambio::ultimo_id_venta_cambio();
+        $sql = "INSERT INTO `art_venta_cambio`(`id_cambio`, `fecha_hora`, `id_usuario`, `id_lote_local`, `saldo_favor`) VALUES (0,'$fecha_hora',$id_usuario,$id_lote_local,$saldo_favor)";
 
         $res = $baseDatos->query($sql);
         if ($res) {
             
-            return $id_venta;
+            return $id_cambio;
         }else{
             
             return false;
         }
 
     }
-    public static function ultimo_id_venta(){
+    public static function ultimo_id_venta_cambio(){
         global $baseDatos;
-        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta'";
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta_cambio'";
         $res = $baseDatos->query($sql_fecha_ab);
         $res_fil = $res->fetch_assoc();
         
         return $res_fil['LastId'];
     }
 
-    public static function generar_venta($id_venta){
+    public static function generar_venta_cambio($id_cambio){
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_venta = $id_venta");  
+        $res = $baseDatos->query("SELECT * FROM `art_venta_cambio` WHERE id_cambio = $id_cambio");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
             $id_usuario = usuario::generar_usuario($res_fil['id_usuarios']);
-            $id_venta_medio = art_venta_medio::generar_venta_medio($res_fil['id_medio']);
-            $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_venta_medio,$res_fil['total']);
+            $id_lote_local =  art_lote_local::generar_lote_local($res_fil['id_lote_local']);
+
+            $cambio = new art_venta_cambio($res_fil['id_cambio'],$res_fil['fecha_hora'],$id_usuario,$id_lote_local,$res_fil['saldo_favor']);
 
             
-            return $venta;
+            return $cambio;
         }
         else{
             
@@ -63,25 +64,25 @@ class art_venta {
     }
 
 
-    public function getMedio()
+    public function getId_lote_local()
     {
-        return $this->medio;
+        return $this->id_lote_local;
     }
     
-    public function setMedio($medio)
+    public function setId_lote_local($id_lote_local)
     {
-        $this->medio = $medio;
+        $this->id_lote_local = $id_lote_local;
         return $this;
     }
 
-    public function getTotal()
+    public function getSaldo_Favor()
     {
-        return $this->total;
+        return $this->saldo_favor;
     }
     
-    public function setTotal($total)
+    public function setSaldo_Favor($saldo_favor)
     {
-        $this->total = $total;
+        $this->saldo_favor = $saldo_favor;
         return $this;
     }
 

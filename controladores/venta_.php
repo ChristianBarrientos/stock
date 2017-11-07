@@ -9,7 +9,7 @@ class Venta_Controller{
 
         if (Ingreso_Controller::admin_ok()) {
         	//code
-           $medios = art_venta_medio::obtener_medios();
+           $medios = art_venta_medio::obtener_medios($_SESSION["usuario"]->getId_user());
 
            if ($medios) {
                # code...
