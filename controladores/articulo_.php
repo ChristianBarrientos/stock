@@ -1105,6 +1105,8 @@ class Articulo_Controller{
                 $tpl->assign("nombre_pago", 'Tarjeta de Credito'.' (% '.$porcentaje_tarjeta.')' );
                  
                 $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
+                $tpl->newBlock("forma_pago_venta_opciones");
+                $tpl->assign("valor_pago", 0 . ' x '.' $'.round($precio_tarjeta,2));
                 for ($i=1; $i <= 12 ; $i++) { 
                     $tpl->newBlock("forma_pago_venta_opciones");
                     $tpl->assign("valor_pago", $i . ' x '.' $'.round($precio_tarjeta/$i,2));
@@ -1117,6 +1119,8 @@ class Articulo_Controller{
                 $tpl->assign("nombre_pago", 'Credito Personal'.' (% '.$porcentaje_credito.')' );
                  
                 $precio_tarjeta = $precio_base_venta + (($precio_base_venta * $value->getValor())/100);
+                 $tpl->newBlock("forma_pago_venta_opciones");
+                $tpl->assign("valor_pago", 0 . ' x '.' $'.round($precio_tarjeta,2));
                 for ($i=1; $i <= 12 ; $i++) { 
                     $tpl->newBlock("forma_pago_venta_opciones");
                     $tpl->assign("valor_pago", $i . ' x '.' $'.round($precio_tarjeta/$i,2));

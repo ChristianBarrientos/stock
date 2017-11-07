@@ -449,12 +449,17 @@ function guardar_art_general(){
             $valor_valor_sin_x = $valor_valor.replace(/x/,"");
             $valor_valor_sin_peso = $valor_valor_sin_x.replace(/\$/,"");
 
+          
             if($valor_valor.indexOf('x') != -1){
-                
+                  
                 $cantidad_cuotas = $valor_valor_sin_peso.substr(0,2);
+                if ($cantidad_cuotas == 0) {
+                    $cantidad_cuotas = 1;
+                }
                 $valor_cuotas = $valor_valor_sin_peso.substr(2);
                 $valor_precio_ = Number($cantidad_cuotas) * Number($valor_cuotas);
             }else{
+               
                 $cantidad_cuotas = 1;
                 $valor_cuotas = 1;
                 $valor_precio_ = Number($valor_valor_sin_peso);
