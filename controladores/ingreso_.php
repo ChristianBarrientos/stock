@@ -465,7 +465,8 @@ class Ingreso_Controller{
 		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+		//se saco medios de pago
+		$columnas = ['Cant','Articulo','Local','Vendedor','Precio Final'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
@@ -473,7 +474,7 @@ class Ingreso_Controller{
 			}
 			 
 			else{
-				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
 			}
 		   
 		}
@@ -520,7 +521,8 @@ class Ingreso_Controller{
 			}
 			$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
 			$medio_limpio[] = $medio_sin;
-			$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+			//Se saco medio de pago
+			$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$precio_final];
 			$numero_cont = $numero_cont + 1;
 
 		}
@@ -550,7 +552,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
@@ -560,7 +562,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  
@@ -891,7 +893,7 @@ class Ingreso_Controller{
 			}
 			 
 			else{
-				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
 			}
 		   
 		}
@@ -979,7 +981,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
@@ -989,7 +991,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  
@@ -1039,7 +1041,7 @@ class Ingreso_Controller{
 			
 			 
 			
-				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
 			
 		   
 		}
@@ -1090,14 +1092,14 @@ class Ingreso_Controller{
 	  				
 	  					
 	  				
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				
 	  				
 	  				$banban2 = false;
 	  			}else{
 
 	  				
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  			}
 	  		  
 	  		}
@@ -1146,7 +1148,7 @@ class Ingreso_Controller{
 			}
 			 
 			else{
-				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 60, 12, $columnas[$i], 1, 0, 'C', true );
 			}
 		   
 		}
@@ -1203,7 +1205,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 60, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
@@ -1213,7 +1215,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 60, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  
@@ -1265,7 +1267,7 @@ class Ingreso_Controller{
 			}
 			 
 			else{
-				$pdf->Cell( 36, 12, $columnas[$i], 1, 0, 'C', true );
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
 			}
 		   
 		}
@@ -1323,7 +1325,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
@@ -1333,7 +1335,7 @@ class Ingreso_Controller{
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 36, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  

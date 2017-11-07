@@ -92,7 +92,7 @@ class reporte {
 
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM `art_lote_local`");  
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local` ORDER BY  id_local");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
       
