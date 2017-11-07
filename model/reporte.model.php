@@ -89,9 +89,30 @@ class reporte {
     	
     }
     public static function reporte_sa(){
-    	
-    }
 
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `art_lote_local`");  
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+      
+        if (count($filas) != 0) {
+            $art_lote_local = array();
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+               
+                $art_lote_local[] = art_lote_local::generar_lote_local_id_($valor['id_lote_local']);
+            }
+            return $art_lote_local;
+        }
+        else{
+           
+            return false;
+        }
+        
+    }
+    	
+   
 
 
 

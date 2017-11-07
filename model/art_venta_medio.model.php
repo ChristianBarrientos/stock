@@ -79,7 +79,8 @@ class art_venta_medio {
             foreach ($filas as $key => $value) {
                 $id_fechas_medio = art_venta_medio_fechas::generar_medio_fechas($value['id_fechas_medio']);
                 $id_dias_medio = art_venta_medio_dias::generar_medio_dias($value['id_dias_medio']);
-                $medios[]= new art_venta_medio($value['id_medio'],$value['nombre'],$value['descripcion'],$value['descuento'],$id_fechas_medio,$id_dias_medio,$value['id_usuario']);
+                $id_descripcion = art_venta_medio_descripcion::generar_venta_medio_descripcion($value['descripcion']);
+                $medios[]= new art_venta_medio($value['id_medio'],$value['nombre'],$id_descripcion,$value['descuento'],$id_fechas_medio,$id_dias_medio,$value['id_usuario']);
             }
             
             return $medios;

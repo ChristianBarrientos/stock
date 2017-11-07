@@ -4,9 +4,9 @@
 	  <h3>Datos generales</h3>
 	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Local::alta_local" method="post">
 	    <div class="form-group">
-	      <label class="control-label col-sm-2 col-xs-12" for="scrs_nombre">Nombre:</label>
+	      <label class="control-label col-sm-2 col-xs-12" for="scrs_nombre">Nombre(*):</label>
 	      <div class="col-md-5 col-sm-5 col-xs-12">
-	        <input type="scrs_nombre" class="form-control" id="scrs_nombre" placeholder="Nombre a la sucursal" name="scrs_nombre">
+	        <input required type="scrs_nombre" class="form-control" id="scrs_nombre" placeholder="Nombre a la sucursal" name="scrs_nombre">
 	      </div>
 	    </div>
 	    <div class="form-group">
@@ -59,12 +59,12 @@
 	      </div>
 	    </div>
 	    <div class="form-group">        
-	      <label class="control-label col-sm-2 col-xs-12" for="scrs_direccion">Direccion:</label>
+	      <label class="control-label col-sm-2 col-xs-12" for="scrs_direccion">Direccion(*):</label>
 	      <div class="col-md-5 col-sm-5 col-xs-12">
 	      	
 		    
 			 
-			  <input type="text" class="form-control" id="direccion" name="scrs_direccion">
+			  <input required type="text" class="form-control" id="direccion" name="scrs_direccion">
 
 		      
 	      </div>

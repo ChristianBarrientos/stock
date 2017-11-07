@@ -24,12 +24,18 @@ class Venta_Controller{
                     $tpl->assign("numero", $numero);
                     $numero = $numero + 1;
                     $tpl->assign("nombre", $value->getNombre());
-                    $tpl->assign("descripcion", $value->getDescripcion());
+                    $tpl->assign("descripcion", $value->getDescripcion()->getNombre());
                     $tpl->assign("descuento", '%'.$value->getDescuento());
                     $fecha_ini = $value->getId_fechas_medio()->getFecha_hora_inicio();
                     $fecha_fini = $value->getId_fechas_medio()->getFecha_hora_fin();
-                    $fecha_conjunta = $fecha_ini.'<->'.$fecha_fini;
-                    $tpl->assign("fechas",$fecha_conjunta);
+                    if ($fecha_fini == '0000-00-00' || $fecha_ini == 'fecha_ini') {
+                        # code...
+                        $tpl->assign("fechas",'Sin Definir');
+                    }else{
+                        $fecha_conjunta = $fecha_ini.'<->'.$fecha_fini;
+                        $tpl->assign("fechas",$fecha_conjunta);
+                    }
+                    
                    
                     $dias =$value->getId_dias_medio()->getDias();
                     $dias_fin = '';
@@ -89,6 +95,14 @@ class Venta_Controller{
 			$nombre = $_POST['actualiza_nombre_local'];
         	$tpl = new TemplatePower("template/cargar_parametros_ventas_medio.html");
         	$tpl->prepare();
+            $medio_descripcion = art_venta_medio_descripcion::obtener_medios();
+            foreach ($medio_descripcion as $key => $value) {
+                # code...
+                
+                $tpl->newBlock("cargar_descr_medio");
+                $tpl->assign("id_medio_descripcion",$value->getId_medio_descripcion());
+                $tpl->assign("nombre_descripcion",$value->getNombre());
+            }
 
         }
         else{
@@ -111,7 +125,12 @@ class Venta_Controller{
             $fecha_hasta = $_POST['venta_medio_parametro_fecha_fin'];
             //1->Lunes 2->Martes 3->Miercoles...
             $dias = $_POST['venta_medio_parametro_dias_'];
-
+            if (is_numeric($descripcion)) {
+                $id_descripcion = $descripcion;
+            }else{
+                //alta descripcion
+                $id_descripcion = art_venta_medio_descripcion::alta_art_venta_medio_descripcion($descripcion);
+            }
             //Alta en art_venta_medio_fecha
             $id_fechas_medio = art_venta_medio_fechas::alta_art_venta_medio_fechas($fecha_desde,$fecha_hasta);
             //Alta en art_venta_medio_dias
@@ -132,7 +151,8 @@ class Venta_Controller{
             if ($id_dias_medio && $id_fechas_medio) {
                 # code...
                 $id_usuario = $_SESSION["usuario"]->getId_user();
-                $id_art_venta_medio = art_venta_medio::alta_art_venta_medio($nombre,$descripcion,$descuento,$id_fechas_medio,$id_dias_medio,$id_usuario);
+                echo $id_descripcion;
+                $id_art_venta_medio = art_venta_medio::alta_art_venta_medio($nombre,$id_descripcion,$descuento,$id_fechas_medio,$id_dias_medio,$id_usuario);
                 if ($id_art_venta_medio) {
                     $tpl = new TemplatePower("template/exito.html");
                     $tpl->prepare();
@@ -185,11 +205,22 @@ class Venta_Controller{
             $tpl->assign("id_venta_medio", $id_venta_medio);
 
             $tpl->assign("nombre", $venta->getNombre());
-            $tpl->assign("descripcion", $venta->getDescripcion());
+            $medio_descripcion = art_venta_medio_descripcion::obtener_medios();
+            foreach ($medio_descripcion as $key => $value) {
+                # code...
+                
+                $tpl->newBlock("cargar_descr_medio");
+                $tpl->assign("id_medio_descripcion",$value->getId_medio_descripcion());
+                $tpl->assign("nombre_descripcion",$value->getNombre());
+            }
+
+            $tpl->newBlock("modificar_dias_parametros_medio");
+            //$tpl->assign("descripcion", $venta->getDescripcion());
             $tpl->assign("descuento", $venta->getDescuento());
             $tpl->assign("fecha_desde", $venta->getId_fechas_medio()->getFecha_hora_inicio());
             $tpl->assign("fecha_hasta", $venta->getId_fechas_medio()->getFecha_hora_fin());
             $dias_ = $venta->getId_dias_medio()->getDias();
+            
             if (strpos($dias_, '1') !== false) {
 
                 $tpl->assign("check_lunes",'checked' );
@@ -237,11 +268,16 @@ class Venta_Controller{
             $fecha_hasta = $_POST['venta_medio_parametro_fecha_fin'];
             //1->Lunes 2->Martes 3->Miercoles...
             $dias = $_POST['venta_medio_parametro_dias_'];
-
+            if (is_numeric($descripcion)) {
+                $id_descripcion = $descripcion;
+            }else{
+                //alta descripcion
+                $id_descripcion = art_venta_medio_descripcion::alta_art_venta_medio_descripcion($descripcion);
+            }
             //Update Nombre Descripcion y Descuento
             $update_nombre = art_venta_medio::update_nombre($id_venta_medio,$nombre);
             $update_descuento = art_venta_medio::update_descuento($id_venta_medio,$descuento);
-            $update_descripcion = art_venta_medio::update_descripcion($id_venta_medio,$descripcion);
+            $update_descripcion = art_venta_medio::update_descripcion($id_venta_medio,$id_descripcion);
             //Update en art_venta_medio_fecha
             $id_fecha_medio = $art_venta_medio->getId_fechas_medio()->getId_fechas_medio();
             $up_fechas_medio = art_venta_medio_fechas::update_fecha_desde($id_fecha_medio,$fecha_desde,$fecha_hasta);

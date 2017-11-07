@@ -170,6 +170,22 @@ class Ingreso_Controller{
 				$tpl->assign("total", count($_SESSION["lotes"]));
 
 				$tpl->newBlock("con_datos_reportes");
+
+
+				//Select Medio
+				$id_usuario = $_SESSION['usuario']->getId_user();
+				$medio_descripcion = art_venta_medio::obtener_medios($id_usuario);
+            	foreach ($medio_descripcion as $key => $value) {
+                # code...
+                
+                	$tpl->newBlock("carga_medio_");
+                	$tpl->assign("id_medio_",$value->getId_medio());
+                	$tpl->assign("nombre_medio",$value->getNombre());
+            	}
+            	
+            	$tpl->newBlock("fecha_desde_hasta_fecha");
+				 
+				
 			}
 			else{
 				$tpl->newBlock("sin_sucursales");
@@ -289,8 +305,17 @@ class Ingreso_Controller{
 	public static function reportes (){
 		//Ingreso_Controller::setear_conf();
         $clave_reporte = $_GET['clave_reporte'];
+        if ($clave_reporte == 4) {
+        	# code...
+        	
+        	$id_medio = $_POST['venta_medio_parametro_descripcion'];
+        	$medio = art_venta_medio::generar_venta_medio($id_medio);
+        }
         $fecha_desde = $_POST['fecha_desde'];
         $fecha_hasta = $_POST['fecha_hasta'];
+       
+        
+
         if (isset($_SESSION["usuario"])){
         	if ($_SESSION["permiso"] != 'ADMIN') {
         		return Ingreso_Controller::salir();
@@ -312,7 +337,8 @@ class Ingreso_Controller{
         		break;
         	case 4:
         		# Reporte Ventas Contado
-        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta);
+        	//Aca vamos a trabajar despues se acomodara.
+        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta,$medio);
         		break;
         	case 5:
         		# Reporte Ventas Empleado
@@ -831,10 +857,11 @@ class Ingreso_Controller{
 		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
-    public static function reporte_co($fecha_desde,$fecha_hasta){
+    public static function reporte_co($fecha_desde,$fecha_hasta,$medio){
     	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
     	//p 
+    	
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
@@ -842,7 +869,7 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		$pdf->Write( 6, "Reporte de Articulos Vendidos por medio de pago definido\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -856,7 +883,7 @@ class Ingreso_Controller{
 		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['Cant','Articulo','Local','Vendedor','Medio de Pago','Precio Final'];
+		$columnas = ['Cant','Articulo','Medio de Pago','Cuotas','Precio Final'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
@@ -874,18 +901,27 @@ class Ingreso_Controller{
 		$medio_limpio = array();
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
+	 	 
+	 	$medio_nombre_segmentacion = $medio->getNombre();
+	 	 
 		foreach ($respuesta as $key => $value) {
 			// 
+			
+			$id_medio_descripcion = $value->getId_venta()->getMedio()->getDescripcion();
+			$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
 
-			$medio_pago = $value->getId_venta()->getMedio();
-			if (strcmp($medio_pago, "Precio Base")  == 0 ) {
+			$nombre_medio_pago = $value->getId_venta()->getMedio()->getNombre();
+
+
+			//$medio_pago = $descripcion_medio->getNombre();
+			if (strcmp($nombre_medio_pago, $medio_nombre_segmentacion)  == 0 ) {
+
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
 				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
 				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
 
 				$nom_completo = $nom_marca.','.$nom_tipo;
-				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
-				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
+				
 
 			
 			 
@@ -898,7 +934,7 @@ class Ingreso_Controller{
 			 
 				$porciones = explode("x", $medio_sin);
 			
-			 
+			 	$cuotas = $value->getId_venta()->getCuotas();
 		 
 			 
 				if (count($porciones) >1) {
@@ -911,7 +947,7 @@ class Ingreso_Controller{
 				}
 				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
 				$medio_limpio[] = $medio_sin;
-				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
+				$respuesta_final[] = [$numero_cont,$nom_completo,$nombre_medio_pago,$cuotas,$precio_final];
 				$numero_cont = $numero_cont + 1;
 			}
 			
@@ -1079,7 +1115,7 @@ class Ingreso_Controller{
     	
     }
     public static function reporte_sa($fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_aem($fecha_desde,$fecha_hasta);
+    	$respuesta = reporte::reporte_sa($fecha_desde,$fecha_hasta);
 
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
@@ -1088,9 +1124,9 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		$pdf->Write( 6, "Reporte de Stock de Articulos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
-		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		//$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
 
 		$pdf->SetDrawColor( 0, 0, 0 );
@@ -1120,10 +1156,10 @@ class Ingreso_Controller{
 		
 	 	$numero_cont = 1;
 	 	 
-		foreach ($respuesta as $key2 => $value2) {
+		//foreach ($respuesta as $key2 => $value2) {
 			// 
 		
-			foreach ($value2 as $key => $value) {
+			foreach ($respuesta as $key => $value) {
 				# code...
 			
 				$nombre_art = $value->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -1140,7 +1176,7 @@ class Ingreso_Controller{
 			
 			}
 
-		}
+		//}
 
 		 
 		$fill = false;

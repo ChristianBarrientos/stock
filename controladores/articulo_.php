@@ -1211,6 +1211,7 @@ class Articulo_Controller{
                 $descuento = $value6->getDescuento();
                 $tpl->assign("id_medio_pago",$value6->getId_medio());
                 //$tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                
                 if ($descuento != 0) {
                     
                     $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');

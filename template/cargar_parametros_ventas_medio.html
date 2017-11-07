@@ -21,11 +21,26 @@
 	        <input required type="text" class="form-control" id="venta_medio_parametro_nombre" placeholder="Ingrese nombre del medio de pago" name="venta_medio_parametro_nombre">
 	      </div>
 	    </div>
-	     <div class="form-group">
+	    <div class="form-group">
 	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descripcion">Descripcion:</label>
-	      <div class="col-md-5 col-sm-5 col-xs-12">
-	        <input required type="text" class="form-control" id="venta_medio_parametro_descripcion" placeholder="Descripcion del Medio." name="venta_medio_parametro_descripcion">
-	      </div>
+	       
+		    <!--</div>-->
+		     
+			<div class="col-md-5 col-sm-3 col-xs-12">
+			      	
+  				<select required id="select_art_general" name="venta_medio_parametro_descripcion" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  				<!-- START BLOCK : cargar_descr_medio -->
+  				  <option value="{id_medio_descripcion}">{nombre_descripcion}</option>
+  				<!-- END BLOCK : cargar_descr_medio -->
+				      	
+  				</select>
+			</div>  
+
+			<div class="col-sm-offset-1 col-sm-3 col-xs-12">
+			 	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general" id="cargar_general_btn">
+							Agregar
+				</button>
+			</div>
 	    </div>
 	    
 	    <div class="form-group">
@@ -119,4 +134,42 @@
 	     </div>
 		</form>
 	</div>
+</div>
+
+<div class="container-fluid">
+	  <div class="row">
+	  	<div class="col-md-4">
+	  			<div class="form-group">
+			    	<div class="modal fade" id="agregar_art_valor_general" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Agregar Descripcion Medio</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										
+											<div class="form-group">
+										      <label class="control-label col-sm-2" for="art_general">Valor:</label>
+										       
+										        <input  required type="text" class="form-control" id="art_general_chris" placeholder="Ingrese Valor General" name="art_general">   
+										    </div>
+										    <div class="form-group">    
+										    	 <button   class="btn btn-primary btn-md " data-toggle="modal" data-target="#agregar_articulo_nombre" id="cargar_art_general">
+										    	 Agregar	</button>
+									        </div>
+										
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+	  	</div>
+	  </div>
 </div>

@@ -291,10 +291,17 @@ CREATE TABLE art_venta_medio_dias (
      KEY (id_dias_medio)
      ) ENGINE=InnoDB;
 
+CREATE TABLE art_venta_medio_descripcion (
+     id_medio_descripcion INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     descripcion VARCHAR(100) NOT NULL,
+     KEY (id_medio_descripcion)
+     ) ENGINE=InnoDB;
+
 CREATE TABLE art_venta_medio (
      id_medio INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(100) NOT NULL,
-     descripcion VARCHAR(100) NOT NULL,
+     descripcion INTEGER,
      descuento INTEGER,
      id_fechas_medio INTEGER,
      id_dias_medio INTEGER,
@@ -302,20 +309,9 @@ CREATE TABLE art_venta_medio (
      FOREIGN KEY (id_fechas_medio) REFERENCES art_venta_medio_fechas(id_fechas_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_dias_medio) REFERENCES art_venta_medio_dias(id_dias_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (descripcion) REFERENCES art_venta_medio_descripcion(id_medio_descripcion) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_medio)
      ) ENGINE=InnoDB;
-
-CREATE TABLE art_venta_cambio (
-     id_cambio INTEGER AUTO_INCREMENT NOT NULL,
-     fecha_hora DATETIME NOT NULL,
-     id_usuario INTEGER NOT NULL,
-     id_lote_local INTEGER NOT NULL,
-     saldo_favor INTEGER NOT NULL,
-     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_cambio)
-     ) ENGINE=InnoDB;
-
 
 CREATE TABLE  art_venta (
      id_venta INTEGER AUTO_INCREMENT NOT NULL,

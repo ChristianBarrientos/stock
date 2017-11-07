@@ -24,8 +24,11 @@ VALUES (1,'0000-00-00','0000-00-00');
 INSERT INTO `art_venta_medio_dias`(`id_dias_medio`, `dias`) 
 VALUES (1,'1&2&3&4&5&6&7');
 
+INSERT INTO `art_venta_medio_descripcion`(`id_medio_descripcion`, `nombre`, `descripcion`) 
+VALUES (1,'Contado','Contado');
+
 INSERT INTO `art_venta_medio`(`id_medio`, `nombre`, `descripcion`, `descuento`, `id_fechas_medio`, `id_dias_medio`, `id_usuario`) 
-VALUES (1,'Contado','Contado',0,1,1,1);
+VALUES (1,'Contado',1,0,1,1,1);
 
 
 
