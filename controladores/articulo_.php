@@ -1528,8 +1528,8 @@ class Articulo_Controller{
             $id_venta = $_GET['id_venta'];
             $id_lote_local = $_GET['id_lote_local'];
             $venta =  art_venta::generar_venta($id_venta);
-            $lote_local_vendido_ = art_lote_local::generar_lote_local($id_lote_local);
-            $lote_local_vendido = $lote_local_vendido_[0];
+            $lote_local_vendido_ = art_lote_local::generar_lote_local_id_($id_lote_local);
+            $lote_local_vendido = $lote_local_vendido_;
              
             $art_nombre = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
             $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
