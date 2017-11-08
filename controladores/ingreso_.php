@@ -110,6 +110,10 @@ class Ingreso_Controller{
 				
 				//$tpl->newBlock("error_login");
 				if ($_SESSION["permiso"] == 'OPER') {
+					//$id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+                    //$user_admin = usuario::generar_usuario($id_usuario_jefe);
+                    //$_SESSION['usuario']::obtener_locales($user_admin);
+                    //usuario::obtener_lote_us($user_admin->getId_user());
 					return Ingreso_Controller::menu_operador();
 				}
 				else{

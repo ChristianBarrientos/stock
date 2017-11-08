@@ -114,6 +114,7 @@ class art_lote_local {
 
         $sql2 = art_lote_local::actualiza_lote_cantidad($nuevo);
         if ($sql && $sql2) {
+             
             return $res; 
         }
         else{

@@ -10,6 +10,7 @@ class Articulo_Controller{
                          
                         if (isset($_SESSION["lotes"])) {
 //$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
+                            $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             
@@ -419,7 +420,9 @@ class Articulo_Controller{
                 if (isset($_SESSION['usuario'])) {
                          
                          //$_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)
-                        if (isset($_SESSION["lotes"])) {
+                        
+                        if ($_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)) {
+                            
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             
@@ -1336,7 +1339,8 @@ class Articulo_Controller{
         $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total,$cuotas);
         //alta en art unico
         $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
-        
+       
+       
         $id_unico = art_unico::alta_art_unico($id_lote_local,$id_venta);
         
 
@@ -1347,6 +1351,7 @@ class Articulo_Controller{
 
             $okokok = art_lote_local::actualiza_($cantidad_total_art_lote,$cantidad_parcial_art_lote_local);
             if ($okokok) {
+               
                 $art_nombre = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
                 $art_marca =  $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
                 $art_tipo = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
