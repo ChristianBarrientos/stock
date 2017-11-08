@@ -8,8 +8,8 @@ class Proveedor_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                         
-                        if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
-
+                        //if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])){
+ 
                             if (isset($_SESSION["proveedores"] )) {
                                 
                                 if ($_SESSION["proveedores"] == false) {
@@ -69,7 +69,7 @@ class Proveedor_Controller{
                              }
                             }
      
-                        }
+                        //}
                         
                 }
                 else{

@@ -150,14 +150,14 @@ class usuario {
             //$res_fil['id_zona'];
             
            
-            if ($_SESSION["proveedores"] == false) {
+            //if ($_SESSION["proveedores"] == false) {
                 # code...
                 
-                $_SESSION["proveedores"] = 0;
+                //$_SESSION["proveedores"] = 0;
                
-            }else{
+            //}else{
                 $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
-            }
+            //}
             
             $_SESSION["locales"] = $locales;
              

@@ -1,76 +1,5 @@
 <div class="menu_articulos_admin">
-<!-- START BLOCK : modal_galery_fotos -->
-<div class="container-fluid">
-	<div class="row">
-		<div class="modal fade" id="{id_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content" id="modal_galeri_backcolor">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel">Fotos del Articulo</h4>
-					</div>
-					<div class="modal-body">
-					 	<ul class="modal_galery first">
-					 	<!-- START BLOCK : modal_galery_fotos_path -->
-						    <li class="li_sin_puntos">
-						        <img class="img-rounded" width="304" height="236"  alt="Night away"  src="{path_foto}">
-								        
-						    </li>
-						    <br>	
-						<!-- END BLOCK : modal_galery_fotos_path -->
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>	
-	</div>
-</div>
-<!-- END BLOCK : modal_galery_fotos -->
 
-<!-- START BLOCK : modal_venta_art -->
-
-<div class="container-fluid">
-	<div class="row">
-		<div class="form-group">
-			    	<div class="modal fade" id="venta_{selecionar_local_venta}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
-									</button>
-									<h4 class="modal-title" id="myModalLabel">Sin Stock</h4>
-								</div>
-								<div class="modal-body" id="agregar_ok">
-								 
-									<div class="form_flotante" id="form_art_general">
-										<!--<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::venta_articulo" method="post"></form>-->
-									<div class="alert alert-info">
-										
-										<h2>El local en donde te encuentras, no posee Stock.</h2>
-										<h2>Locales en los que existe el articulo:</h2>
-											
-											<ul>
-											<!-- START BLOCK : locales_seleccion_venta_art -->
-												<li value="{id_lote_local}"><h3>{nombre_local}</h3></li>
-											<!-- END BLOCK : locales_seleccion_venta_art -->
-											</ul>
-											  
-											<br>
-									</div>
-									</div>
-								 
-								</div>
-							</div>
-						</div>
-					</div>
-			    </div>	
-	</div>
-</div>
-
-<!-- END BLOCK : modal_venta_art -->
 
 
 	<div class="container-fluid">
@@ -210,3 +139,76 @@
 		</div>
 	</div>
 </div>
+
+<!-- START BLOCK : modal_galery_fotos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="{id_lote}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Fotos del Articulo</h4>
+					</div>
+					<div class="modal-body">
+					 	<ul class="modal_galery first">
+					 	<!-- START BLOCK : modal_galery_fotos_path -->
+						    <li class="li_sin_puntos">
+						        <img class="img-rounded" width="304" height="236"  alt="Night away"  src="{path_foto}">
+								        
+						    </li>
+						    <br>	
+						<!-- END BLOCK : modal_galery_fotos_path -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_galery_fotos -->
+
+<!-- START BLOCK : modal_venta_art -->
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="form-group">
+			    	<div class="modal fade" id="venta_{selecionar_local_venta}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Sin Stock</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										<!--<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::venta_articulo" method="post"></form>-->
+									<div class="alert alert-info">
+										
+										<h2>El local en donde te encuentras, no posee Stock.</h2>
+										<h2>Locales en los que existe el articulo:</h2>
+											
+											<ul>
+											<!-- START BLOCK : locales_seleccion_venta_art -->
+												<li value="{id_lote_local}"><h3>{nombre_local}</h3></li>
+											<!-- END BLOCK : locales_seleccion_venta_art -->
+											</ul>
+											  
+											<br>
+									</div>
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>	
+	</div>
+</div>
+
+<!-- END BLOCK : modal_venta_art -->

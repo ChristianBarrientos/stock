@@ -8,14 +8,15 @@ class Articulo_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                          
-                        if ($_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())) {
+                        if (isset($_SESSION["lotes"])) {
+//$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             
                             $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
-                             
-
+                
+                                    
                             foreach ($_SESSION['lotes'] as $key => $value) {
                             $vueltas = 0;
                             //foreach ($_SESSION["lote_local"] as $key => $value) {
@@ -417,7 +418,8 @@ class Articulo_Controller{
                 $tpl->prepare();
                 if (isset($_SESSION['usuario'])) {
                          
-                        if ($_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)) {
+                         //$_SESSION['usuario']->obtener_lote_us($id_usuario_jefe)
+                        if (isset($_SESSION["lotes"])) {
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             

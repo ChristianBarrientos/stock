@@ -113,6 +113,9 @@ class Ingreso_Controller{
 					return Ingreso_Controller::menu_operador();
 				}
 				else{
+	 
+					$_SESSION['usuario']::obtener_locales($_SESSION['usuario']);
+            		usuario::obtener_lote_us($_SESSION['usuario']->getId_user());
 					return Ingreso_Controller::menu_admin();
 				}
 				
@@ -140,13 +143,14 @@ class Ingreso_Controller{
 			$tpl = new TemplatePower("template/menu_admin.html");
 			$tpl->prepare();
 			$total_empl = 0;
-			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
-				foreach ($_SESSION['locales'] as $key => $value) {
+			if (isset($_SESSION['locales'])) {
+				//foreach ($_SESSION['locales'] as $key => $value) {
                 
-                $total_empl = $total_empl + $value->getCantidad_empl() -1;
+                //	$total_empl = $total_empl + $value->getCantidad_empl() -1;
+                
                                 
-            }
-            	
+            	//}
+
 
             	$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Locales');
@@ -154,7 +158,7 @@ class Ingreso_Controller{
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Empleados');
-				$tpl->assign("total", $total_empl );
+				$tpl->assign("total", count($_SESSION["locales_empleados"]) - 1 );
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Proveedores');
@@ -168,7 +172,7 @@ class Ingreso_Controller{
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Articulos');
 				$tpl->assign("total", count($_SESSION["lotes"]));
-
+				 
 				$tpl->newBlock("con_datos_reportes");
 
 
