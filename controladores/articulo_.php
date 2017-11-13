@@ -1666,11 +1666,12 @@ class Articulo_Controller{
             $id_lote_local_vendido = $_GET['id_lote_local'];
             $id_lote_local_cambio = $_POST['art_venta_cambio'];
             $venta =  art_venta::generar_venta($id_venta);
+            
+            $lote_local_cambiar = art_lote_local::generar_lote_local_id_($id_lote_local_cambio);
 
-            $lote_local_cambiar = art_lote_local::generar_lote_local($id_lote_local_cambio);
-
-            $lote_local_vendido_ = art_lote_local::generar_lote_local($id_lote_local_vendido);
-            $lote_local_vendido = $lote_local_vendido_[0];
+            $lote_local_vendido_ = art_lote_local::generar_lote_local_id_($id_lote_local_vendido);
+       
+            $lote_local_vendido = $lote_local_vendido_;
              
             $art_nombre = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
             $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
@@ -1693,7 +1694,7 @@ class Articulo_Controller{
             $usuario = $venta->getId_usuario()->getUsuario();
 
 
-            $lote_local_cambiar_ = $lote_local_cambiar[0];
+            $lote_local_cambiar_ = $lote_local_cambiar ;
             $art_nombre2 = $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
             $art_marca2 =  $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
             $art_tipo2 = $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
@@ -1722,7 +1723,12 @@ class Articulo_Controller{
             $tpl->assign("art_nombre_2",$nombre_completo_art2);
             $tpl->assign("art_precio_2",'$'.$precio_base_vender2);
                 //Calcular Saldo a Favor
-                $saldo_favor = $precio_base_vender2 - $precio_base_vender;
+
+            echo $precio_base_vender2;
+            echo "&&";
+            echo $precio_base_vender;
+            
+            $saldo_favor = $precio_base_vender2 - $precio_base_vender;
 
             $tpl->assign("saldo_favor",'$'.$saldo_favor);
             
@@ -1735,7 +1741,7 @@ class Articulo_Controller{
             
             
 
-             $tpl->newBlock("cancelar_boton");
+            $tpl->newBlock("cancelar_boton");
             $tpl->assign("id_venta_cancelar",$id_venta);
             $tpl->assign("id_lote_local_cancelar",$id_lote_local_vendido);
 
