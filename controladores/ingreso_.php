@@ -401,7 +401,20 @@ class Ingreso_Controller{
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
 				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
 				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
-				$nombre_art_vendido = $nom_marca.','.$nom_tipo;
+				$nombre_art_vendido = $nombre_art.','.$nom_marca.','.$nom_tipo;
+
+				//generar lote local para obtener el local
+				$gc = $value->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
+                foreach ($gc as $clave => $valor) {
+                    if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                            $medida = $valor->getValor();
+                    }
+                   }
+
+				
+
+
+
 
 				$tpl->assign("art", $nombre_art_vendido);
 				$nom_usuario = $value->getId_venta()->getId_usuario()->getUsuario();
@@ -411,6 +424,8 @@ class Ingreso_Controller{
 
 				$tpl->assign("local", $nom_local);
 				$fecha_venta = $value->getId_venta()->getFecha_hora();
+
+				$tpl->assign("medida", $medida);
 
 				$tpl->assign("fecha_venta", $fecha_venta);
 				$id_venta_ =  $value->getId_venta()->getId_venta();

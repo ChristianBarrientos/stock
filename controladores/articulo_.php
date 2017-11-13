@@ -1634,10 +1634,14 @@ class Articulo_Controller{
                                 $precio_base_vender = $valor->getValor();
                                             
                                 }
+                            if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                                $medida = $valor->getValor();
+
+                            }
                 
                         }
 
-                        $tpl->assign("nombre_articulo",$nombre_completo_art_2.' ('.$nombre_local.' $'.$precio_base_vender.')');
+                        $tpl->assign("nombre_articulo",$nombre_completo_art_2.'('.$medida.')'.' ('.$nombre_local.' $'.$precio_base_vender.')');
 
                         $art_nombre_2 = '';
                         $art_marca_2 = '';
