@@ -16,6 +16,31 @@ $(document).ready(function()
                     }).show();
  
                 })
+        //Actualizar Precio Masivamente
+        $('#actualiza_masivamente').click(function () {
+                     
+            //alert("aca");
+            $valor = $('#filtrar').val();
+            if ($valor.length == 0) {
+                 
+                alert("Debe ingresar un articulo en el buscador");
+                $('#articulo_actualiza_precio_masivamente_label').text("Sin Articulo Seleccionado");
+                $('#actualiza_precio_masivamente').attr("disabled", true);
+
+            }
+            else{
+                console.log($valor);
+                $('#articulo_actualiza_precio_masivamente_label').text($valor);
+               
+                $('#articulo_actualiza_precio_masivamente').val($valor);
+                $('#actualiza_precio_masivamente').attr("disabled", false);
+            }
+            /*$('.buscar tr').hide();
+            $('.buscar tr').filter(function () {
+            return rex.test($(this).text());
+            }).show();*/
+ 
+        })
 
 
        
@@ -210,6 +235,22 @@ $(document).ready(function()
             
         });
 
+        $("#art_precio_tarjeta_masivo").blur(function(){
+           
+            var porciento =  $(this).val();
+            var preciobase = $("#art_precio_base_masivo").val();
+            if (preciobase != '') {
+                var precio_tarjeta_aux = (porciento * preciobase) / 100;
+            
+                $("#valor_calculado_tarjeta").text("Pesos Argentinos: " + (parseInt(precio_tarjeta_aux) + parseInt(preciobase)));
+                //$(this).val(porciento + '%')
+                $(this).val(porciento)
+            }
+            
+          
+            
+        });
+
         /*$("#art_precio_tarjeta").on('keyup', function(){
              var porciento =  $(this).val();
             var preciobase = $("#art_precio_base").val();
@@ -226,6 +267,20 @@ $(document).ready(function()
            
             var porciento =  $(this).val();
             var preciobase = $("#art_precio_base").val();
+            if (preciobase != '') {
+                var precio_tarjeta_aux = (porciento * preciobase) / 100;
+            
+                $("#valor_calculado_credito_personal").text("Pesos Argentinos: " + (parseInt(precio_tarjeta_aux) + parseInt(preciobase)));
+                //$(this).val(porciento + '%')
+                $(this).val(porciento)
+            }
+            
+        });
+
+        $("#art_precio_credito_argentino_masivo").blur(function(){
+           
+            var porciento =  $(this).val();
+            var preciobase = $("#art_precio_base_masivo").val();
             if (preciobase != '') {
                 var precio_tarjeta_aux = (porciento * preciobase) / 100;
             

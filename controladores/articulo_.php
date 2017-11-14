@@ -32,7 +32,7 @@ class Articulo_Controller{
                                
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
-                                $nombre_ = $art.', '.$marca.', '.$tipo;
+                                $nombre_ = $art.','.$marca.','.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -94,12 +94,12 @@ class Articulo_Controller{
                                         }
                                     }
 
-                                    $cantodad_final_lote_local = $value->getCantidad().'  (Total)';
+                                    $cantodad_final_lote_local = $value->getCantidad().'(Total)';
                                     $cantodad_final_lote_local .= '<br>';
                                     $contadori = 0;
                                     
                                     foreach ($nom_local__ as $key4 => $value4) {
-                                        $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'  ('.$value4.')';
+                                        $cantodad_final_lote_local .= $cantidad_parcial_local__[$contadori].'('.$value4.')';
                                         $cantodad_final_lote_local .= '<br>';
                                         $contadori = $contadori + 1;
                                        
@@ -314,6 +314,8 @@ class Articulo_Controller{
                                     $contadori = 0;
                                     //Actualizar Precio Modal
                                     $tpl->gotoBlock("_ROOT");
+                                    $tpl->newBlock("modal_actualizar_precio_masivo");
+
                                     $tpl->newBlock("modal_actualizar_precio");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
                                     $tpl->newBlock("actualiza_precio_boton");
@@ -1534,7 +1536,7 @@ class Articulo_Controller{
             $art_nombre = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
             $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
             $art_tipo = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
-            $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+            $nombre_completo_art =(string)$art_nombre.','.$art_marca.','.$art_tipo;
 
             $nombre_local = $lote_local_vendido->getId_local()->getNombre();
             $gc = $lote_local_vendido->getId_lote()->getId_gc()->getId_categoria();
@@ -1621,7 +1623,7 @@ class Articulo_Controller{
                         $art_nombre_2 = $value->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
                         $art_marca_2 =  $value->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
                         $art_tipo_2 = $value->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
-                        $nombre_completo_art_2 =(string)$art_nombre_2.' ,'.$art_marca_2.' ,'.$art_tipo_2;
+                        $nombre_completo_art_2 =(string)$art_nombre_2.','.$art_marca_2.','.$art_tipo_2;
 
                 
                         $nombre_local = $value->getId_local()->getNombre();
@@ -1921,17 +1923,14 @@ class Articulo_Controller{
         }
 
         public static function actualizar_precio_lote(){
-            if (isset($nombre)) {
+            if (Ingreso_Controller::es_admin()) {
                  
-                $nombre = ucwords(strtolower($_POST['art_general']));
-                
-                
-                $res = articulo::alta_art($nombre);
-                
-                if ($res) {
-                    
-                }
+                $nombre_articulo = $_POST['articulo_actualiza_precio_masivamente'];
+                $precio_base_nuevo = $_POST['art_precio_base_masivo']:
 
+            }
+            else{
+                return Ingreso_Controller::salir();
             }
         }
         

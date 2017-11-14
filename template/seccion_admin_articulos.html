@@ -34,10 +34,8 @@
 		<br>
 		<div class="row">
 			<div class="col-md-6 col-xs-12">
-				<a href="index.php?action=Articulo::actualizar_precio_lote">
-					<button type="button" class="btn btn-success">Actualizar Precio por Lote</button>
-				</a>
 				
+				<button id="actualiza_masivamente" type="button" class="btn btn-default" data-toggle="modal" data-target="#precio_masivo_">Actualizar Precio por Lote</button>
 			</div>
 		</div>
 
@@ -161,6 +159,53 @@
 		</div>
 	</div>
 </div>
+
+<!-- START BLOCK : modal_actualizar_precio_masivo -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="precio_masivo_" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h2 class="modal-title" id="myModalLabel">Actualizar Precio Masivamente</h2>
+						<h3>Articulo: 
+							<label for="" id="articulo_actualiza_precio_masivamente_label"></label>
+						</h3>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="href=index.php?action=Articulo::actualizar_precio_lote" method="post">
+							<input id="oculta_inputs" id="articulo_actualiza_precio_masivamente"></input>
+								<h3>Precio Base</h3>
+								 
+								 <input required min="1" type="number" class="form-control" id="art_precio_base_masivo" placeholder="Ingrese precio base del articulo" name="art_precio_base_masivo" >
+								 
+								<h3>Tarjeta Credito(Porcentaje)</h3>
+								 
+								 <input autocomplete="off" min="1" max="100" required  type="text" class="form-control" id="art_precio_tarjeta_masivo" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta_masivo" >
+								  
+								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta_masivo">:</label>
+								
+								<h3>Credito Personal(Porcentaje)</h3>
+								 
+								<input autocomplete="off" min="1" max="100" required type="text" class="form-control" id="art_precio_credito_argentino_masivo" placeholder="Precio Credito Personal, en porcentaje." name="art_precio_credito_argentino_masivo">
+								 
+								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino_masivo">:</label>
+
+								<button id="actualiza_precio_masivamente" class="agregar btn btn-primary" type="submit">Actualizar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_actualizar_precio_masivo -->
 
 
 <!-- START BLOCK : modal_actualizar_precio -->
