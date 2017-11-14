@@ -20,6 +20,49 @@
 
 <!-- END BLOCK : exito_cambio -->
 
+<!-- START BLOCK : exito_actualizacion_precio_masiva -->
+<div class="exito">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-success center-block">
+					<h3>Precio del Articulo Actualizado con Exito!</h3>	
+					<h4>Articulo: {nombre_completo_art}</h4>
+					<h4>Cantidad de articulos actualizados: {cantidad_total}</h4>
+					<a href="index.php?action=Articulo::mostrar">
+   					<button  type="submit" class="btn btn-default">Entendido</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<!-- END BLOCK : exito_actualizacion_precio_masiva -->
+
+<!-- START BLOCK : fracaso_actualizacion_precio_masiva -->
+<div class="fracaso">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-warning center-block">
+					<h2>Error al cargar los datos en el sistema!</h2>
+					<h3>Por favor comuniquese con el administrador.</h3>
+					<a href="index.php?action=Articulo::mostrar">
+   					<button  type="submit" class="btn btn-default">Entendido</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<!-- END BLOCK : fracaso_actualizacion_precio_masiva -->
+
+
+
 <!-- START BLOCK : exito -->
 <div class="exito">
 	<div class="container">

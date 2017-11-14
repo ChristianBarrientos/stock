@@ -177,8 +177,10 @@
 					</div>
 					<div class="modal-body">
 					 	<div class="form_flotante" id="form_art_general">
-							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="href=index.php?action=Articulo::actualizar_precio_lote" method="post">
-							<input id="oculta_inputs" id="articulo_actualiza_precio_masivamente"></input>
+							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualizar_precio_lote" method="post">
+
+								<input class="oculta_inputs2" name="articulo_actualiza_precio_masivamente_2" id="articulo_actualiza_precio_masivamente"></input>
+
 								<h3>Precio Base</h3>
 								 
 								 <input required min="1" type="number" class="form-control" id="art_precio_base_masivo" placeholder="Ingrese precio base del articulo" name="art_precio_base_masivo" >

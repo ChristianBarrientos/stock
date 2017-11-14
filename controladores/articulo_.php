@@ -33,6 +33,7 @@ class Articulo_Controller{
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.','.$marca.','.$tipo;
+                                $nombre_ = str_replace(' ','',$nombre_);
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -1490,11 +1491,20 @@ class Articulo_Controller{
 
         }
 
-        public static function actualiza_precio(){
-            $id_lote = $_GET['id_art_lote'];
-            $precio_base = $_POST['art_precio_base'];
-            $precio_tarjeta = $_POST['art_precio_tarjeta'];
-            $precio_credito = $_POST['art_precio_credito_argentino'];
+        public static function actualiza_precio($id_lote = null,$precio_base = null, $precio_tarjeta = null, $precio_credito = null){
+            $desde_adentro = false;
+            if ($id_lote == null && $precio_base == null && $precio_tarjeta == null && $precio_credito == null) {
+                $id_lote = $_GET['id_art_lote'];
+                $precio_base = $_POST['art_precio_base'];
+                $precio_tarjeta = $_POST['art_precio_tarjeta'];
+                $precio_credito = $_POST['art_precio_credito_argentino'];
+                # code...
+            }else{
+                //Nada
+                $desde_adentro = true;
+
+            }
+            
 
             $lote = art_lote::generar_lote($id_lote);
             $id_gc = $lote->getId_gc();
@@ -1515,12 +1525,25 @@ class Articulo_Controller{
             $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
             $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);
 
+            
             if ($ok_precio_base && $ok_precio_tarjeta && $ok_precio_credito) {
-                $tpl = new TemplatePower("template/exito.html");
-                $tpl->prepare();
+                if ($desde_adentro) {
+                    # code...
+                    return 0;
+                }else{
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                }
+                
             }else{
-                $tpl = new TemplatePower("template/error.html");
-                $tpl->prepare();
+                if ($desde_adentro) {
+                    # code...
+                    return 1;
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+                
             }
             return $tpl->getOutputContent();
         }
@@ -1925,13 +1948,83 @@ class Articulo_Controller{
         public static function actualizar_precio_lote(){
             if (Ingreso_Controller::es_admin()) {
                  
-                $nombre_articulo = $_POST['articulo_actualiza_precio_masivamente'];
-                $precio_base_nuevo = $_POST['art_precio_base_masivo']:
+                $nombre_articulo = $_POST['articulo_actualiza_precio_masivamente_2'];
+                $precio_base_nuevo = $_POST['art_precio_base_masivo'];
+                $precio_tarjeta_nuevo = $_POST['art_precio_tarjeta_masivo'];
+                $precio_credito_personal = $_POST['art_precio_credito_argentino_masivo'];
+
+                $nombre_articulo2 = str_replace(' ','',$nombre_articulo);
+                $nombre_articulo2 = str_replace(',','',$nombre_articulo2);
+
+                $articulo_por_conjunto = explode (",", $nombre_articulo);
+                //$articulo_por_conjunto[0] ->nombre general
+                //$articulo_por_conjunto[1] ->nombre marca
+                //$articulo_por_conjunto[2] ->nombre modelo
+                $nom_com0 = $nombre_articulo2;
+                
+                $lotes_actualizar = array();
+                foreach ($_SESSION["lotes"] as $key => $value) {
+                    # code...
+                    $art = $value->getId_art_conjunto()->getId_articulo()->getNombre();
+                    $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
+                    $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
+                    $nom_com = $art.$marca.$tipo;
+                    $nom_com = str_replace(' ','',$nom_com);
+                    /*if (strcmp($art, $articulo_por_conjunto[0] ) == 0  && strcmp($marca, $articulo_por_conjunto[1] ) == 0 && strcmp($tipo, $articulo_por_conjunto[2] ) ) {
+                        # code...
+                        echo "Yes";
+                        $lotes_actualizar[] = $value->getId_lote();
+
+                    }*/
+                    if (strcmp($nom_com0, $nom_com) == 0 ) {
+                        # code...
+                        $lotes_actualizar[] = $value->getId_lote();
+                    }
+                    
+                     
+                }
+                
+                if (count($lotes_actualizar) == 0) {
+                    # Error no se enciotraron articulos
+                     
+                    $error = true;
+                }
+                else{
+                    //Actualizar los articulos
+                    $error = false;
+                    foreach ($lotes_actualizar as $key2 => $value2) {
+                        # code...
+                        $ok = Articulo_Controller::actualiza_precio($value2,$precio_base_nuevo, $precio_tarjeta_nuevo, $precio_credito_personal);
+
+                        if ($ok == 1) {
+                            # code...
+                            $error = true;
+                            break;
+                        }
+                    }
+
+                }
+                //print_r(count($lotes_actualizar));
+                if ($error) {
+                        # code...
+                    $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("fracaso_actualizacion_precio_masiva");
+                }else{
+                    $tpl = new TemplatePower("template/exito_fracaso_venta.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("exito_actualizacion_precio_masiva");
+                    $tpl->assign("nombre_completo_art",$nombre_articulo);
+                    $tpl->assign("cantidad_total",count($lotes_actualizar));
+
+                }
 
             }
             else{
                 return Ingreso_Controller::salir();
             }
+
+            return $tpl->getOutputContent();
         }
         
 
