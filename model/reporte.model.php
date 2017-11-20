@@ -3,7 +3,7 @@ class reporte {
 
 	public static function reporte_av($fecha_desde,$fecha_hasta){
         global $baseDatos;
-        
+
         $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au
                                 WHERE av.fecha_hora BETWEEN '$fecha_desde' AND '$fecha_hasta'
@@ -53,13 +53,52 @@ class reporte {
             return false;
         }
     }
-    public static function reporte_vt(){
+    public static function reporte_vm(){
+
     	
     }
     public static function reporte_vc(){
     	
     }
-    public static function reporte_co(){
+    public static function reporte_co($fecha_desde,$fecha_hasta,$medio){
+
+        global $baseDatos;
+        if ($medio == 0) {
+           
+            $res = $baseDatos->query("SELECT * 
+                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
+                                WHERE av.fecha_hora 
+                                                BETWEEN '$fecha_desde' AND '$fecha_hasta'
+                                                AND au.id_venta = av.id_venta 
+                                                AND vm.id_medio = av.id_medio "); 
+        }
+        else{
+            print_r($medio);
+            $res = $baseDatos->query("SELECT * 
+                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
+                                WHERE av.fecha_hora 
+                                                BETWEEN '$fecha_desde' AND '$fecha_hasta'
+                                                AND au.id_venta = av.id_venta 
+                                                AND vm.id_medio = av.id_medio 
+                                                AND vm.id_medio = '$medio'"); 
+        }
+        
+      
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+       
+        if (count($filas) != 0) {
+            $art_unico = array();
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+               
+                $art_unico[] = art_unico::generar_unico($valor['id_unico']);
+            }
+            return $art_unico;
+        }
+        else{
+           
+            return false;
+        }
     	
     }
     public static function reporte_vem(){

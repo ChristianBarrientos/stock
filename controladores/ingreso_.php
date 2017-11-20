@@ -190,6 +190,15 @@ class Ingreso_Controller{
                 	$tpl->assign("id_medio_",$value->getId_medio());
                 	$tpl->assign("nombre_medio",$value->getNombre());
             	}
+
+            	foreach ($_SESSION['locales']  as $key => $value) {
+                # code...
+                
+                	$tpl->newBlock("carga_local");
+                	$tpl->assign("id_local_",$value->getId_local());
+                	$tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+            	}
+
             	
             	$tpl->newBlock("fecha_desde_hasta_fecha");
 				 
@@ -313,12 +322,7 @@ class Ingreso_Controller{
 	public static function reportes (){
 		//Ingreso_Controller::setear_conf();
         $clave_reporte = $_GET['clave_reporte'];
-        if ($clave_reporte == 4) {
-        	# code...
-        	
-        	$id_medio = $_POST['venta_medio_parametro_descripcion'];
-        	$medio = art_venta_medio::generar_venta_medio($id_medio);
-        }
+        
         $fecha_desde = $_POST['fecha_desde'];
         $fecha_hasta = $_POST['fecha_hasta'];
        
@@ -346,7 +350,18 @@ class Ingreso_Controller{
         	case 4:
         		# Reporte Ventas Contado
         	//Aca vamos a trabajar despues se acomodara.
-        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta,$medio);
+        		$id_medio = $_POST['venta_medio_parametro_descripcion'];
+        		$id_local = $_POST['venta_local_id'];
+        		if ($id_medio != 0) {
+        			# code...
+        			$medio = art_venta_medio::generar_venta_medio($id_medio);
+        			$local = art_local::generar_local_2($id_local);
+        		} else{
+        			$medio = 0;
+        			$local = 0;
+        		}
+        		
+        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
         		break;
         	case 5:
         		# Reporte Ventas Empleado
@@ -890,10 +905,22 @@ class Ingreso_Controller{
 		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
-    public static function reporte_co($fecha_desde,$fecha_hasta,$medio){
+    public static function reporte_co($fecha_desde,$fecha_hasta,$medio,$local){
     	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
-    	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);
+    	$todo = false;
+    	 
+    	if (is_numeric($medio)) {
+    		# code...
+    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0);
+    		$todo = true;
+    	}else{
+    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio->getId_medio());
+    		$medio_nombre_segmentacion = $medio->getNombre();
+    	}
+    	
     	//p 
+
+    	//$medio_obj = art_venta_medio::generar_venta_medio($medio);
     	
     	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
@@ -905,6 +932,15 @@ class Ingreso_Controller{
 		$pdf->Write( 6, "Reporte de Articulos Vendidos por medio de pago definido\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		if ($local != 0) {
+			# code...
+			$pdf->Write( 6, "\nLocal: ".$local->getNombre());
+			$locales_todos = false;
+		}else{
+			$pdf->Write( 6, "\nLocal: ".'Todos');
+			$locales_todos = true;
+		}
+		
 		$pdf->Ln( 12 );
 
 		$pdf->SetDrawColor( 0, 0, 0 );
@@ -934,8 +970,8 @@ class Ingreso_Controller{
 		$medio_limpio = array();
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
-	 	 
-	 	$medio_nombre_segmentacion = $medio->getNombre();
+	 	
+	 	
 	 	 
 		foreach ($respuesta as $key => $value) {
 			// 
@@ -944,6 +980,25 @@ class Ingreso_Controller{
 			$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
 
 			$nombre_medio_pago = $value->getId_venta()->getMedio()->getNombre();
+			if ($todo) {
+				# code...
+				 
+				$medio_nombre_segmentacion = $nombre_medio_pago;
+
+			}
+
+			$id_local_respuesta = $value->getId_lote_local()->getId_local()->getId_local();
+			if ($locales_todos) {
+				# code...
+
+			}else{
+				if ($id_local_respuesta == $local->getId_local()) {
+					# code...
+
+				}else{
+					break;
+				}
+			}
 
 
 			//$medio_pago = $descripcion_medio->getNombre();

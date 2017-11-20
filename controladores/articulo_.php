@@ -1198,12 +1198,14 @@ class Articulo_Controller{
                 
                 $muestra = true;
             }else{
-              
+                
                 $muestra = false;
             }
             //Verificar Dia
             $dia_hoy = $date_php['wday'];
             $dias_array = explode ("&", $dias);
+            $dias_array = str_replace("7","0",$dias_array);
+
             foreach ($dias_array as $keyd => $valued) {
                 # code...
                 if ($valued == $dia_hoy) {

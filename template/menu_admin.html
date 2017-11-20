@@ -86,7 +86,7 @@
 				<div class="col-md-3 col-xs-6">
 					
 					
-						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vco_">Ventas por Medio de Pago</button>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vco_">Ventas por Filtros</button>
 					
 				</div>
 
@@ -384,6 +384,7 @@
 								<div class="col-md-12 col-sm-3 col-xs-12">
 			      	
   									<select required id="select_art_general" name="venta_medio_parametro_descripcion" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  									<option value="0">Todos</option>
   									<!-- START BLOCK : carga_medio_ -->
   									  <option value="{id_medio_}">{nombre_medio}</option>
   									<!-- END BLOCK : carga_medio_ -->
@@ -391,6 +392,24 @@
   									</select>
 								</div> 
 						</div>
+
+						<div class="form-group">
+	      					<label class="col-md-12 col-xs-12" for="venta_local_id">Local de Venta:</label>
+								 
+								<div class="col-md-12 col-sm-3 col-xs-12">
+			      	
+  									<select required id="select_art_general" name="venta_local_id" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  									<option value="0">Todos</option>
+  									<!-- START BLOCK : carga_local -->
+  									  <option value="{id_local_}">{nombre_local}</option>
+  									<!-- END BLOCK : carga_local -->
+				      	
+  									</select>
+								</div> 
+						</div>
+
+
+
 						<!-- START BLOCK : fecha_desde_hasta_fecha -->
 						<div class="form-group">
 	      					<label class="col-md-12 col-xs-12" for="venta_medio_parametro_descripcion">Fecha Desde:</label>		  

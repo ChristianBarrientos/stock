@@ -50,6 +50,7 @@ class art_venta_medio {
 
     public static function generar_venta_medio($id_medio){
         global $baseDatos;
+        
         $res = $baseDatos->query("SELECT * FROM `art_venta_medio` WHERE id_medio = $id_medio");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
