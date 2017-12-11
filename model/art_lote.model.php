@@ -62,7 +62,13 @@ class art_lote {
             }
             $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
             $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
-            $fotos = art_fotos::generar_fotos($res_fil['id_art_fotos']);
+            if ($res_fil['id_art_fotos'] != null) {
+                # code...
+                $fotos = art_fotos::generar_fotos($res_fil['id_art_fotos']);
+            }else{
+                $fotos = null;
+            }
+            
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             //$lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
             $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc,$fotos);

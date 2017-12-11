@@ -7,7 +7,8 @@ class Articulo_Controller{
                 $tpl = new TemplatePower("template/seccion_admin_articulos.html");
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
-                         
+                    
+                         print_r($_SESSION["lotes"]);
                         if (isset($_SESSION["lotes"])) {
 //$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
                             $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
@@ -674,7 +675,8 @@ class Articulo_Controller{
                 }
 
                 $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
-                
+                 
+                 
                 if ($list_art_grupo_att) {
 
                      foreach ($list_art_grupo_att as $key => $value) {
@@ -688,34 +690,18 @@ class Articulo_Controller{
                             $tpl->newBlock("art_precio_base");
                             
                         }
-                        if (strcmp($cate, "Tarjeta" ) == 0 && strcmp($des, 'null' ) != 0) {
+                       
+
+                        if (strcmp($cate, "Ganancia" ) == 0 && strcmp($des, 'null' ) != 0) {
                             $tpl->newBlock("cargar_articulo_grupo");
                             $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_precio_tarjeta");
+                            $tpl->newBlock("art_ganancia");
+                            
+                            
                             
                         }
 
-                         if (strcmp($cate, "CreditoP" ) == 0 && strcmp($des, 'null' ) != 0) {
-                            $tpl->newBlock("cargar_articulo_grupo");
-                            $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_precio_credito_argentino");
-                            
-                        }
-
-                        if (strcmp($cate, "Medida" ) == 0 && strcmp($des, "null" ) != 0) {
-                            $tpl->newBlock("cargar_articulo_grupo");
-                            $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_medida");
-                            
-                        }
-
-                        if (strcmp($cate, "Color" ) == 0 && strcmp($des, 'null' ) != 0) {
-                            $tpl->newBlock("cargar_articulo_grupo");
-                            $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_color");
-                            break;
-                            
-                        }
+                       
                        
                        /* $tpl->assign("des_cat", $value->getDescripcion());
                         $tpl->assign("cat_name_input", $value->getNombre());
@@ -813,12 +799,12 @@ class Articulo_Controller{
         $art_precio_tarjeta = $_POST['art_precio_tarjeta'];
         $art_precio_cp= $_POST['art_precio_credito_argentino'];
         $art_medida = ucwords(strtolower($_POST['art_medida']));
-
+        $art_ganancia = $_POST['art_ganancia'];
         $art_color =$_POST['art_color'];
         $art_proveedor = $_POST['art_prvd'];
 
-        if (    $art_general == null || $art_marca == null || $art_tipo == null
-                 ||  $art_precio_base == null || $art_precio_tarjeta == null || $art_precio_cp == null ) {
+        if (  $art_general == null || $art_marca == null || $art_tipo == null
+                 ||  $art_precio_base == null ) {
             $datos_no_recibidos = true;
            
             
@@ -848,11 +834,18 @@ class Articulo_Controller{
                     $name_local_cantidad = "art_local_cantidad_".$id_local_oper;
                     $name_local_fecha = "art_carga_local_fecha_".$id_local_oper;
                     
+                    
+                    //$dias_array = str_replace("7","0",$dias_array);
+                    
+                    
                     if (strcmp($campo, $name_local_cantidad ) == 0) {
 
                         //if ($_POST[$name_local_fecha] != null) {
-                            $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $_POST[$name_local_cantidad],"Fecha" => $_POST[$name_local_fecha]];
-                            $art_cantidad_total = $art_cantidad_total + $_POST[$name_local_cantidad];
+                            $cantidad_stock = $_POST[$name_local_cantidad];
+                            $stock_cantidad = explode (",", $cantidad_stock);
+                            $final_stock_cant = $stock_cantidad[0];
+                            $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $final_stock_cant,"Fecha" => $_POST[$name_local_fecha]];
+                            $art_cantidad_total = $art_cantidad_total + $final_stock_cant;
                          
                         //}
                     }
@@ -919,51 +912,17 @@ class Articulo_Controller{
                 
                 if (strcmp($nombre, "Precio" ) == 0) {
                  
-                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$art_precio_base,"En moneda local");
+                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$art_precio_base);//,"En moneda local"
                      
                     //Como precio entra primero, lo usamos como bandera para el id del grupo de categorias
                     $id_gc = art_grupo_categoria::alta_art_gc($id_categoria_precio);
 
                 }
 
-
-                if (strcmp($nombre, "Medida" ) ==  0) {
-                 
-                    $id_categoria_medida = art_categoria::alta_art_categoria($nombre,$art_medida);
-                    
-
-                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_medida);
-                    if ($ok) {
-                        $nook = false;
-                    }
-                    
-                }
-
-                if (strcmp($nombre, "Tarjeta" ) ==  0) {
-                     
-                    $id_categoria_tarjeta = art_categoria::alta_art_categoria($nombre,trim($art_precio_tarjeta,'%'),"En porcentaje");
-                    
-
-                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_tarjeta);
-                    if ($ok) {
-                        $nook = false;
-                    }
-                }
-
-                if (strcmp($nombre, "CreditoP" ) ==  0) {
-                 
-                     $id_categoria_creditop = art_categoria::alta_art_categoria($nombre,trim($art_precio_cp,'%'),"En porcentaje");
-
-                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_creditop);
-                    if ($ok) {
-                        $nook = false;
-                    }
-                }
-
-                if (strcmp($nombre, "Color" ) ==  0 ) {
+                if (strcmp($nombre, "Ganancia" ) ==  0 ) {
                  
                 
-                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_color,'Color escrito');
+                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_ganancia);//,'Ganancia en %'
                     $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_color);
                     if ($ok) {
                         $nook = false;
@@ -988,6 +947,9 @@ class Articulo_Controller{
         // Loop through each file
         $okok_salto = 0;
         //Alta art_fotos
+        if ($total > 1) {
+            # code...
+        
         for($i=0; $i<$total; $i++) {
           //Get the temp file path
           
@@ -1009,6 +971,11 @@ class Articulo_Controller{
             
           
         }
+          }
+          else{
+            $id_art_fotos = 'null';
+
+          }
         //agregar a Lote
      
         if ($id_proveedor != null) {

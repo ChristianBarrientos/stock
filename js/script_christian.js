@@ -216,9 +216,27 @@ $(document).ready(function()
       */
      
       
-     
         
-       //GENERA PRECIO POR PORCENTAJES
+        //GENERA PRECIO POR PORCENTAJES GANANCIAS
+        $("#art_ganancia").blur(function(){
+            
+            var porciento =  $(this).val();
+            var preciobase = $("#art_precio_base").val();
+            if (preciobase != '') {
+
+                var precio_tarjeta_aux = (porciento * preciobase) / 100;
+                var final_ganancia = (parseFloat (precio_tarjeta_aux) + parseFloat(preciobase));
+                $("#valor_calculado_ganancia").text("Pesos Argentinos: " + final_ganancia.toFixed(2));
+                //$(this).val(porciento + '%')
+                
+                $(this).val(porciento)
+            }
+            
+          
+            
+        });
+        
+       //GENERA PRECIO POR PORCENTAJES TARJETA
         $("#art_precio_tarjeta").blur(function(){
            
             var porciento =  $(this).val();
