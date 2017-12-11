@@ -11,4 +11,4 @@ VALUES (0,1,'Cordoba 542','christianbarrientoss@hotmail.com');
 INSERT INTO `us_datos`(`id_datos`, `nombre`, `apellido`, `fecha_nac`, `dni`, `id_foto`, `genero`, `id_fecha_ab`) 
 VALUES (0,'Christian','Barrientios','1996-01-31',39014575,2,'m',1);
 INSERT INTO `usuarios`(`id_usuarios`, `id_datos`, `id_contacto`, `acceso`, `usuario`, `pass`) 
-VALUES (0,1,1,'ADMIN','christian','123456');
+VALUES (0,1,1,'ADMIN','stock_moto','mOtomAtch7102.');

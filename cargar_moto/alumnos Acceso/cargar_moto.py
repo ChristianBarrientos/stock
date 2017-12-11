@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -27,7 +28,7 @@ def login():
 	input_user = browser.find_element_by_id("usuario")
 	input_pass = browser.find_element_by_id("pass")
 	input_user.send_keys("stock_moto")
-	input_pass.send_keys("mOtomAtch7102")
+	input_pass.send_keys("mOtomAtch7102.")
 	login_attempt = browser.find_element_by_xpath("/html/body/div/div/div/div[2]/form/div[3]/button")
 	login_attempt.submit()
 
@@ -572,9 +573,9 @@ def leer_excel_artiiculo():
 		valor = [sh.cell_value(rowx=i, colx=0)]
 		articulos.append(valor[0])
 		 
-		i = i + 1
-		if i == 10:
-			break
+		#i = i + 1
+		#if i == 10:
+		#	break
 
 def leer_excel_costo():
 	i = 1
@@ -587,9 +588,9 @@ def leer_excel_costo():
 		valor = [sh.cell_value(rowx=i, colx=1)]
 		costo.append(valor[0])
 		 
-		i = i + 1
-		if i == 10:
-			break
+		#i = i + 1
+		#if i == 10:
+		#	break
 
 def leer_excel_porciento():
 	i = 1
@@ -603,9 +604,9 @@ def leer_excel_porciento():
 		#print (valor[0])
 		porciento.append(valor[0])
 		#print (porciento[i])
-		i = i + 1
-		if i == 10:
-			break
+		#i = i + 1
+		#if i == 10:
+		#	break
 
 def leer_excel_stock():
 	i = 1
@@ -619,9 +620,9 @@ def leer_excel_stock():
 		#print (valor[0])
 		stock.append(valor[0])
 		 
-		i = i + 1
-		if i == 10:
-			break
+		#i = i + 1
+		#if i == 10:
+		#	break
 
 ##browser = webdriver.Chrome("chromedriver.exe")
 ##aulas = []
@@ -652,6 +653,8 @@ def cargar_motostock(index):
 
 	#login_attempt = browser.find_element_by_xpath("//*[@id='art_carga_btn']")
 	#login_attempt.submit()
+	btn_cargar_art = browser.find_element_by_xpath("//*[@id='art_carga_btn']")
+	btn_cargar_art.submit()
 	print("OK" + str(articulos[x]) + ' ' + str(porciento[x]) + ' ' + str(stock[x]))
 
 		
@@ -665,12 +668,14 @@ leer_excel_artiiculo()
 leer_excel_costo()
 leer_excel_porciento()
 leer_excel_stock()
+
 #print(articulos)
 #for x in range(0,len(porciento)):
 #	print(articulos[x])
 browser = webdriver.Chrome("chromedriver.exe")
 login()
 for x in range(0,len(articulos)):
+	print(x)
 	cargar_motostock(x)
 #login()
 #obtener_aulas()

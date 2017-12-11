@@ -58,7 +58,7 @@ class art_lote {
                 $prvd = proveedor::generar_prvd($res_fil['id_provedor']);
             }
             else{
-                $prvd = 'Sin Proveedor.';
+                $prvd = 'null';
             }
             $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
             $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);

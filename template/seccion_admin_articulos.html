@@ -32,14 +32,14 @@
 			
 		</div>
 		<br>
-		<!-- START BLOCK : con_articulos_nolista -->
+		<!-- START BLOCK : con_articulos_actualiza_lote_masivo2 -->
 		<div class="row">
 			<div class="col-md-6 col-xs-12">
 				
 				<button id="actualiza_masivamente" type="button" class="btn btn-default" data-toggle="modal" data-target="#precio_masivo_">Actualizar Precio por Lote</button>
 			</div>
 		</div>
-		<!-- END BLOCK : con_articulos_nolista -->
+		<!-- END BLOCK : con_articulos_actualiza_lote_masivo2 -->
 		<br><br>
 		<div class="row">
 
@@ -73,7 +73,7 @@
 					    <li class="list-group-item"><strong>Codigo de Barra:</strong> {cb}</li>
 					    <li class="list-group-item"><strong>Medida:</strong> {art_medida}</li>
 					    <li class="list-group-item"><strong>Precio Base:</strong> {precio_base}</li>
-					    <li class="list-group-item"><strong>Precio Tarjeta:</strong> {precio_tarjeta}</li>
+					    <li class="list-group-item"><strong>Importe:</strong> {importe}</li>
 					    <li class="list-group-item"><strong>Credito Personal:</strong> {credito_personal}</li>
 					    <li class="list-group-item"><strong>Color:</strong> {art_color}</li>
 					  </ul>
@@ -96,10 +96,10 @@
 	            <th>Articulo</th>
 	            <!-- colspan="2"-->
 	            <th>Stock</th>
-	            <th>Medida</th>            
+	            <th>Proveedor</th>            
 	            <th>Precio Base</th>
-	            <th>Precio Tarjeta</th>
-	            <th>Credito Personal</th>
+	            <th>Importe</th>
+	            <th>Precio Final</th>
 	            <th>Operaciones</th>
 	             
         	</tr>
@@ -113,10 +113,11 @@
 				<td>{numero}</td>
 	            <td>{nombre}</td>
 	            <td>{cantidad_total}</td>
-	            <td>{art_medida}</td>
+	            <td>{art_prvd}</td>
 	            <td>{precio_base}</td>
-	            <td>{precio_tarjeta}</td>
-	            <td>{credito_personal}</td>
+	            <td>{ganancia}</td>
+	            <td>{precio_final}</td>
+	            <td hidden>{codigo_barras}</td>
 
 	            <td> 
 	            	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
@@ -228,19 +229,25 @@
 							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualiza_precio&id_art_lote={id_art_lote}" method="post">
 								<h3>Precio Base</h3>
 								<!-- START BLOCK : actualiza_precio_base -->
-								 <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base" value="{precio_base_}">
+								 <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base" value="{precio_base_}"> 
 								<!-- END BLOCK : actualiza_precio_base -->
-								<h3>Tarjeta Credito(Porcentaje)</h3>
+
+								<h3>Importe</h3>
+								<!-- START BLOCK : actualiza_importe_ -->
+								 <input required min="1" type="number" class="form-control" id="art_importe_ganancia" placeholder="Ingrese importe de ganancia" name="art_importe_ganancia" value="{importe_}"> 
+								<!-- END BLOCK : actualiza_importe_ -->
+
+								<!--<h3>Tarjeta Credito(Porcentaje)</h3>-->
 								<!-- START BLOCK : actualiza_precio_tarjeta -->
-								 <input autocomplete="off" min="1" max="100" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta" value="{precio_tarjeta_}">
+								 <!--<input autocomplete="off" min="1" max="100" required  type="text" class="form-control" id="art_precio_tarjeta" placeholder="Precio tarjeta, en porcentaje." name="art_precio_tarjeta" value="{precio_tarjeta_}">-->
 								 <!-- END BLOCK : actualiza_precio_tarjeta -->
-								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
+								<!--<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_tarjeta" for="art_precio_tarjeta">:</label>
 								
-								<h3>Credito Personal(Porcentaje)</h3>
+								<h3>Credito Personal(Porcentaje)</h3>-->
 								<!-- START BLOCK : actualiza_precio_credito -->
-								<input autocomplete="off" min="1" max="100" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." value="{precio_credito_}" name="art_precio_credito_argentino">
+								<!--<input autocomplete="off" min="1" max="100" required type="text" class="form-control" id="art_precio_credito_argentino" placeholder="Precio Credito Personal, en porcentaje." value="{precio_credito_}" name="art_precio_credito_argentino">-->
 								<!-- END BLOCK : actualiza_precio_credito -->
-								<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>
+								<!--<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_credito_personal" for="art_precio_credito_argentino">:</label>-->
 
 								<button class="agregar btn btn-primary" type="submit">Actualizar</button>
 								

@@ -81,11 +81,11 @@
 	            <th>Articulo</th>
 	            <!-- colspan="2"-->
 	            <th>Stock</th>
-	            <th>Medida</th>            
+	            <th>Proveedor</th>            
 	            <th>Precio Base</th>
-	            <th>Precio Tarjeta</th>
-	            <th>Credito Personal</th>
-	            <th>Fotos</th>
+	            <th>Importe</th>
+	            <th>Precio Final</th>
+	            
 	            <th>Vender</th>
         	</tr>
         	</thead>
@@ -98,13 +98,14 @@
 				<td>{numero}</td>
 	            <td>{nombre}</td>
 	            <td>{cantidad_total}</td>
-	            <td>{art_medida}</td>
+	            <td>{art_prvd}</td>
 	            <td>{precio_base}</td>
-	            <td>{precio_tarjeta}</td>
-	            <td>{credito_personal}</td>
-	            <td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+	            <td>{ganancia}</td>
+	            <td>{precio_final}</td>
+	            <td hidden>{codigo_barras}</td>
+	            <!--<td> <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
 							Ver
-						</button></td>
+						</button></td>-->
 	            <td>
 	            <!-- START BLOCK : boton_con_stock -->
 	            <form action="index.php?action=Articulo::venta_articulo&id_art_lote_locas={id_lote_local}" method="post">

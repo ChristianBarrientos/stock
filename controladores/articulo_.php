@@ -8,13 +8,15 @@ class Articulo_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                     
-                         print_r($_SESSION["lotes"]);
+                         
                         if (isset($_SESSION["lotes"])) {
 //$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
+
                             $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             
+                            $tpl->newBlock("con_articulos_actualiza_lote_masivo");
                             $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
                 
@@ -35,6 +37,8 @@ class Articulo_Controller{
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.','.$marca.','.$tipo;
                                 $nombre_ = str_replace(' ','',$nombre_);
+
+                                $nombre_ = $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -163,11 +167,37 @@ class Articulo_Controller{
                                             
                                         }
 
+                                        if (strcmp($valor->getNombre(), "Ganancia" ) == 0 ) {
+                                            
+                                            $ganancia = $valor->getValor();
+                                            
+                                            $precio_final = $precio_base + ($precio_base * '0'.'.'.$ganancia);
+
+                                            
+                                        }
+
                                         if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
                                             $art_color = $valor->getValor();
                                             
                                         }
                                     } 
+
+                                    //Obtener Proveedor
+                                    if ($value->getId_proveedor() != 'null') {
+                                        # code...
+                                        $prvd = $value->getId_proveedor();
+                                        $prvd_nombre = $prvd->getid_datos_prvd()->getNombre();
+                                    } 
+                                    
+                                    if ($prvd != null) {
+                                         
+                                        $tpl->assign("art_prvd",$prvd_nombre);
+                                        
+                                    }
+                                    else{
+                                         
+                                        $tpl->assign("art_prvd",'Sin Definir');
+                                    }
 
                                     if ($precio_base != null) {
                                         $tpl->assign("precio_base",'$'.$precio_base);
@@ -203,6 +233,38 @@ class Articulo_Controller{
                                     else{
                                         $tpl->assign("art_color",'Sin Definir');
                                     }
+
+                                    if ($ganancia != null) {
+                                        $tpl->assign("ganancia",$ganancia.'%');
+                                    }
+                                    else{
+                                        $tpl->assign("ganancia",'0%');
+                                    }
+
+                                    if ($precio_final != null) {
+                                        $tpl->assign("precio_final",$precio_final);
+                                         
+                                    }
+                                    else{
+                                        $tpl->assign("precio_final",'Sin Definir');
+                                    }
+
+                                    //Obtener Codigo de barras
+                                    if ($value->getId_cb() != null) {
+                                        # code...
+                                        $codigo_barras = $value->getId_cb()->getcb();
+                                    }
+                                    
+                                    if ($codigo_barras != null) {
+                                        $tpl->assign("codigo_barras",$codigo_barras);
+                                         
+                                    }
+                                    else{
+                                        $tpl->assign("codigo_barras",'Sin Definir');
+                                    }
+
+
+
 
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
 
@@ -315,6 +377,7 @@ class Articulo_Controller{
                                     $actualiza_stock_bandera = 0;
                                     $contadori = 0;
                                     //Actualizar Precio Modal
+
                                     $tpl->gotoBlock("_ROOT");
                                     $tpl->newBlock("modal_actualizar_precio_masivo");
 
@@ -326,6 +389,16 @@ class Articulo_Controller{
                                     
                                     $tpl->newBlock("actualiza_precio_base");
                                     $tpl->assign("precio_base_",$precio_base);
+
+                                    $tpl->newBlock("actualiza_importe_");
+                                    if ($ganancia == 0) {
+                                        # code...
+                                        $tpl->assign("importe_",'0');
+                                    }else{
+                                        $tpl->assign("importe_",$ganancia);
+                                    }
+                                    
+
 
                                     $tpl->newBlock("actualiza_precio_tarjeta");
                                     $tpl->assign("precio_tarjeta_",$por_ciento_t);
@@ -440,6 +513,7 @@ class Articulo_Controller{
                                 $marca = $value->getId_art_conjunto()->getId_marca()->getNombre();
                                 $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 $nombre_ = $art.', '.$marca.', '.$tipo;
+                                $nombre_ = $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
                                 if (True) {
                                     $tpl->newBlock("modal_galery_fotos");
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
@@ -523,6 +597,15 @@ class Articulo_Controller{
                                             
                                         }
 
+                                        if (strcmp($valor->getNombre(), "Ganancia" ) == 0 ) {
+                                            
+                                            $ganancia = $valor->getValor();
+                                            
+                                            $precio_final = $precio_base + ($precio_base * '0'.'.'.$ganancia);
+
+                                            
+                                        }
+
                                         if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
                                             $por_ciento_p = $valor->getValor();
                                             if ($por_ciento_p == 100) {
@@ -547,6 +630,23 @@ class Articulo_Controller{
                                             
                                         }
                                     } 
+
+                                     //Obtener Proveedor
+                                    if ($value->getId_proveedor() != 'null') {
+                                        # code...
+                                        $prvd = $value->getId_proveedor();
+                                        $prvd_nombre = $prvd->getid_datos_prvd()->getNombre();
+                                    } 
+                                    
+                                    if ($prvd != null) {
+                                         
+                                        $tpl->assign("art_prvd",$prvd_nombre);
+                                        
+                                    }
+                                    else{
+                                         
+                                        $tpl->assign("art_prvd",'Sin Definir');
+                                    }
 
                                     if ($precio_base != null) {
                                         $tpl->assign("precio_base",'$'.$precio_base);
@@ -581,6 +681,31 @@ class Articulo_Controller{
                                     }
                                     else{
                                         $tpl->assign("art_color",'Sin Definir');
+                                    }
+
+                                    if ($ganancia != null) {
+                                        $tpl->assign("ganancia",$ganancia.'%');
+                                    }
+                                    else{
+                                        $tpl->assign("ganancia",'0%');
+                                    }
+
+                                    if ($precio_final != null) {
+                                        $tpl->assign("precio_final",$precio_final);
+                                         
+                                    }
+                                    else{
+                                        $tpl->assign("precio_final",'Sin Definir');
+                                    }
+
+                                    //Obtener Codigo de barras
+                                    $codigo_barras = $value->getId_cb()->getcb();
+                                    if ($codigo_barras != null) {
+                                        $tpl->assign("codigo_barras",$codigo_barras);
+                                         
+                                    }
+                                    else{
+                                        $tpl->assign("codigo_barras",'Sin Definir');
                                     }
 
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
@@ -1465,6 +1590,8 @@ class Articulo_Controller{
             if ($id_lote == null && $precio_base == null && $precio_tarjeta == null && $precio_credito == null) {
                 $id_lote = $_GET['id_art_lote'];
                 $precio_base = $_POST['art_precio_base'];
+                $ganancia_importe = $_POST['art_importe_ganancia'];
+
                 $precio_tarjeta = $_POST['art_precio_tarjeta'];
                 $precio_credito = $_POST['art_precio_credito_argentino'];
                 # code...
@@ -1488,14 +1615,19 @@ class Articulo_Controller{
                 if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
                     $id_creditop = $valor->getId_categoria();
                 }
+
+                if (strcmp($valor->getNombre(), "Ganancia" ) == 0 ) {
+                    $ganancia = $valor->getId_categoria();
+                }
             }
             
             $ok_precio_base = art_categoria::update_valores($id_precio,$precio_base);
             $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
             $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);
+            $ok_precio_importe= art_categoria::update_valores($ganancia,$ganancia_importe);
 
             
-            if ($ok_precio_base && $ok_precio_tarjeta && $ok_precio_credito) {
+            if ($ok_precio_base && $ok_precio_importe) {
                 if ($desde_adentro) {
                     # code...
                     return 0;
