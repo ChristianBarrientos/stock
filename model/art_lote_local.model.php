@@ -29,9 +29,10 @@ class art_lote_local {
         
         $sql = "INSERT INTO `art_lote_local`(`id_lote_local`, `id_lote`, `id_local`, `cantidad_parcial`, `id_carga`) VALUES (0,$id_lote,$id_local,$cantidad_parcial,$id_carga)";
         $res = $baseDatos->query($sql);
+        printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
              
-            return $$id_lote_local;
+            return $id_lote_local;
         }else{
             
             return false;

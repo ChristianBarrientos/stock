@@ -1,2 +1,0 @@
-INSERT INTO `us_prvd`(`id_us_prvd`, `id_usuarios`, `id_provedor`) 
-VALUES (0,1,1);

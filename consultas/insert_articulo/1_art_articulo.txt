@@ -1,2 +1,0 @@
-INSERT INTO `art_articulo`(`id_articulo`, `nombre`, `id_marca`) 
-VALUES (0,'Pantalones',null);

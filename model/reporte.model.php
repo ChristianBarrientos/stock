@@ -60,10 +60,10 @@ class reporte {
     public static function reporte_vc(){
     	
     }
-    public static function reporte_co($fecha_desde,$fecha_hasta,$medio){
+    public static function reporte_co($fecha_desde,$fecha_hasta,$medio,$local){
 
         global $baseDatos;
-        if ($medio == 0) {
+        if ($medio == 0 && $local == 0) {
            
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
@@ -72,8 +72,8 @@ class reporte {
                                                 AND au.id_venta = av.id_venta 
                                                 AND vm.id_medio = av.id_medio "); 
         }
-        else{
-            print_r($medio);
+        if ($medio != 0 && $local == 0) {
+            # code...
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
                                 WHERE av.fecha_hora 
@@ -82,6 +82,36 @@ class reporte {
                                                 AND vm.id_medio = av.id_medio 
                                                 AND vm.id_medio = '$medio'"); 
         }
+
+        if ($medio == 0 && $local != 0) {
+            # code...
+            echo "aca";
+            $res = $baseDatos->query("SELECT * 
+                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio` AS vm
+                                WHERE av.fecha_hora 
+                                                BETWEEN '$fecha_desde' AND '$fecha_hasta'
+                                                AND au.id_venta = av.id_venta 
+                                                AND ll.id_lote_local = au.id_lote_local 
+                                                AND ll.id_local = '$local'
+                                                AND vm.id_medio = av.id_medio"); 
+            //AND vm.id_medio = av.id_medio 
+        }
+
+        if ($medio != 0 && $local != 0) {
+            $res = $baseDatos->query("SELECT * 
+                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio` AS vm
+                                WHERE av.fecha_hora 
+                                                BETWEEN '$fecha_desde' AND '$fecha_hasta'
+                                                AND au.id_venta = av.id_venta 
+                                                AND vm.id_medio = av.id_medio 
+                                                AND vm.id_medio = '$medio'
+                                                AND ll.id_lote_local = au.id_lote_local 
+                                                AND ll.id_local = '$local'"); 
+        }
+
+         
+            
+       
         
       
         $filas = $res->fetch_all(MYSQLI_ASSOC);

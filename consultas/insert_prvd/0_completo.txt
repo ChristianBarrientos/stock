@@ -1,6 +1,0 @@
-INSERT INTO `prvd_datos`(`id_datos_prvd`, `nombre`, `cuit`, `id_fecha_ab`, `id_foto`) 
-VALUES (0,'Cordoba zapatillas',222222,1,1);
-INSERT INTO `prvd_provedor`(`id_provedor`, `id_contacto`, `id_datos_prvd`) 
-VALUES (0,1,1);
-INSERT INTO `us_prvd`(`id_us_prvd`, `id_usuarios`, `id_provedor`) 
-VALUES (0,1,1);

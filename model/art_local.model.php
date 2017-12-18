@@ -6,31 +6,47 @@ class art_local {
     private $descripcion;
     private $id_zona;
     private $cantidad_empl;
+    private $id_gcj;
 
     
 
 
-    public function __construct($id_local, $nombre, $descripcion,$id_zona,$cantidad_empl)
+    public function __construct($id_local, $nombre, $descripcion,$id_zona,$cantidad_empl,$id_gcj = null)
     {
         $this->id_local = $id_local;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
         $this->id_zona = $id_zona;
         $this->cantidad_empl = $cantidad_empl;
+        $this->id_gcj = $id_gcj;
        
     }
 
-    public static function alta_local($nombre,$descripcion,$id_zona){
+    public static function alta_local($nombre,$descripcion,$id_zona = null,$id_gcj = null){
         global $baseDatos;
-        $sql = "INSERT INTO art_local VALUES (0,'$nombre','$descripcion',$id_zona)";
+        $id_local = art_local::ultimo_id_local();
+
+   
+        $sql = "INSERT INTO `art_local`(`id_local`, `nombre`, `descripcion`, `id_zona`, `id_gcj`) VALUES (0,'$nombre','$descripcion',$id_zona,null )";
         $res = $baseDatos->query($sql);
-        return $res;
+        printf("Errormessage: %s\n", $baseDatos->error);
+        return $id_local;
     }
 
-    public static function generar_local_empleados($id_zona){
+    public static function ultimo_id_local(){
+        global $baseDatos;
+        $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_local'";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+        
+        return $res_fil['LastId'];
+    }
+
+    public static function generar_local_empleados($id_local){
         //obtener empleados por local
-        $empleados = us_local::obtener_empleados_local($id_zona);
+        $empleados = us_local::obtener_empleados_local($id_local);
         $empleados_lista = array();
+
         foreach ($empleados as $key => $value) {
             $empleados_lista[] = usuario::obtener_tabla_usuario($value['id_usuarios']);
 
@@ -60,7 +76,7 @@ class art_local {
                 $locales_operador[] = array(
                             "id_us_local" =>  $valor['id_usuarios_local'],
                             "id_usuario" =>  $valor['id_usuarios'],
-                            "id_zona" =>  $valor['id_zona'],
+                            "id_local" =>  $valor['id_local'],
                         );
             }
             return $locales_operador;
@@ -73,15 +89,15 @@ class art_local {
 
     }
 
-      public static function generar_local($id_zona,$cant_empl = 0){
+      public static function generar_local($id_local,$cant_empl = 0){
         //obtener empleados por local
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM art_local WHERE id_zona = $id_zona");  
+        $res = $baseDatos->query("SELECT * FROM art_local WHERE id_local = $id_local");  
 
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $zona = mp_zona::obtener_zona__explicita($id_zona);
+            $zona = mp_zona::obtener_zona__explicita($res_fil['id_zona']);
             
             $local = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             return $local;

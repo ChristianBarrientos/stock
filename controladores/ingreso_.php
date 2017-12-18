@@ -225,12 +225,11 @@ class Ingreso_Controller{
 			$tpl->prepare();
 			$locales = us_local::obtener_locales_usuario($_SESSION["usuario"]->getId_user());
 			$tpl->newBlock("con_sucursales");
-			
 			foreach ($locales as $key => $value) {
 				//tenes que recorrer el array de lcoales y omstrar la informatcion asi lo pueda eleguir.
 				
 				$zona = mp_zona::obtener_zona__explicita_2($value["id_zona"]);
-				$local = us_local::obtener_empleados_local($zona["id_zona"]);
+				$local = us_local::obtener_empleados_local($value["id_local"]);
 				$locales_info_id = art_local::obtener_id_local($zona["id_zona"]);
 				$local_ok = art_local::generar_local_2($locales_info_id);
 				
@@ -352,16 +351,18 @@ class Ingreso_Controller{
         	//Aca vamos a trabajar despues se acomodara.
         		$id_medio = $_POST['venta_medio_parametro_descripcion'];
         		$id_local = $_POST['venta_local_id'];
-        		if ($id_medio != 0) {
+        		/*if ($id_medio != 0) {
         			# code...
         			$medio = art_venta_medio::generar_venta_medio($id_medio);
         			$local = art_local::generar_local_2($id_local);
         		} else{
         			$medio = 0;
         			$local = 0;
-        		}
+        		}*/
+
+
         		
-        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
+        		Ingreso_Controller::reporte_co($fecha_desde,$fecha_hasta,$id_medio,$id_local);
         		break;
         	case 5:
         		# Reporte Ventas Empleado
@@ -909,15 +910,37 @@ class Ingreso_Controller{
     	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
     	$todo = false;
     	 
-    	if (is_numeric($medio)) {
+    	$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
+    	if ($medio != 0) {
     		# code...
-    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0);
-    		$todo = true;
-    	}else{
-    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio->getId_medio());
-    		$medio_nombre_segmentacion = $medio->getNombre();
+    		$medio_ = art_venta_medio::generar_venta_medio($medio);
+    	}
+    	if ($local != 0) {
+    		# code...
+    		$local_ = art_local::generar_local_2($local);
     	}
     	
+        
+    	/*if ($medio == 0) {
+    		# code...
+    		if ($local == 0) {
+    			# code...
+    			$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0,0);
+    		}
+    		
+    		if (is_numeric($local)) {
+    			# code...
+    			
+    		}else{
+    			$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0,$local->getId_local());
+    		}	
+    		
+    		$todo = true;
+    	}else{
+    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio->getId_medio(),$local->getId_local());
+    		$medio_nombre_segmentacion = $medio->getNombre();
+    	}
+    	print_r($respuesta);*/
     	//p 
 
     	//$medio_obj = art_venta_medio::generar_venta_medio($medio);
@@ -934,7 +957,7 @@ class Ingreso_Controller{
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		if ($local != 0) {
 			# code...
-			$pdf->Write( 6, "\nLocal: ".$local->getNombre());
+			$pdf->Write( 6, "\nLocal: ".$local_->getNombre());
 			$locales_todos = false;
 		}else{
 			$pdf->Write( 6, "\nLocal: ".'Todos');
@@ -980,29 +1003,30 @@ class Ingreso_Controller{
 			$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
 
 			$nombre_medio_pago = $value->getId_venta()->getMedio()->getNombre();
-			if ($todo) {
+			//if ($todo) {
 				# code...
 				 
 				$medio_nombre_segmentacion = $nombre_medio_pago;
 
-			}
+			//}
 
-			$id_local_respuesta = $value->getId_lote_local()->getId_local()->getId_local();
-			if ($locales_todos) {
+			//$id_local_respuesta = $value->getId_lote_local()->getId_local()->getId_local();
+			//if ($locales_todos) {
 				# code...
 
-			}else{
-				if ($id_local_respuesta == $local->getId_local()) {
+			//}else{
+				//if (!($id_local_respuesta == $local->getId_local())) {
 					# code...
-
-				}else{
-					break;
-				}
-			}
+					//continue;
+					//}
+				//}else{
+					//break;
+				//}
+			
 
 
 			//$medio_pago = $descripcion_medio->getNombre();
-			if (strcmp($nombre_medio_pago, $medio_nombre_segmentacion)  == 0 ) {
+			if (strcmp($nombre_medio_pago, $medio_nombre_segmentacion)  == 0  ) {
 
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
 				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();

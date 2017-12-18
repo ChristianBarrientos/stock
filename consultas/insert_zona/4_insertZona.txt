@@ -1,2 +1,0 @@
-INSERT INTO `mp_zona`(`id_zona`, `id_pais`, `id_provincia`, `id_localidad`, `direccion`) 
-VALUES (0,1,1,1,'Rivadavia 50');

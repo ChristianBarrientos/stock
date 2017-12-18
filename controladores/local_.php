@@ -13,7 +13,7 @@ class Local_Controller{
                                 $tpl->assign("nombre", htmlentities($value->getNombre(), ENT_QUOTES));
                                 $tpl->assign("descripcion", htmlentities($value->getDescripcion(), ENT_QUOTES));
                                 $tpl->assign("direccion", $value->getId_zona());
-                                $tpl->assign("cantidad_empl", $value->getCantidad_empl() -1 );
+                                
                                 $tpl->assign("id_local", $value->getId_local());
                                 
                             }
@@ -23,6 +23,7 @@ class Local_Controller{
                                
                         }
                         else{
+                            
                                $tpl->newBlock("sin_locales");
                         }
                 }
@@ -91,28 +92,26 @@ class Local_Controller{
                 $direccion = $_POST['scrs_direccion'];
 
                 //Verificar que no exista ya un local con ID_ZONA igual.
-                if (!(mp_zona::verificar_zona($pais,$provincia,$localidad,$direccion))) {
+                //Pueden haber dos locales en la misma direccion.
+                /*if (!(mp_zona::verificar_zona($pais,$provincia,$localidad,$direccion))) {
                        return Local_Controller::cargar_local(0);
-                }
+                }*/
                 //codigocodigocodigodeverificaciondeidzona
                 //Obtener datos de zona 
                 $okok = 1;
                 
                 if (mp_zona::alta_zona($pais,$provincia,$localidad,$direccion)) {
+
                         $id_zona = mp_zona::obtener_zona($direccion);
-                        if ( us_local::generar_tabla_us_local($_SESSION['usuario']->getId_user(),$id_zona)) {
-                                if (art_local::alta_local($nombre,$descripcion,$id_zona)) {
-                                        
-                                }
-                                else{
-                                        
-                                        $okok = 0;
-                                }
+                        
+                        $id_local = art_local::alta_local($nombre,$descripcion,$id_zona);
+
+                        $okok = us_local::generar_tabla_us_local($_SESSION['usuario']->getId_user(),$id_local);
+                        if ($okok) {
+                            # code...
+                            $okok = 1;
                         }
-                        else{
-                               
-                                $okok = 0;
-                        }
+                       
                 }
                 else{
                         

@@ -125,25 +125,25 @@
 	    		<label  for="select_art_general">General (*):</label>
 	    	</div>
 		    <!--</div>-->
-		     <input type="text" id="select_art_general" name="select_art_general" >
-			<!--<div class="col-md-4 col-sm-3 col-xs-12">
+		     
+			<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
-  				<select required id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">-->
-  				<!-- START BLOCK : cargar_articulo_nombre
-  				  <option value="{valor_id_articulo}">{nombre_articulo}</option> -->
-  				<!-- END BLOCK : cargar_articulo_nombre 
+  				<select required id="select_art_general" name="select_art_general" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"> 
+  				<!-- START BLOCK : cargar_articulo_nombre -->
+  				  <option value="{valor_id_articulo}">{nombre_articulo}</option> 
+  				<!-- END BLOCK : cargar_articulo_nombre -->
 				      	
   				</select>
-			</div>  -->
+			</div>  
 
-			        <!--<div class="clearfix"></div>
-			        col-sm-offset-2
+			        <!--<div class="clearfix"></div>-->
+			        
 			<div class="col-sm-offset-1 col-sm-3 col-xs-12">
 			 	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_valor_general" id="cargar_general_btn">
 							Agregar
 				</button>
 			</div>
-			       --> 
+			       
 		</div>       
 	      
 	   </div>
@@ -155,13 +155,13 @@
 	     <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
 	      <label for="art_marca">Marca (*):</label>
 	      </div>
-	      <input type="text" name="art_marca" id = "select_art_marca" >
-	      		<!--<div class="col-md-4 col-sm-3 col-xs-12">
+	       
+	      		<div class="col-md-4 col-sm-3 col-xs-12">
 			      	
 				      <select required name="art_marca" id = "select_art_marca" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">-->
-				      <!-- START BLOCK : cargar_articulo_marca 
-				        <option value="{valor_id_marca}">{marca_articulo}</option>-->
-				      <!-- END BLOCK : cargar_articulo_marca 
+				      <!-- START BLOCK : cargar_articulo_marca -->
+				        <option value="{valor_id_marca}">{marca_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_marca -->
 				      </select>
 				      
 			    </div>
@@ -169,7 +169,7 @@
 				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_marca" id="cargar_marca_btn">
 							Agregar
 						</button>
-			        </div>-->
+			        </div>
 		</div>
 	    </div>
 
@@ -178,12 +178,12 @@
 	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
 	      <label  for="art_tipo">Tipo (*):</label>
 	     </div>
-	     <input type="text" name="art_tipo" id="select_art_tipo" >
-	            <!--<div class="col-md-4 col-sm-3 col-xs-12">
+	    
+	            <div class="col-md-4 col-sm-3 col-xs-12">
 				      <select required name="art_tipo" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">-->
-				      <!-- START BLOCK : cargar_articulo_tipo 
-				        <option value="{valor_id_tipo}">{tipo_articulo}</option>-->
-				      <!-- END BLOCK : cargar_articulo_tipo 
+				      <!-- START BLOCK : cargar_articulo_tipo -->
+				        <option value="{valor_id_tipo}">{tipo_articulo}</option>
+				      <!-- END BLOCK : cargar_articulo_tipo -->
 				      </select>
 				      
 			    </div>
@@ -191,7 +191,7 @@
 				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_art_tipo" id="cargar_tipo_btn">
 							Agregar
 						</button>
-			        </div>-->
+			        </div>
 		</div>	    
 	    </div>
 	    
@@ -209,6 +209,37 @@
 			      
 		</div>	    
 	    </div>
+
+	    <div class="form-group">
+	    <div class="row">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      <label for="art_cantidad_total">Precio Base (*):</label>
+	     </div>	
+	            <div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				    <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+
+
+		<div class="form-group">
+	    <div class="row">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      <label for="art_cantidad_total">Importe (*):</label>
+	     </div>	
+	            <div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				    <input autocomplete="off" required  type="text" class="form-control" id="art_ganancia" placeholder="Ganancia, en porcentaje." name="art_ganancia">
+					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_ganancia" for="art_ganancia">:</label>
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+
 	    
 	   
 	    

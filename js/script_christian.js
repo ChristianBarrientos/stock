@@ -4,6 +4,8 @@ var Valor_Medio_Pago;
 var Medio_Pago;
 var Valor_Total_Pago;
 
+var fecha_datapicker_gasto = 1;
+
 $(document).ready(function()
     {   //Buscador sincronico
         //document.getElementById('art_cantidad_total').focus();
@@ -16,6 +18,96 @@ $(document).ready(function()
                     }).show();
  
                 })
+
+        //Añadir detalle de Gasto
+        $('#uno_mas_gsdetalle').click(function () {
+       
+
+            var divclearfix = $(document.createElement('div'));
+            divclearfix.addClass("clearfix");
+
+            var container = $(document.createElement('div'));
+            container.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(container).append('<label  for="art_tipo" value="Nombre:">Nombre:</label>');
+
+            var container2 = $(document.createElement('div'));
+            
+
+            var container3 = $(document.createElement('div'));
+            container3.addClass("col-md-3 col-sm-3 col-xs-12");
+            $(container3).append('<input type="text" class="form-control" id="gs_unico_nombre" placeholder="Subtitulo del Gasto." name="gs_unico_nombre[]">');
+
+            //container3.appendTo(container2);
+            $(container2).append(container3);
+
+
+            var containerval = $(document.createElement('div'));
+            containerval.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(containerval).append('<label  for="art_tipo">Valor:</label>');
+
+            var container2val = $(document.createElement('div'));
+            
+
+            var container3val = $(document.createElement('div'));
+            container3val.addClass("col-md-3 col-sm-3 col-xs-12");
+            $(container3val).append('<input type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="gs_unico_valor[]">');
+
+            //container3.appendTo(container2);
+            $(container2val).append(container3val);
+
+            ////
+
+            var containerfecha = $(document.createElement('div'));
+            containerfecha.addClass("col-md-3 col-sm-3 col-xs-12");
+
+            var containerfecha2 = $(document.createElement('div'));
+            containerfecha2.addClass("input-group date");
+            variable_datapicker_reference = "datetimepicker" + fecha_datapicker_gasto;
+            $(containerfecha2).attr('id', variable_datapicker_reference);
+            $input_fecha ='<input placeholder="AAAA-MM-DD" name="gs_unico_fechahora[]" type="text" class="form-control"/> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span></span>';
+            $(containerfecha2).append($input_fecha);
+
+            $(containerfecha).append(containerfecha2);
+            //container3.appendTo(container2);
+            
+            scripr_datapicker = "<script type='text/javascript'>$(function () {$('#"+variable_datapicker_reference+"').datetimepicker({format: 'YYYY-MM-DD HH:MM:SS'});});</script>";
+            ////
+            
+           var container_des = $(document.createElement('div'));
+            container_des.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(container_des).append('<label  for="art_tipo"></label>');
+
+            var container2des = $(document.createElement('div'));
+            
+
+            var containerdes = $(document.createElement('div'));
+            containerdes.addClass("col-md-5 col-sm-3 col-xs-12");
+            $(containerdes).append('<input type="text" class="form-control" id="gs_unico_des" placeholder="Observacion referida al gasto.." name="gs_unico_des[]">');
+
+            //container3.appendTo(container2);
+            $(container2des).append(containerdes);
+
+
+            //$('#bloque_gastos_detalles').after(container,container2);
+            $('#bloque_gastos_detalles').append(divclearfix);
+            $('#bloque_gastos_detalles').append(container);
+            $('#bloque_gastos_detalles').append(container2);
+            $('#bloque_gastos_detalles').append(containerval);
+            $('#bloque_gastos_detalles').append(container2val);
+            $('#bloque_gastos_detalles').append(containerfecha);
+            
+              
+            
+            $('#bloque_gastos_detalles').append(container_des);
+            $('#bloque_gastos_detalles').append(container2des);
+
+            $('#bloque_gastos_detalles').append(scripr_datapicker);
+
+            var container_linea = $(document.createElement('<br><br>'));
+            $('#bloque_gastos_detalles').append(container_linea);
+            fecha_datapicker_gasto = fecha_datapicker_gasto + 1; 
+
+        });
         //Actualizar Precio Masivamente
         $('#actualiza_masivamente').click(function () {
                      
@@ -369,6 +461,13 @@ $(document).ready(function()
 
         });
 
+        //Agregar Descripcion a Tipo de Gasto
+         $("#cargar_art_tipo").click(function() {
+                var des_gasto = $("#gs_des").val();
+               
+                //$(".aca_va_des_gasto").val(des_gasto);
+                $(".aca_va_des_gasto").text(des_gasto);
+             });
         //AGREGAR TIPO ENTEROK
         $("#cargar_tipo_btn").click(function() {
 

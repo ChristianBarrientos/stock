@@ -48,10 +48,10 @@ class us_local {
     }
 
 
-    public static function obtener_empleados_local($id_zona){
+    public static function obtener_empleados_local($id_local){
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_zona = '$id_zona'");  
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_local = '$id_local'");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
          
@@ -64,11 +64,10 @@ class us_local {
         }
     }
 
-    public static function agregar_us_a_local($id_usuario,$id_zona){
+    public static function agregar_us_a_local($id_usuario,$id_local){
         global $baseDatos;
-        
-        $sql = "INSERT INTO `us_local`(`id_usuarios_local`, `id_usuarios`, `id_zona`) 
-                VALUES (0,$id_usuario,$id_zona)";
+
+        $sql = "INSERT INTO `us_local`(`id_usuarios_local`, `id_usuarios`, `id_local`) VALUES (0,$id_usuario,$id_local)";
         $res = $baseDatos->query($sql);
         return $res;
     }
@@ -88,11 +87,11 @@ class us_local {
         }
     }
 
-    public static function empleado_local_esta($id_usuario,$id_zona){
+    public static function empleado_local_esta($id_usuario,$id_local){
         global $baseDatos;
      
         
-        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = '$id_usuario' AND id_zona = '$id_zona'");  
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = '$id_usuario' AND id_local = '$id_local'");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         if (count($filas) != 0) {

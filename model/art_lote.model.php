@@ -8,9 +8,11 @@ class art_lote {
     private $id_cb;
     private $id_gc;
     private $id_art_fotos;
+    private $precio_base;
+    private $importe;
  
 
-    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos)
+    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos,$precio_base,$importe)
     {
         $this->id_lote = $id_lote;
         $this->id_proveedor = $id_proveedor;
@@ -19,17 +21,20 @@ class art_lote {
         $this->id_cb = $id_cb;
         $this->id_gc = $id_gc;
         $this->id_art_fotos = $id_art_fotos;
+        $this->precio_base = $precio_base;
+        $this->importe = $importe;
       
     }
 
-    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb, $id_gc,$id_art_fotos,$id_proveedor = 'NULL' ,$descripcion = 'null'){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb,$id_art_fotos,$precio_base,$importe,$id_proveedor = 'null' ,$id_gc= 'null',$descripcion = 'null'){
         global $baseDatos;
        
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`,`id_art_fotos`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion',$id_art_fotos)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
         $res = $baseDatos->query($sql);
+        //printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
              
             return $id_lote;
@@ -61,17 +66,26 @@ class art_lote {
                 $prvd = 'null';
             }
             $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
-            $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
+            if ($res_fil['id_gc'] != null) {
+                # code...
+                $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
+            }
+            else{
+                $gc = null;
+            }
+            
             if ($res_fil['id_art_fotos'] != null) {
                 # code...
                 $fotos = art_fotos::generar_fotos($res_fil['id_art_fotos']);
             }else{
                 $fotos = null;
             }
-            
+
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             //$lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
-            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc,$fotos);
+            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc,$fotos,$res_fil['precio_base'],$res_fil['importe']);
+
+            
             return $lote;
         }
         else{
@@ -116,6 +130,31 @@ class art_lote {
         global $baseDatos;
        
         $res = $baseDatos->query(" UPDATE `art_lote` SET `cantidad_total`='$cantidad_total' WHERE id_lote = $id_lote");  
+         
+        return $res;
+    }
+
+    public static function update($id_lote,$fila,$valor_nuevo){
+        //obtener empleados por local
+        global $baseDatos;
+        switch ($fila) {
+            case 'precio_base':
+                # code...
+                $res = $baseDatos->query(" UPDATE `art_lote` SET `precio_base`='$valor_nuevo' WHERE id_lote = $id_lote");  
+                break;
+             case 'importe':
+                # code...
+                $res = $baseDatos->query(" UPDATE `art_lote` SET `importe`='$valor_nuevo' WHERE id_lote = $id_lote");  
+                break;
+             case 'cantidad_total':
+                # code...
+                $res = $baseDatos->query(" UPDATE `art_lote` SET `cantidad_total`='$valor_nuevo' WHERE id_lote = $id_lote");  
+                break;
+            default:
+                # code...
+                break;
+        }
+        
          
         return $res;
     }
@@ -206,6 +245,29 @@ class art_lote {
     public function setId_art_fotos($id_art_fotos)
     {
         $this->id_art_fotos = $id_art_fotos;
+        return $this;
+    }
+
+
+    public function getPrecio_base()
+    {
+        return $this->precio_base;
+    }
+    
+    public function setPrecio_base($precio_base)
+    {
+        $this->precio_base = $precio_base;
+        return $this;
+    }
+
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+    
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
         return $this;
     }
 

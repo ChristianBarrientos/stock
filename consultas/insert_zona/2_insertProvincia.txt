@@ -1,2 +1,0 @@
-INSERT INTO `mp_provincia`(`id_provincia`, `valor`,`id_pais`) 
-VALUES (0,'Catamarca',1);

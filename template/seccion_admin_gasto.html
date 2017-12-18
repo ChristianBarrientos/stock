@@ -1,0 +1,289 @@
+<div class="container" id="lista_ventas_realizadas">
+<div class="row">
+		
+	<div class="row encabezado">
+			<div class="col-md-6 col-xs-4">
+				<div class="titulo-secciones panel-heading">Gastos</div>
+
+			</div>
+			<div class="col-md-4 col-xs-12">
+					<a href="index.php?action=Gasto::cargar">
+						<button type="button" class="agregar btn btn-primary">Agregar</button>
+					</a>
+			</div>
+		</div>		
+
+			<!-- START BLOCK : buscador_visible -->
+			<div class="col-md-6 col-xs-12">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
+				
+			</div>
+		<!-- END BLOCK : buscador_visible -->
+			
+		</div>
+		<br><br>
+	<div class="row ">
+	
+			<!-- START BLOCK : con_gastos_lista -->
+		<table cellpadding="15" class="table table-bordered " align="center">
+			<thead>
+			
+			 <tr>
+	            <th>N°</th>
+	            <th>Nombre</th>
+	            <!-- colspan="2"-->
+	            <th>Tipo</th>
+	            <th>Estado</th>
+	            <th>Operaciones</th>
+	        
+	        </tr>
+        	</thead>
+        	<tbody class="buscar">
+
+			<!-- START BLOCK : con_gastos_lista_cuerpo -->
+			<tr>
+				<td>{numero}</td>
+	            <td>{nombre}</td>
+	            <td>{tipo}</td>
+	            <td>{estado}</td>
+	            <td> 
+	            <!-- START BLOCK : btn_agregar_detalle -->
+
+					<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#gs_agrega_detalles{id_gasto}">Agregar Detalles</button>
+				<!-- END BLOCK : btn_agregar_detalle -->
+				<div class="clearfix"></div>
+				 <!-- START BLOCK : btn_cambiar_estado -->
+
+					<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#cambiar_estado{id_gasto}">Cambiar Estado</button>
+				<!-- END BLOCK : btn_cambiar_estado -->
+
+				<div class="clearfix"></div>
+			
+	            <!-- START BLOCK : btn_ver_detalle -->
+
+					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#ver_detalles{id_gasto}">Ver Detalles</button>
+				<!-- END BLOCK : btn_ver_detalle --> 
+				
+				</td>
+	            
+	        </tr>
+			<!-- END BLOCK : con_gastos_lista_cuerpo -->
+			 
+	            
+	        
+	        </tbody>
+	     </table>
+			<!-- END BLOCK : con_gastos_lista -->
+
+			<!-- START BLOCK : sin_gastos_lista -->
+
+				<div class="alert alert-warning center-block">
+					<h2>No posee gastos declarados.</h2>
+					
+				</div>
+
+			<!-- END BLOCK : sin_gastos_lista -->
+
+			
+	</div>
+</div>
+
+
+
+
+<!-- START BLOCK : modal_agrega_detalles -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="gs_agrega_detalles{id_gasto}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Agrega detalles al gasto</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+					 	
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Gasto::alta_gs_unico&id_gasto={id_gasto_}" method="post">
+
+								
+								<a id="uno_mas_gsdetalle">Añadir nuevo detalle</a>
+	    <div class="form-group">
+	     <div class="row " id="bloque_gastos_detalles">
+
+	     <div class="control-label col-md-1 col-sm-1 col-xs-12">
+	      <label  for="gs_unico_nombre">Nombre:</label>
+	      </div>
+	      
+		    <div>
+		    	<div class="col-md-3 col-sm-3 col-xs-12">
+				    <input type="text" class="form-control" id="gs_unico_nombre" placeholder="Subtitulo del Gasto." name="gs_unico_nombre[]">
+				      
+			    </div>
+
+		    </div>
+
+		<div class=" control-label col-md-1  col-sm-1 col-xs-12">
+	      <label  for="gs_unico_valor">Valor:</label>
+	      </div>
+	      
+		    <div>
+		    	<div class="col-md-3 col-sm-3 col-xs-12">
+				    <input type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="gs_unico_valor[]">
+				      
+			    </div>
+
+		    </div>
+		     
+		    <div class="col-md-3 col-sm-3 col-xs-12">
+		    	<div class='input-group date' id='datetimepicker'>
+			            <input  placeholder="AAAA-MM-DD" name="gs_unico_fechahora[]" type='text' class="form-control" />
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+			        </div>
+		
+		    </div>
+
+		    <script type="text/javascript">
+				    $(function () {
+				    	
+				        $('#datetimepicker').datetimepicker({
+				        	//
+				        	format: 'YYYY-MM-DD HH:MM:SS'
+
+
+				        });
+				    });
+				</script>
+				</div>
+
+								
+
+								<button class="agregar btn btn-primary" type="submit">Agregar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_agrega_detalles -->
+
+<!-- START BLOCK : modal_cambiar_estado -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="cambiar_estado{id_gasto}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Establecer estado del gasto</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+					 	
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Gasto::cambiar_gs_estado&id_gasto={id_gasto_}" method="post">
+							<h3>Seleccione</h3>
+							<div class="radio">
+  								<label><input value="1" type="radio" name="gs_estado">Habilitado</label>
+							</div>
+
+							<div class="radio">
+  								<label><input value="0" type="radio" name="gs_estado">Desabilitado</label>
+							</div>
+								
+
+								<button class="agregar btn btn-primary" type="submit">Aplicar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_cambiar_estado -->
+
+<!-- START BLOCK : modal_ver_detalles -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="ver_detalles{id_gasto}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Detalles de un Gasto</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+					 	
+						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Gasto::gs_mostrar_detalle&id_gasto={id_gasto_}" method="post">
+
+
+
+							<h3>Fecha Desde</h3>
+							<!-- START BLOCK : fechas_unico_valor_detalle_desde -->
+
+								<div class='input-group date' id='valor_fecha_desde{valor_unico}'>
+			            			<input required placeholder="AAAA-MM-DD HH:MM" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#valor_fecha_desde{valor_unico_}').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD HH:MM'
+
+
+								        });
+								    });
+								</script>
+							<!-- END BLOCK : fechas_unico_valor_detalle_desde -->
+								<h3>Fecha Hasta</h3>
+							<!-- START BLOCK : fechas_unico_valor_detalle_hasta -->
+								<div class='input-group date' id='valor_fecha_hasta{valor_unico}'>
+			            			<input required placeholder="AAAA-MM-DD HH:MM" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#valor_fecha_hasta{valor_unico_}').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD HH:MM'
+
+
+								        });
+								    });
+								</script>
+							<!-- END BLOCK : fechas_unico_valor_detalle_hasta -->
+
+								<button class="agregar btn btn-primary" type="submit">Aplicar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_ver_detalles -->

@@ -1,2 +1,0 @@
-INSERT INTO `prvd_provedor`(`id_provedor`, `id_contacto`, `id_datos_prvd`) 
-VALUES (0,2,1)

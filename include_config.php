@@ -9,6 +9,7 @@ include('controladores/empleado_.php');
 include('controladores/articulo_.php');
 include('controladores/proveedor_.php');
 include('controladores/venta_.php');
+include('controladores/gasto_.php');
 
 /*Modelos*/
 include('model/usuario.model.php');
@@ -46,7 +47,14 @@ include('model/art_venta_medio_fechas.model.php');
 include('model/art_no_venta.model.php');
 include('model/art_venta_cambio.model.php');
 include('model/art_venta_medio_descripcion.model.php');
-
+include('model/gs_descripcion.model.php');
+include('model/gs_gasto_unico.model.php');
+include('model/gs_gastos.model.php');
+include('model/gs_grupo.model.php');
+include('model/gs_gsub_gasto.model.php');
+include('model/gs_subgasto.model.php');
+include('model/us_gastos.model.php');
+include('model/us_ggs.model.php');
 
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');

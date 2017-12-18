@@ -1,3 +1,0 @@
---INGRESA FECHA DE ALTA DE USUARIO
-INSERT INTO `us_prvd_fecha_ab`(`id_fecha_ab`, `alta`, `baja`) 
-VALUES (0,'2017-09-11',null)

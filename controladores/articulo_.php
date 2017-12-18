@@ -8,11 +8,12 @@ class Articulo_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                     
-                         
+                    $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
                         if (isset($_SESSION["lotes"])) {
+
 //$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
 
-                            $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
+                            
                             $tpl->newBlock("con_articulos_lista");
                             $tpl->newBlock("con_articulos_lista_cabeza");
                             
@@ -20,7 +21,7 @@ class Articulo_Controller{
                             $tpl->newBlock("buscador_visible");
                             $cantidad = 0;
                 
-                                    
+                            
                             foreach ($_SESSION['lotes'] as $key => $value) {
                             $vueltas = 0;
                             //foreach ($_SESSION["lote_local"] as $key => $value) {
@@ -113,7 +114,12 @@ class Articulo_Controller{
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
 
-                                    $gc = $value->getId_gc()->getId_categoria();
+                                    if ($value->getId_gc() != null) {
+                                        # code...
+                                        $gc = $value->getId_gc()->getId_categoria();
+                                    
+
+                                    
                                     foreach ($gc as $clave => $valor) {
                                         if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
                                             $medida = $valor->getValor();
@@ -180,8 +186,15 @@ class Articulo_Controller{
                                             $art_color = $valor->getValor();
                                             
                                         }
-                                    } 
+                                    }
 
+                                    
+                                    }
+                                    $precio_base = $value->getPrecio_base();
+                                    $ganancia = $value->getImporte();
+
+                                    $porcentaje_ganancia = (int)'0'.'.'.$ganancia;
+                                    $precio_final = (int)$precio_base + ((int)$precio_base * $porcentaje_ganancia);
                                     //Obtener Proveedor
                                     if ($value->getId_proveedor() != 'null') {
                                         # code...
@@ -242,7 +255,7 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_final != null) {
-                                        $tpl->assign("precio_final",$precio_final);
+                                        $tpl->assign("precio_final",'$'.$precio_final);
                                          
                                     }
                                     else{
@@ -798,7 +811,7 @@ class Articulo_Controller{
                         $tpl->assign("tipo_articulo", $value->getNombre());
                      }
                 }
-
+                
                 $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
                  
                  
@@ -932,8 +945,6 @@ class Articulo_Controller{
                  ||  $art_precio_base == null ) {
             $datos_no_recibidos = true;
            
-            
-            
 
             return Ingreso_Controller::salir();
             
@@ -954,8 +965,8 @@ class Articulo_Controller{
             for ($i=0; $i <=$total_locales ; $i++) { 
                 //Revisar el contador nos va a dar falsos positivos!!!
                 //Utilizar exoresie¡
-                if ($total_locales[$i]['id_zona'] != null) {
-                    $id_local_oper = art_local::obtener_id_local($total_locales[$i]['id_zona']);
+                if ($total_locales[$i]['id_local'] != null) {
+                    $id_local_oper = $total_locales[$i]['id_local'];
                     $name_local_cantidad = "art_local_cantidad_".$id_local_oper;
                     $name_local_fecha = "art_carga_local_fecha_".$id_local_oper;
                     
@@ -1029,7 +1040,7 @@ class Articulo_Controller{
 
         //cargar art_categorias y art_grupo_categoria
         
-        $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
+        /*$list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
 
             foreach ($list_art_grupo_att as $key => $value) {
                         
@@ -1057,7 +1068,7 @@ class Articulo_Controller{
 
             
 
-            }
+            }*/
 
        
         $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
@@ -1102,16 +1113,38 @@ class Articulo_Controller{
 
           }
         //agregar a Lote
-     
+
         if ($id_proveedor != null) {
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos, $id_proveedor);
+
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor);
         }else{
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb, $id_gc,$id_art_fotos);
+            /*cho "Comenzo";
+            echo "Conjunto";
+            echo $id_conjunto;
+            echo "\n";
+            echo "Total";
+            echo $art_cantidad_total;
+            echo "\n";
+           echo "Barras";
+            echo $id_cb;
+
+            echo "\n";
+            echo "Fotos";
+            echo $id_art_fotos;
+            echo "\n";
+            echo "Base";
+            echo $art_precio_base;
+            echo "\n";
+            echo "Importe";
+            echo $art_ganancia;
+            echo "Fin";*/
+
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia);
         }   
         
 
         //cargar art_carga y art_lote_local
-         
+        print_r($lista_art_locales);
         foreach ($lista_art_locales as $key => $value) {
             /*$_fecha = trim($value['Fecha'],'AM');
             $_fecha = trim($_fecha,'PM');
@@ -1120,6 +1153,16 @@ class Articulo_Controller{
             */
              
             $id_carga = art_carga::alta_art_carga($value['Fecha'], $_SESSION["usuario"]->getId_user());
+            echo "aca";
+            echo "\n";
+            echo $id_lote;
+            echo "\n";
+            echo $value['Id'];
+            echo "\n";
+            echo $value['Cantidad'];
+            echo "\n";
+            echo $id_carga;
+            echo "Finaca";
             $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value['Id'],$value['Cantidad'],$id_carga);
         }
 
@@ -1127,7 +1170,7 @@ class Articulo_Controller{
 
         $ok2 = $_SESSION["usuario"]->alta_lote_us($id_lote);
         
-        if ($ok && $ok2 || $datos_no_recibidos = false) {
+        if ($ok2) {
             $tpl = new TemplatePower("template/exito.html");
             $tpl->prepare();
         }
@@ -1167,6 +1210,21 @@ class Articulo_Controller{
         $art_tipo = $lote_local->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
         $tpl->assign("art_nombre",(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo );
 
+        $precio_base_venta =  $lote_local->getId_lote()->getPrecio_base();
+        $importe = $lote_local->getId_lote()->getImporte();
+        $precio_base_venta_ = (int)$precio_base_venta *((int)'0'.$importe/100);
+
+        $tpl->newBlock("forma_pago_venta");
+        $porcentaje_contado = $precio_base_venta_;
+        $tpl->assign("nombre_pago", 'Precio Base'.' (% 0)');
+                
+        $tpl->newBlock("forma_pago_venta_opciones");
+        $tpl->assign("valor_pago", '$'.$precio_base_venta_);
+        //$tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
+
+        if ($lote_local->getId_lote()->getId_gc() != null) {
+            # code...
+        
         $art_cb = $lote_local->getId_lote()->getId_gc()->getId_categoria();
        
         foreach ($art_cb as $key => $value) {
@@ -1227,6 +1285,7 @@ class Articulo_Controller{
                     $tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
                 }
             }
+        }
         }
         //obtener_admin_si es necesario
         if (Ingreso_Controller::es_admin()) {
@@ -1603,6 +1662,9 @@ class Articulo_Controller{
             
 
             $lote = art_lote::generar_lote($id_lote);
+            if ($lote->getId_gc()) {
+                # code...
+           
             $id_gc = $lote->getId_gc();
             foreach ($id_gc->getId_categoria() as $key => $valor) {
                 
@@ -1622,12 +1684,16 @@ class Articulo_Controller{
             }
             
             $ok_precio_base = art_categoria::update_valores($id_precio,$precio_base);
+            $ok_precio_importe= art_categoria::update_valores($ganancia,$ganancia_importe);
             $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
             $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);
-            $ok_precio_importe= art_categoria::update_valores($ganancia,$ganancia_importe);
-
             
-            if ($ok_precio_base && $ok_precio_importe) {
+            }
+ 
+            $ok = art_lote::update($id_lote,'precio_base',$precio_base);
+            $ok_1 = art_lote::update($id_lote,'importe',$ganancia_importe);
+
+            if ($ok && $ok_1) {
                 if ($desde_adentro) {
                     # code...
                     return 0;
@@ -1651,6 +1717,9 @@ class Articulo_Controller{
 
 
         public static function modificar_venta(){
+            if (Ingreso_Controller::es_admin()) {
+                # code...
+            
             $id_venta = $_GET['id_venta'];
             $id_lote_local = $_GET['id_lote_local'];
             $venta =  art_venta::generar_venta($id_venta);
@@ -1778,6 +1847,11 @@ class Articulo_Controller{
                     }
                 
                   
+            }
+            }
+            else{
+                echo "No eres admin";
+                return Ingreso_Controller::salir();
             }
 
 

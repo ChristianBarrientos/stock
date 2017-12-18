@@ -1,3 +1,0 @@
--- ALTA DE EMPLEADO DATOS,HACE REFERENCIA A LAS TABLAS DE FOTO Y FECHA ALTABAJA 
-INSERT INTO `us_datos`(`id_datos`, `nombre`, `apellido`, `fecha_nac`, `dni`, `id_foto`, `genero`, `id_fecha_ab`) 
-VALUES (0,'Christian','Barrientios','1996-01-31',39014575,2,'m',1)

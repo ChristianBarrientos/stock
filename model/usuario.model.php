@@ -142,8 +142,8 @@ class usuario {
            // print_r($filas);
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
-                $locales_empleados[] = art_local::generar_local_empleados($valor['id_zona']);
-                $locales [] = art_local::generar_local($valor['id_zona'],count($locales_empleados[$clave]));
+                $locales_empleados[] = art_local::generar_local_empleados($valor['id_local']);
+                $locales [] = art_local::generar_local($valor['id_local'],count($locales_empleados[$clave]));
                 $locales_articulos [] = $locales[$clave]->getId_local();
                 
             }
@@ -158,7 +158,7 @@ class usuario {
             //}else{
                 $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
             //}
-            
+      
             $_SESSION["locales"] = $locales;
              
             $array_id_empelados = array();
@@ -173,7 +173,7 @@ class usuario {
             }
            
             $okok_empleados = array_unique($array_id_empelados);
-            
+
             $okok_empleados_fin = array();
             foreach ($okok_empleados as $key5 => $value5) {
  
@@ -250,7 +250,7 @@ class usuario {
 
     public static function obtener_lote_us($id_user){
         global $baseDatos;
-
+        
         $res = $baseDatos->query("SELECT * FROM `lote_us` WHERE id_usuario = $id_user");  
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         

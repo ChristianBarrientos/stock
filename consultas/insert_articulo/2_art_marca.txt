@@ -1,2 +1,0 @@
-INSERT INTO `art_marca`(`id_marca`, `nombre`, `descripcion`, `id_lote`) 
-VALUES (0,'Jonh Fose','Zapatillas Urbanas Unisex',null);

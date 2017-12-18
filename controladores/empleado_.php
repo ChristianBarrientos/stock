@@ -7,12 +7,13 @@ class Empleado_Controller{
         		$tpl = new TemplatePower("template/cargar_empleado.html");
 				$tpl->prepare();
 				
-
+                 print_r($_SESSION['locales']);
 				foreach ($_SESSION['locales'] as $key => $value) {
                         $tpl->newBlock("locales_empleado_alta");
                         $cadena = $value->getId_zona();
                         $direccion = after_last (',', $cadena);
-                        $tpl->assign("id_local", $direccion);
+
+                        $tpl->assign("id_local", $value->getId_local());
                         $tpl->assign("nombre_local", $value->getNombre());
                                 
                                 
@@ -154,6 +155,8 @@ class Empleado_Controller{
         if ($telefono == null) {
             $telefono = 'NULL';
         }
+        echo "aca";
+        print_r($locales);
         //Cargar en tabla us_datos
         //ucwords(strtolower($_POST['empl_correo']))
        
@@ -167,7 +170,7 @@ class Empleado_Controller{
                 foreach ($locales as $key) {
                      
                     $id_zona = mp_zona::obtener_zona($key);
-                    us_local::agregar_us_a_local($id_usuario,$id_zona);
+                    us_local::agregar_us_a_local($id_usuario,$key);
                 }
                 $tpl = new TemplatePower("template/exito.html");
                 $tpl->prepare();
@@ -329,6 +332,7 @@ class Empleado_Controller{
 
                     $tpl->newBlock("locales_empleado_alta");
                     $cadena = $value->getId_zona();
+                    $id_local = $value->getId_local();
                     $direccion = after_last (',', $cadena);
                     $tpl->assign("id_local", $value->getId_local());
                     $tpl->assign("nombre_local", $value->getNombre());
@@ -341,7 +345,7 @@ class Empleado_Controller{
                             $local = art_local::generar_local($value->getId_local());
                             $id_zona = $local->getId_local();
                            
-                            if (us_local::empleado_local_esta($id_usuario,$id_zona)) {
+                            if (us_local::empleado_local_esta($id_usuario,$id_local)) {
                                 # code...
                                 
                                 $tpl->assign("checked_sel", 'checked');
