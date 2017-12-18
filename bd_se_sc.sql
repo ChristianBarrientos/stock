@@ -148,7 +148,7 @@ CREATE TABLE  us_prvd (
 CREATE TABLE  gs_subgasto (
      id_sub_gasto INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(50) NOT NULL,
-     valor INTEGER,
+     valor DEC(15,2),
      descripcion VARCHAR(50),
      fecha_hora DATETIME NOT NULL,
      condicion ENUM('+','-'),
@@ -165,7 +165,7 @@ CREATE TABLE  gs_gsub_gasto (
 CREATE TABLE  gs_gasto_unico (
      id_gasto_unico INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(50) NOT NULL,
-     valor INTEGER,
+     valor DEC(15,2),
      fecha_hora DATETIME,
      id_gsub_gasto INTEGER,
      habilitado BOOLEAN NOT NULL,
@@ -236,7 +236,7 @@ CREATE TABLE  lc_caja (
      estado ENUM('A','C'),
      fecha_hora_apertura DATETIME NOT NULL,
      fecha_hora_cierre DATETIME NOT NULL,
-     monto INTEGER,
+     monto DEC(15,2),
      KEY (id_caja),
      FOREIGN KEY (id_cj_ggs) REFERENCES cj_ggs(id_cj_ggs) ON DELETE NO ACTION ON UPDATE CASCADE
      ) ENGINE=InnoDB;
@@ -398,8 +398,8 @@ CREATE TABLE  art_lote (
      id_gc INTEGER,
      descripcion VARCHAR(100),
      id_art_fotos INTEGER,
-     precio_base DEC(15,2),
-     importe DEC(15,2),
+     precio_base DEC(15,2) NOT NULL,
+     importe DEC(15,2) NOT NULL,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cb) REFERENCES art_codigo_barra(id_cb) ON DELETE NO ACTION ON UPDATE CASCADE,
