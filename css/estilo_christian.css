@@ -117,4 +117,14 @@ div#modal_galeri_backcolor{
    
  }
 
+/*Lista ART PRVD con scrool */
+#scroo_tabla {
+     overflow:scroll;
+     height:400px;
+     width:550px;
+}
+#scroo_tabla table {
+    width:550px;
+    background-color:lightgray;
+}
 

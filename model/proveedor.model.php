@@ -180,6 +180,32 @@ class proveedor {
         return $res;
     }
 
+
+    public static function obtener_art_prvd($id_proveedor){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM art_lote WHERE id_provedor = $id_proveedor");  
+       
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+           
+            $art_prvd = array();
+             
+            foreach ($filas as $key => $value) {
+                
+                $art_prvd[]= art_lote::generar_lote($value['id_lote']);
+            }
+            //$zona = mp_zona::obtener_zona__explicita($id_zona);
+            
+            return $art_prvd;
+        }
+        else{
+            
+            return false;
+        }
+    }
+
     public function getId_proveedor()
     {
         return $this->id_proveedor;

@@ -48,6 +48,10 @@
 						<a href="index.php?action=Proveedor::modificar&id_prvd={id_prvd}">
 							<button type="button" class="btn btn-info">Modificar</button>
 						</a>
+
+						<button type="button" {disabled_ok} class="btn btn-primary btn-md" data-toggle="modal" data-target="#art_prvd_lista{id_prvd_}">
+							Ver Articulos
+			</button>
 					</div>
 				</div>
 
@@ -58,3 +62,57 @@
 		</div>
 	</div>
 </div>
+
+<!-- START BLOCK : modal_articulos_prvd -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="art_prvd_lista{id_prvd_}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h2 class="modal-title" id="myModalLabel">Articulos del Proveedor</h2>
+					</div>
+
+					<!--<div class="col-md-6 col-xs-12">
+						<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  					<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
+				
+					</div>-->
+
+					<div class="modal-body">
+					 	<div id="scroo_tabla">
+							<table cellpadding="15" class="table table-bordered " align="center">
+							<thead>
+			 					<tr>
+	            					<th>N°</th>
+	            					<th>Articulo</th>
+	            					<th>Stock</th>      
+	            					<th>Precio Costo</th>
+	            					<th>Precio Final</th>
+        						</tr>
+        						</thead>
+        						<tbody class="buscar">
+        						<!-- START BLOCK : lista_art_prvd -->
+									<tr>
+									
+										<td>{numero}</td>
+	            						<td>{nombre}</td>
+	            						<td>{cantidad_total}</td>
+	            						<td>{precio_base}</td>
+	            						<td>{precio_final}</td>
+	            						
+	        						</tr>
+	        					<!-- END BLOCK : lista_art_prvd -->
+	        					</tbody>
+	        				</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_articulos_prvd -->

@@ -67,6 +67,36 @@ class Proveedor_Controller{
                                         } 
 
                                     $tpl->assign("id_prvd",$value->getId_proveedor());
+                                    $tpl->assign("id_prvd_",$value->getId_proveedor());
+
+                                    $tpl->newBlock("modal_articulos_prvd");
+                                    $tpl->assign("id_prvd_",$value->getId_proveedor());
+
+                                    //obtener articulos por prdv
+
+                                    $art_prvd = proveedor::obtener_art_prvd($value->getId_proveedor());
+                                    $numero = 1;
+                                    foreach ($art_prvd as $key2 => $value2) {
+                                        # code...
+                                        $tipo = $value2->getId_art_conjunto()->getId_tipo()->getNombre();
+                                        $nombre = $value2->getId_art_conjunto()->getId_tipo()->getNombre().','.$tipo;
+                                        $cantidad_total = $value2->getCantidad();
+                                        $precio_base = $value2->getPrecio_base();
+                                        $ganancia = $value2->getImporte();
+                                        $porcentaje_ganancia = (int)'0'.'.'.$ganancia;
+                                        $precio_final = (int)$precio_base + ((int)$precio_base * $porcentaje_ganancia);
+
+                                        $tpl->newBlock("lista_art_prvd");
+                                        $tpl->assign("numero",$numero);
+                                        $tpl->assign("nombre",$nombre);
+                                        $tpl->assign("cantidad_total",$cantidad_total);
+                                        $tpl->assign("precio_base",'$'.$precio_base);
+                                        $tpl->assign("precio_final",'$'.$precio_final.'  (%'.$ganancia.')');
+
+                                        $numero = $numero+ 1;
+
+                                        
+                                    }
                                 }
                              }
                             }

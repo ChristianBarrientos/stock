@@ -39,7 +39,7 @@ class Articulo_Controller{
                                 $nombre_ = $art.','.$marca.','.$tipo;
                                 $nombre_ = str_replace(' ','',$nombre_);
 
-                                $nombre_ = $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre().','.$tipo;
+                                $nombre_ = $value->getId_art_conjunto()->getId_tipo()->getNombre().','.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -200,9 +200,12 @@ class Articulo_Controller{
                                         # code...
                                         $prvd = $value->getId_proveedor();
                                         $prvd_nombre = $prvd->getid_datos_prvd()->getNombre();
-                                    } 
-                                    
-                                    if ($prvd != null) {
+                                    }
+                                    else{
+                                        $prvd = null;
+                                    }
+                          
+                                    if ($prvd != null && $prvd != 0) {
                                          
                                         $tpl->assign("art_prvd",$prvd_nombre);
                                         
@@ -1022,10 +1025,13 @@ class Articulo_Controller{
         $id_conjunto = art_conjunto::alta_art_conjunto($id_articulo,$id_marca,$id_tipo);
 
         //obtener id de proveedor
-        if ($art_prvd != null || $art_prvd != ' ') {
+       
+        if ($art_prvd != null && $art_prvd != ' ' && $art_prvd != 0) {
             $id_proveedor = $art_prvd;
+           
         }
         else{
+            
             $id_proveedor = null;
         }
         //cargar codigo de barras
@@ -1118,26 +1124,7 @@ class Articulo_Controller{
 
             $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor);
         }else{
-            /*cho "Comenzo";
-            echo "Conjunto";
-            echo $id_conjunto;
-            echo "\n";
-            echo "Total";
-            echo $art_cantidad_total;
-            echo "\n";
-           echo "Barras";
-            echo $id_cb;
-
-            echo "\n";
-            echo "Fotos";
-            echo $id_art_fotos;
-            echo "\n";
-            echo "Base";
-            echo $art_precio_base;
-            echo "\n";
-            echo "Importe";
-            echo $art_ganancia;
-            echo "Fin";*/
+            
 
             $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia);
         }   
@@ -1164,6 +1151,7 @@ class Articulo_Controller{
         if ($ok2) {
             $tpl = new TemplatePower("template/exito.html");
             $tpl->prepare();
+            $tpl->newBlock("alta_art_exito");
         }
         else
         {
