@@ -60,6 +60,30 @@ class prvd_datos {
     }
 
 
+    public static function update($id_datos_prvd,$fila,$valor_nuevo){
+        //obtener empleados por local
+        global $baseDatos;
+        //`id_fecha_ab`=[value-4],`id_foto`=[value-5]
+        switch ($fila) {
+            case 'nombre':
+                # code...
+                $res = $baseDatos->query(" UPDATE `prvd_datos` SET `nombre`='$valor_nuevo' WHERE id_datos_prvd = $id_datos_prvd");  
+                break;
+            case 'cuit':
+                # code...
+                $res = $baseDatos->query(" UPDATE `prvd_datos` SET `cuit`='$valor_nuevo' WHERE id_datos_prvd = $id_datos_prvd");  
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+         
+        return $res;
+    }
+
+
     public function getId_datos_prvd()
     {
         return $this->id_datos_prvd;

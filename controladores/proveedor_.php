@@ -65,6 +65,8 @@ class Proveedor_Controller{
 
                                     
                                         } 
+
+                                    $tpl->assign("id_prvd",$value->getId_proveedor());
                                 }
                              }
                             }
@@ -149,6 +151,7 @@ class Proveedor_Controller{
                 if (us_prvd::agregar_prvd_a_us($id_prvd,$_SESSION['usuario']->getId_user())) {
                     $tpl = new TemplatePower("template/exito.html");
                     $tpl->prepare();
+                    $tpl->newBlock("alta_prvd_exito");
                 }
                 else{
                    
@@ -166,6 +169,123 @@ class Proveedor_Controller{
 
         return $tpl->getOutputContent();
     }
+
+
+    function modificar(){
+        $id_prvd = $_GET['id_prvd'];
+        $tpl = new TemplatePower("template/modificar_proveedor.html");
+        $tpl->prepare();
+        
+
+        
+        foreach ($_SESSION["proveedores"] as $key => $valor) {
+             
+                // foreach ($value as $clave => $valor) {
+                //este prvd pertenece a este usuario?               
+                    
+                    if ($id_prvd == $valor->getId_proveedor()) {
+
+                        $nombre = $valor->getid_datos_prvd()->getNombre();
+                        $cuit = $valor->getid_datos_prvd()->getCuit();
+
+                        $fecha_alt = $valor->getid_datos_prvd()->getFecha_alta();
+
+                        $descripcion = $valor->getDescripcion();
+
+                        $direccion =  $valor->getId_contacto()->getDireccion();
+                        $correo = $valor->getId_contacto()->getCorreo();
+                        $telefono = $valor->getId_contacto()->getNro_caracteristica().$valor->getId_contacto()->getNro_telefono();
+                       
+                        $tpl->assign("id_prvd", $id_prvd);
+                        $tpl->newBlock("form");
+
+                       
+                        $tpl->assign("nombre", $nombre);
+
+                        $tpl->assign("cuit", $cuit);
+                        $tpl->assign("fecha_alt", $fecha_alt);
+                        $tpl->assign("descripcion", $descripcion);
+
+                        if ($direccion == 'NULL') {
+                            $tpl->assign("direccion", '');
+                        }else{
+                            $tpl->assign("direccion", $direccion);
+                        }
+
+                    
+                        if ($correo == 'NULL' ) {
+                            $tpl->assign("correo", '');
+                        }else{
+                            $tpl->assign("correo", $correo);
+                        }
+
+                        if ($telefono == 'NULL' || $telefono == '0') {
+                            $tpl->assign("telefono", '');
+                        }else{
+
+                            $tpl->assign("telefono", $telefono);
+                        }
+
+                    }
+
+                    
+                }
+
+        //}   
+    return $tpl->getOutputContent();    
+
+    }
+
+     
+    function alta_modificacion(){
+            $id_prvd = $_GET['id_prvd'];
+            $nombre = $_POST['prvd_nombre'];
+            
+            $cuit = $_POST['prvd_cuit'];
+
+            $fecha_alta = $_POST['prvd_fecha_alta'];
+            $descripcion = $_POST['prvd_descripcion'];
+
+            $direccion = $_POST['prvd_direccion'];
+            $correo = $_POST['prvd_correo'];
+            $telefono = $_POST['prvd_telefono'];
+
+            $prdv = proveedor::generar_prvd($id_prvd);
+
+            echo $id_prvd;
+            
+            $ok = $prdv->update($id_prvd,'descripcion',$descripcion);
+
+            
+            $ok_1 = prvd_datos::update($prdv->getid_datos_prvd()->getId_datos_prvd(),'nombre',$nombre);
+
+
+            $ok_2 = prvd_datos::update($prdv->getid_datos_prvd()->getId_datos_prvd(),'cuit',$cuit);
+
+            $ok_3 = us_prvd_contacto::update($prdv->getId_contacto()->getId_contacto(),'direccion',$direccion);
+            $ok_4 = us_prvd_contacto::update($prdv->getId_contacto()->getId_contacto(),'correo',$correo);
+
+            //$ok_5 = $prdv->getId_contacto()->update($prdv->getId_contacto()->getId_contacto(),'telefono',$telefono);&& $ok_5
+
+
+            if ($ok_1 && $ok_2 && $ok_3 && $ok_4) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+            }
+            else{
+                
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+
+            }
+            //modificar descripcion
+            
+
+            
+            return $tpl->getOutputContent();
+        }
+
+
 
 }
 ?>

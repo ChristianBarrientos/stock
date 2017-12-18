@@ -11,8 +11,9 @@
 	    <!-- END BLOCK : error_usuario -->
 
 	  <!-- START BLOCK : form -->
-	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_modificacion&id_empleado={id_empleado}&nombre__={nombre__}&apellido__={apellido__}&dni__={dni__}&fecha_alt__={fecha_alt__}&fecha_nac__={fecha_nac__}&direccion__={direccion__}&correo__={correo__}&telefono__={telefono__}&usuario__={usuario__}&pass__={pass__}&locales__={locales__}&genero__={genero__}" method="post">
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_modificacion&id_prvd={id_prvd}" method="post">
 	  <!-- END BLOCK : form -->
+
 	    <!-- START BLOCK : datos_modificar_empleado -->
 	    <div class="form-group">
 	      <label class="control-label col-sm-2" for="empl_nombre">Nombre:</label>
@@ -104,44 +105,8 @@
 	      </div>
 	    </div>
 
-	    <h3>Datos de Usuario del Sistema</h3>
 	    
-	    <div class="form-group">
-	      <label class="control-label col-sm-2" for="empl_usuario">Usuario:</label>
-	      <div class="col-md-5 col-sm-5 col-xs-10">
-	        <input value = "{usuario_}" required type="empl_usuario" class="form-control" id="empl_usuario" placeholder="Ingrese usuario para el empleado" name="empl_usuario">
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label col-sm-2" for="empl_pass">Contraseña:</label>
-	      <div class="col-md-5 col-sm-5 col-xs-10">
-	        <input value = "{pass_}" required type="empl_pass" class="form-control" id="empl_pass" placeholder="Ingrese contrasela para el usuario del empleado" name="empl_pass">
-	      </div>
-	    </div>
-
-	    <h3>Locales en los que trabaja</h3>
 	    
-	    <div class="form-group">
-	    	<!-- START BLOCK : local_no_selecciono -->
-	       <div class="alert alert-danger">
-	       		<h3>Debe Seleccionar Almenos un Local!</h3>
-	       </div>
-		    <!-- END BLOCK : local_no_selecciono -->
-
-	     	<!-- START BLOCK : locales_empleado_alta -->
-	        <div id="seleccionar_local_empl" class="checkbox">
-			  <label><input name="empl_local[]" {checked_sel} type="checkbox" value="{id_local}">{nombre_local}</label>
-		    </div>
-		    <!-- END BLOCK : locales_empleado_alta -->
-		    <!-- START BLOCK : sin_locales_empl -->
-		    <div class="col-md-12 col-xs-12">
-				<div class="alert alert-warning center-block">
-					<h3>No puede dar de alta empleados sin tener antes un local cargado.</h3>
-					
-				</div>
-			</div>
-		    <!-- END BLOCK : sin_locales_empl -->
-	    </div>
 		
 		<!-- END BLOCK : datos_modificar_empleado -->
 	    <div class="form-group">        

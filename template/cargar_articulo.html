@@ -213,11 +213,11 @@
 	    <div class="form-group">
 	    <div class="row">
 	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-	      <label for="art_cantidad_total">Precio Base (*):</label>
+	      <label for="art_cantidad_total">Precio Costo (*):</label>
 	     </div>	
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
-				    <input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
+				    <input required min="1" type="number" step="0.01" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
 				      
 			    </div>
 			      
@@ -232,7 +232,7 @@
 	     </div>	
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
-				    <input autocomplete="off" required  type="text" class="form-control" id="art_ganancia" placeholder="Ganancia, en porcentaje." name="art_ganancia">
+				    <input autocomplete="off" required  type="number" step="0.01" class="form-control" id="art_ganancia" placeholder="Ganancia, en porcentaje." name="art_ganancia">
 					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_ganancia" for="art_ganancia">:</label>
 				      
 			    </div>

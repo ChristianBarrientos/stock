@@ -39,7 +39,7 @@ class Articulo_Controller{
                                 $nombre_ = $art.','.$marca.','.$tipo;
                                 $nombre_ = str_replace(' ','',$nombre_);
 
-                                $nombre_ = $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre();
+                                $nombre_ = $tipo = $value->getId_art_conjunto()->getId_tipo()->getNombre().','.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -1144,7 +1144,7 @@ class Articulo_Controller{
         
 
         //cargar art_carga y art_lote_local
-        print_r($lista_art_locales);
+       
         foreach ($lista_art_locales as $key => $value) {
             /*$_fecha = trim($value['Fecha'],'AM');
             $_fecha = trim($_fecha,'PM');
@@ -1153,16 +1153,7 @@ class Articulo_Controller{
             */
              
             $id_carga = art_carga::alta_art_carga($value['Fecha'], $_SESSION["usuario"]->getId_user());
-            echo "aca";
-            echo "\n";
-            echo $id_lote;
-            echo "\n";
-            echo $value['Id'];
-            echo "\n";
-            echo $value['Cantidad'];
-            echo "\n";
-            echo $id_carga;
-            echo "Finaca";
+            
             $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,$value['Id'],$value['Cantidad'],$id_carga);
         }
 

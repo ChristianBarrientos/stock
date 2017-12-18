@@ -163,6 +163,23 @@ class proveedor {
         }
     }
 
+    public static function update($id_proveedor,$fila,$valor_nuevo){
+        //obtener empleados por local
+        global $baseDatos;
+        switch ($fila) {
+            case 'descripcion':
+                # code...
+                $res = $baseDatos->query(" UPDATE `prvd_provedor` SET `descripcion`='$valor_nuevo' WHERE id_provedor = $id_proveedor");  
+                break;
+            default:
+                # code...
+                break;
+        }
+        
+         
+        return $res;
+    }
+
     public function getId_proveedor()
     {
         return $this->id_proveedor;

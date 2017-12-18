@@ -91,6 +91,35 @@ class us_prvd_contacto {
         return $res;   
     }
 
+
+    public static function update($id_contacto,$fila,$valor_nuevo){
+        //obtener empleados por local
+        global $baseDatos;
+        //`id_fecha_ab`=[value-4],`id_foto`=[value-5]
+        switch ($fila) {
+            case 'direccion':
+                # code...
+                $res = $baseDatos->query(" UPDATE `us_prvd_contacto` SET `direccion`='$valor_nuevo' WHERE id_contacto = $id_contacto");  
+                break;
+            case 'correo':
+                # code...
+                $res = $baseDatos->query(" UPDATE `us_prvd_contacto` SET `correo`='$valor_nuevo' WHERE id_contacto = $id_contacto");  
+                break;
+
+            case 'telefono':
+                # code...
+                $res = $baseDatos->query(" UPDATE `us_prvd_contacto_tel` SET `nro_telefono`='$valor_nuevo' WHERE id_contacto_tel = $id_contacto");  
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+         
+        return $res;
+    }
+
     public function getId_contacto()
     {
         return $this->id_contacto;
