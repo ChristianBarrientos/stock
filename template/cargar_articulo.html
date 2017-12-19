@@ -105,6 +105,36 @@
 	    </div>
 	  </div>
 </div>
+
+<!-- START BLOCK : modal_codigo_generar -->
+<div class="container-fluid">
+	  <div class="row">
+	  	<div class="form-group">
+	    	<div class="modal fade" id="generar_codigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span id = "cerrar_modal2" aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Generar Codigo</h4>
+						</div>
+
+						<div class="modal-body">
+							<div class="form_flotante" id="art_genera_codigo">
+								 
+								<img id="img_genera_codigo" value="{art_codigo_}" src='php_recurso/cb/barcode.php?text={art_codigo}&code_type=code39&size=150&print=true'/>
+								 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	  </div>
+</div>
+<!-- END BLOCK : modal_codigo_generar -->
+
 <div class="container">
 	
 	  <h2>Alta de Articulos</h2>
@@ -203,10 +233,14 @@
 	     </div>	
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
-				    <input  min="0000000000000" max="9999999999999" type="number" class="form-control" id="art_codigo_barras" placeholder="Ingrese el codigo de barras del articulo." name="art_codigo_barras">
+				    <input type="text" class="form-control" id="art_codigo_barras" placeholder="Ingrese el codigo de barras del articulo." name="art_codigo_barras">
 				      
 			    </div>
-			      
+			      <div class="col-sm-offset-1 col-sm-3 col-xs-12">
+			 	<button id="generar_artcodigo" type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#generar_codigo" >
+							Generar Codigo
+				</button>
+			</div>
 		</div>	    
 	    </div>
 

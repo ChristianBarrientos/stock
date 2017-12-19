@@ -55,12 +55,15 @@ include('model/gs_gsub_gasto.model.php');
 include('model/gs_subgasto.model.php');
 include('model/us_gastos.model.php');
 include('model/us_ggs.model.php');
+include('model/ot_cliente.model.php'); 
+include('model/art_us_codigos.model.php');
 
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');
 include('php_recurso/filtrar/class.inputfilter.php');
 include('php_recurso/cadenas.php');
 include('php_recurso/fpdf/fpdf.php');
+//include('php_recurso/cb/barcode.php');
 
 
 session_start();

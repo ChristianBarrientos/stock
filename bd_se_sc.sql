@@ -135,6 +135,21 @@ CREATE TABLE  usuarios (
      KEY (id_usuarios)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  ot_cliente (
+     id_cliente INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_cliente)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  art_us_codigos (
+     id_codigo INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     numero INTEGER NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_codigo)
+     ) ENGINE=InnoDB;
 
 CREATE TABLE  us_prvd (
      id_us_prvd INTEGER AUTO_INCREMENT NOT NULL,
@@ -317,13 +332,6 @@ CREATE TABLE  us_mark (
      FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE
      ) ENGINE=InnoDB;
 
-CREATE TABLE  art_codigo_barra (
-     id_cb INTEGER (13)AUTO_INCREMENT NOT NULL,
-     cb INTEGER,
-     KEY (id_cb)
-     ) ENGINE=InnoDB;
-
-
 CREATE TABLE  art_categoria (
      id_categoria INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(50) NOT NULL,
@@ -394,7 +402,7 @@ CREATE TABLE  art_lote (
      id_art_conjunto INTEGER,
      id_provedor INTEGER ,
      cantidad_total INTEGER NOT NULL,
-     id_cb INTEGER, 
+     codigo_barras VARCHAR(100), 
      id_gc INTEGER,
      descripcion VARCHAR(100),
      id_art_fotos INTEGER,
@@ -402,7 +410,6 @@ CREATE TABLE  art_lote (
      importe DEC(15,2) NOT NULL,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_cb) REFERENCES art_codigo_barra(id_cb) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_art_fotos) REFERENCES art_fotos(id_art_fotos) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_lote)

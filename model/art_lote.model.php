@@ -26,13 +26,13 @@ class art_lote {
       
     }
 
-    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $id_cb,$id_art_fotos,$precio_base,$importe,$id_proveedor = 'null' ,$id_gc= 'null',$descripcion = 'null'){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor = 'null' ,$id_gc= 'null',$descripcion = 'null'){
         global $baseDatos;
        
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `id_cb`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,$id_cb,$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
         $res = $baseDatos->query($sql);
         //printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
@@ -83,7 +83,7 @@ class art_lote {
 
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             //$lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
-            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc,$fotos,$res_fil['precio_base'],$res_fil['importe']);
+            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$res_fil['codigo_barras'],$gc,$fotos,$res_fil['precio_base'],$res_fil['importe']);
 
             
             return $lote;

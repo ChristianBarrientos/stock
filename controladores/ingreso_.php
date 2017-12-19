@@ -29,8 +29,13 @@ class Ingreso_Controller{
         $active = "class='active'";
 		$tpl = new TemplatePower("template/menu_bar.html");
 		$tpl->prepare();
+
+		
 		
 		if (isset($_SESSION["usuario"]) && Ingreso_Controller::es_admin()){
+			$id_user = $_SESSION["usuario"]->getId_user();
+        	$cliente = ot_cliente::obtener($id_user);
+        	$nombre_cliente = $cliente->getNombre();
 			$tpl->newBlock("dentro"); 
 			if ($seccion == "Local::mostrar") {
 				     
@@ -57,6 +62,14 @@ class Ingreso_Controller{
 		   			$tpl->assign("select_proveedores", $active);
 
 			}
+
+			if ($seccion == "Gasto::menu" ) {
+				     
+		   			$tpl->assign("select_gastos", $active);
+
+			}
+
+			$tpl->assign("nombre_cliente", $nombre_cliente);
 
 			/*$usuario = $_SESSION['usuario'];
 			 $usuario = unserialize($usuario);

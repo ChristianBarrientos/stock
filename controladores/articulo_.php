@@ -266,9 +266,10 @@ class Articulo_Controller{
                                     }
 
                                     //Obtener Codigo de barras
+                                     
                                     if ($value->getId_cb() != null) {
                                         # code...
-                                        $codigo_barras = $value->getId_cb()->getcb();
+                                        $codigo_barras = $value->getId_cb();
                                     }
                                     
                                     if ($codigo_barras != null) {
@@ -783,7 +784,34 @@ class Articulo_Controller{
                 $nombres_si = False;
                 $tpl = new TemplatePower("template/cargar_articulo.html");
                 $tpl->prepare();
-                
+
+                $tpl->newBlock("modal_codigo_generar");
+                $id_user = $_SESSION["usuario"]->getId_user();
+                $cliente = ot_cliente::obtener($id_user);
+                $nombre_cliente = $cliente->getNombre();
+                //generar numero si no existe
+                $no_sumar = true;
+                $numero = art_us_codigos::obtener($id_user);
+
+                if ($numero == null) {
+                    # code...
+                    $numero = art_us_codigos::alta($id_user,1);
+                    $numero_ = 1;
+                    $no_sumar = false;
+                }
+
+                if ($no_sumar) {
+                    # code...
+
+                    $numero_ = $numero->getNumero();
+                    $numero_ = $numero_ + 1; 
+                }
+
+                $codigo_generado = $nombre_cliente.$numero_;
+
+                $tpl->assign("art_codigo_", $codigo_generado);
+                $tpl->assign("art_codigo", $codigo_generado);
+
                 $list_art_nombres = articulo::obtener_articulos();
                 if ($list_art_nombres) {
                      foreach ($list_art_nombres as $key => $value) {
@@ -1035,14 +1063,48 @@ class Articulo_Controller{
             $id_proveedor = null;
         }
         //cargar codigo de barras
-        if ($art_cb == null) {
-            $id_cb = '000000000001';
+
+        $id_user = $_SESSION["usuario"]->getId_user();
+        $cliente = ot_cliente::obtener($id_user);
+        $nombre_cliente = $cliente->getNombre();
+
+
+
+        $pos = strpos($art_cb, $nombre_cliente);
+
+        
+        
+
+        if ($pos === false) {
+            //No esta
             
-           
+            if ($art_cb == null) {
+                $codigo_barras = '000000000001';
+            
+            }
         }else{
+            //si esta
+            //agregar +1 al numero en art_us_codigos
+            $numero = art_us_codigos::obtener($id_user);
+            $numero_ = $numero->getNumero();
+            $numero_ = $numero_ + 1; 
+
+            $ok_cb = art_us_codigos::update($numero->getId(),"numero",$numero_);
             
+
+            if ($ok_cb) {
+                # code...
+                $codigo_barras = $nombre_cliente.$numero_;
+               
+            }else{
+                echo "NO GENERADO CODIGO DE BARRAS";
+                $codigo_barras = null;
+            }
+
         }
-        $id_cb = art_codigo_barra::alta_art_cb($art_cb);
+
+       
+        //$id_cb = art_codigo_barra::alta_art_cb($art_cb);
 
         //cargar art_categorias y art_grupo_categoria
         
@@ -1122,11 +1184,11 @@ class Articulo_Controller{
 
         if ($id_proveedor != null) {
 
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor);
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor);
         }else{
             
 
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $id_cb,$id_art_fotos,$art_precio_base,$art_ganancia);
+            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia);
         }   
         
 

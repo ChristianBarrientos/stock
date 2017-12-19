@@ -546,6 +546,18 @@ $(document).ready(function()
             
 
         });
+
+         //Agregar codigo a input al GENERA 
+         $("#generar_artcodigo").click(function() {
+            
+            var codigo = $('#img_genera_codigo').attr('value');;
+
+            //var asociado = $(img).val();
+           $("#art_codigo_barras").val(codigo);
+          
+
+            });
+        
         //Finalizar Venta, enviar valor
         $("#cargar_marca_btn").click(function() {
             /*alert('aca');

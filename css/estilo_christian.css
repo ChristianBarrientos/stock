@@ -128,3 +128,11 @@ div#modal_galeri_backcolor{
     background-color:lightgray;
 }
 
+
+/*Genera Codigo ART carga*/
+ 
+
+#art_genera_codigo img{
+  position: relative;
+  left: 25%;
+}
