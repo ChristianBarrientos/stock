@@ -439,10 +439,13 @@ class Ingreso_Controller{
 				$nombre_art_vendido = $nombre_art.','.$nom_marca.','.$nom_tipo;
 
 				//generar lote local para obtener el local
-				if ($value->getId_lote_local()->getId_lote()->getId_gc() != null) {
+				if ($value->getId_lote_local()->getId_lote()->getId_us_gcat()) {
+					# code...
+			
+				if ($value->getId_lote_local()->getId_lote()->getId_us_gcat() != null) {
 					# code...
 				
-				$gc = $value->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
+				$gc = $value->getId_lote_local()->getId_lote()->getId_us_gcat()->getId_categoria();
                 foreach ($gc as $clave => $valor) {
                     if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
                             $medida = $valor->getValor();
@@ -452,6 +455,8 @@ class Ingreso_Controller{
 				}
 				else{
 					$medida = 'Sin definir';
+				}
+
 				}
 
 
@@ -484,6 +489,7 @@ class Ingreso_Controller{
 					$tpl->assign("fecha_cambio",$fecha_cambio);
 				}
 				$tpl->newBlock("boton_cambio");
+				$tpl->assign("disabled_ok", 'disabled');
 				$tpl->assign("id_venta", $id_venta_);
 				$tpl->assign("id_lote_local", $value->getId_lote_local()->getId_lote_local());
 				
@@ -1306,7 +1312,10 @@ class Ingreso_Controller{
 				$nom_completo = $nom_marca.','.$nom_tipo;
 				$local_venta = $value->getId_local()->getNombre();
 				$canitdad_parcial = $value->getCantidad_parcial();
-				$gc = $value->getId_lote()->getId_gc()->getId_categoria();
+				if ($value->getId_lote()->getId_us_gcat()) {
+					# code...
+				
+				$gc = $value->getId_lote()->getId_us_gcat()->getId_categoria();
                 foreach ($gc as $clave => $valor) {
                     if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
                         $medida = $valor->getValor();
@@ -1315,7 +1324,10 @@ class Ingreso_Controller{
                     }
                 }
 
-				
+				}
+				else{
+					$medida = "Sin definir";
+				}
 				$respuesta_final[] = [$numero_cont,$nom_completo,$medida,$local_venta,$canitdad_parcial];
 				$numero_cont = $numero_cont + 1;
 			

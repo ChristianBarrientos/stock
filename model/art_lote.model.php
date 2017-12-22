@@ -6,33 +6,33 @@ class art_lote {
     private $cantidad;
     private $id_art_conjunto;
     private $id_cb;
-    private $id_gc;
+    private $id_us_gcat;
     private $id_art_fotos;
     private $precio_base;
     private $importe;
  
 
-    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos,$precio_base,$importe)
+    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_us_gcat,$id_art_fotos,$precio_base,$importe)
     {
         $this->id_lote = $id_lote;
         $this->id_proveedor = $id_proveedor;
         $this->cantidad = $cantidad;
         $this->id_art_conjunto = $id_art_conjunto;
         $this->id_cb = $id_cb;
-        $this->id_gc = $id_gc;
+        $this->id_us_gcat = $id_us_gcat;
         $this->id_art_fotos = $id_art_fotos;
         $this->precio_base = $precio_base;
         $this->importe = $importe;
       
     }
 
-    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor = 'null' ,$id_gc= 'null',$descripcion = 'null'){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor = 'null' ,$id_us_gcat= 'null',$descripcion = 'null'){
         global $baseDatos;
        
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_us_gcat`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_us_gcat,'$descripcion',$id_art_fotos,$precio_base,$importe)";
         $res = $baseDatos->query($sql);
         //printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
@@ -68,9 +68,9 @@ class art_lote {
             }
 
             $cb = ($res_fil['codigo_barras']);
-            if ($res_fil['id_gc'] != null) {
+            if ($res_fil['id_us_gcat'] != null) {
                 # code...
-                $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);
+                $gc = art_grupo_categoria::generar_gc($res_fil['id_us_gcat']);
             }
             else{
                 $gc = null;
@@ -217,14 +217,14 @@ class art_lote {
         return $this;
     }
 
-    public function getId_gc()
+    public function getId_us_gcat()
     {
-        return $this->id_gc;
+        return $this->id_us_gcat;
     }
     
-    public function setId_gc($id_gc)
+    public function setId_us_gcat($id_us_gcat)
     {
-        $this->id_gc = $id_gc;
+        $this->id_us_gcat = $id_us_gcat;
         return $this;
     }
 

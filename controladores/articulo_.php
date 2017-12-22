@@ -114,9 +114,9 @@ class Articulo_Controller{
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
 
-                                    if ($value->getId_gc() != null) {
+                                    if ($value->getId_us_gcat() != null) {
                                         # code...
-                                        $gc = $value->getId_gc()->getId_categoria();
+                                        $gc = $value->getId_us_gcat()->getId_categoria();
                                     
 
                                     
@@ -581,7 +581,7 @@ class Articulo_Controller{
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
 
-                                    $gc = $value->getId_gc()->getId_categoria();
+                                    $gc = $value->getId_us_gcat()->getId_categoria();
                                     foreach ($gc as $clave => $valor) {
                                         if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
                                             $medida = $valor->getValor();
@@ -1253,7 +1253,10 @@ class Articulo_Controller{
 
         $precio_base_venta =  $lote_local->getId_lote()->getPrecio_base();
         $importe = $lote_local->getId_lote()->getImporte();
-        $precio_base_venta_ = (int)$precio_base_venta *((int)'0'.$importe/100);
+        $importe_ = (int)(($importe * $precio_base_venta) /100);
+
+        $precio_base_venta_ = (int)$precio_base_venta + $importe_;
+
 
         $tpl->newBlock("forma_pago_venta");
         $porcentaje_contado = $precio_base_venta_;
@@ -1263,10 +1266,10 @@ class Articulo_Controller{
         $tpl->assign("valor_pago", '$'.$precio_base_venta_);
         //$tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
 
-        if ($lote_local->getId_lote()->getId_gc() != null) {
+        if ($lote_local->getId_lote()->getId_us_gcat() != null) {
             # code...
         
-        $art_cb = $lote_local->getId_lote()->getId_gc()->getId_categoria();
+            $art_cb = $lote_local->getId_lote()->getId_us_gcat()->getId_categoria();
        
         foreach ($art_cb as $key => $value) {
             
@@ -1690,10 +1693,10 @@ class Articulo_Controller{
             
 
             $lote = art_lote::generar_lote($id_lote);
-            if ($lote->getId_gc()) {
+            if ($lote->getId_us_gcat()) {
                 # code...
            
-            $id_gc = $lote->getId_gc();
+            $id_gc = $lote->getId_us_gcat();
             foreach ($id_gc->getId_categoria() as $key => $valor) {
                 
                 if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
@@ -1759,49 +1762,52 @@ class Articulo_Controller{
             $art_tipo = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
             $nombre_completo_art =(string)$art_nombre.','.$art_marca.','.$art_tipo;
 
-            $nombre_local = $lote_local_vendido->getId_local()->getNombre();
-            $gc = $lote_local_vendido->getId_lote()->getId_gc()->getId_categoria();
-            foreach ($gc as $clave => $valor) {
-                if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
-                        $medida = $valor->getValor();
+            if ($lote_local_vendido->getId_us_gcat()) {
+                # code...
+          
+                $nombre_local = $lote_local_vendido->getId_local()->getNombre();
+                $gc = $lote_local_vendido->getId_lote()->getId_us_gcat()->getId_categoria();
+                foreach ($gc as $clave => $valor) {
+                    if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
+                            $medida = $valor->getValor();
 
-                    }
-
-                if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
-                        $precio_base = $valor->getValor();
-                                            
-                    }
-                if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
-                    $por_ciento_t =  $valor->getValor();
-                    if ($por_ciento_t == 100) {
-                                                # code...
-                        $por_ciento_t_2 = 1;
-                    }
-                    else{
-                        $por_ciento_t_2 = '0.'.$por_ciento_t;
                         }
-                    $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
-                }
 
-                if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
-                    $por_ciento_p = $valor->getValor();
-                    if ($por_ciento_p == 100) {
-                        # code...
-                                                $por_ciento_p_2 = 1;
-                    }else{
-                        $por_ciento_p_2 = '0.'.$por_ciento_p;
+                    if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
+                            $precio_base = $valor->getValor();
+                                            
+                        }
+                    if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
+                        $por_ciento_t =  $valor->getValor();
+                        if ($por_ciento_t == 100) {
+                                                # code...
+                            $por_ciento_t_2 = 1;
+                        }
+                        else{
+                            $por_ciento_t_2 = '0.'.$por_ciento_t;
+                            }
+                        $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
                     }
-                                           
-                    $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
-                                            
-                }
 
-                if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
-                    $art_color = $valor->getValor();
+                    if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
+                        $por_ciento_p = $valor->getValor();
+                        if ($por_ciento_p == 100) {
+                        # code...
+                                                    $por_ciento_p_2 = 1;
+                        }else{
+                            $por_ciento_p_2 = '0.'.$por_ciento_p;
+                        }
+                                           
+                        $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
                                             
+                    }
+
+                    if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
+                        $art_color = $valor->getValor();
+                                            
+                    }
                 }
             }
-          
             $nombre_medio = $venta->getMedio()->getNombre();
             $descuento = $venta->getMedio()->getDescuento();
             $precio_vendido = $venta->getTotal();
@@ -1848,8 +1854,10 @@ class Articulo_Controller{
 
                 
                         $nombre_local = $value->getId_local()->getNombre();
+                   if ($value->getId_lote()->getId_us_gcat()) {
+                       # code...
                    
-                        $gc = $value->getId_lote()->getId_gc()->getId_categoria();
+                        $gc = $value->getId_lote()->getId_us_gcat()->getId_categoria();
                         foreach ($gc as $clave => $valor) {
                 
 
@@ -1863,7 +1871,7 @@ class Articulo_Controller{
                             }
                 
                         }
-
+                    }
                         $tpl->assign("nombre_articulo",$nombre_completo_art_2.'('.$medida.')'.' ('.$nombre_local.' $'.$precio_base_vender.')');
 
                         $art_nombre_2 = '';
@@ -1905,7 +1913,10 @@ class Articulo_Controller{
             $art_marca =  $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
             $art_tipo = $lote_local_vendido->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
             $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
-            $gc = $lote_local_vendido->getId_lote()->getId_gc()->getId_categoria();
+            if ($lote_local_vendido->getId_lote()->getId_us_gcat()) {
+                # code...
+            
+            $gc = $lote_local_vendido->getId_lote()->getId_us_gcat()->getId_categoria();
                 foreach ($gc as $clave => $valor) {
                 if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
                     $precio_base_vender = $valor->getValor();
@@ -1913,7 +1924,7 @@ class Articulo_Controller{
                     }
                 
             }
-          
+            }
             $nombre_local = $lote_local_vendido->getId_local()->getNombre();
             $nombre_medio = $venta->getMedio()->getNombre();
             $descuento = $venta->getMedio()->getDescuento();
@@ -1927,7 +1938,10 @@ class Articulo_Controller{
             $art_marca2 =  $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
             $art_tipo2 = $lote_local_cambiar_->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
             $nombre_completo_art2 =(string)$art_nombre2.' ,'.$art_marca2.' ,'.$art_tipo2;
-            $gc2 = $lote_local_cambiar_->getId_lote()->getId_gc()->getId_categoria();
+            if ($lote_local_cambiar_->getId_lote()->getId_us_gcat()) {
+                # code...
+            
+            $gc2 = $lote_local_cambiar_->getId_lote()->getId_us_gcat()->getId_categoria();
                 foreach ($gc2 as $clave2 => $valor2) {
                 if (strcmp($valor2->getNombre(), "Precio" ) == 0 ) {
                     $precio_base_vender2 = $valor2->getValor();
@@ -1936,7 +1950,7 @@ class Articulo_Controller{
                 
             }
 
-
+            }
             $tpl = new TemplatePower("template/venta_art_modificar_confirmacion.html");
             $tpl->prepare();
             //Articulo Viejo
