@@ -320,6 +320,7 @@ class usuario {
     public static function generar_usuario($id_usuarios){
         global $baseDatos;
         
+
         $res = $baseDatos->query("SELECT * FROM usuarios WHERE id_usuarios = $id_usuarios");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {

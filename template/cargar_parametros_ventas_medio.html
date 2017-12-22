@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 	  <h2>Ventas</h2>
 	  <h3>Parametros de Medio de Pago</h3>
-	  <p>Parametros de medio de pago hace referencia a los diferentes tipos de tarjetas de credito, descuentos especiales y cualquier otro medio de pago. </p>
+	  <!--<p>Parametros de medio de pago hace referencia a los diferentes tipos de tarjetas de credito, descuentos especiales y cualquier otro medio de pago. </p>
 	  <p>Se debe ingresar:
 	  <ul>
 	  	<li>Nombre. Por ejemplo "Tarjeta Naranja plan Z".</li>
@@ -10,7 +10,7 @@
 	  	<li>Descuento. El descuentos es en porcentajes Por ejemplo '3' haria referencia al 3% del precio base. Normalmente para las tarjetas de credito no existe descuentos. Esto se lo uso para, por ejemplo, descuentos propios del local en epocas precisas como navidad, alo nuevo, etc.</li>
 	  	<li>Fechas(Inicio y Fin).Sera la fecha en la que estara disponible el medio de pago.</li>
 	  	<li>Dias(Dias de la Semana).Seran los Dias en los que estara disponible el medio de pago.</li>
-	  </ul> </p>
+	  </ul> </p>-->
 	  
 	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Venta::confirmar_alta_parametros_medio" method="post">
 	  <h4>Datos Generales</h4>
@@ -22,7 +22,7 @@
 	      </div>
 	    </div>
 	    <div class="form-group">
-	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descripcion">Descripcion:</label>
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descripcion">Tipo:</label>
 	       
 		    <!--</div>-->
 		     
@@ -44,10 +44,21 @@
 	    </div>
 	    
 	    <div class="form-group">
-	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descuento">Descuento:</label>
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_desimp">Agregado:</label>
 	      <div class="col-md-5 col-sm-5 col-xs-12">
-	        <input  value = "0" type="number" class="form-control" id="venta_medio_parametro_descuento" placeholder="Ingrese valores en porcentajes. Si no posee descuento ingrese 0." name="venta_medio_parametro_descuento">
+	        <input  value = "0" type="number" class="form-control" id="venta_medio_parametro_desimp" placeholder="Ingrese valores en porcentajes. Si no posee descuento ingrese 0." name="venta_medio_parametro_desimp">
 	      </div>
+
+	      <div class="col-md-5 col-sm-3 col-xs-12">
+			      	
+  				<select required id="select_art_general" name="venta_tipo_medio_desimp_signo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  				 
+  				  <option value="-">Descuento</option>
+  				  <option value="+">Importe</option>
+  				 
+				      	
+  				</select>
+			</div>
 	    </div>
 
 	    <h4>Fechas de Disponibilidad</h4>

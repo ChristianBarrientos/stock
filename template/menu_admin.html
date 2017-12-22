@@ -129,6 +129,11 @@
 						<button type="button" class="btn btn-success" >Registro de Ventas</button>
 					</a>
 				</div>
+				<div  class="col-md-2 col-xs-6">
+					<a href="index.php?action=Venta::cargar_ventas_antiguas">
+						<button type="button" class="btn btn-success" >Cargar Ventas Antiguas</button>
+					</a>
+				</div>
 		</div>	
 
 		<div class="row encabezado">
@@ -384,11 +389,13 @@
 								<div class="col-md-12 col-sm-3 col-xs-12">
 			      	
   									<select required id="select_art_general" name="venta_medio_parametro_descripcion" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  									<!-- START BLOCK : carga_medio_ok -->
   									<option value="0">Todos</option>
   									<!-- START BLOCK : carga_medio_ -->
   									  <option value="{id_medio_}">{nombre_medio}</option>
   									<!-- END BLOCK : carga_medio_ -->
-				      	
+  									
+				      				<!-- END BLOCK : carga_medio_ok -->
   									</select>
 								</div> 
 						</div>

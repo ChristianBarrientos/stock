@@ -41,9 +41,9 @@ include('model/art_fotos.model.php');
 include('model/us_prvd_foto.model.php');
 include('model/us_acceso.model.php');
 include('model/reporte.model.php');
-include('model/art_venta_medio.model.php');
-include('model/art_venta_medio_dias.model.php');
-include('model/art_venta_medio_fechas.model.php');
+include('model/art_venta_medio_pago.model.php');
+include('model/art_venta_medio_promo_dias.model.php');
+include('model/art_venta_medio_promo_fechas.model.php');
 include('model/art_no_venta.model.php');
 include('model/art_venta_cambio.model.php');
 include('model/art_venta_medio_descripcion.model.php');
@@ -57,6 +57,10 @@ include('model/us_gastos.model.php');
 include('model/us_ggs.model.php');
 include('model/ot_cliente.model.php'); 
 include('model/art_us_codigos.model.php');
+include('model/art_venta_medio_tipo.model.php');
+include('model/art_venta_des_imp.model.php');
+include('model/us_medio_pago.model.php');
+
 
 /*Templates-Vistas*/
 include('php_recurso/class.TemplatePower.inc.php');

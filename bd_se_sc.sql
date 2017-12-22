@@ -436,51 +436,101 @@ CREATE TABLE lote_us (
      KEY (id_lote_us)
      ) ENGINE=InnoDB;
 
-CREATE TABLE art_venta_medio_fechas (
-     id_fechas_medio INTEGER AUTO_INCREMENT NOT NULL,
+CREATE TABLE art_venta_medio_promo_fechas (
+     id_medio_promo_fecha INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora_inicio DATE NOT NULL,
      fecha_hora_fin DATE NOT NULL,
-     KEY (id_fechas_medio)
+     KEY (id_medio_promo_fecha)
      ) ENGINE=InnoDB;
 
-CREATE TABLE art_venta_medio_dias (
-     id_dias_medio INTEGER AUTO_INCREMENT NOT NULL,
+CREATE TABLE art_venta_medio_promo_dias (
+     id_medio_promo_dias INTEGER AUTO_INCREMENT NOT NULL,
      dias VARCHAR(100) NOT NULL,
-     KEY (id_dias_medio)
+     KEY (id_medio_promo_dias)
      ) ENGINE=InnoDB;
 
-CREATE TABLE art_venta_medio_descripcion (
-     id_medio_descripcion INTEGER AUTO_INCREMENT NOT NULL,
+CREATE TABLE art_venta_medio_tipo(
+     id_medio_tipo INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(100) NOT NULL,
      descripcion VARCHAR(100) NOT NULL,
-     KEY (id_medio_descripcion)
+     KEY (id_medio_tipo)
      ) ENGINE=InnoDB;
 
-CREATE TABLE art_venta_medio (
-     id_medio INTEGER AUTO_INCREMENT NOT NULL,
+CREATE TABLE art_venta_des_imp(
+     id_des_imp INTEGER AUTO_INCREMENT NOT NULL,
+     valor INTEGER NOT NULL,
+     signo ENUM('+','-'),
+     KEY (id_des_imp)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE art_venta_medio_pago (
+     id_medio_pago INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(100) NOT NULL,
-     descripcion INTEGER,
-     descuento INTEGER,
-     id_fechas_medio INTEGER,
-     id_dias_medio INTEGER,
-     id_usuario INTEGER,
-     FOREIGN KEY (id_fechas_medio) REFERENCES art_venta_medio_fechas(id_fechas_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_dias_medio) REFERENCES art_venta_medio_dias(id_dias_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
+     id_medio_tipo INTEGER,
+     id_des_imp INTEGER,
+     id_medio_fecha INTEGER,
+     id_medio_dias INTEGER,
+     id_gart_aplica INTEGER,
+     FOREIGN KEY (id_medio_fecha) REFERENCES art_venta_medio_promo_fechas(id_medio_promo_fecha) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_medio_dias) REFERENCES art_venta_medio_promo_dias(id_medio_promo_dias) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_medio_tipo) REFERENCES art_venta_medio_tipo(id_medio_tipo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_des_imp) REFERENCES art_venta_des_imp(id_des_imp) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_medio_pago)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE art_venta_promo_tipo(
+     id_promo_tipo INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     descripcion VARCHAR(100) NOT NULL,
+     KEY (id_promo_tipo)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE art_venta_promo (
+     id_promo INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     id_promo_tipo INTEGER,
+     id_des_imp INTEGER,
+     n_po_n VARCHAR(50),
+     id_promo_fecha INTEGER,
+     id_promo_dias INTEGER,
+     id_gart_aplica INTEGER,
+     FOREIGN KEY (id_promo_fecha) REFERENCES art_venta_medio_promo_fechas(id_medio_promo_fecha) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_promo_dias) REFERENCES art_venta_medio_promo_dias(id_medio_promo_dias) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_promo_tipo) REFERENCES art_venta_promo_tipo(id_promo_tipo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_des_imp) REFERENCES art_venta_des_imp(id_des_imp) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_promo)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  us_medio_pago (
+     id_us_medio_pago INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     id_medio_pago INTEGER NOT NULL,
+     FOREIGN KEY (id_medio_pago) REFERENCES art_venta_medio_pago(id_medio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (descripcion) REFERENCES art_venta_medio_descripcion(id_medio_descripcion) ON DELETE NO ACTION ON UPDATE CASCADE,
-     KEY (id_medio)
+     KEY (id_us_medio_pago)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  us_promo (
+     id_us_promo INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     id_promo INTEGER NOT NULL,
+     FOREIGN KEY (id_promo) REFERENCES art_venta_promo(id_promo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_us_promo)
      ) ENGINE=InnoDB;
 
 CREATE TABLE  art_venta (
      id_venta INTEGER AUTO_INCREMENT NOT NULL,
      fecha_hora DATETIME NOT NULL,
-     id_usuarios INTEGER NOT NULL,
-     id_medio INTEGER NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     id_promo INTEGER,
+     id_medio_pago INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
      cuotas VARCHAR(100),
      id_cambio INTEGER,
-     FOREIGN KEY (id_medio) REFERENCES art_venta_medio(id_medio) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_usuarios) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_medio_pago) REFERENCES art_venta_medio_pago(id_medio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_promo) REFERENCES art_venta_promo(id_promo) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cambio) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_venta)
      ) ENGINE=InnoDB;

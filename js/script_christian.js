@@ -3,7 +3,7 @@
 var Valor_Medio_Pago;
 var Medio_Pago;
 var Valor_Total_Pago;
-
+var counter = 1;
 var fecha_datapicker_gasto = 1;
 
 $(document).ready(function()
@@ -96,6 +96,130 @@ $(document).ready(function()
             $('#bloque_gastos_detalles').append(container2val);
             $('#bloque_gastos_detalles').append(containerfecha);
             
+            $('#bloque_gastos_detalles').append(container_des);
+            $('#bloque_gastos_detalles').append(container2des);
+
+            $('#bloque_gastos_detalles').append(scripr_datapicker);
+
+            var container_linea = $(document.createElement('<br><br>'));
+            $('#bloque_gastos_detalles').append(container_linea);
+            fecha_datapicker_gasto = fecha_datapicker_gasto + 1; 
+
+        });
+
+        //Añadir detalle de Ventas Antiguas
+        $('#uno_mas_ventaanrigua').click(function () {
+            
+       
+            counter = counter + 1;
+            
+            var container = $(document.createElement('div'));
+            $id_nuevo = 'id_nuevo' + counter;
+            $(container).attr("id",$id_nuevo);
+            $('#supremo').append(container);
+
+
+            
+            var packing = $('#div_formulario');
+            var clone = packing.clone();
+            clone.appendTo('#supremo');
+
+            clone.attr('id', 'packing_' + counter);
+            clone.find('.bootstrap-select').remove();
+            clone.find('select').selectpicker();
+
+            /*$('#select_art_lote_local').clone().attr('id', 'newSel').attr('name', 'newSel').appendTo($('#d2'));
+
+    // make the current value selected
+            $("#newSel > option[value='" + $('#select_art_lote_local').val() + "']").attr('selected', 'selected');
+   
+            */
+
+            //$('#div_formulario').clone().appendTo('#supremo');
+
+            /*var divclearfix = $(document.createElement('div'));
+            divclearfix.addClass("clearfix");
+
+            var container = $(document.createElement('div'));
+            container.addClass("control-label col-md-1 col-sm-1 col-xs-12");
+            $(container).append('<label  for="gs_unico_nombre">Articulo:</label>');
+
+            var container2 = $(document.createElement('div'));
+            
+
+            var container3 = $(document.createElement('div'));
+            container3.addClass("col-md-3 col-sm-3 col-xs-12"); 
+            $(container3).attr("id","id_nuevo");
+            $('#select_art_lote_local').clone().appendTo('#id_nuevo');
+
+            //$(container3).append('<input type="text" class="form-control" id="gs_unico_nombre" placeholder="Subtitulo del Gasto." name="gs_unico_nombre[]">');
+
+            //container3.appendTo(container2);
+            $(container2).append(container3);
+
+            $('#supremo').append(divclearfix);
+            $('#supremo').append(container);
+            $('#supremo').append(container2);*/
+        
+            
+              
+
+/*
+            var containerval = $(document.createElement('div'));
+            containerval.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(containerval).append('<label  for="art_tipo">Valor:</label>');
+
+            var container2val = $(document.createElement('div'));
+            
+
+            var container3val = $(document.createElement('div'));
+            container3val.addClass("col-md-3 col-sm-3 col-xs-12");
+            $(container3val).append('<input type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="gs_unico_valor[]">');
+
+            //container3.appendTo(container2);
+            $(container2val).append(container3val);
+
+            ////
+
+            var containerfecha = $(document.createElement('div'));
+            containerfecha.addClass("col-md-3 col-sm-3 col-xs-12");
+
+            var containerfecha2 = $(document.createElement('div'));
+            containerfecha2.addClass("input-group date");
+            variable_datapicker_reference = "datetimepicker" + fecha_datapicker_gasto;
+            $(containerfecha2).attr('id', variable_datapicker_reference);
+            $input_fecha ='<input placeholder="AAAA-MM-DD" name="gs_unico_fechahora[]" type="text" class="form-control"/> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span></span>';
+            $(containerfecha2).append($input_fecha);
+
+            $(containerfecha).append(containerfecha2);
+            //container3.appendTo(container2);
+            
+            scripr_datapicker = "<script type='text/javascript'>$(function () {$('#"+variable_datapicker_reference+"').datetimepicker({format: 'YYYY-MM-DD HH:MM:SS'});});</script>";
+            ////
+            
+           var container_des = $(document.createElement('div'));
+            container_des.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(container_des).append('<label  for="art_tipo"></label>');
+
+            var container2des = $(document.createElement('div'));
+            
+
+            var containerdes = $(document.createElement('div'));
+            containerdes.addClass("col-md-5 col-sm-3 col-xs-12");
+            $(containerdes).append('<input type="text" class="form-control" id="gs_unico_des" placeholder="Observacion referida al gasto.." name="gs_unico_des[]">');
+
+            //container3.appendTo(container2);
+            $(container2des).append(containerdes);
+
+
+            //$('#bloque_gastos_detalles').after(container,container2);
+            $('#bloque_gastos_detalles').append(divclearfix);
+            $('#bloque_gastos_detalles').append(container);
+            $('#bloque_gastos_detalles').append(container2);
+            $('#bloque_gastos_detalles').append(containerval);
+            $('#bloque_gastos_detalles').append(container2val);
+            $('#bloque_gastos_detalles').append(containerfecha);
+            
               
             
             $('#bloque_gastos_detalles').append(container_des);
@@ -105,7 +229,7 @@ $(document).ready(function()
 
             var container_linea = $(document.createElement('<br><br>'));
             $('#bloque_gastos_detalles').append(container_linea);
-            fecha_datapicker_gasto = fecha_datapicker_gasto + 1; 
+            fecha_datapicker_gasto = fecha_datapicker_gasto + 1; */
 
         });
         //Actualizar Precio Masivamente
@@ -623,7 +747,7 @@ function guardar_art_general(){
             $select_valor = document.getElementById("valor_pago_select");
             //Obtener select seleccionado
             $id_forma_pago = document.getElementById("forma_pago_select").value;
-            
+           
             var select_forma = String($("#forma_pago_select option:selected").html());
             
             ///
@@ -650,7 +774,12 @@ function guardar_art_general(){
             }
             
             $forma_pago_porciento = $valor_forma.substr(-5);
+            $separador  = "";
+            $array_auxiliar = $forma_pago_porciento.split($separador);
+            $signo_medio_pago = $array_auxiliar[0];
+            
             $forma_pago_sin_porciento = $forma_pago_porciento.replace(/%/,"");
+
             $forma_pago_sin_menos = $forma_pago_sin_porciento.replace(/-/,"");
             $porcentaje_final = $forma_pago_sin_menos.replace(/\(|\)/g,"");
             
@@ -658,7 +787,13 @@ function guardar_art_general(){
             if(select_forma.indexOf('%') != -1){
                 $valor_parcial_porciento = (Number($porcentaje_final) * Number($valor_precio_))/100;
                 
-                $valor_finali_finali = Number($valor_precio_) - Number($valor_parcial_porciento);
+                if ($signo_medio_pago == '-') {
+                    $valor_finali_finali = Number($valor_precio_) - Number($valor_parcial_porciento);
+                }
+                else{
+                    $valor_finali_finali = Number($valor_precio_) + Number($valor_parcial_porciento);
+                }
+                
 
             }else{
             //    $valor_parcial_porciento = (1* Number($valor_precio_))/100;
@@ -690,7 +825,7 @@ function enviar_datos_venta(){
 
 
     $("#medio_art_venta").val(Medio_Pago);
-
+    Valor_Medio_Pago_2 = Valor_Medio_Pago.replace(/$/,"");
     $("#cuotas_art_venta").val(Valor_Medio_Pago);
 
     $("#precio_final_art_venta").val(Valor_Total_Pago);

@@ -34,8 +34,8 @@ class Ingreso_Controller{
 		
 		if (isset($_SESSION["usuario"]) && Ingreso_Controller::es_admin()){
 			$id_user = $_SESSION["usuario"]->getId_user();
-        	$cliente = ot_cliente::obtener($id_user);
-        	$nombre_cliente = $cliente->getNombre();
+        	//$cliente = ot_cliente::obtener($id_user);
+        	$nombre_cliente = "Motomatch";
 			$tpl->newBlock("dentro"); 
 			if ($seccion == "Local::mostrar") {
 				     
@@ -195,15 +195,21 @@ class Ingreso_Controller{
 
 				//Select Medio
 				$id_usuario = $_SESSION['usuario']->getId_user();
-				$medio_descripcion = art_venta_medio::obtener_medios($id_usuario);
-            	foreach ($medio_descripcion as $key => $value) {
-                # code...
-                
-                	$tpl->newBlock("carga_medio_");
-                	$tpl->assign("id_medio_",$value->getId_medio());
-                	$tpl->assign("nombre_medio",$value->getNombre());
-            	}
 
+				$medios_pago = us_medio_pago::obtener($id_usuario);
+			 
+				if (count($medios_pago)) {
+					# code...
+					$tpl->newBlock("carga_medio_ok");
+					foreach ($medio_descripcion as $key => $value) {
+                	# code...
+                
+                		$tpl->newBlock("carga_medio_");
+                		$tpl->assign("id_medio_",$value->getId_medio());
+                		$tpl->assign("nombre_medio",$value->getNombre());
+            		}
+            	}
+            	
             	foreach ($_SESSION['locales']  as $key => $value) {
                 # code...
                 
@@ -433,6 +439,9 @@ class Ingreso_Controller{
 				$nombre_art_vendido = $nombre_art.','.$nom_marca.','.$nom_tipo;
 
 				//generar lote local para obtener el local
+				if ($value->getId_lote_local()->getId_lote()->getId_gc() != null) {
+					# code...
+				
 				$gc = $value->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
                 foreach ($gc as $clave => $valor) {
                     if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
@@ -440,7 +449,10 @@ class Ingreso_Controller{
                     }
                    }
 
-				
+				}
+				else{
+					$medida = 'Sin definir';
+				}
 
 
 

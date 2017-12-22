@@ -1,0 +1,119 @@
+<div class="container">
+	
+	  <h2>Ventas</h2>
+	  <h3>Cargar Ventas Antiguas</h3>
+ 							        
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Venta::alta_ventas_antiguas" method="post">
+	
+	   
+	    <h3>Detalles</h3>
+	     <a id="uno_mas_ventaanrigua">Añadir nuevo detalle</a>
+	  <div id="supremo">
+	    <div class="form-group" id="div_formulario">
+	     <div class="row " id="bloque_gastos_detalles">
+	
+	     <div class="control-label col-md-1 col-sm-1 col-xs-12">
+	      <label  for="gs_unico_nombre">Articulo:</label>
+	      </div>
+	      
+		    <div>
+		    	<div class="col-md-3 col-sm-3 col-xs-12">
+				     <select required name="alta_venta_antigua_art_lote[]" id="select_art_lote_local" data-live-search="true">
+				      <!-- START BLOCK : art_lote_local -->
+				        <option value="{id_lote_local}">{nombre_lote_local}</option>
+				      <!-- END BLOCK : art_lote_local -->
+
+				      <!-- START BLOCK : sin_art_lote_local -->
+				      <!-- END BLOCK : sin_art_lote_local -->
+				      
+				      </select>
+				      
+			    </div>
+
+		    </div>
+
+		<div class=" control-label col-md-1  col-sm-1 col-xs-12">
+	      <label  for="gs_unico_valor">Monto:</label>
+	      </div>
+	      
+		    <div>
+		    	<div class="col-md-3 col-sm-3 col-xs-12">
+				    <input type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="monto_venta_antigua[]">
+				      
+			    </div>
+
+		    </div>
+		     
+		    <div class="col-md-3 col-sm-3 col-xs-12">
+		    	<div class='input-group date' id='datetimepicker'>
+			            <input  placeholder="AAAA-MM-DD" name="fecha_venta_antigua[]" type='text' class="form-control" />
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+			        </div>
+		
+		    </div>
+
+		    <script type="text/javascript">
+				    $(function () {
+				    	
+				        $('#datetimepicker').datetimepicker({
+				        	//
+				        	format: 'YYYY-MM-DD HH:MM:SS'
+				        });
+				    });
+				</script>
+
+	    	
+	  
+		    
+		</div>	
+	   
+	
+			<div class="control-label col-md-6 col-sm-6 col-xs-12">
+	      		<label  for="gs_unico_nombre">Medio Pago:</label>
+	      	</div>
+	      
+		    <div>
+		    	<div class="col-md-6 col-sm-6 col-xs-12">
+				     <select required name="medio_pago_venta_antigua[]" id="select_art_tipo" data-live-search="true">
+				      <!-- START BLOCK : art_venta_medio_pago -->
+				        <option value="{id_medio_pago}">{nombre_medio_pago}</option>
+				      <!-- END BLOCK : art_venta_medio_pago -->
+				      
+				      </select>
+				      
+			    </div>
+
+		    </div>
+
+		
+		
+		
+	    </div>
+	    <div class="clearfix"></div>
+	</div>
+	    <div class="form-group">
+	    
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+	        	<button type="submit" id ="art_carga_btn" class="btn btn-default">Cargar</button>
+	      	</div>
+	      <!-- START BLOCK : con_locales_empl --> 
+	    <!-- END BLOCK : con_locales_empl -->    
+	    <!-- START BLOCK : sin_locales_empl_2 --> 
+	    <div class="alert alert-warning">
+  			<strong>Alerta!</strong> {mensaje_alerta}
+		</div>
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+	        	<button disabled="disabled" type="submit" class="btn btn-default">Cargar</button>
+	      	</div>
+	    <!-- END BLOCK : sin_locales_empl_2 -->     
+	      
+	    </div>
+
+	  
+
+	  </form>
+	</div>
+
+</div>

@@ -103,17 +103,29 @@ class art_lote_local {
         }
     }
 
-    public static function actualiza_($nuevo,$nuevonuevo){
+    public static function actualiza_($nuevo,$nuevonuevo,$id_lote_local = null,$id_lote = null){
        
         global $baseDatos;
-         
-        $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
+        
+        if ($id_lote_local == null) {
+            # code...
+            $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
+        }
+
+        
 
         $sql = "UPDATE `art_lote_local` SET `cantidad_parcial`= $nuevonuevo
                 WHERE `id_lote_local` = $id_lote_local ";
         $res = $baseDatos->query($sql);
 
-        $sql2 = art_lote_local::actualiza_lote_cantidad($nuevo);
+        if ($id_lote_local == null) {
+            # code...
+            $sql2 = art_lote_local::actualiza_lote_cantidad($nuevo);
+        }
+        else{
+            $sql2 = art_lote_local::actualiza_lote_cantidad($nuevo,$id_lote);
+        }
+        
         if ($sql && $sql2) {
              
             return $res; 
@@ -187,9 +199,17 @@ class art_lote_local {
 
 
 
-    public static function actualiza_lote_cantidad($nuevo){
+    public static function actualiza_lote_cantidad($nuevo,$id_lote_local = null){
         global $baseDatos;
-        $id_lote = $_SESSION["art_lote_local"]->getId_lote()->getId_lote();
+        if ($id_lote_local == null) {
+            # code...
+            $id_lote = $_SESSION["art_lote_local"]->getId_lote()->getId_lote();
+        }
+        else{
+
+            $id_lote = $id_lote_local;
+        }
+        
          
 
         $sql = "UPDATE `art_lote` SET `cantidad_total`=$nuevo 

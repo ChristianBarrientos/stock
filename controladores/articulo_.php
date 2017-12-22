@@ -39,7 +39,7 @@ class Articulo_Controller{
                                 $nombre_ = $art.','.$marca.','.$tipo;
                                 $nombre_ = str_replace(' ','',$nombre_);
 
-                                $nombre_ = $value->getId_art_conjunto()->getId_tipo()->getNombre().','.$tipo;
+                                $nombre_ = $marca.','.$tipo;
                                 /*$si_arra = $value->getId_gc()->getId_categoria();
                                
                                 
@@ -1337,61 +1337,44 @@ class Articulo_Controller{
  
          $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
         }
-        $medio_pago = art_venta_medio::obtener_medios($id_usuario);
-       
+
+        
+        $medio_pago = us_medio_pago::obtener($id_usuario);
         foreach ($medio_pago as $key6 => $value6) {
             $muestra = false;
-            
-            /*$dias_fin = '';
-            $dias1 = str_replace('1','Lunes',$dias);
-                    
-            $dias2 = str_replace('2','Martes',$dias1);
-                     
-            $dias3 = str_replace('3','Miercoles',$dias2);
-                     
-            $dias4 = str_replace('4','Jueves',$dias3);
-                     
-            $dias5 = str_replace('5','Viernes',$dias4);
-                    
-            $dias6 = str_replace('6','Sabado',$dias5);
-                    
-            $dias7 = str_replace('7','Domingo',$dias6);
 
-                    
-
-            $dias_fin = $dias1.','.$dias2.','.$dias3.','.$dias4.','.$dias5.','.$dias6.','.$dias7;
-            $dias_fin2 = str_replace('&',' ',$dias7);*7
-                
-                /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        
-        */
         
             $date_php = getdate();
-            $fecha_desde = $value6->getId_fechas_medio()->getFecha_hora_inicio();
-            $fecha_hasta = $value6->getId_fechas_medio()->getFecha_hora_fin();
-            $dias = $value6->getId_dias_medio()->getDias();
+            $okok_fecha = false;
+            if ($value6->getId_medio_fechas() != null) {
+                # code...
+                $fecha_desde = $value6->getId_medio_fechas()->getFecha_hora_inicio();
+                $fecha_hasta = $value6->getId_medio_fechas()->getFecha_hora_fin();
+                $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
+                $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
+
+            }
+            else{
+                $okok_fecha = true;
+            }
+            
+            $dias = $value6->getId_medio_dias()->getDias();
             //$dia_hoy = $date_php['wday'];
             $hoy = $date_php['year'].'-'.$date_php['mon'].'-'.$date_php['mday'];
-            $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
-            $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
+            
             //Verificar Fecha
-            if ($dias_faltantes_desde <= 0 && $dias_faltantes_hasta >=0) {
+            if ($okok_fecha) {
+                # code...
+                if ($dias_faltantes_desde <= 0 && $dias_faltantes_hasta >=0) {
                 
-                $muestra = true;
-            }else{
+                    $muestra = true;
+                }else{
                 
                 $muestra = false;
+                }
+            }
+            else{
+                $muestra = true;
             }
             //Verificar Dia
             $dia_hoy = $date_php['wday'];
@@ -1414,13 +1397,14 @@ class Articulo_Controller{
 
             if ($muestra) {
                 $tpl->newBlock("medio_pago_venta_opciones");
-                $descuento = $value6->getDescuento();
-                $tpl->assign("id_medio_pago",$value6->getId_medio());
+                $desimp = $value6->getDesImp()->getValor();
+                $desimp_signo = $value6->getDesImp()->getSigno();
+                $tpl->assign("id_medio_pago",$value6->getId());
                 //$tpl->assign("id_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
                 
-                if ($descuento != 0) {
+                if ($desimp != 0) {
                     
-                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'(-%'.$descuento.')');
+                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'('.$desimp_signo.'%'.$desimp.')');
                 }else{
                     $tpl->assign("nombre_medio_pago",$value6->getNombre());
                 }
@@ -1514,9 +1498,13 @@ class Articulo_Controller{
 
     public static function venta_finalizar(){
         $bandera = false;
+
         $cuotas = $_POST['cuotas_art_venta'];
         $medio = $_POST['medio_art_venta'];
         $total = $_POST['precio_final_art_venta'];
+
+        $cuotas2 = str_replace('$','',$cuotas);
+        
 
 
        
@@ -1531,15 +1519,12 @@ class Articulo_Controller{
         $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 
         $id_usuario = $_SESSION["usuario"]->getId_user();
-        
+
         //alta en art_venta  
-        $id_venta = art_venta::alta_art_venta($fecha_venta,$id_usuario,$medio,$total,$cuotas);
+        $id_venta = art_venta::alta($fecha_venta,$id_usuario,$medio,$total,$cuotas2);
         //alta en art unico
         $id_lote_local = $_SESSION["art_lote_local"]->getId_lote_local();
-       
-       
         $id_unico = art_unico::alta_art_unico($id_lote_local,$id_venta);
-        
 
         if ($id_venta != false && $id_lote_local != false  && $id_unico != false && $bandera == false) {
             //Actualizar Stock
@@ -1547,12 +1532,14 @@ class Articulo_Controller{
             $cantidad_parcial_art_lote_local =$_SESSION["art_lote_local"]->getCantidad_parcial();
 
             $okokok = art_lote_local::actualiza_($cantidad_total_art_lote,$cantidad_parcial_art_lote_local);
+
             if ($okokok) {
                
                 $art_nombre = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
                 $art_marca =  $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
                 $art_tipo = $_SESSION["art_lote_local"]->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
                 $nombre_completo_art =(string)$art_nombre.' ,'.$art_marca.' ,'.$art_tipo;
+
                 if (Ingreso_Controller::es_admin()) {
                     $tpl->newBlock("exito");
                     $tpl->assign("nombre_usuario",$_SESSION["usuario"]->getUsuario());
@@ -1965,9 +1952,6 @@ class Articulo_Controller{
             $tpl->assign("art_precio_2",'$'.$precio_base_vender2);
                 //Calcular Saldo a Favor
 
-            echo $precio_base_vender2;
-            echo "&&";
-            echo $precio_base_vender;
             
             $saldo_favor = $precio_base_vender2 - $precio_base_vender;
 

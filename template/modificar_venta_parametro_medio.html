@@ -44,10 +44,21 @@
 	    </div>
 	    <!-- START BLOCK : modificar_dias_parametros_medio -->
 	    <div class="form-group">
-	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_descuento">Descuento:</label>
+	      <label class="control-label col-sm-2 col-xs-12" for="venta_medio_parametro_desimp">Agregado:</label>
 	      <div class="col-md-5 col-sm-5 col-xs-12">
-	        <input type="number" class="form-control" max="100" min="0" id="venta_medio_parametro_descuento" placeholder="Ingrese valores en porcentajes. Si no posee descuento ingrese 0." name="venta_medio_parametro_descuento" value="{descuento}">
+	        <input   type="number" class="form-control" id="venta_medio_parametro_desimp" placeholder="Ingrese valores en porcentajes. Si no posee descuento ingrese 0." value="{desimp}" name="venta_medio_parametro_desimp">
 	      </div>
+
+	      <div class="col-md-5 col-sm-3 col-xs-12">
+			      	
+  				<select required id="select_art_general" name="venta_tipo_medio_desimp_signo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+  				 
+  				  <option value="-">Descuento</option>
+  				  <option value="+">Importe</option>
+  				 
+				      	
+  				</select>
+			</div>
 	    </div>
 
 	    <h4>Fechas de Disponibilidad</h4>

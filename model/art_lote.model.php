@@ -55,6 +55,7 @@ class art_lote {
 
     public static function generar_lote($id_lote){
         global $baseDatos;
+
         $res = $baseDatos->query("SELECT * FROM `art_lote` WHERE id_lote = $id_lote");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
@@ -65,7 +66,8 @@ class art_lote {
             else{
                 $prvd = 'null';
             }
-            $cb = art_codigo_barra::generar_cb($res_fil['id_cb']);
+
+            $cb = ($res_fil['codigo_barras']);
             if ($res_fil['id_gc'] != null) {
                 # code...
                 $gc = art_grupo_categoria::generar_gc($res_fil['id_gc']);

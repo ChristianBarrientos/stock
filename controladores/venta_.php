@@ -9,14 +9,16 @@ class Venta_Controller{
 
         if (Ingreso_Controller::admin_ok()) {
         	//code
-           $medios = art_venta_medio::obtener_medios($_SESSION["usuario"]->getId_user());
+         
+           $medios = us_medio_pago::obtener($_SESSION["usuario"]->getId_user());
 
-           if ($medios) {
+           if ($medios && count($medios)) {
                # code...
 
                 $numero = 1;
                 $tpl->newBlock("con_venta_medios");
                 $tpl->newBlock("buscador_visible");
+                
                 foreach ($medios as $key => $value) {
                     # code...
                      
@@ -24,20 +26,28 @@ class Venta_Controller{
                     $tpl->assign("numero", $numero);
                     $numero = $numero + 1;
                     $tpl->assign("nombre", $value->getNombre());
-                    $tpl->assign("descripcion", $value->getDescripcion()->getNombre());
-                    $tpl->assign("descuento", '%'.$value->getDescuento());
-                    $fecha_ini = $value->getId_fechas_medio()->getFecha_hora_inicio();
-                    $fecha_fini = $value->getId_fechas_medio()->getFecha_hora_fin();
+                    $tpl->assign("tipo", $value->getId_medio_tipo()->getNombre());
+                    $tpl->assign("desimp",'('.$value->getDesImp()->getSigno().')'.'%'.$value->getDesImp()->getValor());
+                    if ($value->getId_medio_fechas() != null) {
+                        # code...
+                        $fecha_ini = $value->getId_medio_fechas()->getFecha_hora_inicio();
+                        $fecha_fini = $value->getId_medio_fechas()->getFecha_hora_fin();
+                        $fecha_conjunta = $fecha_ini.'<->'.$fecha_fini;
+                    }
+                    else{
+                        $fecha_conjunta = 'Siempre';
+                    }
+                    
                     if ($fecha_fini == '0000-00-00' || $fecha_ini == 'fecha_ini') {
                         # code...
                         $tpl->assign("fechas",'Sin Definir');
                     }else{
-                        $fecha_conjunta = $fecha_ini.'<->'.$fecha_fini;
+                        
                         $tpl->assign("fechas",$fecha_conjunta);
                     }
                     
                    
-                    $dias =$value->getId_dias_medio()->getDias();
+                    $dias =$value->getId_medio_dias()->getDias();
                     $dias_fin = '';
                     $dias1 = str_replace('1','Lunes',$dias);
                     
@@ -70,7 +80,7 @@ class Venta_Controller{
                     $dias6 = ' ';
                     $dias7 = ' ';
                     $dias_fin2 = ' ';
-                    $tpl->assign("id_medio",$value->getId_medio());
+                    $tpl->assign("id_medio",$value->getId());
 
                     
                     
@@ -95,13 +105,19 @@ class Venta_Controller{
 			$nombre = $_POST['actualiza_nombre_local'];
         	$tpl = new TemplatePower("template/cargar_parametros_ventas_medio.html");
         	$tpl->prepare();
-            $medio_descripcion = art_venta_medio_descripcion::obtener_medios();
-            foreach ($medio_descripcion as $key => $value) {
+            $medios = us_medio_pago::obtener($_SESSION["usuario"]->getId_user());
+            $medios_pago_tipos = art_venta_medio_tipo::obtener();
+
+            if (count($medios_pago_tipos)) {
+                # code...
+            
+                foreach ($medios_pago_tipos as $key => $value) {
                 # code...
                 
-                $tpl->newBlock("cargar_descr_medio");
-                $tpl->assign("id_medio_descripcion",$value->getId_medio_descripcion());
-                $tpl->assign("nombre_descripcion",$value->getNombre());
+                    $tpl->newBlock("cargar_descr_medio");
+                    $tpl->assign("id_medio_descripcion",$value->getId());
+                    $tpl->assign("nombre_descripcion",$value->getNombre());
+                }
             }
 
         }
@@ -119,22 +135,41 @@ class Venta_Controller{
         	//code
         	$error = false;
             $nombre = $_POST['venta_medio_parametro_nombre'];
-            $descripcion = $_POST['venta_medio_parametro_descripcion'];
-            $descuento = $_POST['venta_medio_parametro_descuento'];
+            $medio_tipo = $_POST['venta_medio_parametro_descripcion'];
+
+            $valor_desimp = $_POST['venta_medio_parametro_desimp'];
+            $signo_desimp = $_POST['venta_tipo_medio_desimp_signo'];
+
             $fecha_desde = $_POST['venta_medio_parametro_fecha_inicio'];
             $fecha_hasta = $_POST['venta_medio_parametro_fecha_fin'];
             //1->Lunes 2->Martes 3->Miercoles...
             $dias = $_POST['venta_medio_parametro_dias_'];
-            if (is_numeric($descripcion)) {
-                $id_descripcion = $descripcion;
+
+
+            
+
+            if (is_numeric($medio_tipo)) {
+                $id_medio_tipo = $medio_tipo;
             }else{
                 //alta descripcion
-                $id_descripcion = art_venta_medio_descripcion::alta_art_venta_medio_descripcion($descripcion);
+                $id_medio_tipo = art_venta_medio_tipo::alta($medio_tipo);
             }
-            //Alta en art_venta_medio_fecha
-            $id_fechas_medio = art_venta_medio_fechas::alta_art_venta_medio_fechas($fecha_desde,$fecha_hasta);
+
+             if ($fecha_hasta == null || $fecha_desde == null) {
+                 # code...
+                $id_fechas_medio = null;
+             }
+             else{
+                //Alta en art_venta_medio_fecha
+                $id_fechas_medio = art_venta_medio_promo_fechas::alta($fecha_desde,$fecha_hasta);
+             }
+            
             //Alta en art_venta_medio_dias
             $dias_final = '';
+
+            //Alta desimp
+            $id_des_imp = art_venta_des_imp::alta($valor_desimp,$signo_desimp);
+
             $una_vez = true;
             foreach ($dias as $key => $value) {
                 # code...
@@ -147,23 +182,40 @@ class Venta_Controller{
                 $dias_final = $dias_final.'&'.$value;
 
             }
-            $id_dias_medio = art_venta_medio_dias::alta_art_venta_medio_dias($dias_final);
-            if ($id_dias_medio && $id_fechas_medio) {
+
+            $id_dias_medio = art_venta_medio_promo_dias::alta($dias_final);
+          
                 # code...
-                $id_usuario = $_SESSION["usuario"]->getId_user();
-                echo $id_descripcion;
-                $id_art_venta_medio = art_venta_medio::alta_art_venta_medio($nombre,$id_descripcion,$descuento,$id_fechas_medio,$id_dias_medio,$id_usuario);
-                if ($id_art_venta_medio) {
-                    $tpl = new TemplatePower("template/exito.html");
-                    $tpl->prepare();
-                }else{
-                   
-                    $error = true;
-                }
+            $id_usuario = $_SESSION["usuario"]->getId_user();
+
+            if ($id_fechas_medio == null) {
+                # code...
+
+            
+                $id_medio_pago = art_venta_medio_pago::alta($nombre,$id_medio_tipo,$id_des_imp,$id_dias_medio); //,$id_gart_aplica = null
+            }
+            else{
+               
+                $id_medio_pago = art_venta_medio_pago::alta($nombre,$id_medio_tipo,$id_des_imp,$id_dias_medio,$id_fechas_medio); //,$id_gart_aplica = null
+            }
+
+            if ($id_medio_pago) {
+                # code...
+                //Alta en us_medio_pago
+                $id_us_medio_pago = us_medio_pago::alta($id_usuario,$id_medio_pago);
+            }
+
+            if ($id_us_medio_pago) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+                $tpl->newBlock("alta_medio_pago_exito");
                 
             }else{
+                   
                 $error = true;
             }
+                
+          
             if ($error) {
                 # code...
               
@@ -196,30 +248,50 @@ class Venta_Controller{
     }
 
     public static function modificar_parametros_medio(){
-        if (Ingreso_Controller::admin_ok()) {
+        $id_venta_medio = $_GET['id_medio'];
+        $medios = us_medio_pago::obtener($_SESSION["usuario"]->getId_user());
+        $si_modifiacr = false;
+        foreach ($medios as $key2 => $value2) {
+                # code...
+            if ($value2->getId() == $id_venta_medio) {
+                    # code...
+                $si_modifiacr = true;
+                break;
+            }
+
+        }
+        if (Ingreso_Controller::admin_ok() && $si_modifiacr) {
              
-            $id_venta_medio = $_GET['id_medio'];
-            $venta = art_venta_medio::generar_venta_medio($id_venta_medio);
+            
+
+            $medio_pago = art_venta_medio_pago::generar($id_venta_medio);
             $tpl = new TemplatePower("template/modificar_venta_parametro_medio.html");
             $tpl->prepare();
             $tpl->assign("id_venta_medio", $id_venta_medio);
 
-            $tpl->assign("nombre", $venta->getNombre());
-            $medio_descripcion = art_venta_medio_descripcion::obtener_medios();
-            foreach ($medio_descripcion as $key => $value) {
+            $tpl->assign("nombre", $medio_pago->getNombre());
+            $medio_pago_tipos = art_venta_medio_tipo::obtener();
+            foreach ($medio_pago_tipos as $key => $value) {
                 # code...
                 
                 $tpl->newBlock("cargar_descr_medio");
-                $tpl->assign("id_medio_descripcion",$value->getId_medio_descripcion());
+                $tpl->assign("id_medio_descripcion",$value->getId);
                 $tpl->assign("nombre_descripcion",$value->getNombre());
             }
 
             $tpl->newBlock("modificar_dias_parametros_medio");
             //$tpl->assign("descripcion", $venta->getDescripcion());
-            $tpl->assign("descuento", $venta->getDescuento());
-            $tpl->assign("fecha_desde", $venta->getId_fechas_medio()->getFecha_hora_inicio());
-            $tpl->assign("fecha_hasta", $venta->getId_fechas_medio()->getFecha_hora_fin());
-            $dias_ = $venta->getId_dias_medio()->getDias();
+            $tpl->assign("desimp", $medio_pago->getDesImp()->getValor());
+            
+
+            if ($medio_pago->getId_medio_fechas() != null) {
+                # code...
+                $tpl->assign("fecha_desde", $medio_pago->getId_medio_fechas()->getFecha_hora_inicio());
+                $tpl->assign("fecha_hasta", $medio_pago->getId_medio_fechas()->getFecha_hora_fin());
+            }
+            
+            
+            $dias_ = $medio_pago->getId_medio_dias()->getDias();
             
             if (strpos($dias_, '1') !== false) {
 
@@ -259,7 +331,7 @@ class Venta_Controller{
         if (Ingreso_Controller::admin_ok()) {
             //code
             $id_venta_medio = $_GET['id_venta_medio'];
-            $art_venta_medio = art_venta_medio::generar_venta_medio($id_venta_medio);
+            $art_venta_medio = art_venta_medio_pago::generar($id_venta_medio);
             $error = false;
             $nombre = $_POST['venta_medio_parametro_nombre'];
             $descripcion = $_POST['venta_medio_parametro_descripcion'];
@@ -326,6 +398,141 @@ class Venta_Controller{
                 
         return $tpl->getOutputContent();
     }
+
+    public static function cargar_ventas_antiguas(){
+        if (Ingreso_Controller::admin_ok()) {
+            //code
+          
+               
+                $tpl = new TemplatePower("template/cargar_art_ventas_antiguas.html");
+                $tpl->prepare();
+                $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
+                if (isset($_SESSION["lote_local"])) {
+                    
+                    foreach ($_SESSION["lote_local"] as $key => $value) {
+                        # code...
+                        foreach ($value as $key2 => $value2) {
+                            # code...
+                            $tpl->newBlock("art_lote_local");
+                            $art = $value2->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+                            $marca = $value2->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+                            $tipo = $value2->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+                            $nombre_lote = $marca.', '.$tipo;
+
+                            $nombre_local = $value2->getId_local()->getNombre();
+                            $tpl->assign("id_lote_local",$value2->getId_lote_local());
+                            $tpl->assign("nombre_lote_local",$nombre_lote.'('.$nombre_local.')');
+                         }
+                    }
+                    $medios_pago = art_venta_medio_pago::obtener($_SESSION['usuario']->getId_user());
+                    foreach ($medios_pago as $key3 => $value3) {
+                        # code...
+                        $tpl->newBlock("art_venta_medio_pago");
+                        $tpl->assign("id_medio_pago",$value3->getId());
+                        $tpl->assign("nombre_medio_pago",$value3->getNombre() );
+                    }
+                  
+                    //$tpl->assign("id_lote_local", );
+                    //$tpl->assign("nombre_lote_local", );
+                    
+                    
+                }
+                else
+                {
+                    $tpl->newBlock("sin_art_lote_local");
+                }
+                
+
+                
+                
+          
+        }
+        else{
+            return Ingreso_Controller::salir();
+        }
+                
+        return $tpl->getOutputContent();
+    }
+
+
+    public static function alta_ventas_antiguas(){
+        if (Ingreso_Controller::es_admin()) {
+            $bandera = false;
+
+            $lote_local = $_POST['alta_venta_antigua_art_lote'];
+            $monto_venta_antigua = $_POST['monto_venta_antigua'];
+            $fecha_venta_antigua = $_POST['fecha_venta_antigua'];
+            $medio_pago_venta_antigua = $_POST['medio_pago_venta_antigua'];
+
+            $id_usuario = $_SESSION['usuario']->getId_user();
+
+
+
+            $counter = 0;
+            
+            $okok = true;
+            foreach ($lote_local as $key => $value) {
+            # code...
+                $id_venta = null;
+                $id_art_unico = null;
+
+                $id_venta = art_venta::alta($fecha_venta_antigua[$counter],$id_usuario,$medio_pago_venta_antigua[$counter],$monto_venta_antigua[$counter],null);
+
+                if ($id_venta) {
+                # code...
+                    echo "BienVenta";
+                    $id_art_unico = art_unico::alta_art_unico($value,$id_venta);
+                    if ($id_art_unico) {
+                        # code...
+                       
+                        $obj_lote_loca = art_lote_local::generar_lote_local_id_($value);
+                        $id_lote = $obj_lote_loca->getId_local()->getId_local();
+                        $obj_lote_local = $obj_lote_loca;
+                        
+                        $cantidad_total_art_lote = $obj_lote_local->getId_lote()->getCantidad();
+                        $cantidad_parcial_art_lote_local = $obj_lote_local->getCantidad_parcial();
+
+                        $cantidad_total_ult = (int)$cantidad_total_art_lote - 1;
+                        $cantidad_parcial_ult = (int)$cantidad_parcial_art_lote_local - 1;
+
+
+                        $okokok = art_lote_local::actualiza_($cantidad_total_ult,$cantidad_parcial_ult,$value,$id_lote);
+                        
+                    }else{
+                        echo "MalUnico";
+                        $okok = false;
+                    }
+
+                }
+                else{
+                    echo "MalVenta";
+                    $okok = false;
+                }
+                $counter = $counter + 1;
+
+            }
+            
+            if ($okok) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+                $tpl->newBlock("alta_ventas_antiguas");
+                
+                
+            }
+            else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+            }
+            
+        }
+        else{
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+        }
+      
+
+        return $tpl->getOutputContent();
+        }
 }
 
 ?>
