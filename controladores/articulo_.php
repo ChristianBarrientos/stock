@@ -2226,6 +2226,53 @@ class Articulo_Controller{
 
             return $tpl->getOutputContent();
         }
+
+        public static function form_alta_grupo_atributos(){
+            if (Ingreso_Controller::es_admin()) {
+                 
+                $tpl = new TemplatePower("template/cargar_grupo_atributos_art.html");
+                $tpl->prepare();
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
+        public static function alta_grupo_atributos(){
+            if (Ingreso_Controller::es_admin()) {
+                 
+                $art_gcat_nombre = $_POST['art_gcat_nombre'];
+                $art_gcat_des = $_POST['art_gcat_des'];
+
+                $gct_nombre = $_POST['gct_nombre'];
+                $gct_des = $_POST['gct_des'];
+
+                //Validar u.u
+
+                //generar categorias
+                $counter = 1;
+                $id_categorias = array();
+                foreach ($gct_nombre as $key => $value) {
+                    # code...
+                    //Alta ct
+                    
+                }
+
+                $tpl = new TemplatePower("template/cargar_grupo_atributos_art.html");
+                $tpl->prepare();
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
         
 
        public static function cargar_art_general(){

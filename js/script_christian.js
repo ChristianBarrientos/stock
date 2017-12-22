@@ -106,6 +106,57 @@ $(document).ready(function()
             fecha_datapicker_gasto = fecha_datapicker_gasto + 1; 
 
         });
+        
+        //Añadir detalle de grupo atributos art
+        $('#uno_mas_ctdetalle').click(function () {
+       
+
+            var divclearfix = $(document.createElement('div'));
+            divclearfix.addClass("clearfix");
+
+            var container = $(document.createElement('div'));
+            container.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(container).append('<label  for="art_tipo" value="Nombre:">Nombre:</label>');
+
+            var container2 = $(document.createElement('div'));
+            
+
+            var container3 = $(document.createElement('div'));
+            container3.addClass("col-md-3 col-sm-3 col-xs-12");
+            $(container3).append('<input type="text" class="form-control" id="gct_nombre" placeholder="Subtitulo del Gasto." name="gct_nombre[]">');
+
+            //container3.appendTo(container2);
+            $(container2).append(container3);
+
+
+            var containerval = $(document.createElement('div'));
+            containerval.addClass("control-label  col-md-1  col-sm-1 col-xs-12");
+            $(containerval).append('<label  for="art_tipo">Descripcion:</label>');
+
+            var container2val = $(document.createElement('div'));
+            
+
+            var container3val = $(document.createElement('div'));
+            container3val.addClass("col-md-3 col-sm-3 col-xs-12");
+            $(container3val).append('<input type="text" class="form-control" id="gct_des" placeholder="Valor del Gasto." name="gct_des[]">');
+
+            //container3.appendTo(container2);
+            $(container2val).append(container3val);
+
+            ////
+
+           
+
+
+            //$('#bloque_gastos_detalles').after(container,container2);
+            $('#bloque_gastos_detalles').append(divclearfix);
+            $('#bloque_gastos_detalles').append(container);
+            $('#bloque_gastos_detalles').append(container2);
+            $('#bloque_gastos_detalles').append(containerval);
+            $('#bloque_gastos_detalles').append(container2val);
+            
+
+        });
 
         //Añadir detalle de Ventas Antiguas
         $('#uno_mas_ventaanrigua').click(function () {
