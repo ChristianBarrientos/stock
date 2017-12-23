@@ -43,7 +43,7 @@ class us_art_gcat {
         return $res_fil['LastId'];
     }
 
-    public static function generar($id_usuario){
+    public static function obtener($id_usuario){
         //obtener empleados por local
         global $baseDatos;
         
@@ -62,7 +62,7 @@ class us_art_gcat {
 
             }
           
-            $us_art_gcat = new us_art_gcat($valor['us_art_gcat'],$art_gcat,$valor['id_usuario']);
+            $us_art_gcat = new us_art_gcat($valor['id_us_gcat'],$art_gcat,$valor['id_usuario']);
             return $us_art_gcat;
         }
         else{

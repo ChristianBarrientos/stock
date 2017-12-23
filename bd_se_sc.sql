@@ -584,6 +584,9 @@ CREATE TABLE  us_acceso (
      ) ENGINE=InnoDB;
 
 
+//AGREGAR
 
+//Agrega Columna habilitado en la tabla us_art_cat
+ALTER TABLE us_art_cat ADD habilitado BOOLEAN NOT NULL;
 
 

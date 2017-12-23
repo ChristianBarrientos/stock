@@ -279,51 +279,41 @@
 	    
 	    <h3>Datos de Grupo de Atributos</h3>
 	    <!-- START BLOCK : cargar_articulo_grupo -->
+	    <h4>Grupo Atributo Habilitado: {nom_grupo}</h4>
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
-	      <label  for="art_grupo_att">{des_cat}:</label>
-	     </div>
+
+	    <!-- START BLOCK : gattr_alta_art -->
+	    	<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
+	    	  <label  for="art_grupo_att">{nombre_attr}:</label>
+	    	 </div>
 	    
-	      	<div class="col-md-4 col-sm-3 col-xs-8">
-							         
-					<!-- START BLOCK : art_precio_base -->
-					  (*)
-					<input required min="1" type="number" class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base">
-					<!-- END BLOCK : art_precio_base -->  
-
-
-					<!-- START BLOCK : art_ganancia -->
-					  (*)
-					<input autocomplete="off" required  type="text" class="form-control" id="art_ganancia" placeholder="Ganancia, en porcentaje." name="art_ganancia">
-					<label class="col-md-12 control-label col-sm-3" id ="valor_calculado_ganancia" for="art_ganancia">:</label>
+	      	<div class="col-md-4 col-sm-3 col-xs-8">		         
 					
-					<!-- END BLOCK : art_ganancia -->
-
-				
-
-				    
-				    <!-- START BLOCK : sin_articulo_grupo -->
-				    <div class="col-md-12 col-xs-12">
-						<div class="alert alert-warning center-block">
-							<h3>Sin grupo de atributos cargados.</h3>
-							
-						</div>
-					</div>
-					 
-
-					<div class="col-md-12 col-sm-3 col-xs-12">
-				      	<button type="button" class="btn btn-primary btn-md disabled" data-toggle="modal" data-target="#agregar_articulo_nombre">
-							Agregar
-						</button>
-			        </div>
-				    <!-- END BLOCK : sin_articulo_grupo -->
-				      
+					  (*)
+					<input required  type="text" class="form-control" id="gattr" placeholder="{descripcion}" name="gattr[]">
+					<input id="id_cat" class="oculta_inputs2" name="id_cat[]" value={id_cat}>
+					
 			</div>
-			 
+			<div class="clearfix"></div>
+		<!-- END BLOCK : gattr_alta_art -->  
 		</div>
+
+		<!-- START BLOCK : id_us_gcat -->
+		<input id="id_us_gcat" class="oculta_inputs2" name="id_us_gcat" value={id_us_gcat}>
+		<!-- END BLOCK : id_us_gcat -->
 	    </div>
 		<!-- END BLOCK : cargar_articulo_grupo -->
+
+		<!-- START BLOCK : sin_articulo_grupo -->
+		<div class="col-md-12 col-xs-12">
+			<div class="alert alert-warning center-block">
+				<h3>Sin grupo de atributo habilitado.</h3>
+							
+			</div>
+		</div>
+					 
+		<!-- END BLOCK : sin_articulo_grupo -->
 	     <h3>Datos de Proveedor</h3>
 	     <!--<div class="form-group">
 	    <div class="row">

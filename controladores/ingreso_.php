@@ -35,7 +35,10 @@ class Ingreso_Controller{
 		if (isset($_SESSION["usuario"]) && Ingreso_Controller::es_admin()){
 			$id_user = $_SESSION["usuario"]->getId_user();
         	//$cliente = ot_cliente::obtener($id_user);
-        	$nombre_cliente = "Motomatch";
+        	
+        	$ot_cl = ot_cliente::generar($_SESSION["usuario"]->getId_user());
+        	$nombre_cliente = $ot_cl->getNombre();
+        	
 			$tpl->newBlock("dentro"); 
 			if ($seccion == "Local::mostrar") {
 				     

@@ -36,11 +36,11 @@ class art_grupo_categoria {
         
     }
 
-    public static function alta_art_gc($id_categoria,$id_gc_ = 0){
+    public static function alta_($id_categoria,$id_gc_ = 0){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_gc = art_grupo_categoria::ultimo_id_cb();
+        $id_gc = art_grupo_categoria::ultimo_id();
         
         $sql = "INSERT INTO `art_grupo_categoria`(`id_gc`, `id_categoria`) VALUES ($id_gc_,$id_categoria)";
         $res = $baseDatos->query($sql);
@@ -54,13 +54,13 @@ class art_grupo_categoria {
 
     }
 
-    public static function alta_art_gc_2($id_categoria){
+    public static function alta($id_categoria){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_gc = art_grupo_categoria::ultimo_id_cb();
+        $id_gc = art_grupo_categoria::ultimo_id();
         $id_gc = $id_gc - 1;
-        $sql = "INSERT INTO `art_grupo_categoria`(`id_gc`, `id_categoria`) VALUES ($id_gc,$id_categoria)";
+        $sql = "INSERT INTO `art_grupo_categoria`(`id_gc`, `id_categoria`) VALUES (0,$id_categoria)";
         $res = $baseDatos->query($sql);
         if ($res) {
             
@@ -73,7 +73,7 @@ class art_grupo_categoria {
     }
 
 
-    public static function ultimo_id_cb(){
+    public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_grupo_categoria'";
         $res = $baseDatos->query($sql_fecha_ab);

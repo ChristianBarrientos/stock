@@ -33,11 +33,11 @@ class art_categoria {
         }
     }
 
-    public static function alta_art_categoria($nombre,$valor,$descripcion = 'null'){
+    public static function alta($nombre,$descripcion = 'null',$valor = 'null'){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_categoria = art_categoria::ultimo_id_categoria();
+        $id_categoria = art_categoria::ultimo_id();
         
         $sql = "INSERT INTO `art_categoria`(`id_categoria`, `nombre`, `valor`, `descripcion`) VALUES (0,'$nombre','$valor','$descripcion')";
         $res = $baseDatos->query($sql);
@@ -50,7 +50,8 @@ class art_categoria {
         }
 
     }
-    public static function ultimo_id_categoria(){
+
+    public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_categoria'";
         $res = $baseDatos->query($sql_fecha_ab);

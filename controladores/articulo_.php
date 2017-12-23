@@ -871,7 +871,7 @@ class Articulo_Controller{
                         }
 
                        
-                       
+                    
                        /* $tpl->assign("des_cat", $value->getDescripcion());
                         $tpl->assign("cat_name_input", $value->getNombre());
                         if ($value->getNombre() == 'Precio') {
@@ -921,7 +921,65 @@ class Articulo_Controller{
                         $tpl->assign("nombre_local_art", str_replace(' ','',$value->getNombre()));
                                 
                 }
+                $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user()); 
 
+                $id_us_gcat = $us_gct->getId();
+                $us_art_cat = $us_gct->getId_us_art_cat();
+
+                foreach ($us_art_cat as $key6 => $value6) {
+                    # code...
+                    $estado = $value6->getHabilitado();
+                    if ($estado == true) {
+                        # code...
+                         
+                        $gattr = $value6;
+                        break;
+                    }
+                    else{
+                        $gattr = false;
+                    }
+                }
+
+                if ($gattr) {
+                    # code...
+                    $tpl->newBlock("cargar_articulo_grupo");
+                    
+                     
+                    $nom_grupo = $gattr->getNombre();
+                     
+
+                    $tpl->assign("nom_grupo",$nom_grupo);
+                    $gcts = $gattr->getId_gc();
+
+                    $cts = $gcts->getId_categoria();
+
+                    foreach ($cts as $key7 => $value7) {
+                        # code...
+                         
+                        $tpl->newBlock("gattr_alta_art");
+                            
+                        $tpl->assign("nombre_attr", $value7->getNombre());
+                        $des = $value7->getDescripcion();
+                        $id = $value7->getId_categoria();
+                        if ($des) {
+                            # code...
+                            $tpl->assign("descripcion",$des);
+                        }else{
+                            $tpl->assign("descripcion",'Ingrese un valor');
+                        }
+                        $tpl->assign("id_cat",$id);
+                        
+                        
+                        
+                    }
+                     
+                    $tpl->newBlock("id_us_gcat");
+                    $tpl->assign("id_us_gcat",$id_us_gcat);
+                    
+                }else{
+                    $tpl->newBlock("sin_articulo_grupo");
+                }
+    
                 $list_prvd_art = proveedor::obtener_prvd($_SESSION["usuario"]->getId_user());
                 
                 if ($list_prvd_art) {
@@ -952,6 +1010,31 @@ class Articulo_Controller{
 
 
         public static function alta_articulo(){
+
+        $id_us_gcat = $_POST['id_us_gcat'];
+        $valor_cat_attrs = $_POST['gattr'];
+        $id_cat_attrs = $_POST['id_cat'];
+
+        //Asinar valores a los atributos
+        if (isset($id_us_gcat) && $id_us_gcat != null) {
+            # code...
+            //Asigna valor a art_categoria
+            $counter = 0;
+            foreach ($id_cat_attrs as $key => $value) {
+                # code...
+                $okok = art_categoria::update_valores($value,$valor_cat_attrs[$counter]);
+                if ($okok) {
+                    # code...
+                    echo "OKok";
+
+                }else{
+                    echo "mal";
+                }
+
+            }
+
+            
+        }
         $datos_no_recibidos = false;
         //$art_cantidad_total = $_POST['art_cantidad_total'];
         $art_general = ucwords(strtolower($_POST['select_art_general']));
@@ -1103,40 +1186,7 @@ class Articulo_Controller{
 
         }
 
-       
-        //$id_cb = art_codigo_barra::alta_art_cb($art_cb);
 
-        //cargar art_categorias y art_grupo_categoria
-        
-        /*$list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
-
-            foreach ($list_art_grupo_att as $key => $value) {
-                        
-                $nombre =  $value->getNombre();
-                
-                if (strcmp($nombre, "Precio" ) == 0) {
-                 
-                    $id_categoria_precio = art_categoria::alta_art_categoria($nombre,$art_precio_base);//,"En moneda local"
-                     
-                    //Como precio entra primero, lo usamos como bandera para el id del grupo de categorias
-                    $id_gc = art_grupo_categoria::alta_art_gc($id_categoria_precio);
-
-                }
-
-                if (strcmp($nombre, "Ganancia" ) ==  0 ) {
-                 
-                
-                    $id_categoria_color = art_categoria::alta_art_categoria($nombre,$art_ganancia);//,'Ganancia en %'
-                    $ok = art_grupo_categoria::alta_art_gc_2($id_categoria_color);
-                    if ($ok) {
-                        $nook = false;
-                    }
-                    break;
-                }
-
-            
-
-            }*/
 
        
         $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
@@ -2059,6 +2109,8 @@ class Articulo_Controller{
             
         }
 
+
+
         public static function re_confirmar_venta(){
             $error = false;
 
@@ -2241,11 +2293,156 @@ class Articulo_Controller{
             return $tpl->getOutputContent();
         }
 
+        
+
+        public static function mostrar_gct(){
+            if (Ingreso_Controller::es_admin()) {
+                $tpl = new TemplatePower("template/seccion_admin_gct.html");
+                $tpl->prepare();
+
+                //Obtener Grupo de Atributos
+                
+                $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user());
+                
+                if ($us_gct) {
+                    # code...
+                    $tpl->newBlock("buscador_visible");
+                    $tpl->newBlock("con_gct");
+                    $counter = 1;
+                    $gct = $us_gct->getId_us_art_cat();
+
+                    foreach ($gct as $key => $value) {
+                        # code...
+                        
+                         
+                        $tpl->newBlock("con_gct_lista_cuerpo");
+                        $id_gct = $value->getId();
+                         
+
+                        $nombre_grupo = $value->getNombre();
+                        $des_grupo = $value->getDescripcion();
+                        $gcategorias = $value->getId_gc();
+                        $estado = $value->getHabilitado();
+
+                        echo "Estado";
+                        echo $estado;
+                        echo "FinEstado";
+                        $nombre_ = '';
+                        $categorias = $gcategorias->getId_categoria();
+                        foreach ($categorias as $key2 => $value2) {
+                            # code...
+                            //$ct = $value2->getId_categoria();
+                            $nombres = $value2->getNombre();
+
+                            $nombre_ = $nombre_.$nombres.'<br>';
+                        }
+
+                        $tpl->assign("numero",$counter);
+                        $tpl->assign("nombre",$nombre_grupo);
+                        $tpl->assign("des",$des_grupo);
+
+                        $tpl->assign("attr",$nombre_);
+
+                        if ($estado == true) {
+                            # code...
+                            $tpl->assign("habilitado",'Habilitado');
+                        }else
+                        {
+                            $tpl->assign("habilitado",'Desabilitado');
+                        }
+                        
+                        $tpl->assign("id_gc_",$id_gct);
+                        
+                        $counter = $counter + 1 ;
+                        
+                        $tpl->newBlock("modal_cambiar_estado");
+                        $tpl->assign("id_gct",$id_gct);
+                        $tpl->assign("id_us_art_cat",$id_gct);
+                    }
+                }
+
+               
+                
+                
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
+        
+
+        public static function cambiar_gs_estado(){
+           
+
+            if (Ingreso_Controller::es_admin()) {
+                $id_us_art_cat = $_GET['id_us_art_cat'];
+                $estado = $_POST['estado'];
+                //Obtener gcat
+                $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user());
+                $us_art_cat = $us_gct->getId_us_art_cat();
+                foreach ($us_art_cat as $key => $value) {
+                    # code...
+                    //Desabilitar Todos los us_art_cat
+                    $id = $value->getId();
+                    $okok = us_art_cat::update($id,'habilitado',0);
+                    if ($okok) {
+                        # code...
+                        echo "Correcto";
+                    }
+                    else{
+                        echo "Incorrecto";
+                    } 
+
+                }
+
+                //Updtade al Seleccionado
+                if ($estado == 1) {
+                    # code...
+                    $okok2 = us_art_cat::update($id_us_art_cat,'habilitado',true);
+                }
+                else
+                {
+                    $okok2 = us_art_cat::update($id_us_art_cat,'habilitado',false);
+                }
+                
+
+                if ($okok2) {
+                    # code...
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                     
+                }
+                else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+
+                 }
+                
+
+                
+                
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
         public static function form_alta_grupo_atributos(){
             if (Ingreso_Controller::es_admin()) {
-                 
                 $tpl = new TemplatePower("template/cargar_grupo_atributos_art.html");
                 $tpl->prepare();
+
+                
+                
 
             }
             else{
@@ -2258,27 +2455,57 @@ class Articulo_Controller{
 
         public static function alta_grupo_atributos(){
             if (Ingreso_Controller::es_admin()) {
-                 
-                $art_gcat_nombre = $_POST['art_gcat_nombre'];
-                $art_gcat_des = $_POST['art_gcat_des'];
+                  
+                $nombre_grupo = $_POST['art_gcat_nombre'];
+                $des_gupo = $_POST['art_gcat_des'];
 
                 $gct_nombre = $_POST['gct_nombre'];
                 $gct_des = $_POST['gct_des'];
 
-                //Validar u.u
 
-                //generar categorias
-                $counter = 1;
-                $id_categorias = array();
+                //Generara las Categorias
+                $id_ct_todas = array();
+                $counter = 0;
+                $una_vez = true;
+                
                 foreach ($gct_nombre as $key => $value) {
                     # code...
-                    //Alta ct
                     
+                     
+                    $id_ct_todas[] = art_categoria::alta($value,$gct_des[$counter]);
+
+                    if ($una_vez) {
+                        
+                        $id_gc = art_grupo_categoria::alta($id_ct_todas[0]);
+                        $counter = $counter + 1;
+                        $una_vez = false;
+                        continue;
+                    }
+                    
+                    $ok_gct = art_grupo_categoria::alta_($id_ct_todas[$counter],$id_gc);
+                     
+
+                    $counter = $counter + 1;
                 }
 
-                $tpl = new TemplatePower("template/cargar_grupo_atributos_art.html");
-                $tpl->prepare();
+             
+                //Alta en us_art_cat
+                
+                $id_us_art_cat = us_art_cat::alta($nombre_grupo,$des_gupo,$id_gc);
+                //Alta em us_art_gcat
+                
+                $id_us_gcat = us_art_gcat::alta($id_us_art_cat,$_SESSION['usuario']->getId_user());
 
+                if ($id_us_gcat) {
+                    # code...
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("alta_gcat_exito");
+                    
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
             }
             else{
                
