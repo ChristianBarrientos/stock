@@ -1218,10 +1218,10 @@ class Articulo_Controller{
         $tpl->assign("valor_pago", '$'.$precio_base_venta_);
         //$tpl->assign("id_cat_gc_art_vendido",$value->getId_categoria());
 
-        if ($lote_local->getId_lote()->getId_us_gcat() != null) {
+        if ($lote_local->getId_lote()->getId_gc() != null) {
             # code...
         
-            $art_cb = $lote_local->getId_lote()->getId_us_gcat()->getId_categoria();
+            $art_cb = $lote_local->getId_lote()->getId_gc()->getId_categoria();
        
         foreach ($art_cb as $key => $value) {
             

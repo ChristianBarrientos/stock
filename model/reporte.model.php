@@ -66,45 +66,45 @@ class reporte {
         if ($medio == 0 && $local == 0) {
            
             $res = $baseDatos->query("SELECT * 
-                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
+                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio_pago` AS vm
                                 WHERE av.fecha_hora 
                                                 BETWEEN '$fecha_desde' AND '$fecha_hasta'
                                                 AND au.id_venta = av.id_venta 
-                                                AND vm.id_medio = av.id_medio "); 
+                                                AND vm.id_medio_pago = av.id_medio_pago "); 
         }
         if ($medio != 0 && $local == 0) {
             # code...
             $res = $baseDatos->query("SELECT * 
-                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio` AS vm
+                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio_pago` AS vm
                                 WHERE av.fecha_hora 
                                                 BETWEEN '$fecha_desde' AND '$fecha_hasta'
                                                 AND au.id_venta = av.id_venta 
-                                                AND vm.id_medio = av.id_medio 
-                                                AND vm.id_medio = '$medio'"); 
+                                                AND vm.id_medio_pago = av.id_medio_pago 
+                                                AND vm.id_medio_pago = '$medio'"); 
         }
 
         if ($medio == 0 && $local != 0) {
             # code...
             echo "aca";
             $res = $baseDatos->query("SELECT * 
-                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio` AS vm
+                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio_pago` AS vm
                                 WHERE av.fecha_hora 
                                                 BETWEEN '$fecha_desde' AND '$fecha_hasta'
                                                 AND au.id_venta = av.id_venta 
                                                 AND ll.id_lote_local = au.id_lote_local 
                                                 AND ll.id_local = '$local'
-                                                AND vm.id_medio = av.id_medio"); 
+                                                AND vm.id_medio_pago = av.id_medio_pago"); 
             //AND vm.id_medio = av.id_medio 
         }
 
         if ($medio != 0 && $local != 0) {
             $res = $baseDatos->query("SELECT * 
-                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio` AS vm
+                                FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio_pago` AS vm
                                 WHERE av.fecha_hora 
                                                 BETWEEN '$fecha_desde' AND '$fecha_hasta'
                                                 AND au.id_venta = av.id_venta 
-                                                AND vm.id_medio = av.id_medio 
-                                                AND vm.id_medio = '$medio'
+                                                AND vm.id_medio_pago = av.id_medio_pago 
+                                                AND vm.id_medio_pago = '$medio'
                                                 AND ll.id_lote_local = au.id_lote_local 
                                                 AND ll.id_local = '$local'"); 
         }
@@ -112,8 +112,8 @@ class reporte {
          
             
        
-        
-      
+        printf("Errormessage: %s\n", $baseDatos->error);
+       
         $filas = $res->fetch_all(MYSQLI_ASSOC);
        
         if (count($filas) != 0) {

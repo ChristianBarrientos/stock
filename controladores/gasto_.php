@@ -392,7 +392,8 @@ class Gasto_Controller{
 
                 $i = 1;
                 $tpl->newBlock("con_detalles_gasto_lista");
-
+                $total = 0;
+                $total_ = 0;
                 foreach ($detalles as $key => $value) {
                     # code...
                     $gasto_unico = $value;
@@ -417,12 +418,14 @@ class Gasto_Controller{
                                 # code...
                                 $valor = $value->getValor();
                                 $condicion = $value->getCondicion();
-                                if (strcmp($condicion, "+")) {
+                                if (strcmp($condicion, "+") == 0) {
                                     # code...
+
                                     $sumar = $sumar + $valor;
                                 }
-                                if (strcmp($condicion, "-")) {
+                                if (strcmp($condicion, "-") == 0) {
                                     # code...
+
                                     $restar = $restar + $valor;
                                 }
                             }
@@ -433,6 +436,7 @@ class Gasto_Controller{
                         }
                         
                         $valor_finali = $gasto_unico->getValor() + $sumar - $restar;
+                        $total_ = $total_ + $valor_finali;
                         $tpl->assign("valor", '$'.$valor_finali );
 
                         $tpl->assign("fecha_hora", $gasto_unico->getFecha_hora());
@@ -481,7 +485,7 @@ class Gasto_Controller{
                             $tpl->newBlock("modal_ver_subgasto");
                             $tpl->assign("id_gsunico_subgs", $gasto_unico->getId_gasto_unico());
                             $numero = 1;
-                            $total = 0;
+                            
                             foreach ($subgastos as $key => $value) {
                                 # code...
                                 $valor = $value->getValor();
@@ -505,12 +509,18 @@ class Gasto_Controller{
                                     $total = $total - $valor;
                                 }
                                 $numero = $numero + 1;
+
                             }
-                            $tpl->assign("total", $total);
+                            
+
                         }
                         $i = $i + 1;
                     }
+                    
                 }
+
+                $tpl->newBlock("total_gastos");
+                $tpl->assign("total", $total_);
             }
             else{
                 $tpl->newBlock("sin_detalles_gasto_lista");
@@ -547,14 +557,15 @@ class Gasto_Controller{
            
 
             if ($sub_gasto) {
-
+                
                 //Preguntar si existe un grupo de subgastos para $gasto
-
-                $id_gsub_gasto = $gasto->getId_gsub_gasto()->getId_gsub_gasto();
+                
+                $id_gsub_gasto = $gasto->getId_gsub_gasto();
 
 
                 if ($id_gsub_gasto == null) {
                     //Generar gs_gsubgasto
+                    
                     $id_gsub_gasto = gs_gsub_gasto::alta($sub_gasto);
                     //agregar al gasto unico
                     $okok = $gasto->update($id_gsunico,'id_gsub_gasto',$id_gsub_gasto);
@@ -562,7 +573,7 @@ class Gasto_Controller{
 
                 }else{
                     //Agregar al grupo existente
-              
+                    $id_gsub_gasto = $gasto->getId_gsub_gasto()->getId_gsub_gasto();
                     $okok = gs_gsub_gasto::agregar($id_gsub_gasto,$sub_gasto);
 
                 }

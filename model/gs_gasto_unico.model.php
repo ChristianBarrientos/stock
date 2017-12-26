@@ -68,6 +68,7 @@ class gs_gasto_unico {
 
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
+
             if ($res_fil['id_gsub_gasto'] != null) {
                 # code...
                 $id_gsub_gasto = gs_gsub_gasto::generar($res_fil['id_gsub_gasto']);

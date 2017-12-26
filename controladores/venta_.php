@@ -271,11 +271,12 @@ class Venta_Controller{
 
             $tpl->assign("nombre", $medio_pago->getNombre());
             $medio_pago_tipos = art_venta_medio_tipo::obtener();
+        
             foreach ($medio_pago_tipos as $key => $value) {
                 # code...
                 
                 $tpl->newBlock("cargar_descr_medio");
-                $tpl->assign("id_medio_descripcion",$value->getId);
+                $tpl->assign("id_medio_descripcion",$value->getId());
                 $tpl->assign("nombre_descripcion",$value->getNombre());
             }
 

@@ -204,11 +204,12 @@ class Ingreso_Controller{
 				if (count($medios_pago)) {
 					# code...
 					$tpl->newBlock("carga_medio_ok");
-					foreach ($medio_descripcion as $key => $value) {
+					
+					foreach ($medios_pago as $key => $value) {
                 	# code...
                 
                 		$tpl->newBlock("carga_medio_");
-                		$tpl->assign("id_medio_",$value->getId_medio());
+                		$tpl->assign("id_medio_",$value->getId());
                 		$tpl->assign("nombre_medio",$value->getNombre());
             		}
             	}
@@ -442,22 +443,28 @@ class Ingreso_Controller{
 				$nombre_art_vendido = $nombre_art.','.$nom_marca.','.$nom_tipo;
 
 				//generar lote local para obtener el local
-				if ($value->getId_lote_local()->getId_lote()->getId_us_gcat()) {
+				if ($value->getId_lote_local()->getId_lote()->getId_gc()) {
 					# code...
 			
-				if ($value->getId_lote_local()->getId_lote()->getId_us_gcat() != null) {
+				if ($value->getId_lote_local()->getId_lote()->getId_gc() != null) {
 					# code...
 				
-				$gc = $value->getId_lote_local()->getId_lote()->getId_us_gcat()->getId_categoria();
+				$gc = $value->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
+
+				$attrs = '';
                 foreach ($gc as $clave => $valor) {
-                    if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
-                            $medida = $valor->getValor();
-                    }
+
+                	$valorattr = $valor->getValor();
+                	$nombre = $valor->getNombre();
+                	
+                	$attrs = $attrs.$valorattr.'('.$nombre.')';
+                	
+                   
                    }
 
 				}
 				else{
-					$medida = 'Sin definir';
+					$attrs = 'Sin definir';
 				}
 
 				}
@@ -474,7 +481,7 @@ class Ingreso_Controller{
 				$tpl->assign("local", $nom_local);
 				$fecha_venta = $value->getId_venta()->getFecha_hora();
 
-				$tpl->assign("medida", $medida);
+				$tpl->assign("attrs", $attrs);
 
 				$tpl->assign("fecha_venta", $fecha_venta);
 				$id_venta_ =  $value->getId_venta()->getId_venta();
@@ -568,8 +575,8 @@ class Ingreso_Controller{
 			$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
 
 			//Medio Pago
-			$descuento = $value->getId_venta()->getMedio()->getDescuento();
-			$medio_pago = $value->getId_venta()->getMedio()->getNombre();
+			$descuento = $value->getId_venta()->getMedio_pago()->getDesImp()->getValor();
+			$medio_pago = $value->getId_venta()->getMedio_pago()->getNombre();
 			$medio_pago = $medio_pago.' (%'.$descuento.')';
 			 
 			
@@ -947,7 +954,7 @@ class Ingreso_Controller{
     	$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
     	if ($medio != 0) {
     		# code...
-    		$medio_ = art_venta_medio::generar_venta_medio($medio);
+    		$medio_ = art_venta_medio_pago::generar($medio);
     	}
     	if ($local != 0) {
     		# code...
@@ -1009,7 +1016,7 @@ class Ingreso_Controller{
 		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['Cant','Articulo','Medio de Pago','Cuotas','Precio Final'];
+		$columnas = ['N°','Articulo','Medio de Pago','Precio Final'];//'cuotas'
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
@@ -1033,10 +1040,10 @@ class Ingreso_Controller{
 		foreach ($respuesta as $key => $value) {
 			// 
 			
-			$id_medio_descripcion = $value->getId_venta()->getMedio()->getDescripcion();
-			$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
+			$id_medio_descripcion = $value->getId_venta()->getMedio_pago()->getId_medio_tipo()->getNombre();
+			//$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
 
-			$nombre_medio_pago = $value->getId_venta()->getMedio()->getNombre();
+			$nombre_medio_pago = $value->getId_venta()->getMedio_pago()->getNombre();
 			//if ($todo) {
 				# code...
 				 
@@ -1093,7 +1100,8 @@ class Ingreso_Controller{
 				}
 				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
 				$medio_limpio[] = $medio_sin;
-				$respuesta_final[] = [$numero_cont,$nom_completo,$nombre_medio_pago,$cuotas,$precio_final];
+
+				$respuesta_final[] = [$numero_cont,$nom_completo,$nombre_medio_pago,$precio_final];//$cuotas
 				$numero_cont = $numero_cont + 1;
 			}
 			

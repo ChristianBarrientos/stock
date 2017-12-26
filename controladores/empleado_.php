@@ -181,19 +181,31 @@ class Empleado_Controller{
                 if ($us_gastos == null) {
                     # code...
                     //Generar Gasto desde 0
+                    $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
+                    $hoy = getdate();
+                    $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                    $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
+                    $id_ggs = $id_gasto_sueldos->getId_ggs();
+                    $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_ggs);
+                    $id_us_ggs = us_ggs::alta($id_gasto);
+                    $okok = us_gastos::alta($id_jefe,$id_us_ggs);
 
                 }else{
                     
                     $us_ggs = $us_gastos->getId_us_ggs();
+
                     foreach ($us_ggs as $key => $value) {
                         # code...
                         $gasto = $value->getId_gasto();
                         $nombregs = $gasto->getNombre();
-                        if (strcmp($nombregs, "Sueldos" )) {
+                        if (strcmp($nombregs, "Sueldos" ) == 0) {
                              
                             $id_gasto_sueldos = $gasto->getId_us_gastos();
                             break;
                         }else{
+                            //Crear Gastos Sueldos
+                            //Preguntar si tiene gastos el usuario
+
                             $id_gasto_sueldos = null;
                         }
                     }
@@ -202,14 +214,52 @@ class Empleado_Controller{
                         # code...
                         //Agregar Gasto al grupo
 
+                        $hoy = getdate();
+                        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                        $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
+                        $id_ggs = $id_gasto_sueldos->getId_ggs();
+                        $okok = gs_grupo::agrega($id_ggs,$id_gasto_unico);
+                        if ($okok) {
+                            # code...
+                            echo "Bien";
+                        }else{
+                            echo "Mal";
+                        }
+
+
+
                     }else{
+                        $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
+                
+
+                        //Crear gasto
+                        $hoy = getdate();
+                        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                        $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
+
+                        $id_ggs = gs_grupo::alta($id_gasto_unico);
+
+                        $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_ggs);
+
+                        //Agregar a us_ggs
+                        
+                        $id_us_ggs = $us_ggs[0]->getId_us_ggs();
+                        $okok = us_ggs::agrega($id_us_ggs,$id_gasto);
+                        
                         //Crear Gasto 
+
 
                     }
                     
                 }
-                $tpl = new TemplatePower("template/exito.html");
-                $tpl->prepare();
+                if ($okok) {
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+               
             }
             else{
                
