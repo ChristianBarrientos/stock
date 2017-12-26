@@ -43,6 +43,27 @@ class us_art_gcat {
         return $res_fil['LastId'];
     }
 
+
+    public static function generar($id_us_gcat){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `us_art_gcat` WHERE id_us_gcat = $id_us_gcat");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0){
+            
+            $id_us_art_cat = us_art_cat::generar($res_fil['id_us_art_cat']);
+            $us_art_gcat = new us_art_gcat($res_fil['id_us_gcat'],$id_us_art_cat,$res_fil['id_usuario']);
+            return $us_art_gcat;
+        }
+        else{
+           
+            return false;
+        }
+        
+    }
+
     public static function obtener($id_usuario){
         //obtener empleados por local
         global $baseDatos;

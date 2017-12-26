@@ -367,10 +367,6 @@ class Gasto_Controller{
             $fecha3 = $fecha2[0];
             $fecha_hasta_ = strtotime("$fecha3");
 
-
-            
-            
-
             $tpl = new TemplatePower("template/seccion_admin_gasto_detalles.html");
             $tpl->prepare();
             $tpl->newBlock("modal_agrega_detalles");
@@ -406,16 +402,51 @@ class Gasto_Controller{
                     
                         $tpl->newBlock("con_detalles_gasto_lista_cuerpo");
                         $tpl->assign("numero", $i);
+
                         $tpl->assign("nombre", $gasto_unico->getNombre());
-                        $tpl->assign("valor", '$'.$gasto_unico->getValor());
+                        $sumar = 0;
+                        $restar = 0;
+                        if ($gasto_unico->getId_gsub_gasto() != null) {
+                            # code...
+                            $gsubgs = false;
+                            $subgastos = $gasto_unico->getId_gsub_gasto()->getId_sub_gasto();
+
+                            
+
+                            foreach ($subgastos as $key => $value) {
+                                # code...
+                                $valor = $value->getValor();
+                                $condicion = $value->getCondicion();
+                                if (strcmp($condicion, "+")) {
+                                    # code...
+                                    $sumar = $sumar + $valor;
+                                }
+                                if (strcmp($condicion, "-")) {
+                                    # code...
+                                    $restar = $restar + $valor;
+                                }
+                            }
+
+                        }else{
+                            $gsubgs = true;
+
+                        }
+                        
+                        $valor_finali = $gasto_unico->getValor() + $sumar - $restar;
+                        $tpl->assign("valor", '$'.$valor_finali );
+
                         $tpl->assign("fecha_hora", $gasto_unico->getFecha_hora());
 
-                        if ($gasto_unico->getId_gsub_gasto() == null) {
+                        if ($gsubgs) {
                         # code...
                             $tpl->assign("sub_gasto", 'No Posee');
                         }
                         else{
-                            $tpl->assign("sub_gasto", 'Si posee hay q listar');
+                            $id_gs_unico = $gasto_unico->getId_gasto_unico();
+                            $btn_subgastos = '<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#ver'.$id_gs_unico.'">
+                                Ver Subgasto
+                                </button>';
+                            $tpl->assign("sub_gasto", $btn_subgastos);
                         }
                     
 
@@ -435,8 +466,48 @@ class Gasto_Controller{
                             $tpl->assign("observaciones", 'Sin Comentarios');
                         }
 
-                   
+                        $tpl->assign("id_gsunico_subgs", $gasto_unico->getId_gasto_unico());
+                        
+                        $tpl->newBlock("modal_agrega_subgasto");
+                        $tpl->assign("id_gsunico_subgs", $gasto_unico->getId_gasto_unico());
+                        $tpl->assign("id_gasto_", $gasto_unico->getId_gasto_unico());
 
+                        $tpl->newBlock("modal_fecha");
+                        $tpl->assign("id_gasto_unico_", $gasto_unico->getId_gasto_unico());
+                        $tpl->assign("id_gasto_unico__", $gasto_unico->getId_gasto_unico());
+
+                        if (!$gsubgs) {
+                            //Modal de detalles de subgastos
+                            $tpl->newBlock("modal_ver_subgasto");
+                            $tpl->assign("id_gsunico_subgs", $gasto_unico->getId_gasto_unico());
+                            $numero = 1;
+                            $total = 0;
+                            foreach ($subgastos as $key => $value) {
+                                # code...
+                                $valor = $value->getValor();
+                                $condicion = $value->getCondicion();
+                                $nombre = $value->getNombre();
+                                $fecha_hora = $value->getFecha_hora();
+
+                                $tpl->newBlock("movimiento_subgasto");
+                                $tpl->assign("numero", $numero);
+                                $tpl->assign("nombre", $nombre);
+                                $tpl->assign("fecha_hora", $fecha_hora);
+                                $tpl->assign("valor", $valor);
+
+                                if (strcmp($condicion, "+")) {
+                                    $tpl->assign("condicion", 'Suma');
+                                    $total = $total + $valor;
+
+                                }
+                                if (strcmp($condicion, "-")) {
+                                    $tpl->assign("condicion", 'Resta');
+                                    $total = $total - $valor;
+                                }
+                                $numero = $numero + 1;
+                            }
+                            $tpl->assign("total", $total);
+                        }
                         $i = $i + 1;
                     }
                 }
@@ -449,6 +520,67 @@ class Gasto_Controller{
 
            
            
+            
+        }
+        else{
+            return Ingreso_Controller::salir();
+        }
+
+        return $tpl->getOutputContent();       
+    }
+
+    public static function alta_gsunico_subgasto(){
+
+        $id_gsunico = $_GET['id_gsunico'];
+        $gssub_nombre = $_POST['gsunico_subgasto_nombre'];
+        $gssub_valor = $_POST['gsunico_subgasto_valor'];
+        $gssub_fechahora = $_POST['gsunico_subgasto_fechahora'];
+        $gssub_condicion = $_POST['gsunico_subgasto_condicion'];
+        $gssub_descripcion = $_POST['gsunico_subgasto_descripcion'];
+   
+        if (Ingreso_Controller::admin_ok()) {
+
+            $gasto = gs_gasto_unico::generar($id_gsunico);
+            
+            $sub_gasto = gs_subgasto::alta($gssub_nombre,$gssub_valor,$gssub_descripcion,$gssub_fechahora,$gssub_condicion);
+
+           
+
+            if ($sub_gasto) {
+
+                //Preguntar si existe un grupo de subgastos para $gasto
+
+                $id_gsub_gasto = $gasto->getId_gsub_gasto()->getId_gsub_gasto();
+
+
+                if ($id_gsub_gasto == null) {
+                    //Generar gs_gsubgasto
+                    $id_gsub_gasto = gs_gsub_gasto::alta($sub_gasto);
+                    //agregar al gasto unico
+                    $okok = $gasto->update($id_gsunico,'id_gsub_gasto',$id_gsub_gasto);
+
+
+                }else{
+                    //Agregar al grupo existente
+              
+                    $okok = gs_gsub_gasto::agregar($id_gsub_gasto,$sub_gasto);
+
+                }
+                
+                
+
+            }
+
+            if ($okok) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+
+            }else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+
+            }
+
             
         }
         else{

@@ -114,87 +114,15 @@ class Articulo_Controller{
                                     
                                     $tpl->assign("cantidad_total",$cantodad_final_lote_local);
 
-                                    if ($value->getId_us_gcat() != null) {
-                                        # code...
-                                        $gc = $value->getId_us_gcat()->getId_categoria();
-                                    
 
-                                    
-                                    foreach ($gc as $clave => $valor) {
-                                        if (strcmp($valor->getNombre(), "Medida" ) == 0 ) {
-                                            $medida = $valor->getValor();
-
-                                            
-                                        }
-
-                                        if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
-                                            $precio_base = $valor->getValor();
-                                            
-                                        }
-
-                                        if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
-                                            $por_ciento_t =  $valor->getValor();
-                                            if ($por_ciento_t == 100) {
-                                                # code...
-                                                $por_ciento_t_2 = 1;
-                                            }else{
-                                                if ($por_ciento_t < 10) {
-                                                    # code...
-                                                    $por_ciento_t_2 = '0.0'.$por_ciento_t;
-                                                }else{
-                                                    $por_ciento_t_2 = '0.'.$por_ciento_t;
-                                                }
-                                               
-                                            }
-                                            
-                                            
-                                            $precio_tarjeta = $precio_base + ($precio_base * $por_ciento_t_2);
-                                             
-
-                                            
-                                        }
-
-                                        if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
-                                            $por_ciento_p = $valor->getValor();
-                                            if ($por_ciento_p == 100) {
-                                                # code...
-                                                $por_ciento_p_2 = 1;
-                                            }else{
-                                                if ($por_ciento_p < 10) {
-                                                    # code...
-                                                    $por_ciento_p_2 = '0.0'.$por_ciento_p;
-                                                }else{
-                                                    $por_ciento_p_2 = '0.'.$por_ciento_p;
-                                                }
-                                                
-                                            }
-                                          
-                                            $credito_personal = $precio_base + ($precio_base * $por_ciento_p_2);
-                                            
-                                        }
-
-                                        if (strcmp($valor->getNombre(), "Ganancia" ) == 0 ) {
-                                            
-                                            $ganancia = $valor->getValor();
-                                            
-                                            $precio_final = $precio_base + ($precio_base * '0'.'.'.$ganancia);
-
-                                            
-                                        }
-
-                                        if (strcmp($valor->getNombre(), "Color" ) == 0 ) {
-                                            $art_color = $valor->getValor();
-                                            
-                                        }
-                                    }
-
-                                    
-                                    }
                                     $precio_base = $value->getPrecio_base();
                                     $ganancia = $value->getImporte();
 
-                                    $porcentaje_ganancia = (int)'0'.'.'.$ganancia;
-                                    $precio_final = (int)$precio_base + ((int)$precio_base * $porcentaje_ganancia);
+                                    //$porcentaje_ganancia = (int)'0'.'.'.$ganancia;
+
+                                    $prc_final = ($ganancia * (int)$precio_base)/100 ;
+                                    $precio_fff = (int)$precio_base + (int)$prc_final;
+                                    $precio_final = round($precio_fff,2);
                                     //Obtener Proveedor
                                     if ($value->getId_proveedor() != 'null') {
                                         # code...
@@ -263,6 +191,25 @@ class Articulo_Controller{
                                     }
                                     else{
                                         $tpl->assign("precio_final",'Sin Definir');
+                                    }
+
+                                    if ($value->getId_gc() != null) {
+                                        # code...
+                                        $gc = $value->getId_gc()->getId_categoria();
+                                     
+                                        $attrf = '';
+                                        foreach ($gc as $clave => $valor) {
+
+                                            $nombre_att = $valor->getNombre();
+                                            $valor_att = $valor->getValor();
+                                            $attrf = $attrf.$valor_att.' ('.$nombre_att.')'.'<br>';
+                                        }
+
+                                        $tpl->assign("attr",$attrf);
+                                    
+                                    }
+                                    else{
+                                        $tpl->assign("attr",'Sin Atributos.');
                                     }
 
                                     //Obtener Codigo de barras
@@ -843,55 +790,6 @@ class Articulo_Controller{
                      }
                 }
                 
-                $list_art_grupo_att = art_grupo_categoria::obtener_categoriast();
-                 
-                 
-                if ($list_art_grupo_att) {
-
-                     foreach ($list_art_grupo_att as $key => $value) {
-                        
-                        $cate =  $value->getNombre();
-                        $des =  $value->getDescripcion();
-                        
-                        if (strcmp($cate, "Precio" ) == 0 && strcmp($des, 'null' ) != 0) {
-                            $tpl->newBlock("cargar_articulo_grupo");
-                            $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_precio_base");
-                            
-                        }
-                       
-
-                        if (strcmp($cate, "Ganancia" ) == 0 && strcmp($des, 'null' ) != 0) {
-                            $tpl->newBlock("cargar_articulo_grupo");
-                            $tpl->assign("des_cat", $des);
-                            $tpl->newBlock("art_ganancia");
-                            
-                            
-                            
-                        }
-
-                       
-                    
-                       /* $tpl->assign("des_cat", $value->getDescripcion());
-                        $tpl->assign("cat_name_input", $value->getNombre());
-                        if ($value->getNombre() == 'Precio') {
-                            $tpl->assign("tipo_art_input", 'number');
-                        }
-
-                        if ($value->getNombre() == 'Medida') {
-                            $tpl->assign("tipo_art_input", 'text');
-                        }*/
-                        
-                        
-                        /*$tpl->assign("tipo_articulo", $value->getNombre());*/
-                     }
-                }
-                else{
-                    $tpl->newBlock("sin_articulo_grupo");
-                    
-                }
-                                
-              
                 foreach ($_SESSION['locales'] as $key => $value) {
                         
                         $tpl->newBlock("locales_empleado_alta");
@@ -907,31 +805,23 @@ class Articulo_Controller{
 
                 foreach ($_SESSION['locales'] as $key => $value) {
 
-                        
-                        //art_carga_local_fecha_{id_art_local} para rescatar el valor del input echa
-                        //art_local_cantidad_{id_art_local}
                         $tpl->newBlock("locales_alta");
                         $tpl->assign("id_local_", $value->getId_local());
-                        //$tpl->assign("id_local_", $value->getId_local());
                         $tpl->assign("id_art_local1", $value->getId_local());
                         $tpl->assign("id_art_local", $value->getId_local());
                         $tpl->assign("nombre_local", $value->getNombre());
-                        
                         $tpl->assign("nombre_local_art_2", str_replace(' ','',$value->getNombre()));
                         $tpl->assign("nombre_local_art", str_replace(' ','',$value->getNombre()));
                                 
                 }
                 $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user()); 
-
                 $id_us_gcat = $us_gct->getId();
                 $us_art_cat = $us_gct->getId_us_art_cat();
 
                 foreach ($us_art_cat as $key6 => $value6) {
-                    # code...
+
                     $estado = $value6->getHabilitado();
                     if ($estado == true) {
-                        # code...
-                         
                         $gattr = $value6;
                         break;
                     }
@@ -941,7 +831,7 @@ class Articulo_Controller{
                 }
 
                 if ($gattr) {
-                    # code...
+
                     $tpl->newBlock("cargar_articulo_grupo");
                     
                      
@@ -1013,28 +903,44 @@ class Articulo_Controller{
 
         $id_us_gcat = $_POST['id_us_gcat'];
         $valor_cat_attrs = $_POST['gattr'];
-        $id_cat_attrs = $_POST['id_cat'];
+       
 
         //Asinar valores a los atributos
         if (isset($id_us_gcat) && $id_us_gcat != null) {
             # code...
             //Asigna valor a art_categoria
-            $counter = 0;
-            foreach ($id_cat_attrs as $key => $value) {
-                # code...
-                $okok = art_categoria::update_valores($value,$valor_cat_attrs[$counter]);
-                if ($okok) {
-                    # code...
-                    echo "OKok";
+            //generar us_gcat
+            $us_art_gcat = us_art_gcat::generar($id_us_gcat);
+            $id_cat = $us_art_gcat->getId_us_art_cat()->getId_gc()->getId_categoria();
 
-                }else{
-                    echo "mal";
+           
+            //Valores
+            
+            $una_vez = true;
+            $counter = 0;
+
+            foreach ($id_cat as $key => $value) {
+                $id_ct = art_categoria::alta($value->getNombre(),$value->getDescripcion(),$valor_cat_attrs[$counter]);
+
+                if ($una_vez) {  
+                    $id_gc = art_grupo_categoria::alta_($id_ct);
+   
+                    
+                    $counter = $counter + 1;
+                    $una_vez = false;
+                    continue;
                 }
 
+                 
+                $ok_gct = art_grupo_categoria::alta_($id_ct,$id_gc);
+                $counter = $counter + 1;
             }
-
             
+        }else{
+            $id_gc = null;
         }
+
+
         $datos_no_recibidos = false;
         //$art_cantidad_total = $_POST['art_cantidad_total'];
         $art_general = ucwords(strtolower($_POST['select_art_general']));
@@ -1143,7 +1049,7 @@ class Articulo_Controller{
         }
         else{
             
-            $id_proveedor = null;
+            $id_proveedor = 'null';
         }
         //cargar codigo de barras
 
@@ -1160,9 +1066,10 @@ class Articulo_Controller{
 
         if ($pos === false) {
             //No esta
-            
+            $codigo_barras = $art_cb;
             if ($art_cb == null) {
-                $codigo_barras = '000000000001';
+
+                $codigo_barras = 'null';
             
             }
         }else{
@@ -1232,14 +1139,9 @@ class Articulo_Controller{
           }
         //agregar a Lote
 
-        if ($id_proveedor != null) {
 
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor);
-        }else{
-            
-
-            $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia);
-        }   
+        $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor,$id_gc);
+         
         
 
         //cargar art_carga y art_lote_local
@@ -1743,33 +1645,7 @@ class Articulo_Controller{
             
 
             $lote = art_lote::generar_lote($id_lote);
-            if ($lote->getId_us_gcat()) {
-                # code...
-           
-            $id_gc = $lote->getId_us_gcat();
-            foreach ($id_gc->getId_categoria() as $key => $valor) {
-                
-                if (strcmp($valor->getNombre(), "Precio" ) == 0 ) {
-                    $id_precio = $valor->getId_categoria();
-                }
-                if (strcmp($valor->getNombre(), "Tarjeta" ) == 0 ) {
-                    $id_tarjeta = $valor->getId_categoria();
-                }
-                if (strcmp($valor->getNombre(), "CreditoP" ) == 0 ) {
-                    $id_creditop = $valor->getId_categoria();
-                }
-
-                if (strcmp($valor->getNombre(), "Ganancia" ) == 0 ) {
-                    $ganancia = $valor->getId_categoria();
-                }
-            }
-            
-            $ok_precio_base = art_categoria::update_valores($id_precio,$precio_base);
-            $ok_precio_importe= art_categoria::update_valores($ganancia,$ganancia_importe);
-            $ok_precio_tarjeta = art_categoria::update_valores($id_tarjeta,$precio_tarjeta);
-            $ok_precio_credito = art_categoria::update_valores($id_creditop,$precio_credito);
-            
-            }
+        
  
             $ok = art_lote::update($id_lote,'precio_base',$precio_base);
             $ok_1 = art_lote::update($id_lote,'importe',$ganancia_importe);
@@ -2324,9 +2200,6 @@ class Articulo_Controller{
                         $gcategorias = $value->getId_gc();
                         $estado = $value->getHabilitado();
 
-                        echo "Estado";
-                        echo $estado;
-                        echo "FinEstado";
                         $nombre_ = '';
                         $categorias = $gcategorias->getId_categoria();
                         foreach ($categorias as $key2 => $value2) {
@@ -2360,6 +2233,10 @@ class Articulo_Controller{
                         $tpl->assign("id_us_art_cat",$id_gct);
                     }
                 }
+                else{
+                     
+                    $tpl->newBlock("sin_gct");
+                }
 
                
                 
@@ -2390,13 +2267,6 @@ class Articulo_Controller{
                     //Desabilitar Todos los us_art_cat
                     $id = $value->getId();
                     $okok = us_art_cat::update($id,'habilitado',0);
-                    if ($okok) {
-                        # code...
-                        echo "Correcto";
-                    }
-                    else{
-                        echo "Incorrecto";
-                    } 
 
                 }
 
@@ -2441,9 +2311,6 @@ class Articulo_Controller{
                 $tpl = new TemplatePower("template/cargar_grupo_atributos_art.html");
                 $tpl->prepare();
 
-                
-                
-
             }
             else{
                
@@ -2475,13 +2342,15 @@ class Articulo_Controller{
                     $id_ct_todas[] = art_categoria::alta($value,$gct_des[$counter]);
 
                     if ($una_vez) {
+                         
+                        $id_gc = art_grupo_categoria::alta_($id_ct_todas[0]);
                         
-                        $id_gc = art_grupo_categoria::alta($id_ct_todas[0]);
                         $counter = $counter + 1;
                         $una_vez = false;
+                         
                         continue;
                     }
-                    
+                     
                     $ok_gct = art_grupo_categoria::alta_($id_ct_todas[$counter],$id_gc);
                      
 

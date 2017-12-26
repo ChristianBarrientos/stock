@@ -20,11 +20,11 @@ class gs_subgasto {
        
     }
 
-    public static function alta_gs_subgasto( $nombre,$valor,$descripcion,$fecha_hora,$condicion){
+    public static function alta($nombre,$valor,$descripcion,$fecha_hora,$condicion){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $id_sub_gasto = gs_subgasto::ultimo_id_sub_gasto();
+        $id_sub_gasto = gs_subgasto::ultimo_id();
         
         $sql = "INSERT INTO `gs_subgasto`(`id_sub_gasto`, `nombre`, `valor`,`descripcion`,`fecha_hora`,`condicion`) VALUES (0,'$nombre',$valor,'$descripcion','$fecha_hora','$condicion')";
         $res = $baseDatos->query($sql);
@@ -37,7 +37,7 @@ class gs_subgasto {
         }
 
     }
-    public static function ultimo_id_sub_gasto(){
+    public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='gs_subgasto'";
         $res = $baseDatos->query($sql_fecha_ab);
@@ -62,9 +62,6 @@ class gs_subgasto {
             
             return false;
         }
-       
-
-
     }
 
 

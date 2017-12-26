@@ -352,6 +352,7 @@ CREATE TABLE  us_art_cat (
      nombre VARCHAR(100) NOT NULL,
      descripcion VARCHAR(100),
      id_gc INTEGER NOT NULL,
+     habilitado BOOLEAN NOT NULL,
      FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_us_art_cat)
      ) ENGINE=InnoDB;
@@ -421,14 +422,14 @@ CREATE TABLE  art_lote (
      id_provedor INTEGER ,
      cantidad_total INTEGER NOT NULL,
      codigo_barras VARCHAR(100), 
-     id_us_gcat INTEGER,
+     id_gc INTEGER,
      descripcion VARCHAR(100),
      id_art_fotos INTEGER,
      precio_base DEC(15,2) NOT NULL,
      importe DEC(15,2) NOT NULL,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
-     FOREIGN KEY (id_us_gcat) REFERENCES us_art_gcat(id_us_gcat) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_art_fotos) REFERENCES art_fotos(id_art_fotos) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_lote)
      ) ENGINE=InnoDB;
@@ -584,9 +585,5 @@ CREATE TABLE  us_acceso (
      ) ENGINE=InnoDB;
 
 
-//AGREGAR
-
-//Agrega Columna habilitado en la tabla us_art_cat
-ALTER TABLE us_art_cat ADD habilitado BOOLEAN NOT NULL;
 
 

@@ -90,6 +90,15 @@ class gs_gasto_unico {
 
     }
 
+    public static function update($id_gasto_unico, $columna, $nuevo_valor){
+        //obtener empleados por local
+        global $baseDatos;
+
+        $res = $baseDatos->query(" UPDATE `gs_gasto_unico` SET `$columna`='$nuevo_valor' WHERE id_gasto_unico = $id_gasto_unico");  
+         
+        return $res;
+    }
+
 
     public function getId_gasto_unico()
     {

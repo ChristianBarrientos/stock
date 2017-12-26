@@ -7,7 +7,7 @@ class Empleado_Controller{
         		$tpl = new TemplatePower("template/cargar_empleado.html");
 				$tpl->prepare();
 				
-                 print_r($_SESSION['locales']);
+                  
 				foreach ($_SESSION['locales'] as $key => $value) {
                         $tpl->newBlock("locales_empleado_alta");
                         $cadena = $value->getId_zona();
@@ -137,6 +137,9 @@ class Empleado_Controller{
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
+
+        $sueldo = $_POST['empl_sueldo'];
+
         if ($dni == null) {
             $dni = 'NULL';
         }
@@ -155,8 +158,7 @@ class Empleado_Controller{
         if ($telefono == null) {
             $telefono = 'NULL';
         }
-        echo "aca";
-        print_r($locales);
+       
         //Cargar en tabla us_datos
         //ucwords(strtolower($_POST['empl_correo']))
        
@@ -171,6 +173,40 @@ class Empleado_Controller{
                      
                     $id_zona = mp_zona::obtener_zona($key);
                     us_local::agregar_us_a_local($id_usuario,$key);
+                }
+                //Preguntar si tiene grupo de gastos definido
+                $id_jefe = $_SESSION['usuario']->getId_user();
+
+                $us_gastos = us_gastos::obtener($id_jefe);
+                if ($us_gastos == null) {
+                    # code...
+                    //Generar Gasto desde 0
+
+                }else{
+                    
+                    $us_ggs = $us_gastos->getId_us_ggs();
+                    foreach ($us_ggs as $key => $value) {
+                        # code...
+                        $gasto = $value->getId_gasto();
+                        $nombregs = $gasto->getNombre();
+                        if (strcmp($nombregs, "Sueldos" )) {
+                             
+                            $id_gasto_sueldos = $gasto->getId_us_gastos();
+                            break;
+                        }else{
+                            $id_gasto_sueldos = null;
+                        }
+                    }
+                    //Preguntar si existe un gasto con el nombre de Sueldos
+                    if ($id_gasto_sueldos != null) {
+                        # code...
+                        //Agregar Gasto al grupo
+
+                    }else{
+                        //Crear Gasto 
+
+                    }
+                    
                 }
                 $tpl = new TemplatePower("template/exito.html");
                 $tpl->prepare();
