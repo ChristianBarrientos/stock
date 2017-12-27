@@ -499,12 +499,12 @@ class Gasto_Controller{
                                 $tpl->assign("fecha_hora", $fecha_hora);
                                 $tpl->assign("valor", $valor);
 
-                                if (strcmp($condicion, "+")) {
+                                if (strcmp($condicion, "+") == 0) {
                                     $tpl->assign("condicion", 'Suma');
                                     $total = $total + $valor;
 
                                 }
-                                if (strcmp($condicion, "-")) {
+                                if (strcmp($condicion, "-") == 0) {
                                     $tpl->assign("condicion", 'Resta');
                                     $total = $total - $valor;
                                 }
