@@ -185,8 +185,10 @@ class Empleado_Controller{
                     $hoy = getdate();
                     $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
                     $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
-                    $id_ggs = $id_gasto_sueldos->getId_ggs();
-                    $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_ggs);
+                    
+                    $id_gs_grupo = gs_grupo::alta($id_gasto_unico);
+                    
+                    $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_gs_grupo);
                     $id_us_ggs = us_ggs::alta($id_gasto);
                     $okok = us_gastos::alta($id_jefe,$id_us_ggs);
 
@@ -200,7 +202,8 @@ class Empleado_Controller{
                         $nombregs = $gasto->getNombre();
                         if (strcmp($nombregs, "Sueldos" ) == 0) {
                              
-                            $id_gasto_sueldos = $gasto->getId_us_gastos();
+                            $id_gasto_sueldos = $value->getId_gasto();
+
                             break;
                         }else{
                             //Crear Gastos Sueldos
@@ -217,8 +220,10 @@ class Empleado_Controller{
                         $hoy = getdate();
                         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
                         $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
-                        $id_ggs = $id_gasto_sueldos->getId_ggs();
+                        
+                        $id_ggs = $id_gasto_sueldos->getId_ggs()->getId_ggs();
                         $okok = gs_grupo::agrega($id_ggs,$id_gasto_unico);
+                       
                         if ($okok) {
                             # code...
                             echo "Bien";
@@ -252,9 +257,22 @@ class Empleado_Controller{
                     }
                     
                 }
+
                 if ($okok) {
-                    $tpl = new TemplatePower("template/exito.html");
-                    $tpl->prepare();
+                    //Agregar gasto unico a us_gmv
+                    $id_gmv = us_gmv::alta($id_gasto_unico);
+                    //Agregar gmv a us_sueldo
+             
+                    $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo);
+                    if ($id_us_sueldos) {
+                        # code...
+                        $tpl = new TemplatePower("template/exito.html");
+                        $tpl->prepare();
+                    }else{
+                        $tpl = new TemplatePower("template/error.html");
+                        $tpl->prepare();
+                    }
+                    
                 }else{
                     $tpl = new TemplatePower("template/error.html");
                     $tpl->prepare();
@@ -369,8 +387,15 @@ class Empleado_Controller{
                         $direccion_ = $valor->getId_contacto()->getDireccion();
                         $correo_ = $valor->getId_contacto()->getCorreo();
                         $telefono_ = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
+
                         $usuario_ = $valor->getUsuario();
                         $pass_ = $valor->getPass();
+
+                        //obtener sueldo
+                        $us_sueldos = us_sueldos::obtener($id_usuario);
+                    
+                        $sueldo_base = $us_sueldos->getBasico();
+                  
 
                         $tpl->newBlock("form");
                         $tpl->assign("id_empleado", $id_usuario);
@@ -379,6 +404,7 @@ class Empleado_Controller{
                         $tpl->assign("dni__", $dni_);
                         $tpl->assign("fecha_alt__", $fecha_alt_);
                         $tpl->assign("fecha_nac__", $fecha_nac_);
+                        $tpl->assign("sueldo_base", $sueldo_base);
                         $tpl->assign("direccion__", $direccion_);
                         $tpl->assign("correo__", $correo_);
                         $tpl->assign("telefono__", $telefono_);
@@ -393,6 +419,8 @@ class Empleado_Controller{
                         $tpl->assign("dni_", $dni_);
                         $tpl->assign("fecha_alt_", $fecha_alt_);
                         $tpl->assign("fecha_nac_", $fecha_nac_);
+                        $tpl->assign("sueldo_base_", $sueldo_base);
+
                         $tpl->assign("direccion_", $direccion_);
                         
                         if ($correo_ == 'NULL') {
@@ -447,7 +475,7 @@ class Empleado_Controller{
 
     public static function alta_modificacion(){
         $id_usuario_empleado = $_GET['id_empleado'];
-
+        $sueldo_base = $_POST['empl_sueldo'];
         $nombre__ = ucwords(strtolower($_GET['nombre__']));
         $apellido__ = ucwords(strtolower($_GET['apellido__']));
         $genero__ = $_GET['genero__'];
@@ -463,7 +491,7 @@ class Empleado_Controller{
 
         $datos_viejos = array($nombre__,$apellido__,$genero__,$dni__,$fecha_nac__,$fecha_alta__,$direccion__,$correo__,$telefono__,$usuario__,$pass__,$locales__);
                                 
-                                 
+                 
         $nombre = ucwords(strtolower($_POST['empl_nombre']));
         $apellido = ucwords(strtolower($_POST['empl_apellido']));
         $genero = $_POST['empl_genero'];
@@ -509,7 +537,7 @@ class Empleado_Controller{
         }
         
         if (!(usuario::verificar_existencia($usuario)) && $usuario != $usuario__) {
-                echo "usuariomotherfuckers";
+               
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
                 return $tpl->getOutputContent();
@@ -606,8 +634,22 @@ class Empleado_Controller{
         }
 
         if ($ok_up) {
-                $tpl = new TemplatePower("template/exito.html");
-                $tpl->prepare();
+            //Update en us sueldos
+                $us_sueldos = us_sueldos::obtener($id_usuario_empleado);
+                $id_sueldo = $us_sueldos->getId();
+                echo "aca";
+                echo $sueldo_base;
+                echo "Finac";
+                $okok = us_sueldos::update($id_sueldo,'basico',$sueldo_base);
+                if ($okok) {
+                    # code...
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();    
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+               
             }
         else{
             $tpl = new TemplatePower("template/error.html");

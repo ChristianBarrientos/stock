@@ -11,7 +11,7 @@
 	    <!-- END BLOCK : error_usuario -->
 
 	  <!-- START BLOCK : form -->
-	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_modificacion&id_prvd={id_prvd}" method="post">
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Empleado::alta_modificacion&id_empleado={id_empleado}&nombre__={nombre__}&apellido__={apellido__}&dni__={dni__}&fecha_alt__={fecha_alt__}&fecha_nac__={fecha_nac__}&sueldo_base={sueldo_base}&direccion__={direccion__}&correo__={correo__}&telefono__={telefono__}&usuario__={usuario__}&pass__={pass__}&genero__={genero__}&usuario__={usuario__}" method="post">
 	  <!-- END BLOCK : form -->
 
 	    <!-- START BLOCK : datos_modificar_empleado -->
@@ -84,6 +84,14 @@
             });
         </script>
 	    </div>
+
+	    <div class="form-group">
+	      <label class="control-label col-sm-2 col-xs-12" for="empl_sueldo">Sueldo Base(*):</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input  required type="number" class="form-control" id="empl_sueldo" placeholder="Ingrese basico del empleado" name="empl_sueldo" value = "{sueldo_base_}">
+	      </div>
+	    </div>
+
 	    <h3>Datos de Contacto</h3>
 	    
 	    <div class="form-group">
@@ -103,6 +111,39 @@
 	      <div class="col-md-5 col-sm-5 col-xs-10">
 	        <input  value = "{telefono_}" type="empl_telefono" class="form-control" id="empl_telefono" placeholder="Ingrese telefono del empleado" name="empl_telefono">
 	      </div>
+	    </div>
+
+	    <h3>Datos de Usuario del Sistema</h3>
+	    
+	    <div class="form-group">
+	      <label class="control-label col-sm-2 col-xs-12" for="empl_usuario">Usuario(*):</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input required type="empl_usuario" class="form-control" id="empl_usuario" placeholder="Ingrese usuario para el empleado" name="empl_usuario" value="{usuario_}">
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label col-sm-2 col-xs-12" for="empl_pass">Contraseña(*):</label>
+	      <div class="col-md-5 col-sm-5 col-xs-12">
+	        <input required type="empl_pass" class="form-control" id="empl_pass" placeholder="Ingrese contrasela para el usuario del empleado" name="empl_pass" value="{pass_}">
+	      </div>
+	    </div>
+
+	    <h3>Locales en los que trabaja</h3>
+	    
+	    <div class="form-group">
+	     	<!-- START BLOCK : locales_empleado_alta -->
+	        <div id="seleccionar_local_empl" class="checkbox">
+			  <label><input name="empl_local[]" type="checkbox" value="{id_local}" {checked_sel}>{nombre_local}</label>
+		    </div>
+		    <!-- END BLOCK : locales_empleado_alta -->
+		    <!-- START BLOCK : sin_locales_empl -->
+		    <div class="col-md-12 col-xs-12">
+				<div class="alert alert-warning center-block">
+					<h3>No puede dar de alta empleados sin tener antes un local cargado.</h3>
+					
+				</div>
+			</div>
+		    <!-- END BLOCK : sin_locales_empl -->
 	    </div>
 
 	    

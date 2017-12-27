@@ -62,6 +62,9 @@ include('model/art_venta_des_imp.model.php');
 include('model/us_medio_pago.model.php');
 include('model/us_art_cat.model.php');
 include('model/us_art_gcat.model.php');
+include('model/us_sueldos.model.php');
+include('model/us_gmv.model.php');
+
 
 
 /*Templates-Vistas*/
