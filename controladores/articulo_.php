@@ -815,8 +815,14 @@ class Articulo_Controller{
                                 
                 }
                 $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user()); 
-                $id_us_gcat = $us_gct->getId();
-                $us_art_cat = $us_gct->getId_us_art_cat();
+
+                
+                if ($us_gct != null) {
+                    # code...
+                    $id_us_gcat = $us_gct->getId();
+                    $us_art_cat = $us_gct->getId_us_art_cat();
+                }
+                
 
                 foreach ($us_art_cat as $key6 => $value6) {
 
@@ -937,7 +943,8 @@ class Articulo_Controller{
             }
             
         }else{
-            $id_gc = null;
+           
+            $id_gc = 'null';
         }
 
 
@@ -1088,7 +1095,7 @@ class Articulo_Controller{
                
             }else{
                 echo "NO GENERADO CODIGO DE BARRAS";
-                $codigo_barras = null;
+                $codigo_barras = 'null';
             }
 
         }

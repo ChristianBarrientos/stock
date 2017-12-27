@@ -32,14 +32,14 @@ class art_lote {
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_us_gcat`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
         $res = $baseDatos->query($sql);
-        printf("Errormessage: %s\n", $baseDatos->error);
+        
         if ($res) {
              
             return $id_lote;
         }else{
-             
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 
