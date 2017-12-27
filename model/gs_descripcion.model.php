@@ -69,14 +69,17 @@ class gs_descripcion {
         global $baseDatos;
         
         $res = $baseDatos->query("SELECT * FROM `gs_descripcion`");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            $gs_des = array();
 
-        $res_fil = $res->fetch_assoc();
-        if (count($res_fil) != 0) {
-            
-            return $res_fil;
+            foreach ($filas as $clave => $valor) {
+                $gs_des [] = new gs_descripcion($valor['id_gs_des'],$valor['nombre'],$valor['descripcion']);
+            }
+
+            return $gs_des;
         }
         else{
-            
             return false;
         }
     }

@@ -1146,7 +1146,7 @@ class Articulo_Controller{
           }
         //agregar a Lote
 
-
+          echo $id_gc;
         $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor,$id_gc);
          
         

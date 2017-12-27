@@ -105,15 +105,23 @@ class Gasto_Controller{
                     
                  if (count($_SESSION['locales']) != 0) {
                     $tpl->newBlock("con_locales_empl");
-                     $gs_des = gs_descripcion::obtener();
+                    $gs_des = gs_descripcion::obtener();
                  
-                    if ($gs_des) {
+                    if (count($gs_des) > 1) {
                     # code...
+                      
+                        foreach ($gs_des as $key => $value) {
+                            # code...
                         
-                        $tpl->newBlock("gasto_descripcion");
-                        $tpl->assign("valor_id_gasto_des", $gs_des['id_gs_des']);
-                        $tpl->assign("nombre_gasto_des", $gs_des['nombre']);
+                            $tpl->newBlock("gasto_descripcion");
+                            $tpl->assign("valor_id_gasto_des", $value->getId_gs_des());
+                            $tpl->assign("nombre_gasto_des", $value->getNombre());
+                        }
 
+                    }else{
+                        $tpl->newBlock("gasto_descripcion");
+                        $tpl->assign("valor_id_gasto_des", $gs_des->getId_gs_des());
+                        $tpl->assign("nombre_gasto_des", $gs_des->getNombre());
                     }
                 }
                 else{

@@ -32,7 +32,7 @@ class art_lote {
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_us_gcat`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
         $res = $baseDatos->query($sql);
         
         if ($res) {
@@ -44,6 +44,7 @@ class art_lote {
         }
 
     }
+
     public static function ultimo_id_lote(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_lote'";
