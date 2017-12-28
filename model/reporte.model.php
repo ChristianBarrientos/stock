@@ -176,10 +176,13 @@ class reporte {
             $gasto = $us_gastos->getId_us_ggs();
             
             $gastos = array();
-
+            $gastos_unicos = array();
             foreach ($gasto as $key => $value) {
                 # code...
                 $gasto2 = $value->getId_gasto();
+
+                $nombre_gs = $gasto2->getNombre();
+                $tipo_gs = $gasto2->getId_gs_des()->getNombre();
 
                 $gasto_ = $gasto2->getId_ggs()->getId_gasto_unico();
             
@@ -196,12 +199,20 @@ class reporte {
                         $fecha_hora = strtotime($value3->getFecha_hora());
 
                         if ($fecha_desde_ < $fecha_hora && $fecha_hasta_ > $fecha_hora) {
-                            $gastos[] = [$gasto2,$gasto_];
+                            $gastos_unicos[] = $gasto_;
+                             
+                            break;
                         }
                     //}
                 }
+                $gastos []= [[$nombre_gs,$tipo_gs],$gastos_unicos];
+                 
+                unset($gastos_unicos);
+                $gastos_unicos = array();
+                
             }
-           
+            
+            
             return $gastos;
 
 
@@ -218,6 +229,9 @@ class reporte {
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                 $gasto = gs_gastos::generar_gasto($valor['id_gasto']);
+                $nombre_gasto = $gasto->getNombre();
+                $tipo_gasto = $gasto->getId_gs_des()->getNombre();
+
                 $id_ggs = $gasto->getId_ggs()->getId_gasto_unico();
                 foreach ($id_ggs as $key => $value) {
                     # code...
@@ -233,12 +247,14 @@ class reporte {
                     $fecha_hora = strtotime($value->getFecha_hora());
 
                     if ($fecha_desde_ < $fecha_hora && $fecha_hasta_ > $fecha_hora) {
-                        $gastos[] = $gasto;
+                        $gastos[] = $value;
                     }
                 }
                 
             }
-            return $gastos;
+            $result = [[[$nombre_gasto,$tipo_gasto],$gastos]];
+            
+            return $result;
         }
         else{
            

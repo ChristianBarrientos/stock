@@ -479,8 +479,14 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		$nombre_ng = $tocliente->getNombre();
 
 		$nombre_negocio = $nombre_ng."\n";
-
-		$pdf->Write( 6, $nombre_negocio."Reporte de Gastos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n" );
+		if ($gs_tipo == 0) {
+			# code...
+			$tipo_gs_nombre = "Todos";
+		}else{
+			$tipo_gs_nombre = $respuesta[0][0][1];
+		}
+		
+		$pdf->Write( 6, $nombre_negocio."Reporte de Gastos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'Tipo de Gastos: '.$tipo_gs_nombre );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -514,16 +520,21 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 	 	
-
-	 	
-
+ 
 		foreach ($respuesta as $key => $value) {
  			 
-			$tipo_gs = $value->getNombre();
-			$gs_unico = $value->getId_ggs()->getId_gasto_unico();
+ 			 
+			$tipo_gs = $value[0][0];
 
-			foreach ($gs_unico as $key2 => $value2) {
+			$gs_unico = $value[1];
+			
+			if ($gs_tipo == 0) {
 				# code...
+			
+			foreach ($gs_unico[0] as $key2 => $value2) {
+				# code...
+				 
+				//$gs_unico_ = $value2->getId_ggs()->getId_gasto_unico();
 				$nombre_gs = $value2->getNombre();
 				$valor_gs = $value2->getValor();
 				$fecha_gs = $value2->getFecha_hora();
@@ -557,6 +568,47 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 
 				$numero_cont = $numero_cont + 1;
 			}
+
+			}else{
+				foreach ($gs_unico as $key2 => $value2) {
+				# code...
+				 
+				//$gs_unico_ = $value2->getId_ggs()->getId_gasto_unico();
+				$nombre_gs = $value2->getNombre();
+				$valor_gs = $value2->getValor();
+				$fecha_gs = $value2->getFecha_hora();
+				$estado_gs = $value2->getHabilitado();
+
+				$precio_recaudacion_ = $precio_recaudacion_ + $valor_gs;
+
+				$movimientos_gs = $value2->getId_gsub_gasto();
+			 
+				/*if ($movimientos_gs != null) {
+					# code...
+				
+					$sgd_unico = $movimientos->getId_sub_gasto();
+
+					$nombres_sgs = array();
+					foreach ($sgd_unico as $key3 => $value3) {
+					# code...
+						$nombre_sgs = $value3->getNombre();
+						$valor_sgs = $value3->getValor();
+						$condicion_sgs = $value3->getCondicion();
+
+						$nombres_sgs[] = $nombre_sgs.' ['.$valor_sgs.']'.'('.$condicion_sgs.')';
+					}
+
+					$respuesta_final[] = [$numero_cont,$nombre_gs,$tipo_gs,$valor_gs,$fecha_gs,$nombres_sgs];
+					continue;*/
+				//}else{
+					$respuesta_final[] = [$numero_cont,$nombre_gs,$tipo_gs,$valor_gs,$fecha_gs,'Sin movimientos'];	
+					continue;
+				//}
+
+				$numero_cont = $numero_cont + 1;
+			}
+
+			} 
 			
 			
 
