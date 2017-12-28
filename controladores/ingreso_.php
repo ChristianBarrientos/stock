@@ -213,7 +213,7 @@ class Ingreso_Controller{
                 		$tpl->assign("nombre_medio",$value->getNombre());
             		}
             	}
-            	
+
             	foreach ($_SESSION['locales']  as $key => $value) {
                 # code...
                 
@@ -224,7 +224,37 @@ class Ingreso_Controller{
 
             	
             	$tpl->newBlock("fecha_desde_hasta_fecha");
-				 
+				
+				//Obtener gastos
+
+				
+				if ($_SESSION['usuario']->getAcceso() == 'ADMIN') {
+					# code...
+					$id_user_admin = $_SESSION['usuario']->getId_user();
+				}else{
+					$id_user_admin = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+				}
+
+				$gastos = us_gastos::obtener($id_user_admin);
+
+				if ($gastos) {
+					# code...
+					foreach ($gastos->getId_us_ggs() as $key => $value) {
+						$gasto = $value->getId_gasto();
+						$gs_tipo_nombre = $gasto->getId_gs_des()->getNombre();
+						$id_gs_tipo = $gasto->getId_gs_des()->getId_gs_des();
+						$tpl->newBlock("cargar_tipo_gasto");
+
+						$tpl->assign("id_gs_tipo",$id_gs_tipo);
+						$tpl->assign("nombre_tipo",$gs_tipo_nombre);
+						
+					}
+
+					
+				}
+
+				$tpl->newBlock("fecha_desde_hasta_fecha_2");
+
 				
 			}
 			else{
@@ -405,6 +435,15 @@ class Ingreso_Controller{
         		$tpl = Ingreso_Controller::registro_ventas();
 
         		break;
+        	case 9:
+        		# Ver listado de Ventas
+        		$gs_tipo = $_POST['gs_tipo'];
+        		$gs_fecha_desde = $_POST['gs_fecha_desde'];
+        		$gs_fecha_hasta = $_POST['gs_fecha_hasta'];
+
+        		$tpl = Ingreso_Controller::registro_gs($gs_tipo,$gs_fecha_desde,$gs_fecha_hasta);
+
+        		break;
         	
         	default:
         		# code...
@@ -413,6 +452,169 @@ class Ingreso_Controller{
         return $tpl->getOutputContent();
     }
 
+public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
+    	$respuesta = reporte::reporte_gs($gs_tipo,$fecha_desde,$fecha_hasta);
+    	// 
+
+
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Gastos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n" );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		//se saco medios de pago
+		$columnas = ['N°','Nombre','Tipo','Valor','Fecha','Movimientos'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 37, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+	 	
+
+	 	
+
+		foreach ($respuesta as $key => $value) {
+ 			 
+			$tipo_gs = $value->getNombre();
+			$gs_unico = $value->getId_ggs()->getId_gasto_unico();
+
+			foreach ($gs_unico as $key2 => $value2) {
+				# code...
+				$nombre_gs = $value2->getNombre();
+				$valor_gs = $value2->getValor();
+				$fecha_gs = $value2->getFecha_hora();
+				$estado_gs = $value2->getHabilitado();
+
+				$precio_recaudacion_ = $precio_recaudacion_ + $valor_gs;
+
+				$movimientos_gs = $value2->getId_gsub_gasto();
+			 
+				/*if ($movimientos_gs != null) {
+					# code...
+				
+					$sgd_unico = $movimientos->getId_sub_gasto();
+
+					$nombres_sgs = array();
+					foreach ($sgd_unico as $key3 => $value3) {
+					# code...
+						$nombre_sgs = $value3->getNombre();
+						$valor_sgs = $value3->getValor();
+						$condicion_sgs = $value3->getCondicion();
+
+						$nombres_sgs[] = $nombre_sgs.' ['.$valor_sgs.']'.'('.$condicion_sgs.')';
+					}
+
+					$respuesta_final[] = [$numero_cont,$nombre_gs,$tipo_gs,$valor_gs,$fecha_gs,$nombres_sgs];
+					continue;*/
+				//}else{
+					$respuesta_final[] = [$numero_cont,$nombre_gs,$tipo_gs,$valor_gs,$fecha_gs,'Sin movimientos'];	
+					continue;
+				//}
+
+				$numero_cont = $numero_cont + 1;
+			}
+			
+			
+
+		}
+
+		 
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+  			// Create the left header cell
+	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor( 255, 255, 255 );
+	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+
+  			// Create the data cells
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total de Gastos: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "report.pdf", "I" );
+    	
+    }
     public static function registro_ventas(){
 
     	$respuesta = reporte::reporte_av_todos();
@@ -531,7 +733,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'El simbolo (*) simboloza un cambio en la venta.' );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Articulos Vendidos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'El simbolo (*) simboloza un cambio en la venta.' );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -680,7 +898,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Articulos Vendidos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -819,7 +1053,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Articulos Vendidos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -993,7 +1243,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos por medio de pago definido\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Articulos Vendidos por medio de pago definido\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		if ($local != 0) {
@@ -1173,7 +1439,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Articulos Vendidos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );
@@ -1278,7 +1560,23 @@ class Ingreso_Controller{
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
-		$pdf->Write( 6, "Reporte de Stock de Articulos\nAscenso Positivo\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Stock de Articulos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
 		
 		//$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		$pdf->Ln( 12 );

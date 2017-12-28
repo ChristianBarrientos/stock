@@ -157,6 +157,95 @@ class reporte {
         }
     	
     }
+
+    public static function reporte_gs($id_gs_des,$fecha_desde,$fecha_hasta){
+        global $baseDatos;
+        
+        if ($id_gs_des == 0) {
+            # code...
+            //Obtener los gastos y sus tipos
+            $permisos = $_SESSION['usuario']->getAcceso();
+            if ($permisos == 'ADMIN') {
+                # code...
+                $id_jefe = $_SESSION['usuario']->getId_user();
+            }else{
+                $id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+            }
+            $us_gastos = us_gastos::obtener($id_jefe);
+             
+            $gasto = $us_gastos->getId_us_ggs();
+            
+            $gastos = array();
+
+            foreach ($gasto as $key => $value) {
+                # code...
+                $gasto2 = $value->getId_gasto();
+
+                $gasto_ = $gasto2->getId_ggs()->getId_gasto_unico();
+            
+                foreach ($gasto_ as $key3 => $value3) {
+
+                        $fecha2 = explode(" ",$fecha_desde);
+                        $fecha3 = $fecha2[0];
+                        $fecha_desde_ = strtotime("$fecha3");
+
+                        $fecha2 = explode(" ",$fecha_hasta);
+                        $fecha3 = $fecha2[0];
+                        $fecha_hasta_ = strtotime("$fecha3");
+
+                        $fecha_hora = strtotime($value3->getFecha_hora());
+
+                        if ($fecha_desde_ < $fecha_hora && $fecha_hasta_ > $fecha_hora) {
+                            $gastos[] = [$gasto2,$gasto_];
+                        }
+                    //}
+                }
+            }
+           
+            return $gastos;
+
+
+        }else{
+            $res = $baseDatos->query("SELECT * FROM `gs_gastos` 
+                                  WHERE id_gs_des = $id_gs_des");
+        }
+          
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+      
+        if (count($filas) != 0) {
+            $gastos = array();
+            //$usuario_prvd = array(0);
+            foreach ($filas as $clave => $valor) {
+                $gasto = gs_gastos::generar_gasto($valor['id_gasto']);
+                $id_ggs = $gasto->getId_ggs()->getId_gasto_unico();
+                foreach ($id_ggs as $key => $value) {
+                    # code...
+
+                    $fecha2 = explode(" ",$fecha_desde);
+                    $fecha3 = $fecha2[0];
+                    $fecha_desde_ = strtotime("$fecha3");
+
+                    $fecha2 = explode(" ",$fecha_hasta);
+                    $fecha3 = $fecha2[0];
+                    $fecha_hasta_ = strtotime("$fecha3");
+
+                    $fecha_hora = strtotime($value->getFecha_hora());
+
+                    if ($fecha_desde_ < $fecha_hora && $fecha_hasta_ > $fecha_hora) {
+                        $gastos[] = $gasto;
+                    }
+                }
+                
+            }
+            return $gastos;
+        }
+        else{
+           
+            return false;
+        }
+        
+    }
     public static function reporte_sa(){
 
         global $baseDatos;

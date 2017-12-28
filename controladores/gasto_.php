@@ -107,7 +107,7 @@ class Gasto_Controller{
                     $tpl->newBlock("con_locales_empl");
                     $gs_des = gs_descripcion::obtener();
                  
-                    if (count($gs_des) > 1) {
+                    if (count($gs_des) >= 1) {
                     # code...
                       
                         foreach ($gs_des as $key => $value) {
@@ -118,11 +118,11 @@ class Gasto_Controller{
                             $tpl->assign("nombre_gasto_des", $value->getNombre());
                         }
 
-                    }else{
+                    }/*else{
                         $tpl->newBlock("gasto_descripcion");
                         $tpl->assign("valor_id_gasto_des", $gs_des->getId_gs_des());
                         $tpl->assign("nombre_gasto_des", $gs_des->getNombre());
-                    }
+                    }*/
                 }
                 else{
                

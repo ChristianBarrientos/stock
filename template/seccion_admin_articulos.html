@@ -122,10 +122,7 @@
 	            <td hidden>{codigo_barras}</td>
 
 	            <td> 
-	            	<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
-							Ver Fotos
-					</button>
-					<br>
+	            	
 					
 					<button {disabled_ok} type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
 							Vender
@@ -136,7 +133,13 @@
 					<!-- START BLOCK : actualiza_stock_boton -->
 					<br>
 					<!-- START BLOCK : actualiza_precio_boton -->
-					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#precio_{id_art_lote}">Actualizar Precio</button>
+					<button type="button" class="btn btn-warning" data-toggle="modal" 
+					data-target="#precio_{id_art_lote}">Actualizar Precio</button>
+
+					<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#{id_lote}">
+							Actualizar Atrs
+					</button>
+					
 					<!-- START BLOCK : actualiza_precio_boton -->
 					<!--<button type="button" class="btn btn-danger">Eliminar</button>	
 					<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->

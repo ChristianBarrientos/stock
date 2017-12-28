@@ -134,6 +134,7 @@ class Empleado_Controller{
         $direccion = ucwords(strtolower($_POST['empl_direccion']));
         $correo = ucwords(strtolower($_POST['empl_correo']));
         $telefono = $_POST['empl_telefono'];
+
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
@@ -166,8 +167,13 @@ class Empleado_Controller{
         $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
           
         if ($id_datos && $id_contacto) {
-            $id_usuario = usuario::alta_usuario($id_datos,$id_contacto,'OPER',$usuario,$pass);
-            if ($id_usuario != 'null' OR $id_usuario != 0) {
+            //Preguntar si existe usuario con el mismo nombre de user
+            $okuser = usuario::verificar_existencia($usuario);
+            if ($okuser) {
+                $id_usuario = usuario::alta_usuario($id_datos,$id_contacto,'OPER',$usuario,$pass);
+            }
+            
+            if ($id_usuario != 'null' OR $id_usuario != 0 && $okuser) {
                  
                 foreach ($locales as $key) {
                      
@@ -258,7 +264,7 @@ class Empleado_Controller{
                     
                 }
 
-                if ($okok) {
+                if ($okok && $okuser) {
                     //Agregar gasto unico a us_gmv
                     $id_gmv = us_gmv::alta($id_gasto_unico);
                     //Agregar gmv a us_sueldo
@@ -274,8 +280,18 @@ class Empleado_Controller{
                     }
                     
                 }else{
-                    $tpl = new TemplatePower("template/error.html");
-                    $tpl->prepare();
+                    if (!$okuser) {
+                        # code...
+                        $tpl = new TemplatePower("template/cargar_empleado.html");
+                        $tpl->prepare();
+                        $tpl->newBlock("error_usuario");
+                        
+
+                    }else{
+                        $tpl = new TemplatePower("template/error.html");
+                        $tpl->prepare();
+                    }
+                    
                 }
                
             }
