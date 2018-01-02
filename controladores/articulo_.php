@@ -2392,6 +2392,56 @@ class Articulo_Controller{
         }
         
 
+        public static function vender(){
+            if (Ingreso_Controller::es_admin()) {
+
+                $tpl = new TemplatePower("template/vender.html");
+                $tpl->prepare();
+                //Preguntar si posee art cargados
+                if (isset($_SESSION["lotes"])) {
+                    # code...
+                    $tpl->newBlock("buscador_visible");
+                    $tpl->newBlock("con_articulos_lista");
+
+                }else{
+                    $tpl->newBlock("sin_articulos_lista");
+                    
+                }
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
+        public static function cargar_art_venta($DatosAjax){
+            if (Ingreso_Controller::es_admin()) {
+
+                $Datos = $DatosAjax;
+                //require_once 'controladores/articulo_.php';
+                
+                $Respuesta = articulo::busqueda_ajax($Datos);
+
+                if ($Respuesta) {
+                    # code...
+                   return $Respuesta;
+                }else{
+                    //echo "Mal";
+                }
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            //return $tpl->getOutputContent();
+        }
+        
+
        public static function cargar_art_general(){
             if (isset($nombre)) {
                  

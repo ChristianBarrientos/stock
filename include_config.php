@@ -65,6 +65,8 @@ include('model/us_art_gcat.model.php');
 include('model/us_sueldos.model.php');
 include('model/us_gmv.model.php');
 
+//include('template/venta_/ajax_venta.php');
+
 
 
 /*Templates-Vistas*/
@@ -76,5 +78,14 @@ include('php_recurso/fpdf/fpdf.php');
 
 
 session_start();
+
+global $config;
+if ($config["dbEngine"]=="MYSQL"){
+	$baseDatos = new mysqli($config["dbhost"],$config["dbuser"],$config["dbpass"],$config["db"]);
+	
+	
+}else{
+	echo "Error BD";
+}
 
 ?>

@@ -56,7 +56,7 @@ class art_lote {
 
     public static function generar_lote($id_lote){
         global $baseDatos;
-
+        
         $res = $baseDatos->query("SELECT * FROM `art_lote` WHERE id_lote = $id_lote");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {

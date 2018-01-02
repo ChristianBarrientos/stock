@@ -306,12 +306,17 @@ class Ingreso_Controller{
 	
 
 	public static function es_admin(){
-		if ($_SESSION["permiso"] == 'ADMIN') {
-			return true;
+		if (isset($_SESSION["permiso"])) {
+			# code...
+			if ($_SESSION["permiso"] == 'ADMIN') {
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
-		else{
-			return false;
-		}
+
+		
 	}
 
 	public static function es_oper(){

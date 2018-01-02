@@ -1,0 +1,107 @@
+<div class="container" id="lista_ventas_realizadas">
+	<div class="row">
+
+
+		<!-- START BLOCK : buscador_visible -->
+			<div class="col-md-12 col-xs-12">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  			<input id="CajaBusqueda"  name="CajaBusqueda" type="text" class="CajaBusqueda form-control" placeholder="Ingrese una palabra referida al articulo.">
+			</div>
+		<!-- END BLOCK : buscador_visible -->
+			
+	</div>
+	<br><br>
+	<div id="Resultados" class="row ">
+	
+			<!-- START BLOCK : con_articulos_lista -->
+		<table cellpadding="15" class="table table-bordered " align="center">
+			<thead>
+			
+			 <tr>
+	            <th>N°</th>
+	            <th>Articulo</th>
+	            <th>Atributos</th>
+	            <th>Cantidad</th>          
+	            <th>Precio</th>
+	        </tr>
+        	</thead>
+        	<tbody>
+        	
+		
+			
+			<!-- START BLOCK : con_articulos_lista_cuerpo -->
+			<tr>
+				<td>{numero}</td>
+	            <td>{art}</td>
+	            <td>{attrs}</td>
+	            <td> 
+	           		<input type="number">
+				</td>
+				<td>
+					{precio}
+				</td>
+	        </tr>
+
+			<!-- END BLOCK : con_articulos_lista_cuerpo -->
+			 
+	            
+	        
+	        </tbody>
+	     </table>
+			<!-- END BLOCK : con_articulos_lista -->
+
+			<!-- START BLOCK : sin_articulos_lista -->
+
+				<div class="alert alert-warning center-block">
+					<h2>No posee articulos vendidos.</h2>
+					
+				</div>
+
+			<!-- END BLOCK : sin_articulos_lista -->
+
+			
+	</div>
+</div>
+
+<!-- START BLOCK : modal_modificar_venta -->
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="form-group">
+			    	<div class="modal fade" id="modifica_venta{id_venta2}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">Seleccione el Local en donde se encuentra</h4>
+								</div>
+								<div class="modal-body" id="agregar_ok">
+								 
+									<div class="form_flotante" id="form_art_general">
+										<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::modificar_venta&id_venta={id_venta}&id_lote_local={id_lote_local}" method="post">
+											<div id="seleccionar_local_art" class="checkbox">
+
+											  <label id="label_h" for="art_ventas_radio">
+											<!-- START BLOCK : articulos_seleccionar -->
+									       
+											  	<input  required class="art_ventas_radio"  name="art_lote_cambio" type="radio" value="{id_lote_local_cambio}" id='art_ventas_radio'>{nombre_articulo}
+											 	</label>
+										     
+											<!-- END BLOCK : articulos_seleccionar -->
+											<br>
+											<button class="agregar btn btn-primary" type="submit">Continuar</button>
+											</div>
+										</form>
+									</div>
+								 
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>	
+	</div>
+</div>
+
+<!-- END BLOCK : modal_modificar_venta -->
