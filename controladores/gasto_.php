@@ -86,7 +86,7 @@ class Gasto_Controller{
                      
                 }
                 else{
-                        echo "No Posee Permisos";
+                         
                         return Ingreso_Controller::salir();
                 }
 
@@ -788,11 +788,11 @@ public static function antes_baja_gasto(){
     }
 
     public static function baja_gasto_unico_subgasto($id_gs_subgasto){
-        if (isset($_POST['id_gasto_unico'])) {
-            $id_gasto_unico = $_POST['id_gasto_unico'];
+        if (isset($_POST['id_gs_subgasto'])) {
+            $id_gs_subgasto = $_POST['id_gs_subgasto'];
         }
 
-        $id_gs_subgasto = $_POST['id_gs_subgasto'];
+        
         //Borrar en tabla gs_subgasto
         $id_gsub_gasto = gs_gsub_gasto::obtener_gsubgasto_idsubgasto($id_gs_subgasto);
 

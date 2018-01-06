@@ -207,7 +207,7 @@ CREATE TABLE  gs_gastos (
      id_gasto INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(50) NOT NULL,
      id_gs_des INTEGER NOT NULL,
-     id_ggs INTEGER NOT NULL,
+     id_ggs INTEGER NULL,
      habilitado BOOLEAN NOT NULL,
      KEY (id_gasto),
      FOREIGN KEY (id_gs_des) REFERENCES gs_descripcion(id_gs_des) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -247,11 +247,12 @@ CREATE TABLE  cj_ggs (
 
 CREATE TABLE  lc_caja (
      id_caja INTEGER AUTO_INCREMENT NOT NULL,
-     id_cj_ggs INTEGER NOT NULL,
+     id_cj_ggs INTEGER NULL,
      estado ENUM('A','C'),
      fecha_hora_apertura DATETIME NOT NULL,
      fecha_hora_cierre DATETIME NOT NULL,
      monto DEC(15,2),
+     sobrante DEC(15,2),
      KEY (id_caja),
      FOREIGN KEY (id_cj_ggs) REFERENCES cj_ggs(id_cj_ggs) ON DELETE NO ACTION ON UPDATE CASCADE
      ) ENGINE=InnoDB;
@@ -605,10 +606,3 @@ CREATE TABLE  us_acceso (
 
 
 
-ALTER TABLE gs_gastos MODIFY id_ggs INTEGER NULL;
-ALTER TABLE lc_caja add sobrante INTEGER  NULL;
-ALTER TABLE lc_caja MODIFY id_cj_ggs INTEGER NULL;
-ALTER TABLE art_lote ADD id_moneda INTEGER  NULL;
-ALTER TABLE art_lote ADD FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE;
-
-ALTER TABLE art_moneda MODIFY valor DEC(15,2) NOT NULL;
