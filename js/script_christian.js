@@ -517,12 +517,30 @@ $(document).ready(function()
 
             //var T1 = str.match(/\[(.*)\]/).pop();
             //alert(T1);
-            var moneda = document.getElementById("select_art_moneda"); 
-            string_moneda = moneda.value;
+            //var moneda = document.getElementById("select_art_moneda"); 
+            
 
-            let valor_moneda = string_moneda.match(/\[([\w\s]*)\]/g);
-            console.log(valor_moneda);
-            alert(valor_moneda);
+            //var moneda = String($("#select_art_moneda option:selected").html());
+            //string_moneda = String(moneda.value);
+             
+            
+            //let valor_moneda = string_moneda.match(/\[([\w\s]*)\]/g);
+            //console.log(valor_moneda);
+            //alert(valor_moneda);
+
+            //string_moneda.match(/\[([\w\s]*)\]/g).forEach((item) => {
+                //console.log( item );
+                //Puedes limpiar el texto con:
+                //console.log( item.replace(/[\[\]]/g, '') );
+            //});*()
+
+            //$forma_pago_porciento = $valor_forma.substr(-5);
+            //$separador  = "";
+            //$array_auxiliar = $forma_pago_porciento.split($separador);
+            //$signo_medio_pago = $array_auxiliar[0];
+
+            //var T1 = str.match(/\[(.*)\]/).pop();
+            //alert(T1);
             if (preciobase != '') {
 
                 var precio_tarjeta_aux = (porciento * preciobase) / 100;

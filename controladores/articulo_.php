@@ -796,7 +796,7 @@ class Articulo_Controller{
                     
                     $tpl->newBlock("cargar_moneda");
                     $tpl->assign("valor_id_moneda", $value6->getId());
-                    $tpl->assign("nombre_moneda", $value6->getNombre().' ('.$value6->getValor().')');
+                    $tpl->assign("nombre_moneda", $value6->getNombre().' ['.$value6->getValor().']');
                 }
                 foreach ($_SESSION['locales'] as $key => $value) {
                         
