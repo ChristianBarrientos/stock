@@ -34,11 +34,6 @@ $(document).ready(function()
         //Buscador sincronico
         //document.getElementById('art_cantidad_total').focus();
         
-
-
-
-
-
         $('#filtrar').keyup(function () {
                      
                     var rex = new RegExp($(this).val(), 'i');
@@ -519,6 +514,15 @@ $(document).ready(function()
             
             var porciento =  $(this).val();
             var preciobase = $("#art_precio_base").val();
+
+            //var T1 = str.match(/\[(.*)\]/).pop();
+            //alert(T1);
+            var moneda = document.getElementById("select_art_moneda"); 
+            string_moneda = moneda.value;
+
+            let valor_moneda = string_moneda.match(/\[([\w\s]*)\]/g);
+            console.log(valor_moneda);
+            alert(valor_moneda);
             if (preciobase != '') {
 
                 var precio_tarjeta_aux = (porciento * preciobase) / 100;
@@ -826,6 +830,7 @@ function guardar_art_general(){
             //Valor Forma de PAGO
            
             $select_valor = document.getElementById("valor_pago_select");
+
             //Obtener select seleccionado
             $id_forma_pago = document.getElementById("forma_pago_select").value;
            
