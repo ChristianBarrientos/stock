@@ -789,7 +789,15 @@ class Articulo_Controller{
                         $tpl->assign("tipo_articulo", $value->getNombre());
                      }
                 }
-                
+                //Agregar monedas
+                $us_monedas = us_moneda::obtener($_SESSION['usuario']->getId_user());
+                $monedas = $us_monedas->getId_moneda();
+                foreach ($monedas as $key6 => $value6) {
+                    
+                    $tpl->newBlock("cargar_moneda");
+                    $tpl->assign("valor_id_moneda", $value6->getId());
+                    $tpl->assign("nombre_moneda", $value6->getNombre().' ('.$value6->getValor().')');
+                }
                 foreach ($_SESSION['locales'] as $key => $value) {
                         
                         $tpl->newBlock("locales_empleado_alta");
@@ -2263,7 +2271,7 @@ class Articulo_Controller{
 
                 //Obtener Monedas Us
                 $us_monedas = us_moneda::obtener($_SESSION['usuario']->getId_user());
-               
+                
                 
                 if ($us_monedas) {
                 
@@ -2310,9 +2318,32 @@ class Articulo_Controller{
         
         public static function actualiza_moneda(){
             if (Ingreso_Controller::es_admin()) {
-                $id_moneda = $_GET['']
-                $tpl = new TemplatePower("template/cargar_moneda.html");
-                $tpl->prepare();
+                //Verificar si la moneda pertenece al usuario
+                $id_moneda = $_GET['id_moneda'];
+                $valor = $_POST['valor_nuevo_moneda'];
+                $us_monedas = us_moneda::obtener($_SESSION['usuario']->getId_user());
+                $monedas = $us_monedas->getId_moneda();
+                $bandera = false;
+                foreach ($monedas as $key => $value) {
+                    $id_moneda_us = $value->getId();
+                    if ($id_moneda_us == $id_moneda) {
+                        $bandera = true;
+                    }
+                }
+                if ($bandera) {
+                    $ok = art_moneda::update($id_moneda,'valor',$valor);
+                }else{
+                    return Ingreso_Controller::salir();
+                }
+                
+                if ($ok) {
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+               
 
             }
             else{
@@ -2322,6 +2353,7 @@ class Articulo_Controller{
 
             return $tpl->getOutputContent();
         }
+
 
         public static function form_alta_moneda(){
             if (Ingreso_Controller::es_admin()) {

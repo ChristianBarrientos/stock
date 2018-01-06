@@ -49,11 +49,12 @@ class art_moneda {
         return $res_fil['LastId'];
     }
 
-    public static function update_valores($id_moneda,$valor){
+    public static function update($id_moneda, $columna, $nuevo_valor){
         //obtener empleados por local
         global $baseDatos;
-        $res = $baseDatos->query("UPDATE `art_categoria` SET `valor`='$valor'
-                                  WHERE id_moneda = $id_moneda");  
+
+        $res = $baseDatos->query(" UPDATE `art_moneda` SET `$columna`='$nuevo_valor' WHERE id_moneda = $id_moneda");  
+         
         return $res;
     }
 
