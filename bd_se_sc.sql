@@ -418,7 +418,7 @@ CREATE TABLE art_fotos (
 CREATE TABLE art_moneda (
      id_moneda INTEGER AUTO_INCREMENT NOT NULL,
      nombre VARCHAR(100) NOT NULL,
-     valor INTEGER NOT NULL,
+     valor DEC(15,2) NOT NULL,
      KEY (id_moneda)
      ) ENGINE=InnoDB;
 
@@ -610,3 +610,5 @@ ALTER TABLE lc_caja add sobrante INTEGER  NULL;
 ALTER TABLE lc_caja MODIFY id_cj_ggs INTEGER NULL;
 ALTER TABLE art_lote ADD id_moneda INTEGER  NULL;
 ALTER TABLE art_lote ADD FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+ALTER TABLE art_moneda MODIFY valor DEC(15,2) NOT NULL;

@@ -26,29 +26,27 @@ class us_moneda {
         }
     }
 
-    public static function generar_ggs($id_usuario){
-        //obtener empleados por local
+    public static function obtener($id_usuario){
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM `us_moneda` WHERE id_us_moneda = $id_us_moneda");  
+        $res = $baseDatos->query("SELECT * FROM `us_moneda` WHERE id_usuario = $id_usuario");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         if (count($filas) != 0){
             $monedas = array();
 
-            foreach ($filas as $clave => $valor) {
-                $id_us_moneda = $valor->getId_us_moneda();
-                $monedas[] = new art_moneda();
-
+            foreach ($filas as $clave => $valor){
+                
+                $id_us_moneda = $valor['id_us_moneda'];
+                $monedas[] =  art_moneda::generar($valor['id_moneda']);
             }
             $us_moneda = new us_moneda($id_us_moneda,$monedas,$id_usuario);
+             
             return $us_moneda;
         }
         else{
-           
             return false;
         }
-        
     }
 
 
@@ -83,12 +81,12 @@ class us_moneda {
         return $res;
     }
 
-    public function getId_us_moneda()
+    public function getId()
     {
         return $this->id_us_moneda;
     }
     
-    public function setId_us_moneda($id_us_moneda)
+    public function setId($id_us_moneda)
     {
         $this->id_us_moneda = $id_us_moneda;
         return $this;

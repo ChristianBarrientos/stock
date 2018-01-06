@@ -2262,71 +2262,103 @@ class Articulo_Controller{
                 $tpl->prepare();
 
                 //Obtener Monedas Us
+                $us_monedas = us_moneda::obtener($_SESSION['usuario']->getId_user());
+               
                 
-                $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user());
+                if ($us_monedas) {
                 
-                if ($us_gct) {
-                    # code...
+                    $monedas = $us_monedas->getId_moneda();
                     $tpl->newBlock("buscador_visible");
-                    $tpl->newBlock("con_gct");
+                    $tpl->newBlock("con_moneda");
                     $counter = 1;
-                    $gct = $us_gct->getId_us_art_cat();
 
-                    foreach ($gct as $key => $value) {
-                        # code...
-                        
-                         
-                        $tpl->newBlock("con_gct_lista_cuerpo");
-                        $id_gct = $value->getId();
-                         
+                    foreach ($monedas as $key => $value) {
 
-                        $nombre_grupo = $value->getNombre();
-                        $des_grupo = $value->getDescripcion();
-                        $gcategorias = $value->getId_gc();
-                        $estado = $value->getHabilitado();
+                        $tpl->newBlock("con_moneda_lista_cuerpo");
+                        $id_moneda = $value->getId();
+                        $nombre = $value->getNombre();
+                        $valor = $value->getValor();
 
-                        $nombre_ = '';
-                        $categorias = $gcategorias->getId_categoria();
-                        foreach ($categorias as $key2 => $value2) {
-                            # code...
-                            //$ct = $value2->getId_categoria();
-                            $nombres = $value2->getNombre();
-
-                            $nombre_ = $nombre_.$nombres.'<br>';
-                        }
 
                         $tpl->assign("numero",$counter);
-                        $tpl->assign("nombre",$nombre_grupo);
-                        $tpl->assign("des",$des_grupo);
-
-                        $tpl->assign("attr",$nombre_);
-
-                        if ($estado == true) {
-                            # code...
-                            $tpl->assign("habilitado",'Habilitado');
-                        }else
-                        {
-                            $tpl->assign("habilitado",'Desabilitado');
-                        }
-                        
-                        $tpl->assign("id_gc_",$id_gct);
-                        
+                        $tpl->assign("nombre",$nombre);
+                        $tpl->assign("valor",$valor);
+                        $tpl->assign("id_moneda",$id_moneda);
                         $counter = $counter + 1 ;
                         
-                        $tpl->newBlock("modal_cambiar_estado");
-                        $tpl->assign("id_gct",$id_gct);
-                        $tpl->assign("id_us_art_cat",$id_gct);
+                        $tpl->newBlock("modal_modificar_valor");
+                        $tpl->assign("id_moneda",$id_moneda);
+                        $tpl->assign("id_moneda_act",$id_moneda);
+                        $tpl->assign("nombre_modal",$nombre);
+                        $tpl->assign("valor_modal",$valor);
+                        
                     }
                 }
                 else{
                      
-                    $tpl->newBlock("sin_gct");
+                    $tpl->newBlock("sin_monedas");
                 }
 
+            }
+            else{
                
-                
-                
+                return Ingreso_Controller::salir();
+            }
 
+            return $tpl->getOutputContent();
+        }
+        
+        public static function actualiza_moneda(){
+            if (Ingreso_Controller::es_admin()) {
+                $id_moneda = $_GET['']
+                $tpl = new TemplatePower("template/cargar_moneda.html");
+                $tpl->prepare();
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
+        public static function form_alta_moneda(){
+            if (Ingreso_Controller::es_admin()) {
+                $tpl = new TemplatePower("template/cargar_moneda.html");
+                $tpl->prepare();
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+        
+
+        public static function alta_moneda(){
+            if (Ingreso_Controller::es_admin()) {
+                  
+                $nombre = $_POST['nombre_moneda'];
+                $valor = $_POST['valor_moneda'];
+                $id_user = $_SESSION['usuario']->getId_user();
+                //Alta en art_moneda
+                $id_moneda = art_moneda::alta($nombre,$valor);
+                //Alta en us_moneda
+                if ($id_moneda) {
+                    $id_us_moneda = us_moneda::alta($id_moneda,$id_user);
+                }
+                if ($id_us_moneda) {
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("alta_moneda_exito");
+                    
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
             }
             else{
                

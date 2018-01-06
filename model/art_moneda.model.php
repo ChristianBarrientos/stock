@@ -57,12 +57,12 @@ class art_moneda {
         return $res;
     }
 
-    public function getId_moneda()
+    public function getId()
     {
         return $this->id_moneda;
     }
     
-    public function setId_moneda($id_moneda)
+    public function setId($id_moneda)
     {
         $this->id_moneda = $id_moneda;
         return $this;
