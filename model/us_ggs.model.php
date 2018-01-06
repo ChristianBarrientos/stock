@@ -102,6 +102,31 @@ class us_ggs {
 
     }
 
+    public static function obtener_usggs_idgs($id_gasto){
+        //obtener empleados por local
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `us_ggs` WHERE id_gasto = $id_gasto");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+ 
+            return $res_fil['id_us_ggs'];
+        }
+        else{
+            return false;
+        }
+    }
+
+    public static function baja($id_gasto){
+        //Esto debe ser con PDO, escapando caracteres con expresiones regulares
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("DELETE FROM `us_ggs` WHERE id_gasto = $id_gasto");  
+
+       return $res;
+    }
+
+
 
     public function getId_us_ggs()
     {

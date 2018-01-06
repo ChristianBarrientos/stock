@@ -86,6 +86,35 @@ class gs_gsub_gasto {
        
     }
 
+    public static function obtener_gsubgasto_idsubgasto($id_sub_gasto){
+        //obtener empleados por local
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `gs_gsubgasto` WHERE id_sub_gasto = $id_sub_gasto");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+ 
+            return $res_fil['id_gsub_gasto'];
+        }
+        else{
+            
+            return false;
+        }
+       
+
+
+    }
+
+
+    public static function baja($id_gsub_gasto){
+        //Esto debe ser con PDO, escapando caracteres con expresiones regulares
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("DELETE FROM `gs_gsub_gasto` WHERE id_gsub_gasto = $id_gsub_gasto");  
+
+       return $res;
+    }
+
 
     public function getId_gsub_gasto()
     {

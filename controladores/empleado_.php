@@ -490,6 +490,7 @@ class Empleado_Controller{
     }
 
     public static function alta_modificacion(){
+ 
         $id_usuario_empleado = $_GET['id_empleado'];
         $sueldo_base = $_POST['empl_sueldo'];
         $nombre__ = ucwords(strtolower($_GET['nombre__']));
@@ -571,31 +572,37 @@ class Empleado_Controller{
         $datos_nuevos = array($nombre,$apellido,$genero,$dni,$fecha_nac,$fecha_alta,$direccion,$correo,$telefono,$usuario,$pass,$locales);
          
         $locales_empleado = usuario::obtener_locales_empleado($id_usuario_empleado);
-        foreach ($_SESSION["locales_empleados"] as $key => $value) {
+        /*foreach ($_SESSION["locales_empleados"] as $key => $value) {
 
                 foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
                       
                    
                     if ($id_usuario_empleado == $valor->getId_user()) {
-                         
+                        
                         $id_datos = $valor->getId_datos()->getId_datos();
                         $id_contacto = $valor->getId_contacto()->getId_contacto();
                          
                     }
                 }
-        }
+        }*/
+
+     
+        $ser_empleado = usuario::generar_usuario($id_usuario_empleado);
+        $id_datos = $ser_empleado->getId_datos()->getId_datos();
+        $id_contacto = $ser_empleado->getId_contacto()->getId_contacto();
+        
         for ($i=0; $i < count($datos_nuevos) ; $i++) { 
             $ok_up = true;
             if ($datos_nuevos[$i] == $datos_viejos[$i]) {
-                
+             
                 //no pasa naa
             }
             else{
-                
+               
                 switch ($i) {
                     case 0:
                         # cambiar nombre
-                         
+             
                         $ok_up = us_datos::up_nombre($id_datos,$datos_nuevos[$i]);
                         break;
                     case 1:
@@ -648,20 +655,38 @@ class Empleado_Controller{
                 }
             }
         }
-
+     
         if ($ok_up) {
             //Update en us sueldos
                 $us_sueldos = us_sueldos::obtener($id_usuario_empleado);
                 $id_sueldo = $us_sueldos->getId();
-                echo "aca";
-                echo $sueldo_base;
-                echo "Finac";
+               
                 $okok = us_sueldos::update($id_sueldo,'basico',$sueldo_base);
+                
+
                 if ($okok) {
-                    # code...
-                    $tpl = new TemplatePower("template/exito.html");
-                    $tpl->prepare();    
-                }else{
+                    //Actualizacion de Gastos
+                    $id_gmv = $us_sueldos->getId_gmv();
+                    $gmv = $id_gmv->getId_gs_mv(); 
+                    $gs_uncio_habilitados = array();
+                    foreach ($gmv as $key => $value) {
+                        $estado = $value->getHabilitado();
+                        if ($estado) {
+                            //Verdadero esta habilitado, se guarda-
+                            $id_gs_unico = $value->getId_gasto_unico();
+                            $gs_uncio_habilitados[] = $value->getId_gasto_unico();
+                         
+                            $okok = $value->update($id_gs_unico,'valor',$sueldo_base);
+                        }
+                    }
+
+                    //Solo deberia haber un solo gasto sueldo de un empleado habilitado, si exsiten mas de dos es xq no se liquido sueldo anteriormente.   
+                }
+                if ($okok) {
+                        $tpl = new TemplatePower("template/exito.html");
+                        $tpl->prepare(); 
+                    }
+                else{
                     $tpl = new TemplatePower("template/error.html");
                     $tpl->prepare();
                 }

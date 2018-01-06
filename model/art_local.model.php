@@ -63,7 +63,15 @@ class art_local {
     public static function obtener_locales_usuario_operador(){
         //obtener empleados por local
         global $baseDatos;
-        $id_usuarios = $_SESSION["usuario"]->getId_user();
+        if (isset($_SESSION["usuario"]) && $_SESSION["usuario"] != null) {
+            # code...
+          
+            $id_usuarios = $_SESSION["usuario"]->getId_user();
+        }else{
+           
+            return false;
+        }
+        
          
         $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = $id_usuarios");  
 

@@ -587,3 +587,7 @@ CREATE TABLE  us_acceso (
 
 
 
+
+ALTER TABLE gs_gastos MODIFY id_ggs INTEGER NULL;
+ALTER TABLE lc_caja add sobrante INTEGER  NULL;
+ALTER TABLE lc_caja MODIFY id_cj_ggs INTEGER NULL;

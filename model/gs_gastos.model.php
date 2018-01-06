@@ -79,6 +79,16 @@ class gs_gastos {
         return $res;
     }
 
+    public static function baja($id_gasto){
+        //Esto debe ser con PDO, escapando caracteres con expresiones regulares
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("DELETE FROM `gs_gastos` WHERE id_gasto = $id_gasto");  
+
+       return $res;
+    }
+
     
 
 

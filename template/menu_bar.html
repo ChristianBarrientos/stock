@@ -26,10 +26,21 @@
             <!-- START BLOCK : dentro -->
             <ul class="nav navbar-nav">
                 
-                <li>
-                    <a href="#">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{usuario} <span sclass="sr-only" class="pull-right hidden-xs showopacity caret" tyle="font-size:16px;"></span></a>
+
+                    <!--<a href="#">
                         <span sclass="sr-only" tyle="font-size:16px;" class="pull-right hidden-xs showopacity">{usuario}</span>
-                    </a>
+                    </a>-->
+                    <ul class="dropdown-menu">
+                        <li><a href="index.php?action=Ingreso::salir">Salir</a></li>
+                        <!--<li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>-->
+                    </ul>
                 </li>
 
                 
@@ -42,15 +53,66 @@
 
             <ul class="nav navbar-nav navbar-right">
                 
-                <li {select_locales}><a href="index.php?action=Local::mostrar">Locales <span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
-                <li {select_empleados}><a href="index.php?action=Empleado::menu">Empleados<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <li class="dropdown" {select_locales}>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Locales <span sclass="sr-only" class="pull-right hidden-xs showopacity caret" tyle="font-size:16px;"></span></a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="index.php?action=Local::mostrar">Ver Locales</a></li>
+                        <li><a href="index.php?action=Empleado::menu">Ver Empleados</a></li>
+
+                        <li class="divider"></li>
+                        <li class="disabled"><a href="#">Reportes</a></li>
+                        <li class="disabled"><a href="#">Parametros</a></li>
+                        
+                    </ul>
+
+                    <!--<a href="index.php?action=Local::mostrar">Locales <span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a>-->
+                </li>
+
+                <!--<li {select_empleados}><a href="index.php?action=Empleado::menu">Empleados<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
                
-                <li {select_proveedores}><a href="index.php?action=Proveedor::menu&opcion_list=1">Proveedores<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
-                 <li {select_articulos}><a href="index.php?action=Articulo::mostrar">Articulos<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <li {select_proveedores}><a href="index.php?action=Proveedor::menu&opcion_list=1">Proveedores<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>-->
+
+                <li class="dropdown" {select_articulos}>
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articulos <span sclass="sr-only" class="pull-right hidden-xs showopacity caret" tyle="font-size:16px;"></span></a>
+
+                    <ul class="dropdown-menu">
+                        <!--class="disabled" en el li -->
+                        <li >  <a href="index.php?action=Articulo::mostrar">Ver Articulos</a></li>
+                        <li><a href="index.php?action=Proveedor::menu&opcion_list=1">Ver Proveedores</a></li>
+                        <li><a href="index.php?action=Articulo::Vender">Vender!</a></li>
+    
+                        <li><a href="index.php?action=Articulo::Vender">Cargar Ventas Antiguas</a></li>
+
+                        <li class="divider"></li>
+                        <li class="disabled"><a href="#">Reportes</a></li>
+                        <li class="disabled"><a href="#">Parametros</a></li>
+                    </ul>
+
+                    <!--<a href="index.php?action=Articulo::mostrar">Articulos<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a>-->
+
+                </li>
                 
-                <li {select_gastos}><a href="index.php?action=Gasto::menu">Gastos<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <li class="dropdown" {select_gastos}>
+                    <!--<a href="index.php?action=Gasto::menu">Gastos<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a>-->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gastos<span sclass="sr-only" class="pull-right hidden-xs showopacity caret" tyle="font-size:16px;"></span></a>
+
+                    <ul class="dropdown-menu">
+                        <!--class="disabled" en el li -->
+                        <li > <a href="index.php?action=Gasto::menu">Ver Gastos</a></li>
+
+                        <li class="divider"></li>
+                        <li class="disabled"><a href="#">Reportes</a></li>
+                        <li class="disabled"><a href="#">Parametros</a></li>
+                    </ul>
+
+
+                </li>
                 
-                <li {select_user}><a href="index.php?action=Ingreso::salir">Salir<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>
+                <!--<li {select_user}><a href="index.php?action=Ingreso::salir">Salir<span style="font-size:16px;" class="pull-right hidden-xs showopacity"></span></a></li>-->
+
+              
                
             <!-- END BLOCK : dentro -->
 

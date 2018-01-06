@@ -87,6 +87,39 @@ class gs_grupo {
 
     }
 
+    public static function obtener_ggs_idgsunico($id_gasto_unico){
+        //obtener empleados por local
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `gs_gtupo` WHERE id_gasto_unico = $id_gasto_unico");  
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+ 
+            return $res_fil['id_ggs'];
+        }
+        else{
+            return false;
+        }
+    }
+
+    public static function update($id_ggs, $columna, $nuevo_valor){
+        //obtener empleados por local
+        global $baseDatos;
+
+        $res = $baseDatos->query(" UPDATE `gs_grupo` SET `$columna`='$nuevo_valor' WHERE id_ggs = $id_ggs");  
+         
+        return $res;
+    }
+
+    public static function baja($id_ggs){
+        //Esto debe ser con PDO, escapando caracteres con expresiones regulares
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("DELETE FROM `gs_grupo` WHERE id_ggs = $id_ggs");  
+
+       return $res;
+    }
+
     public function getId_ggs()
     {
         return $this->id_ggs;

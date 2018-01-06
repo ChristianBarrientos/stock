@@ -1,0 +1,27 @@
+<div class="exito">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-warning center-block">
+					<h3>Seguro que desea eliminar el gasto:</h3>
+					<h4>Nombre: {nombre}</h4>
+					<h4>Tipo: {gs_des}</h4>
+					<h4>Estado: {estado}</h4>
+					<h4>Detalles: {cant_detalles}</h4>
+					 
+					<a href="index.php?action=Gasto::menu">
+   					<button  type="submit" class="btn btn-info">No eliminar!</button>
+					</a>
+					<br><br>
+					<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Gasto::baja_gasto" method="post">
+					
+   					<button  type="submit" class="btn btn-danger">Si, eliminar</button>
+					<input id="oculta_inputs" type="number" name="id_gasto" value={id_gasto}>
+				 	</form>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

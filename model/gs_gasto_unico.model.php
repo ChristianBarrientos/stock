@@ -91,6 +91,16 @@ class gs_gasto_unico {
 
     }
 
+    public static function baja($id_gasto_unico){
+        //Esto debe ser con PDO, escapando caracteres con expresiones regulares
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("DELETE FROM `gs_gasto_unico` WHERE id_gasto_unico = $id_gasto_unico");  
+
+       return $res;
+    }
+
     public static function update($id_gasto_unico, $columna, $nuevo_valor){
         //obtener empleados por local
         global $baseDatos;

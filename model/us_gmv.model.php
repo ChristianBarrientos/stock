@@ -43,7 +43,7 @@ class us_gmv {
     public static function obtener($id_gmv){
         //obtener empleados por local
         global $baseDatos;
-        
+
         $res = $baseDatos->query("SELECT * FROM `us_gmv` WHERE id_gmv = $id_gmv");  
 
         $res_fil = $res->fetch_assoc();
@@ -64,7 +64,8 @@ class us_gmv {
     public static function generar($id_gmv){
         //obtener empleados por local
         global $baseDatos;
-        
+          
+    
         $res = $baseDatos->query("SELECT * FROM `us_gmv` WHERE id_gmv = $id_gmv");  
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
@@ -119,12 +120,12 @@ class us_gmv {
         return $this;
     }
 
-    public function getId_us_art_cat()
+    public function getId_gs_mv()
     {
         return $this->id_gs_mv;
     }
     
-    public function setId_us_art_cat($id_gs_mv)
+    public function setId_gs_mv($id_gs_mv)
     {
         $this->id_gs_mv = $id_gs_mv;
         return $this; 

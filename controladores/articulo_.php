@@ -978,7 +978,10 @@ class Articulo_Controller{
         }
         
         $total_locales = art_local::obtener_locales_usuario_operador();
-
+        if (!$total_locales) {
+            return Ingreso_Controller::salir();
+            # code...
+        }
         $contador = 1;
         $salto = 0;
         /* inicializamos una variable vacia que contendra los datos */
@@ -1460,17 +1463,11 @@ class Articulo_Controller{
 
     public static function venta_finalizar(){
         $bandera = false;
-
         $cuotas = $_POST['cuotas_art_venta'];
         $medio = $_POST['medio_art_venta'];
         $total = $_POST['precio_final_art_venta'];
-
         $cuotas2 = str_replace('$','',$cuotas);
         
-
-
-       
-
         if ($total == 'null' ||  $medio == null) {
             $bandera = true;
         }
@@ -2389,6 +2386,56 @@ class Articulo_Controller{
             }
 
             return $tpl->getOutputContent();
+        }
+        
+
+        public static function vender(){
+            if (Ingreso_Controller::es_admin()) {
+
+                $tpl = new TemplatePower("template/vender.html");
+                $tpl->prepare();
+                //Preguntar si posee art cargados
+                if (isset($_SESSION["lotes"])) {
+                    # code...
+                    $tpl->newBlock("buscador_visible");
+                    $tpl->newBlock("con_articulos_lista");
+
+                }else{
+                    $tpl->newBlock("sin_articulos_lista");
+                    
+                }
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
+        public static function cargar_art_venta($DatosAjax){
+            if (Ingreso_Controller::es_admin()) {
+
+                $Datos = $DatosAjax;
+                //require_once 'controladores/articulo_.php';
+                
+                $Respuesta = articulo::busqueda_ajax($Datos);
+
+                if ($Respuesta) {
+                    # code...
+                   return $Respuesta;
+                }else{
+                    //echo "Mal";
+                }
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            //return $tpl->getOutputContent();
         }
         
 

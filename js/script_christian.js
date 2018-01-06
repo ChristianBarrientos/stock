@@ -7,8 +7,38 @@ var counter = 1;
 var fecha_datapicker_gasto = 1;
 
 $(document).ready(function()
-    {   //Buscador sincronico
+    {   
+
+        //Vender
+        $("#CajaBusqueda").keyup(function(){
+
+            let Busqueda = $("#CajaBusqueda").val();
+            let Datos = new FormData();
+            Datos.append("BusquedaArt",Busqueda);
+
+            $.ajax({
+                url: "template/venta_/ajax_venta.php",
+                method: "POST",
+                data: Datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(Respuesta){
+                    console.log(Respuesta);
+
+                    $("#Resultados").html(Respuesta);
+                }
+            })
+        })
+
+        //Buscador sincronico
         //document.getElementById('art_cantidad_total').focus();
+        
+
+
+
+
+
         $('#filtrar').keyup(function () {
                      
                     var rex = new RegExp($(this).val(), 'i');
