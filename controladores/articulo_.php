@@ -2256,6 +2256,86 @@ class Articulo_Controller{
         }
 
         
+        public static function mostrar_monedas(){
+            if (Ingreso_Controller::es_admin()) {
+                $tpl = new TemplatePower("template/seccion_admin_moneda.html");
+                $tpl->prepare();
+
+                //Obtener Monedas Us
+                
+                $us_gct = us_art_gcat::obtener($_SESSION['usuario']->getId_user());
+                
+                if ($us_gct) {
+                    # code...
+                    $tpl->newBlock("buscador_visible");
+                    $tpl->newBlock("con_gct");
+                    $counter = 1;
+                    $gct = $us_gct->getId_us_art_cat();
+
+                    foreach ($gct as $key => $value) {
+                        # code...
+                        
+                         
+                        $tpl->newBlock("con_gct_lista_cuerpo");
+                        $id_gct = $value->getId();
+                         
+
+                        $nombre_grupo = $value->getNombre();
+                        $des_grupo = $value->getDescripcion();
+                        $gcategorias = $value->getId_gc();
+                        $estado = $value->getHabilitado();
+
+                        $nombre_ = '';
+                        $categorias = $gcategorias->getId_categoria();
+                        foreach ($categorias as $key2 => $value2) {
+                            # code...
+                            //$ct = $value2->getId_categoria();
+                            $nombres = $value2->getNombre();
+
+                            $nombre_ = $nombre_.$nombres.'<br>';
+                        }
+
+                        $tpl->assign("numero",$counter);
+                        $tpl->assign("nombre",$nombre_grupo);
+                        $tpl->assign("des",$des_grupo);
+
+                        $tpl->assign("attr",$nombre_);
+
+                        if ($estado == true) {
+                            # code...
+                            $tpl->assign("habilitado",'Habilitado');
+                        }else
+                        {
+                            $tpl->assign("habilitado",'Desabilitado');
+                        }
+                        
+                        $tpl->assign("id_gc_",$id_gct);
+                        
+                        $counter = $counter + 1 ;
+                        
+                        $tpl->newBlock("modal_cambiar_estado");
+                        $tpl->assign("id_gct",$id_gct);
+                        $tpl->assign("id_us_art_cat",$id_gct);
+                    }
+                }
+                else{
+                     
+                    $tpl->newBlock("sin_gct");
+                }
+
+               
+                
+                
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            return $tpl->getOutputContent();
+        }
+
 
         public static function cambiar_gs_estado(){
            

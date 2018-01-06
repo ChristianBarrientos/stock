@@ -1,4 +1,4 @@
-<div class="cargar_articuloe">
+<div class="grupo_atributos_art">
 
 	  <div class="row">
 	  	<div class="form-group">
@@ -15,9 +15,9 @@
 							<div class="form_flotante" id="form_art_tipo">
 								 
 									<div class="form-group">
-								      <label class="control-label col-sm-2" for="art_tipo">Nombre:</label>
+								      <label class="control-label col-sm-2" for="art_tipo">Valor:</label>
 								       
-								        <input required type="text" class="form-control" id="art_tipo" placeholder="Ingrese nombre para el tipo de gasto." name="art_tipo">
+								        <input required type="text" class="form-control" id="art_tipo" placeholder="Ingrese Marca de Articulo" name="art_tipo">
 								      
 								    </div>
 								  
@@ -45,10 +45,10 @@
 </div>
 <div class="container">
 	
-	  <h2>Declarar Gasto</h2>
+	  <h2>Declarar Atributos</h2>
 	  <h3>Datos generales</h3>
  							        
-	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Gasto::alta" method="post">
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_grupo_atributos" method="post">
 
 	     
 	    <div class="form-group">
@@ -58,7 +58,7 @@
 	     </div>	
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				         
-				    <input required type="text" class="form-control" id="gs_nombre" placeholder="Titulo del Gasto." name="gs_nombre">
+				    <input required type="text" class="form-control" id="art_gcat_nombre" placeholder="Nombre para el grupo de atributos" name="art_gcat_nombre">
 				      
 			    </div>
 			      
@@ -67,98 +67,58 @@
 
 	    <div class="form-group">
 	    <div class="row">
-	    <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	      <label  for="gs_descripcion">Tipo(*):</label>
-	     </div>
-	     
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      <label for="art_cantidad_total">Descripcion:</label>
+	     </div>	
 	            <div class="col-md-4 col-sm-3 col-xs-12">
-				      <select required name="gs_descripcion" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
-				      <!-- START BLOCK : gasto_descripcion -->
-				        <option value="{valor_id_gasto_des}">{nombre_gasto_des}</option>
-				      <!-- END BLOCK : gasto_descripcion -->
-				      </select>
+				         
+				    <input type="text" class="form-control" id="art_gcat_des" placeholder="Nombre para el grupo de atributos" name="art_gcat_des">
 				      
 			    </div>
-			     <div class="col-sm-offset-1 col-sm-3 col-xs-12">
-				      	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#agregar_gs_des" id="cargar_tipo_btn">
-							Agregar
-						</button>
-			        </div>
-
-			<input id="oculta_inputs" class="aca_va_des_gasto" type="text" id="gs_des_" name="gs_des_">
+			      
 		</div>	    
 	    </div>
+
 	    <h3>Detalles</h3>
-	     <a id="uno_mas_gsdetalle">Añadir nuevo detalle</a>
+	     <a id="uno_mas_ctdetalle">Añadir nuevo detalle</a>
+	     <div class="supremo">
 	    <div class="form-group">
 	     <div class="row " id="bloque_gastos_detalles">
 
 	     <div class="control-label col-md-1 col-sm-1 col-xs-12">
-	      <label  for="gs_unico_nombre">Nombre:</label>
+	      <label  for="gct_nombre">Nombre:</label>
 	      </div>
 	      
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input required type="text" class="form-control" id="gs_unico_nombre" placeholder="Subtitulo del Gasto." name="gs_unico_nombre[]">
+				    <input type="text" class="form-control" id="gct_nombre" placeholder="Subtitulo del Gasto." name="gct_nombre[]">
 				      
 			    </div>
 
 		    </div>
 
 		<div class=" control-label col-md-1  col-sm-1 col-xs-12">
-	      <label  for="gs_unico_valor">Valor:</label>
+	      <label  for="gct_des">Descripcion:</label>
 	      </div>
 	      
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input required type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="gs_unico_valor[]">
+				    <input type="text" class="form-control" id="gct_des" placeholder="Valor del Gasto." name="gct_des[]">
 				      
 			    </div>
 
 		    </div>
 		     
-		    <div class="col-md-3 col-sm-3 col-xs-12">
-		    	<div class='input-group date' id='datetimepicker'>
-			            <input  required placeholder="AAAA-MM-DD" name="gs_unico_fechahora[]" type='text' class="form-control" />
-			            <span class="input-group-addon">
-			                <span class="glyphicon glyphicon-calendar"></span>
-			            </span>
-			        </div>
-		
-		    </div>
-
-		    <script type="text/javascript">
-				    $(function () {
-				    	
-				        $('#datetimepicker').datetimepicker({
-				        	//
-				        	format: 'YYYY-MM-DD HH:MM:SS'
-
-
-				        });
-				    });
-				</script>
-
-	    
-	  
-		    <div>
-		    	<div class="col-md-5 col-sm-3 col-xs-12 visible-md-block">
-				     
-				      <input type="text" class="form-control" id="gs_unico_des" placeholder="Observacion referida al gasto.." name="gs_unico_des[]">
-			    </div>
-		    </div>
-		</div>	
-	    </div>
-	    
-
-
+		    
+		</div>
 		
 
 	    <div class="form-group">
-	    <!-- START BLOCK : con_locales_empl --> 
+	     
 	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
-	        	<button type="submit" id ="art_carga_btn" class="btn btn-default">Cargar</button>
+	        	<button type="submit" id ="us_gct_button" class="btn btn-default">Cargar</button>
 	      	</div>
+		<!-- START BLOCK : con_locales_empl -->
 	    <!-- END BLOCK : con_locales_empl -->    
 	    <!-- START BLOCK : sin_locales_empl_2 --> 
 	    <div class="alert alert-warning">

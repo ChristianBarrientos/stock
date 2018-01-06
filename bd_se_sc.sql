@@ -408,12 +408,27 @@ CREATE TABLE  art_conjunto (
      ) ENGINE=InnoDB;
 
 
-
 CREATE TABLE art_fotos (
      id_art_fotos INTEGER AUTO_INCREMENT NOT NULL,
      id_foto INTEGER NOT NULL,
      FOREIGN KEY (id_foto) REFERENCES us_prvd_foto(id_foto) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_art_fotos)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE art_moneda (
+     id_moneda INTEGER AUTO_INCREMENT NOT NULL,
+     nombre VARCHAR(100) NOT NULL,
+     valor INTEGER NOT NULL,
+     KEY (id_moneda)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE us_moneda (
+     id_us_moneda INTEGER AUTO_INCREMENT NOT NULL,
+     id_moneda INTEGER NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_us_moneda)
      ) ENGINE=InnoDB;
 
 CREATE TABLE  art_lote (
@@ -427,6 +442,8 @@ CREATE TABLE  art_lote (
      id_art_fotos INTEGER,
      precio_base DEC(15,2) NOT NULL,
      importe DEC(15,2) NOT NULL,
+     id_moneda INTEGER NULL,
+     FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_provedor) REFERENCES prvd_provedor(id_provedor) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_gc) REFERENCES art_grupo_categoria(id_gc) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -591,3 +608,5 @@ CREATE TABLE  us_acceso (
 ALTER TABLE gs_gastos MODIFY id_ggs INTEGER NULL;
 ALTER TABLE lc_caja add sobrante INTEGER  NULL;
 ALTER TABLE lc_caja MODIFY id_cj_ggs INTEGER NULL;
+ALTER TABLE art_lote ADD id_moneda INTEGER  NULL;
+ALTER TABLE art_lote ADD FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE;

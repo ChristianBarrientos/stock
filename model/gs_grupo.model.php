@@ -90,7 +90,7 @@ class gs_grupo {
     public static function obtener_ggs_idgsunico($id_gasto_unico){
         //obtener empleados por local
         global $baseDatos;
-        $res = $baseDatos->query("SELECT * FROM `gs_gtupo` WHERE id_gasto_unico = $id_gasto_unico");  
+        $res = $baseDatos->query("SELECT * FROM `gs_grupo` WHERE id_gasto_unico = $id_gasto_unico");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
  

@@ -10,9 +10,10 @@ class art_lote {
     private $id_art_fotos;
     private $precio_base;
     private $importe;
+    private $id_moneda;
  
 
-    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos,$precio_base,$importe)
+    public function __construct($id_lote, $id_proveedor, $cantidad,$id_art_conjunto,$id_cb,$id_gc,$id_art_fotos,$precio_base,$importe,$id_moneda)
     {
         $this->id_lote = $id_lote;
         $this->id_proveedor = $id_proveedor;
@@ -23,23 +24,24 @@ class art_lote {
         $this->id_art_fotos = $id_art_fotos;
         $this->precio_base = $precio_base;
         $this->importe = $importe;
+        $this->id_moneda = $id_moneda;
       
     }
 
-    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor,$id_gc,$descripcion = 'null'){
+    public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor,$id_gc,$id_moneda,$descripcion = 'null'){
         global $baseDatos;
        
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote = art_lote::ultimo_id_lote();
         
-        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe)";
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`,`id_moneda`) VALUES (0,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe,$id_moneda)";
         $res = $baseDatos->query($sql);
         
         if ($res) {
              
             return $id_lote;
         }else{
-            printf("Errormessage: %s\n", $baseDatos->error);
+            //printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 
@@ -84,10 +86,15 @@ class art_lote {
             }else{
                 $fotos = null;
             }
+            if ($res_fil['id_moneda'] != null) {
+                $id_moneda = art_moneda::generar($res_fil['id_moneda']);
 
+            }else{
+                $id_moneda = $res_fil['id_moneda'];
+            }
             //$lote = new art_local($res_fil['id_local'],$res_fil['nombre'],$res_fil['descripcion'],$zona,$cant_empl);
             //$lote = new art_local($res_fil['id_local'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$cb,$gc);
-            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$res_fil['codigo_barras'],$gc,$fotos,$res_fil['precio_base'],$res_fil['importe']);
+            $lote = new art_lote($res_fil['id_lote'],$prvd,$res_fil['cantidad_total'],$id_art_conjunto,$res_fil['codigo_barras'],$gc,$fotos,$res_fil['precio_base'],$res_fil['importe'],$id_moneda);
 
             
             return $lote;
@@ -275,5 +282,15 @@ class art_lote {
         return $this;
     }
 
+    public function getId_moneda()
+    {
+        return $this->id_moneda;
+    }
+    
+    public function setId_moneda($id_moneda)
+    {
+        $this->id_moneda = $id_moneda;
+        return $this;
+    }
 }
 ?>

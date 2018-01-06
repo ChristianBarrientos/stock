@@ -119,10 +119,12 @@ class us_ggs {
     public static function baja($id_gasto){
         //Esto debe ser con PDO, escapando caracteres con expresiones regulares
         //obtener empleados por local
+        //BUSCAR OTRA MANERA DE HACERLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         global $baseDatos;
-        
+     
+        $baseDatos->query("SET foreign_key_checks = 0"); 
         $res = $baseDatos->query("DELETE FROM `us_ggs` WHERE id_gasto = $id_gasto");  
-
+         $baseDatos->query("SET foreign_key_checks = 1"); 
        return $res;
     }
 

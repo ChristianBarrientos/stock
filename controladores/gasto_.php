@@ -8,17 +8,12 @@ class Gasto_Controller{
                 $tpl->prepare();
                 if (Ingreso_Controller::admin_ok()) {
                         
-                    
-
-                        # code...
                         $id_user_admin = $_SESSION['usuario']->getId_user();
                         
                         $gastos = us_gastos::obtener($id_user_admin);
                         $i = 1;
                         
                         if ($gastos) {
-                        # code...
-                            
                             $tpl->newBlock("buscador_visible");
                             $tpl->newBlock("con_gastos_lista");
                             foreach ($gastos->getId_us_ggs() as $key => $value) {
@@ -53,10 +48,12 @@ class Gasto_Controller{
                                 $tpl->assign("id_gasto", $gasto->getId_gasto());
                                 
                             }
-
-                            
-                            $tpl->newBlock("btn_borrar_gasto");
-                            $tpl->assign("id_gasto", $gasto->getId_gasto());
+                            $nombre_gasto = $gasto->getNombre();
+                            if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
+                                $tpl->newBlock("btn_borrar_gasto");
+                                $tpl->assign("id_gasto", $gasto->getId_gasto());
+                            }
+                           
                             //Declara Modals
                             $tpl->newBlock("modal_ver_detalles");
                             $tpl->assign("id_gasto", $gasto->getId_gasto());
@@ -616,27 +613,49 @@ public static function antes_baja_gasto(){
         if (Ingreso_Controller::admin_ok()) {
 
             $id_gasto = $_GET['id_gasto'];
-            $gasto = gs_gastos::generar_gasto($id_gasto);
-
-            $tpl = new TemplatePower("template/baja_gasto.html");
-            $tpl->prepare(); 
-            $tpl->assign("nombre", $gasto->getNombre());
-            $gs_tipo = $gasto->getId_gs_des()->getNombre();
-            $tpl->assign("gs_des", $gs_tipo);
-            if ($gasto->getHabilitado() == 1) {
-                $tpl->assign("estado",'Habilitado' );
-            }else{
-                if ($gasto->getHabilitado() == 0) {
-                    $tpl->assign("estado", 'Desabilitado');
-                }else
-                {
-                    $tpl->assign("estado", 'Opps! Contacte por favor al administrador.');
-                }
+            //Preguntar si este gasto pertenece al usuario
+            $bandera = false;
+            $gastos_user = us_gastos::obtener($_SESSION['usuario']->getId_user());
+            $id_us_ggs = $gastos_user->getId_us_ggs()[0]->getId_us_ggs();
+            $us_ggs = us_ggs::obtener($id_us_ggs);
+           
+            foreach ($us_ggs as $key1 => $value1) {
                 
+                $id_gasto_us = $value1->getId_gasto()->getId_gasto();
+                
+                if ($id_gasto_us == $id_gasto) {
+                    $bandera = true;
+                    break;
+                }
             }
-            $gs_unicos = $gasto->getId_ggs()->getId_gasto_unico();
-            $tpl->assign("cant_detalles", count($gs_unicos));
-            $tpl->assign("id_gasto", count($id_gasto));
+            
+            if ($bandera) {
+   
+                $gasto = gs_gastos::generar_gasto($id_gasto);
+
+                $tpl = new TemplatePower("template/baja_gasto.html");
+                $tpl->prepare(); 
+                $tpl->assign("nombre", $gasto->getNombre());
+                $gs_tipo = $gasto->getId_gs_des()->getNombre();
+                $tpl->assign("gs_des", $gs_tipo);
+                if ($gasto->getHabilitado() == 1) {
+                    $tpl->assign("estado",'Habilitado' );
+                }else{
+                    if ($gasto->getHabilitado() == 0) {
+                        $tpl->assign("estado", 'Desabilitado');
+                    }else
+                    {
+                        $tpl->assign("estado", 'Opps! Contacte por favor al administrador.');
+                    }
+                
+                }
+                $gs_unicos = $gasto->getId_ggs()->getId_gasto_unico();
+                $tpl->assign("cant_detalles", count($gs_unicos));
+                $tpl->assign("id_gasto", $id_gasto);
+            }else{
+            
+                return Ingreso_Controller::salir();
+            }
         }
         else{
 
@@ -652,40 +671,44 @@ public static function antes_baja_gasto(){
             $gasto = gs_gastos::generar_gasto($id_gasto);
 
             $nombre_gasto = $gasto->getNombre();
+             
             if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
-                $id_us_ggs = us_ggs::obtener_usggs_idgs();
+                $id_us_ggs = us_ggs::obtener_usggs_idgs($id_gasto);
                 $id_ggs = $gasto->getId_ggs()->getId_ggs();
                 $gs_unicos = $gasto->getId_ggs()->getId_gasto_unico();
 
-                foreach ($variable as $key => $value) {
-                    $id_gasto_unico = $value->getId_gasto_unico();
-                    $bajaok = Gasto_Controller::baja_gasto_unico($id_gasto_unico);
+                $baja_us_ggs = us_ggs::baja($id_gasto);
+                $baja_gs_gasto = gs_gastos::baja($id_gasto);
+                $baja_gs_grupo = gs_grupo::baja($id_ggs);
 
-                    if ($bajaok) {
-                        echo "OKok";
-                    }else{
-                        echo "NoNo";
+
+                if ($baja_us_ggs && $baja_gs_gasto && $baja_gs_grupo) {
+                    # code...
+                
+                    foreach ($gs_unicos as $key => $value) {
+                        $id_gasto_unico = $value->getId_gasto_unico();
+
+                        $bajaok = Gasto_Controller::baja_gasto_unico($id_gasto_unico);
+
+                        if ($bajaok) {
+                           // echo "OKok";
+                        }else{
+                            //echo "NoNo";
+                        }
                     }
-                }
-
-                $bajaok = gs_grupo::baja($id_ggs);
-                if ($bajaok) {
-                    $bajaok = gs_gastos::baja($id_gasto);
-                    $bajaokok = us_ggs::baja($id_ggs);
-
                 }else{
-                    echo "aca";
+                    //echo "acaError0";
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
                 }
-
-
-
 
             }else{
+                //echo "acaError";
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
             }
 
-            if ($bajaok && $bajaokok) {
+            if ($bajaok) {
                 $tpl = new TemplatePower("template/exito.html");
                 $tpl->prepare();
             }else{
@@ -696,48 +719,57 @@ public static function antes_baja_gasto(){
         else{
             return Ingreso_Controller::salir();
         }
+        return $tpl->getOutputContent();
     }
 
     public static function baja_gasto_unico($id_gasto_unico){
-        $id_gasto_unico = $_POST['id_gasto_unico'];
-        $id_ggs = gs_grupo::obtener_ggs_idgsunico();
+        if (isset($_POST['id_gasto_unico'])) {
+            $id_gasto_unico = $_POST['id_gasto_unico'];
+        }
+        $id_ggs = gs_grupo::obtener_ggs_idgsunico($id_gasto_unico);
         $gasto = gs_gasto_unico::generar($id_gasto_unico);
-        $gastos_gsubgasto = $gasto->getId_gsub_gasto()->getId_sub_gasto();
+        $posee_sbgasto = false;
+        if ($gasto->getId_gsub_gasto() != null) {
+            $gastos_gsubgasto = $gasto->getId_gsub_gasto()->getId_sub_gasto();
+            $posee_sbgasto = true;
+
+
+        }
+        
         $nombre_gasto = $gasto->getNombre();
 
         if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
 
-            if (count($gastos_gsubgasto) != 0) {
-                foreach ($gastos_gsubgasto as $key => $value) {
-                    $id_gs_subgasto = $value->getId_sub_gasto();
-                    $bajaok = Gasto_Controller::baja_gasto_unico_subgasto($id_gs_subgasto);
-                    if ($bajaok) {
-                        echo "Borrao subgasto";
-                    }else{
-                        echo "ERROR BORRADO SUBGASTO";
+            if ( $posee_sbgasto) {
+                if (count($gastos_gsubgasto) != 0 ) {
+                    # code...
+                    foreach ($gastos_gsubgasto as $key => $value) {
+                        $id_gs_subgasto = $value->getId_sub_gasto();
+                        $bajaok = Gasto_Controller::baja_gasto_unico_subgasto($id_gs_subgasto);
+                        if ($bajaok) {
+                        //echo "Borrao subgasto";
+                        }else{
+                            //echo "ERROR BORRADO SUBGASTO";
+                        }
                     }
                 }
             }else{
             //Borrar gs_gasto_unico
+                 
                 $bajaok = gs_gasto_unico::baja($id_gasto_unico);
-                if ($bajaok) {
-                    echo "Borrado Gasto UNico";
-                }else{
-                    echo "ERROR BORRADO GASTO UNICO";
-                }
-
+                 
             }
 
-            $us_gastos = us_gastos::obtener($_SESSION['usuario']->getId_user());
+            /*$us_gastos = us_gastos::obtener($_SESSION['usuario']->getId_user());
             $gastos = $us_gastos->getId_us_ggs()->getId_gasto();
             $gastos_gsgrupo = $gasto->getId_us_ggs()->getId_gasto_unico();
             if (count($gastos_gsgrupo) == 0) {
                 //Si es necesario, borrar en tabla gs_gasto_unico
-            $bajaok = gs_grupo::baja($gasto->getId_us_ggs());
+                $bajaok = gs_grupo::baja($gasto->getId_us_ggs());
                 if ($bajaok) {
                     $bajaokok = gs_gastos::update($gastos->getId_gasto(),'id_ggs','null');
                 }
-            }
+            }*/
 
             }
         else{
@@ -745,16 +777,21 @@ public static function antes_baja_gasto(){
             $tpl->prepare();
         }
        
-        if ($bajaok && $bajaokok) {
+        if ($bajaok) {
             $tpl = new TemplatePower("template/exito.html");
             $tpl->prepare();
         }else{
             $tpl = new TemplatePower("template/error.html");
             $tpl->prepare();
         }
+        return $tpl->getOutputContent();
     }
 
     public static function baja_gasto_unico_subgasto($id_gs_subgasto){
+        if (isset($_POST['id_gasto_unico'])) {
+            $id_gasto_unico = $_POST['id_gasto_unico'];
+        }
+
         $id_gs_subgasto = $_POST['id_gs_subgasto'];
         //Borrar en tabla gs_subgasto
         $id_gsub_gasto = gs_gsub_gasto::obtener_gsubgasto_idsubgasto($id_gs_subgasto);
@@ -810,6 +847,7 @@ public static function antes_baja_gasto(){
             $tpl = new TemplatePower("template/error.html");
             $tpl->prepare();
         }
+        return $tpl->getOutputContent();
     }
 
 }
