@@ -119,10 +119,22 @@ class Articulo_Controller{
                                     $ganancia = $value->getImporte();
 
                                     //$porcentaje_ganancia = (int)'0'.'.'.$ganancia;
+                                    $moneda = $value->getId_moneda();
+                                    if ($moneda != null) {
+                                        $valor_moneda = $moneda->getValor();
+                                        $nombre_moneda = $moneda->getNombre();
+                                     
+                                        $prc_final = floatval($ganancia) * floatval($precio_base);
+                                        $precio_fff = floatval($valor_moneda) * floatval($prc_final);
+                                        $precio_final = round($precio_fff,2);
 
-                                    $prc_final = ($ganancia * (int)$precio_base)/100 ;
-                                    $precio_fff = (int)$precio_base + (int)$prc_final;
-                                    $precio_final = round($precio_fff,2);
+                                    }else{
+                                        $prc_final = ($ganancia * (int)$precio_base)/100 ;
+                                        $precio_fff = (int)$precio_base + (int)$prc_final;
+                                        $precio_final = round($precio_fff,2);
+                                    }
+
+                                    
                                     //Obtener Proveedor
                                     if ($value->getId_proveedor() != 'null') {
                                         # code...
@@ -132,7 +144,8 @@ class Articulo_Controller{
                                     else{
                                         $prvd = null;
                                     }
-                          
+                                    
+                                    
                                     if ($prvd != null && $prvd != 0) {
                                          
                                         $tpl->assign("art_prvd",$prvd_nombre);
@@ -144,7 +157,12 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_base != null) {
-                                        $tpl->assign("precio_base",'$'.$precio_base);
+                                        if ($moneda) {
+                                            $tpl->assign("precio_base",'$'.$precio_base.'('.$nombre_moneda.')');
+                                        }else{
+                                            $tpl->assign("precio_base",'$'.$precio_base);
+                                        }
+                                        
                                     }
                                     else{
                                         $tpl->assign("precio_base",'Sin Definir');
@@ -226,10 +244,6 @@ class Articulo_Controller{
                                     else{
                                         $tpl->assign("codigo_barras",'Sin Definir');
                                     }
-
-
-
-
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());
 
                                     //Modale ventana Venta
@@ -310,27 +324,20 @@ class Articulo_Controller{
                                         for ($i=0; $i < count($nom_local__) ; $i++) { 
                                             $nombre_local_con = $nom_local__[$i];
                                             if (!(strcmp($nombre_local_con, $nombre_local_sin ) == 0)) {
-                                               
-                                                 
-                                                
+  
                                             }else{
                                                 $actualiza_stock_bandera = $actualiza_stock_bandera + 1;
                                             }
                                              
                                         }
-                                      
-
+                                    
                                         if ($actualiza_stock_bandera == 0) {
-                                            
-                                         
-                                           
+
                                             $actualiza_stock_locales_sinart = $value7;
                                             $tpl->newBlock("actualiza_sin_stock_locales_cant");
                                             $tpl->assign("nombre_local",$value7->getNombre());
-                                            
                                             $tpl->assign("id_local",$value7->getId_local());
                                             $tpl->assign("cantidad_local",0);
-                                        
                                             $contadori = $contadori + 1;
                                             $actualiza_stock_bandera = 0;
                                             # code...
@@ -344,13 +351,10 @@ class Articulo_Controller{
 
                                     $tpl->gotoBlock("_ROOT");
                                     $tpl->newBlock("modal_actualizar_precio_masivo");
-
                                     $tpl->newBlock("modal_actualizar_precio");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
                                     $tpl->newBlock("actualiza_precio_boton");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
-                                    
-                                    
                                     $tpl->newBlock("actualiza_precio_base");
                                     $tpl->assign("precio_base_",$precio_base);
 
@@ -369,23 +373,8 @@ class Articulo_Controller{
 
                                     $tpl->newBlock("actualiza_precio_credito");
                                     $tpl->assign("precio_credito_",$por_ciento_p);
-
-
-                                   
-                                  
-                                
                                 }
-                               
-                            }
-                            //Lote de Articulos por Local
-                            //$_SESSION["lote_local"] 
-                            //Lote de Articulos en general
-                            //$_SESSION["lotes"]  
-                            
-                            
-                            
-                                
-                               
+                            }          
                         }
                         else{
 
@@ -601,6 +590,15 @@ class Articulo_Controller{
                                         $prvd = $value->getId_proveedor();
                                         $prvd_nombre = $prvd->getid_datos_prvd()->getNombre();
                                     } 
+
+                                    //Obtener moneda
+                                    $moneda = $value->getId_moneda();
+                                    if ($id_moneda != null) {
+                                        $moneda = art_monoeda::generar($moneda);
+                                        $nombre_moneda = $moneda->getNombre();
+                                        $valor_moneda = $moneda->getValor();
+                                        print_r($moneda);
+                                    } 
                                     
                                     if ($prvd != null) {
                                          
@@ -613,7 +611,7 @@ class Articulo_Controller{
                                     }
 
                                     if ($precio_base != null) {
-                                        $tpl->assign("precio_base",'$'.$precio_base);
+                                        $tpl->assign("precio_base",'$'.$precio_base.'('.$nombre_moneda.')');
                                     }
                                     else{
                                         $tpl->assign("precio_base",'Sin Definir');
@@ -791,13 +789,22 @@ class Articulo_Controller{
                 }
                 //Agregar monedas
                 $us_monedas = us_moneda::obtener($_SESSION['usuario']->getId_user());
-                $monedas = $us_monedas->getId_moneda();
-                foreach ($monedas as $key6 => $value6) {
+
+                
+                if ($us_monedas) {
+                    $monedas = $us_monedas->getId_moneda();
+                    $tpl->newBlock("art_moneda_si");
+                    foreach ($monedas as $key6 => $value6) {
                     
                     $tpl->newBlock("cargar_moneda");
                     $tpl->assign("valor_id_moneda", $value6->getId());
-                    $tpl->assign("nombre_moneda", $value6->getNombre().' ['.$value6->getValor().']');
+                    $tpl->assign("nombre_moneda", $value6->getNombre().' ('.$value6->getValor().')');
+                    }
+
+                }else{
+                    $tpl->newBlock("art_moneda_no");
                 }
+                
                 foreach ($_SESSION['locales'] as $key => $value) {
                         
                         $tpl->newBlock("locales_empleado_alta");
@@ -913,11 +920,22 @@ class Articulo_Controller{
         }
 
 
-        public static function alta_articulo(){
+    public static function alta_articulo(){
 
         $id_us_gcat = $_POST['id_us_gcat'];
         $valor_cat_attrs = $_POST['gattr'];
-       
+        $id_moneda = $_POST['art_moneda'];
+        if ($id_moneda != 0) {
+            # code...
+            $moneda = art_moneda::generar($id_moneda);
+            if ($moneda) {
+                $moneda = $moneda->getId();
+            }else{
+                return Ingreso_Controller::salir();
+            }
+        }else{
+            $moneda = 'null';
+        }
 
         //Asinar valores a los atributos
         if (isset($id_us_gcat) && $id_us_gcat != null) {
@@ -1111,9 +1129,6 @@ class Articulo_Controller{
 
         }
 
-
-
-       
         $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
         $nombre_art_marca_generado = art_marca::generar_marca($id_marca);
         $nombre_art_tipo_generado = art_tipo::generar_tipo($id_tipo);
@@ -1156,9 +1171,7 @@ class Articulo_Controller{
 
           }
         //agregar a Lote
-
-          echo $id_gc;
-        $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor,$id_gc);
+        $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor,$id_gc,$moneda);
          
         
 

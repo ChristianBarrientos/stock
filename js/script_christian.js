@@ -512,40 +512,31 @@ $(document).ready(function()
         //GENERA PRECIO POR PORCENTAJES GANANCIAS
         $("#art_ganancia").blur(function(){
             
-            var porciento =  $(this).val();
-            var preciobase = $("#art_precio_base").val();
+            var importe =  $(this).val();
+            var costo = $("#art_precio_base").val();
 
             //var T1 = str.match(/\[(.*)\]/).pop();
             //alert(T1);
             //var moneda = document.getElementById("select_art_moneda"); 
             
 
-            //var moneda = String($("#select_art_moneda option:selected").html());
-            //string_moneda = String(moneda.value);
+            var moneda = String($("#select_art_moneda option:selected").html());
+            $valor_valor_sin_letras = moneda.replace(/^[a-zA-Z\s]*/,"");
+            $valor_moneda = $valor_valor_sin_letras.replace(/\(|\)/g,"");
              
-            
-            //let valor_moneda = string_moneda.match(/\[([\w\s]*)\]/g);
-            //console.log(valor_moneda);
-            //alert(valor_moneda);
 
-            //string_moneda.match(/\[([\w\s]*)\]/g).forEach((item) => {
-                //console.log( item );
-                //Puedes limpiar el texto con:
-                //console.log( item.replace(/[\[\]]/g, '') );
-            //});*()
+            if (costo != '') {
+                if ($valor_moneda != '') {
+                    var precio_aux = importe * costo;
+                    var precio_final = precio_aux * $valor_moneda;
+                      
 
-            //$forma_pago_porciento = $valor_forma.substr(-5);
-            //$separador  = "";
-            //$array_auxiliar = $forma_pago_porciento.split($separador);
-            //$signo_medio_pago = $array_auxiliar[0];
-
-            //var T1 = str.match(/\[(.*)\]/).pop();
-            //alert(T1);
-            if (preciobase != '') {
-
-                var precio_tarjeta_aux = (porciento * preciobase) / 100;
-                var final_ganancia = (parseFloat (precio_tarjeta_aux) + parseFloat(preciobase));
-                $("#valor_calculado_ganancia").text("Pesos Argentinos: " + final_ganancia.toFixed(2));
+                }else{
+                    var precio_aux = (importe * costo) / 100;
+                    var precio_final = (parseFloat (precio_aux) + parseFloat(costo));
+                }
+                
+                $("#valor_calculado_ganancia").text("Pesos Argentinos: " + precio_final.toFixed(2));
                 //$(this).val(porciento + '%')
                 
                 $(this).val(porciento)
@@ -885,7 +876,7 @@ function guardar_art_general(){
             $forma_pago_sin_porciento = $forma_pago_porciento.replace(/%/,"");
 
             $forma_pago_sin_menos = $forma_pago_sin_porciento.replace(/-/,"");
-            $porcentaje_final = $forma_pago_sin_menos.replace(/\(|\)/g,"");
+            $porcentaje_final = $forma_pago_sin_menos.replace(/\(|\)/g,"");//Sin parentesis
             
            
             if(select_forma.indexOf('%') != -1){

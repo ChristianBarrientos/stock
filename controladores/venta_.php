@@ -480,8 +480,8 @@ class Venta_Controller{
                 $id_venta = art_venta::alta($fecha_venta_antigua[$counter],$id_usuario,$medio_pago_venta_antigua[$counter],$monto_venta_antigua[$counter],null);
 
                 if ($id_venta) {
-                # code...
-                    echo "BienVenta";
+               
+                     
                     $id_art_unico = art_unico::alta_art_unico($value,$id_venta);
                     if ($id_art_unico) {
                         # code...
