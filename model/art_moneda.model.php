@@ -14,7 +14,7 @@ class art_moneda {
 
     public static function generar($id_moneda){
         global $baseDatos;
-        print_r($id_moneda);
+         
         $res = $baseDatos->query("SELECT `id_moneda`, `nombre`, `valor` FROM `art_moneda` WHERE id_moneda = $id_moneda");
 
         $res_fil = $res->fetch_assoc();

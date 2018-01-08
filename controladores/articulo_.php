@@ -597,7 +597,7 @@ class Articulo_Controller{
                                         $moneda = art_monoeda::generar($moneda);
                                         $nombre_moneda = $moneda->getNombre();
                                         $valor_moneda = $moneda->getValor();
-                                        print_r($moneda);
+                                         
                                     } 
                                     
                                     if ($prvd != null) {

@@ -282,7 +282,7 @@ class Proveedor_Controller{
 
             $prdv = proveedor::generar_prvd($id_prvd);
 
-            echo $id_prvd;
+            
             
             $ok = $prdv->update($id_prvd,'descripcion',$descripcion);
 
