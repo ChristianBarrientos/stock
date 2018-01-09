@@ -449,12 +449,172 @@ class Ingreso_Controller{
         		$tpl = Ingreso_Controller::registro_gs($gs_tipo,$gs_fecha_desde,$gs_fecha_hasta);
 
         		break;
+
+        	case 10:
+        		# Imprimir sueldos sin detalle
+        		$sl_fecha_desde = $_POST['fecha_desde'];
+        		$sl_fecha_hasta = $_POST['fecha_hasta'];
+
+        		$tpl = Ingreso_Controller::registro_sl($sl_fecha_desde,$sl_fecha_hasta);
+
+        		break;
+
+        	case 11:
+        		# Imprimir sueldos con detalles
+        		$sl_fecha_desde = $_POST['fecha_desde'];
+        		$sl_fecha_hasta = $_POST['fecha_hasta'];
+
+        		$tpl = Ingreso_Controller::registro_gs($gs_tipo,$gs_fecha_desde,$gs_fecha_hasta);
+
+        		break;
         	
         	default:
         		# code...
         		break;
         }
         return $tpl->getOutputContent();
+    }
+
+
+public static function registro_sl($fecha_desde,$fecha_hasta){
+    	$total_sueldos = 0;
+        $total_anticipo = 0;
+        $total_pagar = 0;
+        $respuesta = us_sueldos::obtener();
+
+    	ini_set("session.auto_start", 0);
+       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	$pdf->AddPage();
+		$hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$pdf->Ln( 16 );
+		$pdf->SetFont( 'Arial', '', 12 );
+
+		$permiso = $_SESSION['usuario']->setId_Acceso();
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+		$nombre_negocio = $nombre_ng."\n";
+
+		$pdf->Write( 6, $nombre_negocio."Reporte de Sueldos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora );
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$columnas = ['N','Nombre','Basico','Adelantos','Neto a Cobrar'];
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+
+		$respuesta_final = array();
+		
+	 	$numero_cont = 1;
+			foreach ($respuesta as $key => $value) {
+				$nombre = $value->getId_usuario()->getId_datos()->getNombre();
+                $apellido = $value->getId_usuario()->getId_datos()->getApellido();
+				$nom_completo = $nombre.','.$apellido;
+				$basico = $value->getBasico();
+
+				$total_anticipos = 0;
+				$anticipos = $value->getId_gmv()->getId_gs_mv()[0]->getId_gsub_gasto();
+				if ($anticipos != null) {
+                        
+                    $anticipos = $anticipos->getId_sub_gasto();
+                    foreach ($anticipos as $key2 => $value2) {
+                        $valor_subgasto = $value2->getValor();
+                        $total_anticipos = $total_anticipos + $valor_subgasto;
+                    }
+                }else{
+                    $total_anticipos = 0;
+                    }
+
+                $aguinaldo = $value->getAguinaldo();
+                    //Comprobar si es mes de que se paga el aguinaldo
+                    if ($aguinaldo == true) {
+                        $id_user = $value->getId_usuario()->getId_user();
+                        if ($id_user == 21) {
+                            $aguinaldo = 7500;
+                        }else{
+
+                         $aguinaldo = $basico/2;
+                        }
+                    }else{
+                        $aguinaldo = 'NO';
+                    }
+                $neto = $basico - $total_anticipos + $aguinaldo;
+				$respuesta_final[] = [$numero_cont,$nom_completo,$basico,$total_anticipos,$neto];
+				$numero_cont = $numero_cont + 1;
+				
+				$total_sueldos = $total_sueldos + $basico + $aguinaldo;
+                $total_anticipo = $total_anticipo + $total_anticipos;
+                $total_pagar = $total_pagar + $neto;
+			}
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		//$pdf->Cell( 0, 15, 'Total Recaudado: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+		$pdf->Write( 6, "\nTotal de Sueldos: $".$total_sueldos."\nTotal Anticipos: $".$total_anticipo."\nTotal a Pagar: $".$total_pagar);
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "reportvc.pdf", "I" );
+    	
     }
 
 public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
@@ -1610,7 +1770,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		$pdf->Output( "reportvc.pdf", "I" );
     	
     }
-    public static function reporte_sa($fecha_desde,$fecha_hasta){
+public static function reporte_sa($fecha_desde,$fecha_hasta){
     	$respuesta = reporte::reporte_sa($fecha_desde,$fecha_hasta);
 
     	ini_set("session.auto_start", 0);

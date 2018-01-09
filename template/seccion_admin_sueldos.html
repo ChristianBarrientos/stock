@@ -49,11 +49,22 @@
 	            <td>{anticipos}</td>
 	            <td>{aguinaldo}</td>
 	            <td>{neto}</td>
+	            
 	        </tr>
 			<!-- END BLOCK : lista_datos_sueldos -->
-			 
-	            
-	        
+			<!-- START BLOCK : datos_totales -->
+	        <tr>
+				<td colspan='6'><strong>
+								Total de Sueldos: ${total_sueldos} 	
+								<br> 
+								Total de Anticipos: ${total_anticipo}
+								<br>
+								Total a Pagar: ${total_pagar}
+								</strong>
+				</td>
+
+			</tr>
+	        <!-- END BLOCK : datos_totales -->
 	        </tbody>
 	     </table>
 			<!-- END BLOCK : lista_sueldo -->
@@ -72,6 +83,31 @@
 			
 	</div>
 </div>
+
+<div class="form-group">
+	    <!-- START BLOCK : botones -->
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+	    		<form enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=10" method="post">
+	    			<input id="oculta_inputs" type="text" name = "fehca_desde" value="{fehca_desde}">
+	    			<input id="oculta_inputs" type="text" name = "fecha_hasta" value="{fecha_hasta}">
+	    			<button type="submit" id ="art_carga_btn" class="btn btn-info">Imprimir Sin Detalles</button>
+	    		</form>
+
+	        	<form enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=11" method="post">
+	        		<input id="oculta_inputs" type="text" name = "fehca_desde" value="{fehca_desde2}">
+	    			<input id="oculta_inputs" type="text" name = "fecha_hasta" value="{fecha_hasta2}">
+	        		<button type="submit" id ="art_carga_btn" class="btn btn-success">Imprimir Con Detalles</button>
+
+	        	</form>
+
+	        	
+	      	</div>
+
+	    <!-- END BLOCK : botones -->
+	   
+	      
+	    </div>
+
 
 
 <!-- START BLOCK : modal_detalles_adelantos -->

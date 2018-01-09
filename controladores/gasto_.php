@@ -48,11 +48,11 @@ class Gasto_Controller{
                                 $tpl->assign("id_gasto", $gasto->getId_gasto());
                                 
                             }
-                            //$nombre_gasto = $gasto->getNombre();
-                            //if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
+                            $nombre_gasto = $gasto->getNombre();
+                            if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
                                 $tpl->newBlock("btn_borrar_gasto");
                                 $tpl->assign("id_gasto", $gasto->getId_gasto());
-                            //}
+                            }
                            
                             //Declara Modals
                             $tpl->newBlock("modal_ver_detalles");
@@ -672,7 +672,7 @@ public static function antes_baja_gasto(){
 
             $nombre_gasto = $gasto->getNombre();
              
-            //if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
+            if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
                 $id_us_ggs = us_ggs::obtener_usggs_idgs($id_gasto);
                 $id_ggs = $gasto->getId_ggs()->getId_ggs();
                 $gs_unicos = $gasto->getId_ggs()->getId_gasto_unico();
@@ -702,11 +702,11 @@ public static function antes_baja_gasto(){
                     $tpl->prepare();
                 }
 
-            //}else{
-                //echo "acaError";
-                //$tpl = new TemplatePower("template/error.html");
-                //$tpl->prepare();
-            //}
+            }else{
+                echo "acaError";
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+            }
 
             if ($bajaok) {
                 $tpl = new TemplatePower("template/exito.html");
@@ -738,7 +738,7 @@ public static function antes_baja_gasto(){
         
         $nombre_gasto = $gasto->getNombre();
 
-        //if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
+        if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
 
             if ( $posee_sbgasto) {
                 if (count($gastos_gsubgasto) != 0 ) {
@@ -771,11 +771,11 @@ public static function antes_baja_gasto(){
                 }
             }*/
 
-        //    }
-        //else{
-            //$tpl = new TemplatePower("template/error.html");
-            //$tpl->prepare();
-        //}
+            }
+        else{
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+        }
        
         if ($bajaok) {
             $tpl = new TemplatePower("template/exito.html");
@@ -805,7 +805,7 @@ public static function antes_baja_gasto(){
         $gastos = $us_gastos->getId_us_ggs()->getId_gasto()->getId_us_ggs()->getId_gasto_unico();
         $nombre_gasto = $gasto->getNombre();
 
-        //if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
+        if (!(strcmp($nombre_gasto, 'Sueldos' ) == 0)) {
             $bajaok = gs_subgastp::baja($id_gs_subgasto);
             if ($bajaok) {
             //Borrar en tabla gs_gsubgasto
@@ -817,10 +817,10 @@ public static function antes_baja_gasto(){
                 $bajaok = gs_gasto_unico::update($gastos->getId_gasto_unico(),'id_sub_gasto','null');
             }
             
-        //}else{
-            //$tpl = new TemplatePower("template/error.html");
-            //$tpl->prepare();
-        //}
+        }else{
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+        }
 
         if($bajaok) {
             //Actualizar valores en gasto unico

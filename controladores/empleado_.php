@@ -729,11 +729,18 @@ class Empleado_Controller{
     function liquidar_sueldo(){
         if (Ingreso_Controller::es_admin()) {
             $us_sueldos = us_sueldos::obtener();
+
+            $fecha_desde = $_POST['fecha_desde'];
+            $fecha_hasta = $_POST['fecha_hasta'];
+
             if ($us_sueldos) {
                 $counter = 1;
                 $tpl = new TemplatePower("template/seccion_admin_sueldos.html");
                 $tpl->prepare();
                 $tpl->newBlock("lista_sueldo");
+                $total_sueldos = 0;
+                $total_anticipo = 0;
+                $total_pagar = 0;
                 foreach ($us_sueldos as $key => $value) {
 
                     $tpl->newBlock("lista_datos_sueldos");
@@ -742,6 +749,8 @@ class Empleado_Controller{
                     $basico = $value->getBasico();
                     $total_anticipos = 0;
                     $anticipos = $value->getId_gmv()->getId_gs_mv()[0]->getId_gsub_gasto();
+
+
                     //print_r($anticipos);
                     //->getId_sub_gasto()
                     if ($anticipos != null) {
@@ -756,6 +765,7 @@ class Empleado_Controller{
                     }
                     
                     $aguinaldo = $value->getAguinaldo();
+                    //Comprobar si es mes de que se paga el aguinaldo
                     if ($aguinaldo == true) {
                         $id_user = $value->getId_usuario()->getId_user();
                         if ($id_user == 21) {
@@ -775,10 +785,22 @@ class Empleado_Controller{
                     $tpl->assign("aguinaldo", $aguinaldo);
                     $tpl->assign("neto", $neto);
 
+                    $total_sueldos = $total_sueldos + $basico + $aguinaldo;
+                    $total_anticipo = $total_anticipo + $total_anticipos;
+                    $total_pagar = $total_pagar + $neto;
+
                     $counter = $counter + 1;
-
-
                 }
+                $tpl->newBlock("datos_totales");
+                $tpl->assign("total_sueldos", $total_sueldos);
+                $tpl->assign("total_anticipo", $total_anticipo);
+                $tpl->assign("total_pagar", $total_pagar);
+
+                $tpl->newBlock("botones");
+                $tpl->assign("fecha_desde", $fecha_desde);
+                $tpl->assign("fecha_hasta", $fecha_hasta);
+                $tpl->assign("fecha_desde2", $fecha_desde);
+                $tpl->assign("fecha_hasta2", $fecha_hasta);
             }else{
                 echo "mal";
             }
