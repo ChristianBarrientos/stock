@@ -135,6 +135,7 @@ class Empleado_Controller{
         $correo = ucwords(strtolower($_POST['empl_correo']));
         $telefono = $_POST['empl_telefono'];
 
+        $aguinaldo = $_POST['empl_aguinaldo'];
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
@@ -268,8 +269,12 @@ class Empleado_Controller{
                     //Agregar gasto unico a us_gmv
                     $id_gmv = us_gmv::alta($id_gasto_unico);
                     //Agregar gmv a us_sueldo
-             
-                    $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo);
+                    if ($aguinaldo == 1 OR $aguinaldo == 0) {
+                        $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo,$aguinaldo);
+                    }else{
+                        return Ingreso_Controller::salir();
+                    }
+                    
                     if ($id_us_sueldos) {
                         # code...
                         $tpl = new TemplatePower("template/exito.html");
@@ -412,6 +417,8 @@ class Empleado_Controller{
                     
                         $sueldo_base = $us_sueldos->getBasico();
                   
+                        $aguinaldo = $us_sueldos->getAguinaldo();
+                        echo $aguinaldo;
 
                         $tpl->newBlock("form");
                         $tpl->assign("id_empleado", $id_usuario);
@@ -421,7 +428,8 @@ class Empleado_Controller{
                         $tpl->assign("fecha_alt__", $fecha_alt_);
                         $tpl->assign("fecha_nac__", $fecha_nac_);
                         $tpl->assign("sueldo_base", $sueldo_base);
-                        $tpl->assign("direccion__", $direccion_);
+
+                                               $tpl->assign("direccion__", $direccion_);
                         $tpl->assign("correo__", $correo_);
                         $tpl->assign("telefono__", $telefono_);
                         $tpl->assign("usuario__", $usuario_);
@@ -436,6 +444,14 @@ class Empleado_Controller{
                         $tpl->assign("fecha_alt_", $fecha_alt_);
                         $tpl->assign("fecha_nac_", $fecha_nac_);
                         $tpl->assign("sueldo_base_", $sueldo_base);
+                        if ($aguinaldo == true) {
+                            
+                            
+                            $tpl->assign("selected_si", 'selected="selected"');
+                             
+                        }else{
+                            $tpl->assign("selected_no", 'selected="selected"');
+                        }
 
                         $tpl->assign("direccion_", $direccion_);
                         
@@ -507,7 +523,7 @@ class Empleado_Controller{
         $locales__ = $_GET['locales__'];
 
         $datos_viejos = array($nombre__,$apellido__,$genero__,$dni__,$fecha_nac__,$fecha_alta__,$direccion__,$correo__,$telefono__,$usuario__,$pass__,$locales__);
-                                
+        $aguinaldo = $_POST['empl_aguinaldo'];   
                  
         $nombre = ucwords(strtolower($_POST['empl_nombre']));
         $apellido = ucwords(strtolower($_POST['empl_apellido']));
@@ -662,6 +678,9 @@ class Empleado_Controller{
                 $id_sueldo = $us_sueldos->getId();
                
                 $okok = us_sueldos::update($id_sueldo,'basico',$sueldo_base);
+                if ($okok) {
+                    $okok = us_sueldos::update($id_sueldo,'aguinaldo',$aguinaldo);
+                }
                 
 
                 if ($okok) {
@@ -705,6 +724,73 @@ class Empleado_Controller{
     function art_vender_empelado(){
         $tpl = new TemplatePower("template/exito.html");
         $tpl->prepare();
+    }
+
+    function liquidar_sueldo(){
+        if (Ingreso_Controller::es_admin()) {
+            $us_sueldos = us_sueldos::obtener();
+            if ($us_sueldos) {
+                $counter = 1;
+                $tpl = new TemplatePower("template/seccion_admin_sueldos.html");
+                $tpl->prepare();
+                $tpl->newBlock("lista_sueldo");
+                foreach ($us_sueldos as $key => $value) {
+
+                    $tpl->newBlock("lista_datos_sueldos");
+                    $nombre = $value->getId_usuario()->getId_datos()->getNombre();
+                    $apellido = $value->getId_usuario()->getId_datos()->getApellido();
+                    $basico = $value->getBasico();
+                    $total_anticipos = 0;
+                    $anticipos = $value->getId_gmv()->getId_gs_mv()[0]->getId_gsub_gasto();
+                    //print_r($anticipos);
+                    //->getId_sub_gasto()
+                    if ($anticipos != null) {
+                        # code...
+                        $anticipos = $anticipos->getId_sub_gasto();
+                        foreach ($anticipos as $key2 => $value2) {
+                            $valor_subgasto = $value2->getValor();
+                            $total_anticipos = $total_anticipos + $valor_subgasto;
+                        }
+                    }else{
+                        $total_anticipos = 0;
+                    }
+                    
+                    $aguinaldo = $value->getAguinaldo();
+                    if ($aguinaldo == true) {
+                        $id_user = $value->getId_usuario()->getId_user();
+                        if ($id_user == 21) {
+                            $aguinaldo = 7500;
+                        }else{
+
+                         $aguinaldo = $basico/2;
+                        }
+                    }else{
+                        $aguinaldo = 'NO';
+                    }
+                    $neto = $basico - $total_anticipos + $aguinaldo;
+                    $tpl->assign("numero", $counter);
+                    $tpl->assign("nombre", $nombre.','.$apellido);
+                    $tpl->assign("basico", $basico);
+                    $tpl->assign("anticipos", $total_anticipos);
+                    $tpl->assign("aguinaldo", $aguinaldo);
+                    $tpl->assign("neto", $neto);
+
+                    $counter = $counter + 1;
+
+
+                }
+            }else{
+                echo "mal";
+            }
+            
+
+
+        }else{
+
+            return Ingreso_Controller::salir();
+        }
+        return $tpl->getOutputContent();
+        
     }
 }
 ?>

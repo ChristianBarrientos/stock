@@ -603,6 +603,30 @@ CREATE TABLE  us_acceso (
      ) ENGINE=InnoDB;
 
 
+CREATE TABLE  sl_gsgsueldo (
+     id_gs_gsueldo INTEGER AUTO_INCREMENT NOT NULL,
+     id_gasto_unico INTEGER NOT NULL,
+     FOREIGN KEY (id_gasto_unico) REFERENCES gs_gasto_unico(id_gasto_unico) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_gs_gsueldo)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  us_sl_liquidacion (
+     id_ussl_liquidacion INTEGER AUTO_INCREMENT NOT NULL,
+     id_gs_gsueldo INTEGER,
+     fecha_desde DATETIME,
+     fecha_hasta DATETIME,
+     FOREIGN KEY (id_gs_gsueldo) REFERENCES sl_gsgsueldo(id_gs_gsueldo) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_ussl_liquidacion)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  sl_datos (
+     id_sl_datos INTEGER AUTO_INCREMENT NOT NULL,
+     id_usuario INTEGER NOT NULL,
+     aguinaldo_fechas VARCHAR(100),
+     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_sl_datos)
+     ) ENGINE=InnoDB;
+
 
 
 

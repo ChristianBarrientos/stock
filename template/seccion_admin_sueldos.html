@@ -1,0 +1,113 @@
+<div class="container" id="lista_parametros_medio_venta">
+<div class="row encabezado">
+			<div class="col-md-6 col-xs-4">
+				<div class="titulo-secciones panel-heading">Empleados</div>
+				<h3>Sueldos</h3>
+			</div>
+			 
+			
+</div>
+<div class="row">
+		<!-- START BLOCK : buscador_visible -->
+			<div class="col-md-6 col-xs-12">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+	  			<input id="filtrar" type="text" class="form-control" placeholder="Ingrese una palabra referida al articulo.">
+				
+			</div>
+		<!-- END BLOCK : buscador_visible -->
+			
+
+			
+			
+		</div>
+		<br><br>
+	<div class="row ">
+	
+			<!-- START BLOCK : lista_sueldo -->
+		<table cellpadding="15" class="table table-bordered " align="center">
+			<thead>
+			
+			 <tr>
+	            <th>Numero</th>
+	            <th>Nombre</th>
+	            <th>Sueldo Basico</th>
+	            <th>Total Anticipos</th>
+	            <th>Aguinaldo</th>
+	            <th>Neto a Cobrar</th>
+	              
+	        </tr>
+        	</thead>
+        	<tbody class="buscar">
+        	
+		
+			
+			<!-- START BLOCK : lista_datos_sueldos -->
+			<tr>
+				<td>{numero}</td>
+				<td>{nombre}</td>
+	            <td>{basico}</td>
+	            <td>{anticipos}</td>
+	            <td>{aguinaldo}</td>
+	            <td>{neto}</td>
+	        </tr>
+			<!-- END BLOCK : lista_datos_sueldos -->
+			 
+	            
+	        
+	        </tbody>
+	     </table>
+			<!-- END BLOCK : lista_sueldo -->
+
+			<!-- START BLOCK : error_liquidacion -->
+
+				<div class="alert alert-warning center-block">
+					<h2>No se puede realizar la liquidacion.</h2>
+					<h2>Existen inconsistencias.</h2>
+					<h2>Verifique que las fechas ingresadas no abarquen una liquidacion anterior.</h2>
+					
+				</div>
+
+			<!-- END BLOCK : error_liquidacion -->
+
+			
+	</div>
+</div>
+
+
+<!-- START BLOCK : modal_detalles_adelantos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="estado{id_gct}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h2 class="modal-title" id="myModalLabel">Actualizar Estado de Grupo Atributo</h2>
+						 
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::cambiar_gs_estado&id_us_art_cat={id_us_art_cat}" method="post">
+							<h3>Seleccione</h3>
+							<div class="radio">
+  								<label><input value="1" type="radio" name="estado">Habilitado</label>
+							</div>
+
+							<div class="radio">
+  								<label><input value="0" type="radio" name="estado">Desabilitado</label>
+							</div>
+								
+
+								<button class="agregar btn btn-primary" type="submit">Aplicar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<!-- END BLOCK : modal_detalles_adelantos -->

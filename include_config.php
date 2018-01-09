@@ -66,6 +66,8 @@ include('model/us_sueldos.model.php');
 include('model/us_gmv.model.php');
 include('model/art_moneda.model.php');
 include('model/us_moneda.model.php');
+include('model/us_sl_liquidacion.model.php');
+include('model/sl_gsgsueldo.model.php');
 
 
 //include('template/venta_/ajax_venta.php');

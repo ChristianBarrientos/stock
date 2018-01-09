@@ -5,24 +5,26 @@ class us_sueldos {
     private $id_usuario;
     private $id_gmv;
     private $basico;
+    private $aguinaldo;
 
-    public function __construct($id_sueldo, $id_usuario,$id_gmv,$basico)
+    public function __construct($id_sueldo, $id_usuario,$id_gmv,$basico,$aguinaldo)
     {
         $this->id_sueldo = $id_sueldo;
         $this->id_usuario = $id_usuario;
         $this->id_gmv = $id_gmv;
         $this->basico = $basico;
+        $this->aguinaldo = $aguinaldo;
     
        
     }
 
-    public static function alta($id_usuario,$id_gmv,$basico){
+    public static function alta($id_usuario,$id_gmv,$basico,$aguinaldo){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_sueldo = us_sueldos::ultimo_id();
         
-        $sql = "INSERT INTO `us_sueldos`(`id_sueldo`, `id_usuario`, `id_gmv`, `basico`) VALUES (0,$id_usuario,$id_gmv,$basico)";
+        $sql = "INSERT INTO `us_sueldos`(`id_sueldo`, `id_usuario`, `id_gmv`, `basico`, `aguinaldo`) VALUES (0,$id_usuario,$id_gmv,$basico,$aguinaldo)";
         $res = $baseDatos->query($sql);
         if ($res) {
              
@@ -73,7 +75,7 @@ class us_sueldos {
             
             $id_gmv = us_gmv::generar($res_fil['id_gmv']);
             
-            $us_sueldo = new us_sueldos($res_fil['id_sueldo'],$res_fil['id_usuario'],$id_gmv,$res_fil['basico']);
+            $us_sueldo = new us_sueldos($res_fil['id_sueldo'],$res_fil['id_usuario'],$id_gmv,$res_fil['basico'],$res_fil['aguinaldo']);
             return $us_sueldo;
         }
         else{
@@ -83,22 +85,24 @@ class us_sueldos {
        
     }
 
-    public static function obtener($id_usuario){
+    public static function obtener(){
         //obtener empleados por local
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM `us_sueldos` WHERE id_usuario = $id_usuario");  
-         
-        $res_fil = $res->fetch_assoc();
-        if (count($res_fil) != 0) {
-            
-            $id_gmv = us_gmv::generar($res_fil['id_gmv']);
-            
-            $us_sueldo = new us_sueldos($res_fil['id_sueldo'],$res_fil['id_usuario'],$id_gmv,$res_fil['basico']);
-            return $us_sueldo;
+        $res = $baseDatos->query("SELECT * FROM `us_sueldos`");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            $us_sueldos = array();
+
+            foreach ($filas as $clave => $valor) {
+                $id_gmv = us_gmv::generar($valor['id_gmv']);
+                $id_usuario = usuario::generar_usuario($valor['id_usuario']);
+                $us_sueldos [] = new us_sueldos($valor['id_sueldo'],$id_usuario,$id_gmv,$valor['basico'],$valor['aguinaldo']);
+            }
+
+            return $us_sueldos;
         }
         else{
-            
             return false;
         }
        
@@ -155,6 +159,17 @@ class us_sueldos {
     public function setBasico($basico)
     {
         $this->basico = $basico;
+        return $this;
+    }
+
+    public function getAguinaldo()
+    {
+        return $this->aguinaldo;
+    }
+    
+    public function setAguinaldo($aguinaldo)
+    {
+        $this->aguinaldo = $aguinaldo;
         return $this;
     }
 

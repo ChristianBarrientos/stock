@@ -183,11 +183,93 @@
 				</div>
 				
 		</div>	
+
+		<div class="row">
+		<div class="panel-body"><h2>Empleados</h2></div>
+
+				<div  class="col-md-2 col-xs-6">
+					
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#sl_liquidar">Liquidar Sueldos</button>
+				
+				</div>
+				<div  class="col-md-2 col-xs-6">
+					<a href="index.php?action=Articulo::mostrar_monedas">
+						<button type="button" class="btn btn-info">Datos Sueldos</button>
+					</a>
+				</div>
+		</div>	
 		<!-- END BLOCK : con_datos_reportes -->
 	</div>
 </div>
 
 <!--Ventanas MOdals -->
+<!--Liquidar sueldos -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="modal fade" id="sl_liquidar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" id="modal_galeri_backcolor">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ingrese Rango de Fecha Sueldos</h4>
+					</div>
+					<div class="modal-body">
+					 	<div class="form_flotante" id="form_art_general">
+						<form target="_blank" class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Empleado::liquidar_sueldo" method="post">
+								
+								 <h3>Fecha Desde</h3>
+								<div class='input-group date' id='av_1'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#av_1').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+
+								<h3>Fecha Hasta</h3>
+								<div class='input-group date' id='av_12'>
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
+			            			<span class="input-group-addon">
+			                			<span class="glyphicon glyphicon-calendar"></span>
+			            			</span>
+			        			</div>      
+			    
+								<script type="text/javascript">
+								    $(function () {
+				    	
+								        $('#av_12').datetimepicker({
+				        
+								        	format: 'YYYY-MM-DD'
+
+
+								        });
+								    });
+								</script>
+								<br>
+								<button class="agregar btn btn-primary" type="submit">Generar</button>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
 <!--Reporde de Articulos Vendidos -->
 <div class="container-fluid">
 	<div class="row">
