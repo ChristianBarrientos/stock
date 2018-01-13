@@ -170,6 +170,27 @@ class art_lote {
         return $res;
     }
 
+public static function facturacion_ajax($id_lote){
+        global $baseDatos;
+
+
+        $res = $baseDatos->query("SELECT lote.precio_base AS precio_base, lote.importe AS importe, moneda.valor AS moneda FROM art_lote as lote, art_moneda as moneda  WHERE lote.id_lote = $id_lote AND lote.id_moneda = moneda.id_moneda");
+        //$filas = $res->fetch_all(MYSQLI_ASSOC);
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+             
+            $data['status'] = 'ok';
+            $data['result'] = $res_fil;
+            
+            return $data;
+        }
+        else{
+            $data['status'] = 'err';
+            $data['result'] = '';
+            return false;
+        }
+    }
+
 
     public function getId_lote()
     {

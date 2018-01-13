@@ -90,7 +90,9 @@ class articulo {
         $Like = "%".$nombre_art."%";
         /*$res = $baseDatos->query("SELECT lote.id_lote, art.nombre AS Art,marca.nombre AS Marca,tipo.nombre AS Tipo, lote.importe , lote.precio_base FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_marca as marca, art_articulo as art WHERE tipo.nombre LIKE '$Like' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '$Like'"); */
         
-        $res = $baseDatos->query("SELECT lote.id_lote,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca, lote.importe , lote.precio_base FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca WHERE (tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca OR lote.codigo_barras LIKE '$Like'");
+        $res = $baseDatos->query("SELECT lote.id_lote,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca WHERE (tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca OR lote.codigo_barras LIKE '$Like'");
+
+        /*$res = $baseDatos->query("SELECT DISTINCT lote.id_lote,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca, lote.importe , lote.precio_base, moneda.valor AS Moneda FROM art_moneda AS moneda, art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca WHERE (tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca AND moneda.id_moneda = lote.id_moneda OR lote.codigo_barras LIKE '$Like'");*/
 
         //$res = $baseDatos->query("SELECT id_lote FROM art_lote WHERE id_lote = 1 ");
         //$res_fil = $res->fetch_assoc();
@@ -111,6 +113,7 @@ class articulo {
             return false;
         }
     }
+
 
 
 

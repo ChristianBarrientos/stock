@@ -2595,6 +2595,30 @@ class Articulo_Controller{
             //return $tpl->getOutputContent();
         }
         
+        public static function facturacion_input($id_lote){
+            if (Ingreso_Controller::es_admin()) {
+
+                
+                //require_once 'controladores/articulo_.php';
+                
+                $Respuesta = art_lote::facturacion_ajax($id_lote);
+
+                if ($Respuesta) {
+                    # code...
+                   return $Respuesta;
+                }else{
+                    //echo "Mal";
+                }
+
+            }
+            else{
+               
+                return Ingreso_Controller::salir();
+            }
+
+            //return $tpl->getOutputContent();
+        }
+
 
        public static function cargar_art_general(){
             if (isset($nombre)) {

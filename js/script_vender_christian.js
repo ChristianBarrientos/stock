@@ -1,9 +1,12 @@
 var unasola = true;
 var articulos =  new Array();
 $(document).ready(function()
-    {   
+    {    
+      	/*$("#tags").autocomplete({
+			source: availableTags,
+		});*/ 
     	$("#CajaBusqueda").keyup(function(){
-    		unasola = true;
+    		
             let Busqueda = $("#CajaBusqueda").val();
             let Datos = new FormData();
             if (Busqueda.length == 2 && Busqueda != ' ') {
@@ -18,59 +21,76 @@ $(document).ready(function()
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(Respuesta){
-                     
-                    	
-                    	var valores = JSON.parse(Respuesta);
-                    	if (valores.status == 'ok') {
-                        //console.log(Object.keys(valores.result));
-                        //console.log(valores.result[0]);
-                        /*for(var aux in valores.result)
-                            console.log(aux['Articulo']);*/
-                        	 
-                        	for (var i = 0; i <= valores.result.length; i++) {
+                success: function(Respuesta){		 
+                    var valores = JSON.parse(Respuesta);
+					//if (valores.status == 'ok') {
+					                        //console.log(Object.keys(valores.result));
+					    //console.log(valores.result[0]);
+					                        
+					                   	 
+					    for (var i = 0; i <= valores.result.length; i++) {
 
-                        		if (typeof valores.result[i] !== 'undefined') {
-									art = valores.result[i].Articulo;
-	                        		marca = ','.concat(valores.result[i].Marca);
-	                        		tipo = ','.concat(valores.result[i].Tipo);
-	                        		art_marca = art.concat(marca);
+					        if (typeof valores.result[i] !== 'undefined') {
+							  art = valores.result[i].Articulo;
+						           marca = ','.concat(valores.result[i].Marca);
+						           tipo = ','.concat(valores.result[i].Tipo);
+						           art_marca = art.concat(marca);
+						           id_lote = valores.result[i].id_lote;
+						           precio_final = valores.result[i].precio_base;
+						           //moneda = valores.result[i].Moneda;
 
-	                        		let nombre_art = art_marca.concat(tipo);
-	                        		articulos.push(nombre_art);
+						           let nombre_art = art_marca.concat(tipo);
+						           let final = nombre_art.concat(',');
+						           let final2 = final.concat(id_lote);
+						           articulos.push(final2);
+						           //console.log(valores.result[i].id_lote);
+						           //console.log(valores.result[i].importe);
+						           //console.log(valores.result[i].precio_base);
 
-	                        		//console.log(valores.result[i].id_lote);
-	                        		//console.log(valores.result[i].importe);
-	                        		//console.log(valores.result[i].precio_base);
+					        } 
+					    }
+					                        	
+					//} 
 
-                        		} 
-                        	}
-                        	
-                       	}
-                          
-                    	}
-                     
-                    
-             
-                })
+                    //console.log(articulos);
+                    $("#CajaBusqueda").autocomplete({
+						source: articulos,
+						select: function (event, item) {
+							//console.log(item.item);
+							out = item.item.value.split(',');
+							var params = {
+								lote: out[3]
+							}; 
 
- 
-		var items = Respuesta;
+							$.get("template/venta_/ajax_venta2.php", params, function (response) {
+								var json = JSON.parse(response);
+								if (json.status == 'ok'){
+									$("#Articulo").html(item.item.value);
+									console.log(json.result);
+									let precio_costo = json.result.precio_base;
+									let importe = json.result.importe;
+									let moneda = json.result.moneda;
 
-		$("#tag").autocomplete({
-			source: items,
-			select: function (event, item) {
-				var params = {
-					equipo: item.item.value
-				};
-				 
-				var json = JSON.parse(response);
-				$("#nombre").html(json.nombre);
-				$("#avatar").attr("src", json.icono);
-					 
-				 
-			}
-		});
+									$("#Precio").html(precio_costo);
+									$("#Lote").html(out[3]);
+								}else{
+									console.log("Sin Resultados");
+								}
+							}); 
+							console.log(out[3]);
+							$("#Articulo").html(item.item.value);
+							 
+							
+						}
+					});  	
+                        
+                }
+                });
+
+  			}
+
+  		});
+	});	
 	 
     	/*$("#CajaBusqueda").keyup(function(){
     		unasola = true;
@@ -124,7 +144,19 @@ $(document).ready(function()
              
                 })
             
-           	
+           	/*select: function (event, item) {
+								console.log(Respuesta);
+								alert("AcS");
+								var valores = JSON.parse(item);
+				                if (typeof valores.result[i] !== 'undefined') {
+									art = valores.result[i].Articulo;
+					                marca = ','.concat(valores.result[i].Marca);
+					                tipo = ','.concat(valores.result[i].Tipo);
+					                art_marca = art.concat(marca);
+					                let nombre_art = art_marca.concat(tipo);
+					                $("#Articulo").html(nombre_art);	 
+				                } 	 
+							}
             var articulos = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
             	'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
             	'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
@@ -155,7 +187,7 @@ $(document).ready(function()
 
             }//Cierre de la funcion Keyup
             console.log(articulos);
-        	})
+        	})*/	
 
     		
 
@@ -164,4 +196,4 @@ $(document).ready(function()
             limit: 10,
             source: states
         });*/
-    });
+    //});
