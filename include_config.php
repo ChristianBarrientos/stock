@@ -89,6 +89,7 @@ if ($config["dbEngine"]=="MYSQL"){
 	$baseDatos = new mysqli($config["dbhost"],$config["dbuser"],$config["dbpass"],$config["db"]);
 	
 	
+	
 }else{
 	echo "Error BD";
 }

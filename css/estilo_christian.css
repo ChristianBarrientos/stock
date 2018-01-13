@@ -136,3 +136,8 @@ div#modal_galeri_backcolor{
   position: relative;
   left: 25%;
 }
+
+#bloodhound .tt-dropdown-menu {
+  max-height: 150px;
+  overflow-y: auto;
+}

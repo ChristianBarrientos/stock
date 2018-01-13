@@ -8,15 +8,21 @@ var fecha_datapicker_gasto = 1;
 
 $(document).ready(function()
     {   
+        //Vender 3
+        
+        //Vender 2
+        
+        
 
         //Vender
-        $("#CajaBusqueda").keyup(function(){
+        /*$("#CajaBusqueda").keyup(function(){
 
             let Busqueda = $("#CajaBusqueda").val();
             let Datos = new FormData();
-            Datos.append("BusquedaArt",Busqueda);
-
-            $.ajax({
+            if (Busqueda.length >= 4) {
+                console.log(Busqueda);
+                Datos.append("BusquedaArt",Busqueda);
+                $.ajax({
                 url: "template/venta_/ajax_venta.php",
                 method: "POST",
                 data: Datos,
@@ -28,8 +34,12 @@ $(document).ready(function()
 
                     $("#Resultados").html(Respuesta);
                 }
-            })
-        })
+                })
+            }
+           
+
+            
+        })*/
 
         //Buscador sincronico
         //document.getElementById('art_cantidad_total').focus();
