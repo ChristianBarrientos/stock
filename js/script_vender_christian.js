@@ -1,5 +1,7 @@
 var unasola = true;
 var articulos =  new Array();
+
+var numero = 1;
 $(document).ready(function()
     {    
       	/*$("#tags").autocomplete({
@@ -63,21 +65,40 @@ $(document).ready(function()
 							}; 
 
 							$.get("template/venta_/ajax_venta2.php", params, function (response) {
+
 								var json = JSON.parse(response);
 								if (json.status == 'ok'){
-									$("#Articulo").html(item.item.value);
-									console.log(json.result);
-									let precio_costo = json.result.precio_base;
-									let importe = json.result.importe;
-									let moneda = json.result.moneda;
+									
+									//console.log(json.result);
+                                    //console.log(numero);
+                                    let precio_costo = json.result.precio_base;
+                                    let importe = json.result.importe;
+                                    let moneda = json.result.moneda;
+                                    if (numero == 1) {
 
-									$("#Precio").html(precio_costo);
-									$("#Lote").html(out[3]);
+                                        //$("#Numero").html(numero);
+                                        //$("#Articulo").html(item.item.value);
+                                        //$("#Precio").html(precio_costo);
+                                        //$("#Lote").html(out[3]);
+                                        console.log(numero);
+                                        //Para los Inputs 
+                                        if (numero == 1) {
+                                            var fila="<tr><td>"+numero+"</td><td>"+item.item.value+"</td><td>"+precio_costo+"</td><td>"+out[3]+"</td></tr>";
+                                            document.getElementById("tablita").innerHTML = fila;
+                                        }
+
+                                    }else{
+
+                                    }
+									
+
+                                   
+                                    numero = numero + 1;
 								}else{
 									console.log("Sin Resultados");
 								}
 							}); 
-							console.log(out[3]);
+							//console.log(out[3]);
 							$("#Articulo").html(item.item.value);
 							 
 							
