@@ -2602,7 +2602,9 @@ class Articulo_Controller{
                 //require_once 'controladores/articulo_.php';
                 
                 $Respuesta = art_lote::facturacion_ajax($id_lote);
-
+                //echo "Aca";
+                //print_r($Respuesta);
+                //echo "FinAca";
                 if ($Respuesta) {
                     # code...
                    return $Respuesta;

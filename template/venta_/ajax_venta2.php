@@ -7,7 +7,8 @@
 	if (count($Respuesta) == 0) {
 		echo "<h2>Sin coincidencia.</h2>";
 	}else{
-		 
+		//print_r($Respuesta);
+		//echo $Respuesta;
 		echo json_encode($Respuesta);
 			
 	}

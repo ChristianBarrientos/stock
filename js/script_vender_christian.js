@@ -23,28 +23,34 @@ $(document).ready(function()
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(Respuesta){		 
+                success: function(Respuesta){	
+                    console.log(Respuesta);
                     var valores = JSON.parse(Respuesta);
 					//if (valores.status == 'ok') {
 					                        //console.log(Object.keys(valores.result));
-					    //console.log(valores.result[0]);
+					    console.log(valores.result);
 					                        
 					                   	 
 					    for (var i = 0; i <= valores.result.length; i++) {
 
 					        if (typeof valores.result[i] !== 'undefined') {
-							  art = valores.result[i].Articulo;
+							       art = valores.result[i].Articulo;
 						           marca = ','.concat(valores.result[i].Marca);
 						           tipo = ','.concat(valores.result[i].Tipo);
 						           art_marca = art.concat(marca);
 						           id_lote = valores.result[i].id_lote;
 						           precio_final = valores.result[i].precio_base;
-						           //moneda = valores.result[i].Moneda;
-
+						           
+                                   attr = valores.result[i].attr;
+                                   //moneda = valores.result[i].moneda;
 						           let nombre_art = art_marca.concat(tipo);
 						           let final = nombre_art.concat(',');
 						           let final2 = final.concat(id_lote);
-						           articulos.push(final2);
+                                   let final22 = final2.concat(',');
+                                   let final3 = final22.concat(attr);
+                                   //let final33 = final3.concat(',');
+                                   //let final4 = final33.concat(moneda);
+						           articulos.push(final3);
 						           //console.log(valores.result[i].id_lote);
 						           //console.log(valores.result[i].importe);
 						           //console.log(valores.result[i].precio_base);
@@ -63,33 +69,53 @@ $(document).ready(function()
 							var params = {
 								lote: out[3]
 							}; 
-
+                             
 							$.get("template/venta_/ajax_venta2.php", params, function (response) {
-
+                                console.log(response);
 								var json = JSON.parse(response);
 								if (json.status == 'ok'){
 									
 									//console.log(json.result);
                                     //console.log(numero);
-                                    let precio_costo = json.result.precio_base;
+                                    let costo = json.result.precio_base;
                                     let importe = json.result.importe;
                                     let moneda = json.result.moneda;
-                                    if (numero == 1) {
+
+                                    
+                                    var precio_aux = importe * costo;
+                                    var precio_final = precio_aux * moneda;
+                                    //let attr = json.result.moneda;
+                                    //if (numero == 1) {
 
                                         //$("#Numero").html(numero);
                                         //$("#Articulo").html(item.item.value);
                                         //$("#Precio").html(precio_costo);
                                         //$("#Lote").html(out[3]);
-                                        console.log(numero);
+                                        //console.log(numero);
                                         //Para los Inputs 
-                                        if (numero == 1) {
-                                            var fila="<tr><td>"+numero+"</td><td>"+item.item.value+"</td><td>"+precio_costo+"</td><td>"+out[3]+"</td></tr>";
-                                            document.getElementById("tablita").innerHTML = fila;
-                                        }
+                                        //if (numero == 1) {
+                                        /*
+                                        <tr>
+                                            <td>"+numero+"</td>
+                                            <td>"+item.item.value+"</td>
+                                            <td>"+attr+"</td>
+                                            <td>"+precio_costo+"</td>
+                                            <td>"+out[3]+"</td>
+                                        </tr>
+                                        */
+                                        //out[3]
+                                        input = "<input type='number' size='5'>";
+                                    var fila="<tr><td>"+numero+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
+                                            //document.getElementById("tablita").innerHTML = fila;
+                                    $('#tabla_pv').append(fila);
 
-                                    }else{
+                                        //}
 
-                                    }
+                                    //}else{
+                                        //var fila="<tr><td>"+numero+"</td><td>"+item.item.value+"</td><td>"+precio_costo+"</td><td>"+out[3]+"</td></tr>";
+                                        //document.getElementById("tablita").innerHTML = fila;
+                                        //$('#tabla_pv').append(fila);
+                                    //}
 									
 
                                    

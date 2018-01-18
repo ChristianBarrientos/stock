@@ -19,26 +19,17 @@ class Ajax{
 		if (count($Respuesta) == 0) {
 			echo "<h2>Sin coincidencia.</h2>";
 		}else{
-		 
+		 	//print_r($Respuesta);//
+		 	//echo "<script type='text/javascript'>
+			//		console.log();
+					//console.log("<?php ")
+		 	//</script>";
 			echo json_encode($Respuesta);
 			
 		}
 	}
 
-	public function BusquedaArt2(){
-
-		$Datos = $this->Busqueda;
-
-		$Respuesta = Articulo_Controller::cargar_art_venta($Datos);
-		  
-		if (count($Respuesta) == 0) {
-			echo "<h2>Sin coincidencia.</h2>";
-		}else{
-		 
-			echo json_encode($Respuesta);
-			
-		}
-	}
+	
 }
 
 $a = new Ajax();
@@ -49,11 +40,7 @@ if (isset($_POST['BusquedaArt'])) {
 	$a->BusquedaArt();
 }
 
-if (isset($_POST['BusquedaArt2'])) {
-	# code...
-	$a->Busqueda = $_POST['BusquedaArt2'];
-	$a->BusquedaArt2();
-}
+
 
 
 ?>
