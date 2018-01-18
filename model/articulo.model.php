@@ -101,37 +101,24 @@ class articulo {
         //$res = $baseDatos->query("SELECT id_lote FROM art_lote WHERE id_lote = 1 ");
         //$filas = $res->fetch_assoc();
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-
-        if (count($filas) != 0) {
+        if (count($filas) != 0 && $filas != null AND $filas != '') {
             $attr = '';
             $counter = 0;
-            foreach ($filas as $clave => $valor) {
-                 
-                $lote = art_lote::generar_lote($valor['id_lote']);
-                $gc = $lote->getId_gc()->getId_categoria();
-                //$attr = $gc;
-                if ($gc != '' AND $gc != null AND $gc != ' ') {
-                    foreach ($gc as $key => $value) {
-                        //$ct = $valor->getId_categoria();
-                        //$attr = 'for3';
-                        //if ($ct != null) {
-                        //$attr = 'Dentro';
-                        $nombre_attr = $value->getNombre();
-                        $valor_attr = $value->getValor();
-                        $attr = $attr.$nombre_attr.'('.$valor_attr.')';
-                           
-                            //$ct_[] = [$nombre];
-                        //}else{
-                        //    $attr = "else";
-                        //}
-                        
+            foreach ($filas as $clave => $valor) { 
+                    $lote = art_lote::generar_lote($valor['id_lote']);
+                    //->getId_categoria()
+                    if ($lote->getId_gc() != null) {
+                        $gc = $lote->getId_gc()->getId_categoria();
+
+                        foreach ($gc as $key => $value) {
+                            $nombre_attr = $value->getNombre();
+                            $valor_attr = $value->getValor();
+                            $attr = $attr.$nombre_attr.'('.$valor_attr.')';
+                        }
                     }
-                }
-                //print_r($ct_);
-                $filas[$counter]['attr'] = $attr;
-                //array_push($filas[$counter], $attr);
-                $attr = '';
-                $counter = $counter + 1;
+                    $filas[$counter]['attr'] = $attr;
+                    $attr = '';
+                    $counter = $counter + 1;
             }
             
             $data['status'] = 'ok';

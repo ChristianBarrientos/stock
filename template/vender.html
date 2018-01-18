@@ -19,6 +19,7 @@
 		<h2 id="Precio"></h2>
 		<h2 id="Lote"></h2>
 		-->
+		<h4 id="Sinresultados"></h4>
 		<div id="bloodhound tag" class="ui-widget col-md-12 col-xs-12">
 				<span class="input-group-addon" id="basic-addon1">Buscar</span>
 	  			<input  id="CajaBusqueda" class="typeahead" type="text" placeholder="Ingrese una palabra referida al articulo.">
@@ -65,10 +66,16 @@
 						</td>
 			        </tr>
 				</div> -->
+
+			<tr id="venta_total">
+			 
+				<td  colspan='3' ><strong>Total:</strong> </td>
+			 	<td  colspan='1' ><strong> $ <label id="total_venta"><label></strong></td>
+			</tr>
 	        </tbody>
 	     </table>
-
-	     
+	
+	    <button id="btn_vender" type="button" class="btn btn-success">Vender!</button>
 			<!-- END BLOCK : con_articulos_lista -->
 
 			<!-- START BLOCK : sin_articulos_lista -->

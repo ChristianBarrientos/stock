@@ -141,3 +141,25 @@ div#modal_galeri_backcolor{
   max-height: 150px;
   overflow-y: auto;
 }
+
+/*Venta*/
+#xcancelaventa{
+  border: 1px solid red;
+}
+
+#cerrar-modal {
+  display: none;
+}
+#cerrar-modal + label {
+
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  background: tomato;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  transition: all .5s;
+}
