@@ -16,7 +16,7 @@ class Ajax{
 
 		$Respuesta = Articulo_Controller::cargar_art_venta($Datos);
 		  
-		if (count($Respuesta) == 0) {
+		if (count($Respuesta) == 0 OR $Respuesta == '' OR $Respuesta == null) {
 			echo "<h2>Sin coincidencia.</h2>";
 		}else{
 		 	//print_r($Respuesta);//

@@ -3,7 +3,7 @@ var articulos =  new Array();
 var total_ventas = 0;
 var numero = 0;
 var Ventas = new Array();
-
+var final3 = '';
 function Venta(id_lote, cantidad,precio_final) {
   this.id_lote = id_lote;
   this.cantidad = cantidad;
@@ -15,117 +15,28 @@ $(document).ready(function()
       	/*$("#tags").autocomplete({
 			source: availableTags,
 		});*/ 
-    	$("#CajaBusqueda").keyup(function(){
-    		
-            let Busqueda = $("#CajaBusqueda").val();
-            let Datos = new FormData();
 
-            if (Busqueda.length == 2 && (Busqueda != '' || Busqueda != null)) {
-             
-                var dataList = document.querySelector('#json-art'),
-                input = document.querySelector('#art');
-                
-                Datos.append("BusquedaArt",Busqueda);
-                $.ajax({
-                url: "template/venta_/ajax_venta.php",
-                method: "POST",
-                data: Datos,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(Respuesta){	
-                    //console.log(Respuesta);
-                    var valores = JSON.parse(Respuesta);
+    $("#CajaBusqueda").keypress(function(e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+          if(code==13){
+            let art;
+            art = art_obtener();
+            //articulos = articulos.unique();
+            console.log(art);
+            out = art.split(',');
+                  //console.log(out);
+            articulo_nombre = out[0]+','+out[1]+','+out[2];
+            var params = {
+              lote: out[3]
+            }; 
+            agregar_fila(params,out,articulo_nombre);
 
-					if (valores.status == 'ok') {
-                        $("#Sinresultados").html(' ');
-					    //console.log(Object.keys(valores.result));
-					    //console.log(valores.result);
-					    //console.log(valores.result.unique()); 
-					    //valores.result = valores.result.unique();
-					    for (var i = 0; i <= valores.result.length; i++) {
-
-					        if (typeof valores.result[i] !== 'undefined') {
-							       art = valores.result[i].Articulo;
-						           marca = ','.concat(valores.result[i].Marca);
-						           tipo = ','.concat(valores.result[i].Tipo);
-						           art_marca = art.concat(marca);
-						           id_lote = valores.result[i].id_lote;
-						           precio_final = valores.result[i].precio_base;
-						           
-                                   attr = valores.result[i].attr;
-                                   //moneda = valores.result[i].moneda;
-						           let nombre_art = art_marca.concat(tipo);
-						           let final = nombre_art.concat(',');
-						           let final2 = final.concat(id_lote);
-                                   let final22 = final2.concat(',');
-                                   let final3 = final22.concat(attr);
-                                   //let final33 = final3.concat(',');
-                                   //let final4 = final33.concat(moneda);
-						           articulos.push(final3);
-                                   articulos = articulos.unique();
-						           //console.log(valores.result[i].id_lote);
-						           //console.log(valores.result[i].importe);
-						           //console.log(valores.result[i].precio_base);
-
-					        } 
-					    }
-					                        	
-					}else{
-                        $("#Sinresultados").html('Sin Coincidencias');
-                    }
-
-                    //console.log(articulos);
-                    $("#CajaBusqueda").autocomplete({
-						source: articulos,
-						select: function (event, item) {
-							//console.log(item.item);
-							out = item.item.value.split(',');
-              //console.log(out);
-							var params = {
-								lote: out[3]
-							}; 
-                             
-							$.get("template/venta_/ajax_venta2.php", params, function (response) {
-                                
-								var json = JSON.parse(response);
-
-								if (json.status == 'ok'){
-                  //console.log(json.result);
-                  let costo = json.result.precio_base;
-                  let importe = json.result.importe;
-                  let moneda = json.result.moneda;
-                  var precio_aux = importe * costo;
-                  var precio_final = precio_aux * moneda;
-                  id_input = "cantidad"+numero;
-                  id_input2 = "borrar"+numero;
-                  input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onchange='actualiza_cantidad(this)'>";
-                  button = "<button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
-                  numero_col = numero + 1;
-                  //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id="+id_input2+" class='cerrar-modal' name='modal' type='radio' onclick='borrar_fila(this)'/> <label for='cerrar-modal'> X </label> </td></tr>";
-                  //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
-                  var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td>"+button+"</td></tr>";
-                  $('#venta_total').before(fila);
-
-                  numero = numero + 1;
-
-                  
-                  total_ventas = parseFloat(total_ventas) + parseFloat(precio_final.toFixed(2));
-                  $("#total_venta").text(total_ventas.toFixed(2));
-								}else{
-									console.log("Sin Resultados");
-								}
-                venta = new Venta(out[3],$("#"+id_input).val(),precio_final.toFixed(2));
-                 
-                Ventas.push(venta);
-                //console.log(Ventas);
-               
-							}); 
-						}
-					});  	              
-        }
+          }
         });
-  			} 
+
+    	$("#CajaBusqueda").keyup(function(){
+    		art_obtener();
+        console.log("Ok2");    
   		});
 
     $('#btn_vender').click(function(){ 
@@ -233,7 +144,138 @@ function borrar_fila(input){
   });
   Ventas.splice(id_tr, 1);
   if (Ventas.length == 0) {
-    
+
   }
 }
 
+
+function art_obtener(){
+   
+  let Busqueda = $("#CajaBusqueda").val();
+
+  let Datos = new FormData();
+
+  if (Busqueda.length >= 2 && (Busqueda != '' || Busqueda != null)) {
+    //alert(Busqueda);
+    var dataList = document.querySelector('#json-art'),
+    input = document.querySelector('#art');
+                
+    Datos.append("BusquedaArt",Busqueda);
+    $.ajax({
+      url: "template/venta_/ajax_venta.php",
+      method: "POST",
+      data: Datos,
+      cache: false,
+      contentType: false,
+      processData: false,
+    success: function(Respuesta){ 
+    
+    var valores = JSON.parse(Respuesta);
+    //var valores = Respuesta;
+    //console.log(valores["1"]);
+     
+    if (valores.status == 'ok') {
+      $("#Sinresultados").html(' ');
+      //console.log(Object.keys(valores.result));
+      //console.log(valores.result);
+      //console.log(valores.result.unique()); 
+      //valores.result = valores.result.unique();
+      
+      for (var i = 0; i <= valores.result.length; i++) {
+
+        if (typeof valores.result[i] !== 'undefined') {
+          art = valores.result[i].Articulo;
+          marca = ','.concat(valores.result[i].Marca);
+          tipo = ','.concat(valores.result[i].Tipo);
+          art_marca = art.concat(marca);
+          id_lote = valores.result[i].id_lote;
+          precio_final = valores.result[i].precio_base;
+          attr = valores.result[i].attr;
+                                     //moneda = valores.result[i].moneda;
+          let nombre_art = art_marca.concat(tipo);
+          let final = nombre_art.concat(',');
+          let final2 = final.concat(id_lote);
+          let final22 = final2.concat(',');
+          final3 = final22.concat(attr);
+                                     //let final33 = final3.concat(',');
+                                     //let final4 = final33.concat(moneda);
+          articulos.push(final3);
+          articulos = articulos.unique();
+                         //console.log(valores.result[i].id_lote);
+                         //console.log(valores.result[i].importe);
+                         //console.log(valores.result[i].precio_base);
+
+        } 
+      }
+      busqueda_auto();
+                    
+    }else{
+      console.log("Aca");
+      $("#Sinresultados").html('Sin Coincidencias');
+    }
+
+                    //console.log(articulos);
+                       
+            }
+          });
+        } 
+        
+      return final3;
+      }
+
+function busqueda_auto(){
+  //console.log(articulos);
+  //console.log("BusquedaAuto");
+  $("#CajaBusqueda").autocomplete({
+    source: articulos,
+    select: function (event, item) {
+                  //console.log(item.item);
+      out = item.item.value.split(',');
+                  //console.log(out);
+      articulo_nombre = item.item.value;
+      var params = {
+        lote: out[3]
+      }; 
+      agregar_fila(params,out,articulo_nombre);
+      
+    }
+  });
+}
+
+function agregar_fila(params,out,articulo_nombre){
+  $.get("template/venta_/ajax_venta2.php", params, function (response) {
+        console.log(response);            
+        var json = JSON.parse(response);
+
+        if (json.status == 'ok'){
+                      //console.log(json.result);
+          let costo = json.result.precio_base;
+          let importe = json.result.importe;
+          let moneda = json.result.moneda;
+          var precio_aux = importe * costo;
+          var precio_final = precio_aux * moneda;
+          id_input = "cantidad"+numero;
+          id_input2 = "borrar"+numero;
+          input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onchange='actualiza_cantidad(this)'>";
+          button = "<button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
+          numero_col = numero + 1;
+                      //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id="+id_input2+" class='cerrar-modal' name='modal' type='radio' onclick='borrar_fila(this)'/> <label for='cerrar-modal'> X </label> </td></tr>";
+                      //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
+          var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+articulo_nombre+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td>"+button+"</td></tr>";
+          $('#venta_total').before(fila);
+
+          numero = numero + 1;
+          CajaBusqueda
+          $("#CajaBusqueda").val("");
+          total_ventas = parseFloat(total_ventas) + parseFloat(precio_final.toFixed(2));
+          $("#total_venta").text(total_ventas.toFixed(2));
+        }else{
+          console.log("Sin Resultados");
+        }
+        venta = new Venta(out[3],$("#"+id_input).val(),precio_final.toFixed(2));
+                     
+        Ventas.push(venta);
+      //console.log(Ventas);
+                   
+      }); 
+}
