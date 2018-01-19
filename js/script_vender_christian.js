@@ -22,7 +22,7 @@ $(document).ready(function()
             let art;
             art = art_obtener();
             //articulos = articulos.unique();
-            console.log(art);
+            
             out = art.split(',');
                   //console.log(out);
             articulo_nombre = out[0]+','+out[1]+','+out[2];
@@ -36,7 +36,7 @@ $(document).ready(function()
 
     	$("#CajaBusqueda").keyup(function(){
     		art_obtener();
-        console.log("Ok2");    
+            
   		});
 
     $('#btn_vender').click(function(){ 
@@ -127,7 +127,7 @@ function borrar_fila(input){
                 //console.log("Elemento: "+this.innerHTML);
               }
               if (counter == 2) {
-                input = "<input id='"+id_input_+"' type='number' size='5' value='1' min='1' onblur='actualiza_cantidad(this)'>";
+                input = "<input id='"+id_input_+"' type='number' size='5' value='1' min='1' onchange='actualiza_cantidad(this)'>";
                 this.innerHTML = input;
                 //console.log("Elemento: "+this.innerHTML);
               }
@@ -210,7 +210,7 @@ function art_obtener(){
       busqueda_auto();
                     
     }else{
-      console.log("Aca");
+      
       $("#Sinresultados").html('Sin Coincidencias');
     }
 
@@ -244,7 +244,10 @@ function busqueda_auto(){
 
 function agregar_fila(params,out,articulo_nombre){
   $.get("template/venta_/ajax_venta2.php", params, function (response) {
-        console.log(response);            
+        //console.log(response);   
+        if (response == '' || response == 'anonymous') {
+          console.log("Yees");
+        }         
         var json = JSON.parse(response);
 
         if (json.status == 'ok'){
