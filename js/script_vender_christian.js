@@ -1,12 +1,13 @@
 var unasola = true;
 var articulos =  new Array();
 var total_ventas = 0;
-var numero = 1;
+var numero = 0;
 var Ventas = new Array();
 
-function Venta(id_lote, cantidad) {
+function Venta(id_lote, cantidad,precio_final) {
   this.id_lote = id_lote;
   this.cantidad = cantidad;
+  this.precio_final = precio_final;
 }
 
 $(document).ready(function()
@@ -97,21 +98,23 @@ $(document).ready(function()
                   var precio_aux = importe * costo;
                   var precio_final = precio_aux * moneda;
                   id_input = "cantidad"+numero;
-                  input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1'>";
-
-                  //var fila="<tr id="+numero+"><td>"+numero+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id='cerrar-modal' name='modal' type='radio' /> <label for='cerrar-modal'> X </label> </td></tr>";
-                  var fila="<tr id="+numero+"><td>"+numero+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
+                  id_input2 = "borrar"+numero;
+                  input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onblur='actualiza_cantidad(this)'>";
+                  numero_col = numero + 1;
+                  //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id="+id_input2+" class='cerrar-modal' name='modal' type='radio' onclick='borrar_fila(this)'/> <label for='cerrar-modal'> X </label> </td></tr>";
+                  //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
+                  var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td> <button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button></td></tr>";
                   $('#venta_total').before(fila);
 
                   numero = numero + 1;
 
                   
                   total_ventas = parseFloat(total_ventas) + parseFloat(precio_final.toFixed(2));
-                  $("#total_venta").text(total_ventas);
+                  $("#total_venta").text(total_ventas.toFixed(2));
 								}else{
 									console.log("Sin Resultados");
 								}
-                venta = new Venta(out[3],$("#"+id_input).val());
+                venta = new Venta(out[3],$("#"+id_input).val(),precio_final.toFixed(2));
                  
                 Ventas.push(venta);
                
@@ -129,12 +132,16 @@ $(document).ready(function()
 
   		});
 
-  $('#btn_vender').click(function(){ 
+    $('#btn_vender').click(function(){ 
 
       alert("Venderas");
       console.log(Ventas);
 
     });
+ 
+
+    
+    
 
 
 	});	
@@ -159,4 +166,56 @@ $('.cerrar-modal').click(function(){
     });
 
 
+$("input[id|='cantidad']").change(function(){
+      console.log("OkOk");
+      alert(this.val());
+    });
+
+function actualiza_cantidad(input){
+
+  let cantidad_n = input.value;
+  let auxiliar = 0;
+  var oID = $(input).attr("id");
+  id = oID.replace(/^[a-zA-Z\s]*/, "");
+  let cantidad_v = Ventas[id].cantidad;
+  let precio = Ventas[id].precio_final;
+  if (cantidad_v != cantidad_n) {
+    let diff = 0;
+    if (cantidad_n > cantidad_v) {
+      diff = cantidad_n - cantidad_v;
+      auxiliar = precio * diff;
+      total_ventas = parseFloat(total_ventas) + parseFloat(auxiliar.toFixed(2));
+    }else{  
+      diff = cantidad_v - cantidad_n;
+      auxiliar = precio * diff;
+      total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
+    }
+  
+    $("#total_venta").text(total_ventas.toFixed(2));
+    Ventas[id].cantidad = cantidad_n;
+  }
+
+ 
+  //console.log("TotalVentas: "+total_ventas);
+  //console.log(Ventas[id].precio_final);
+
+}
+
+function borrar_fila(input){
+  var oID = $(input).attr("id");
+  console.log(oID);
+  id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
+  let cantidad = Ventas[id_tr].cantidad;
+  let precio = Ventas[id_tr].precio_final;
+  let auxiliar = cantidad * precio;
+
+  total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
+  $("#total_venta").text(total_ventas.toFixed(2));
+  $("#"+id_tr+"").remove();
+  Ventas.splice(id_tr, 1);
+  console.log(Ventas);
+
+ 
+  console.log(Ventas[id_tr]);
+}
 

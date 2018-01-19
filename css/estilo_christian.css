@@ -150,7 +150,7 @@ div#modal_galeri_backcolor{
 #cerrar-modal {
   display: none;
 }
-#cerrar-modal + label {
+.cerrar-modal + label {
 
   color: #fff;
   font-weight: bold;
