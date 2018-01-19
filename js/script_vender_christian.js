@@ -99,11 +99,12 @@ $(document).ready(function()
                   var precio_final = precio_aux * moneda;
                   id_input = "cantidad"+numero;
                   id_input2 = "borrar"+numero;
-                  input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onblur='actualiza_cantidad(this)'>";
+                  input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onchange='actualiza_cantidad(this)'>";
+                  button = "<button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
                   numero_col = numero + 1;
                   //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id="+id_input2+" class='cerrar-modal' name='modal' type='radio' onclick='borrar_fila(this)'/> <label for='cerrar-modal'> X </label> </td></tr>";
                   //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
-                  var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td> <button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button></td></tr>";
+                  var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td>"+button+"</td></tr>";
                   $('#venta_total').before(fila);
 
                   numero = numero + 1;
@@ -117,19 +118,14 @@ $(document).ready(function()
                 venta = new Venta(out[3],$("#"+id_input).val(),precio_final.toFixed(2));
                  
                 Ventas.push(venta);
+                //console.log(Ventas);
                
 							}); 
-              	
-               
-              
 						}
-					});  	
-                        
+					});  	              
         }
         });
-
   			} 
-
   		});
 
     $('#btn_vender').click(function(){ 
@@ -138,12 +134,6 @@ $(document).ready(function()
       console.log(Ventas);
 
     });
- 
-
-    
-    
-
-
 	});	
 
 
@@ -165,11 +155,6 @@ $('.cerrar-modal').click(function(){
 
     });
 
-
-$("input[id|='cantidad']").change(function(){
-      console.log("OkOk");
-      alert(this.val());
-    });
 
 function actualiza_cantidad(input){
 
@@ -202,20 +187,53 @@ function actualiza_cantidad(input){
 }
 
 function borrar_fila(input){
+
   var oID = $(input).attr("id");
-  console.log(oID);
+  //console.log(oID);
   id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
+
   let cantidad = Ventas[id_tr].cantidad;
   let precio = Ventas[id_tr].precio_final;
   let auxiliar = cantidad * precio;
 
   total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
   $("#total_venta").text(total_ventas.toFixed(2));
+  
   $("#"+id_tr+"").remove();
-  Ventas.splice(id_tr, 1);
-  console.log(Ventas);
+  $('#tabla_pv tr').each(function() {
+    
+    if (this.id != 0 && this.id != null && this.id != '' && this.id != 'venta_total') {
+        //console.log("ID: "+this.id);
+        let counter = 0;
+        let id_tr_ = this.id - 1;
+        
+        id_input_ = "cantidad"+id_tr_;
+        id_input_2 = "borrar"+id_tr_;
 
- 
-  console.log(Ventas[id_tr]);
+        $("#"+this.id+" td").each(function(){
+              if (counter == 0) {
+                this.innerHTML = parseInt(this.innerHTML) - 1;
+                //console.log("Elemento: "+this.innerHTML);
+              }
+              if (counter == 2) {
+                input = "<input id='"+id_input_+"' type='number' size='5' value='1' min='1' onblur='actualiza_cantidad(this)'>";
+                this.innerHTML = input;
+                //console.log("Elemento: "+this.innerHTML);
+              }
+              if (counter == 4) {
+                button = "<button id="+id_input_2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
+                this.innerHTML = button;
+                //console.log("Elemento: "+this.innerHTML);
+              }
+              counter = counter + 1;
+          });
+        this.id = this.id - 1;
+        numero = numero - 1;
+    }
+  });
+  Ventas.splice(id_tr, 1);
+  if (Ventas.length == 0) {
+    
+  }
 }
 
