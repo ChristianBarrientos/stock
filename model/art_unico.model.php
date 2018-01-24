@@ -2,25 +2,25 @@
 class art_unico {
 	
 	private $id_unico;
-    private $id_lote_local;
+    private $id_gunico;
     private $id_venta;
     
 
-    public function __construct($id_unico, $id_lote_local, $id_venta)
+    public function __construct($id_unico, $id_gunico, $id_venta)
     {
         $this->id_unico = $id_unico;
-        $this->id_lote_local = $id_lote_local;
+        $this->id_gunico = $id_gunico;
         $this->id_venta = $id_venta;
        
     }
 
-    public static function alta_art_unico($id_lote_local,$id_venta){
+    public static function alta_art_unico($id_gunico,$id_venta){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_unico = art_unico::ultimo_id_unico();
         
-        $sql = "INSERT INTO `art_unico`(`id_unico`, `id_lote_local`, `id_venta`) VALUES (0,$id_lote_local,$id_venta)";
+        $sql = "INSERT INTO `art_unico`(`id_unico`, `id_gunico`, `id_venta`) VALUES (0,$id_gunico,$id_venta)";
 
         $res = $baseDatos->query($sql);
        
@@ -50,9 +50,9 @@ class art_unico {
          
         if (count($res_fil) != 0) {
             //$id_categoria, $nombre, $valor,$descripcion
-            $id_lote_local =  art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
+            $id_gunico =  art_gunico::generar($res_fil['id_gunico']);
             $id_venta = art_venta::generar($res_fil['id_venta']);
-            $unico = new art_unico($res_fil['id_unico'],$id_lote_local,$id_venta);
+            $unico = new art_unico($res_fil['id_unico'],$id_gunico,$id_venta);
             
             return $unico;
         }
@@ -74,14 +74,14 @@ class art_unico {
         return $this;
     }
 
-    public function getId_lote_local()
+    public function getId_gunico()
     {
-        return $this->id_lote_local;
+        return $this->id_gunico;
     }
     
-    public function setId_lote_local($id_lote_local)
+    public function setId_gunico($id_gunico)
     {
-        $this->id_lote_local = $id_lote_local;
+        $this->id_gunico = $id_gunico;
         return $this;
     }
 

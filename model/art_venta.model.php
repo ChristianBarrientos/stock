@@ -5,31 +5,26 @@ class art_venta {
     private $fecha_hora; 
     private $id_usuario;
     private $id_promo;
-    private $id_medio_pago;
+    private $id_gmedio_pago;
     private $cuotas;
     private $total;
     private $id_cambio;
 
-    public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_medio_pago,$total,$cuotas,$id_cambio)
-    {
+    public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_gmedio_pago,$total,$cuotas,$id_cambio){
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
         $this->id_promo = $id_promo;
-        $this->id_medio_pago = $id_medio_pago;
+        $this->id_gmedio_pago = $id_gmedio_pago;
         $this->total = $total;
         $this->cuotas = $cuotas;
         $this->id_cambio = $id_cambio;
-       
     }
-//$fecha_venta,$id_usuario,$medio,$total,$cuotas2
-    public static function alta($fecha_hora,$id_usuario,$id_medio_pago,$total,$cuotas,$id_cambio = 'null',$id_promo = 'null'){
+
+    public static function alta($fecha_hora,$id_usuario,$id_gmedio_pago,$total,$cuotas,$id_cambio = 'null',$id_promo = 'null'){
         global $baseDatos;
-
-        //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_venta = art_venta::ultimo_id();
-        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuario`, `id_promo`, `id_medio_pago`, `total`, `cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_promo,$id_medio_pago,$total,'$cuotas',$id_cambio)";
-
+        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuario`, `id_promo`, `id_gmedio_pago`, `total`, `cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_promo,$id_gmedio_pago,$total,'$cuotas',$id_cambio)";
         $res = $baseDatos->query($sql);
         if ($res) {
             printf("Errormessage: %s\n", $baseDatos->error);
@@ -38,8 +33,8 @@ class art_venta {
                 printf("Errormessage: %s\n", $baseDatos->error); 
             return false;
         }
-
     }
+
     public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_venta'";
@@ -54,67 +49,42 @@ class art_venta {
         $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE id_venta = $id_venta");  
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            //$id_categoria, $nombre, $valor,$descripcion
             $id_usuario = usuario::generar_usuario($res_fil['id_usuario']);
 
-            if ($res_fil['id_medio_pago'] != null) {
-                # code...
-                $id_medio_pago = art_venta_medio_pago::generar($res_fil['id_medio_pago']);
+            if ($res_fil['id_gmedio_pago'] != null) {
+                $id_gmedio_pago = art_gmedio_pago::generar($res_fil['id_gmedio_pago']);
             }
             else{
-                $id_medio_pago = $res_fil['id_medio_pago'];
+                $id_gmedio_pago = $res_fil['id_gmedio_pago'];
             }
-
-            //if ($res_fil['id_promo'] != null) {
-                # code...
-                //$id_medio_pago = art_venta_medio_pago::generar($res_fil['id_medio_pago']);
-            //}
-            //else{
-                $id_promo = $res_fil['id_promo'];
-            //}
-            
-
+            $id_promo = $res_fil['id_promo'];
             if ($res_fil['id_cambio'] != null) {
-                # code...
                 $art_unico_cambio = art_unico::generar_unico($res_fil['id_cambio']);
-                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_medio_pago,$res_fil['total'],$res_fil['cuotas'],$art_unico_cambio);
-
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$art_unico_cambio);
             }else{
-//$id_venta, $fecha_hora,$id_usuario,$id_promo,$id_medio_pago,$total,$cuotas,$id_cambio
-                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_medio_pago,$res_fil['total'],$res_fil['cuotas'],$res_fil['id_cambio']);
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$res_fil['id_cambio']);
             }
-            
-
-            
             return $venta;
         }
         else{
-            
             return false;
         }
     }
 
     public static function update_id_cambio($id_venta,$id_cambio){
-        //obtener empleados por local
         global $baseDatos;
-       
         $res = $baseDatos->query(" UPDATE `art_venta` SET `id_cambio`='$id_cambio' WHERE id_venta = $id_venta");  
-         
         return $res;
-       
-
-
     }
 
-
-    public function getMedio_pago()
+    public function getId_gmedio_pago()
     {
-        return $this->id_medio_pago;
+        return $this->id_gmedio_pago;
     }
     
-    public function setMedio_pago($id_medio_pago)
+    public function setId_gmedio_pago($id_gmedio_pago)
     {
-        $this->id_medio_pago = $id_medio_pago;
+        $this->id_gmedio_pago = $id_gmedio_pago;
         return $this;
     }
 

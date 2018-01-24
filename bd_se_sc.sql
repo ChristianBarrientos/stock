@@ -547,6 +547,13 @@ CREATE TABLE  us_medio_pago (
      KEY (id_us_medio_pago)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  art_gmedio_pago (
+     id_gmedio_pago INTEGER AUTO_INCREMENT NOT NULL,
+     id_medio_pago INTEGER NOT NULL,
+     FOREIGN KEY (id_medio_pago) REFERENCES art_venta_medio_pago(id_medio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_gmedio_pago)
+     ) ENGINE=InnoDB;
+
 CREATE TABLE  us_promo (
      id_us_promo INTEGER AUTO_INCREMENT NOT NULL,
      id_usuario INTEGER NOT NULL,
@@ -561,11 +568,11 @@ CREATE TABLE  art_venta (
      fecha_hora DATETIME NOT NULL,
      id_usuario INTEGER NOT NULL,
      id_promo INTEGER,
-     id_medio_pago INTEGER NOT NULL,
+     id_gmedio_pago INTEGER NOT NULL,
      total VARCHAR(100) NOT NULL,
      cuotas VARCHAR(100),
      id_cambio INTEGER,
-     FOREIGN KEY (id_medio_pago) REFERENCES art_venta_medio_pago(id_medio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_gmedio_pago) REFERENCES art_gmedio_pago(id_gmedio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_promo) REFERENCES art_venta_promo(id_promo) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_cambio) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -582,11 +589,18 @@ CREATE TABLE  art_no_venta (
      KEY (id_no_venta)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  art_gunico (
+     id_gunico INTEGER AUTO_INCREMENT NOT NULL,
+     id_lote_local INTEGER NOT NULL,
+     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
+     KEY (id_gunico)
+     ) ENGINE=InnoDB;
+
 CREATE TABLE  art_unico (
      id_unico INTEGER AUTO_INCREMENT NOT NULL,
-     id_lote_local INTEGER NOT NULL,
+     id_gunico INTEGER NOT NULL,
      id_venta INTEGER NOT NULL,
-     FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
+     FOREIGN KEY (id_gunico) REFERENCES art_gunico(id_gunico) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_venta) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_unico)
      ) ENGINE=InnoDB;
