@@ -3,6 +3,7 @@ var articulos =  new Array();
 var total_ventas = 0;
 var numero = 0;
 var Ventas = new Array();
+var Medios_Pagos = new Array();
 var final3 = '';
 var venta_ ='';
 
@@ -25,8 +26,13 @@ function Venta_final(ventas, medio_pago,total) {
 
 
 $(document).ready(function()
-    {    
-      $('#medio_pago_valor_total').attr('disabled','disabled');
+    {   
+       
+      //$('#medio_pago_valor_total').attr('disabled','false');
+      $( "#medio_pago_valor_total" ).prop( "disabled", true );
+      $("#forma_pago_select_2_bloque").hide();
+      
+      
       	/*$("#tags").autocomplete({
 			source: availableTags,
 		});*/ 
@@ -60,6 +66,7 @@ $(document).ready(function()
 
       alert("Venderas");
       console.log(Ventas);
+      console.log(venta_);
 
     });
 	});	
@@ -384,9 +391,9 @@ function agregar_fila(params,out,articulo_nombre){
       }); 
 }
 
-function calculo_total(element){
+function calculo_total(){
   
-  let id_forma_pago = document.getElementById("valor_pago_select");
+  let id_forma_pago = document.getElementById("forma_pago_select").value;
   //$( "#myselect" ).val();
   //let select_forma = String($("#forma_pago_select option:selected").html());
   let select_forma = String($("#forma_pago_select option:selected").html());
@@ -415,13 +422,61 @@ function calculo_total(element){
 
   $("#total_venta_final").text(valor_finali_finali.toFixed(1));
 
-  $('#medio_pago_valor_total').attr('disabled',' ');
-  console.log("calculo_total");
-  console.log("id_forma_pago: "+id_forma_pago);
+  //$('#medio_pago_valor_total').attr('disabled',' ');
+  $("#medio_pago_valor_total" ).prop( "disabled", false );
 
-  //medio_pago = new Medio_Pago(id_forma_pago);
+  let valor = $("#agrega_medio_pago").val();
 
-  venta_ = new Venta_final(Ventas,id_forma_pago,valor_finali_finali);
-  console.log(venta_);
+  Medios_Pagos = [];
+  if (!($("#forma_pago_select_2_bloque").hasClass("hide"))) {
+    console.log("If");
+    input_value_1 = $("#medio_pago_valor_total").val();
+    medio_pago1 = new Medio_Pago(id_forma_pago,input_value_1);
+    Medios_Pagos.push(medio_pago1);
+    $("#medio_pago_valor_total").val(valor_finali_finali.toFixed(1));
+
+    $("#medio_pago_valor_total").on('input', function(){
+      var cant = parseInt(this.value, valor_finali_finali.toFixed(1));
+      $(this).attr('max', valor_finali_finali.toFixed(1));
+    });
+
+  }else{
+    input_value_1 = $("#medio_pago_valor_total").val();
+    input_value_2 = $("#medio_pago_valor_total_2").val();
+    medio_pago1 = new Medio_Pago(id_forma_pago,input_value_1);
+    medio_pago2 = new Medio_Pago(id_forma_pago,input_value_2);
+    Medios_Pagos.push(medio_pago1);
+    Medios_Pagos.push(medio_pago2);
+  }
+
+
+
+  venta_ = new Venta_final(Ventas,Medios_Pagos,valor_finali_finali);
+  
+
+}
+//calcular diferencia medios de pagos
+function calcular_diferencia_mp(el){
+
+  $("#medio_pago_valor_total").on('input', function(){
+    var cant = parseInt(this.value, valor_finali_finali.toFixed(1));
+    $(this).attr('max', valor_finali_finali.toFixed(1));
+  });
+
+}
+
+function agregar_elimina_medio_pago(e){
+  var oID = $(e).attr("id");
+  var valor = $(e).val();
+  if (valor == 1) {
+    $(e).val(2);
+    $(e).text("Eliminar Medio de Pago");
+    $("#forma_pago_select_2_bloque").show();
+  }else{
+    $(e).val(1);
+    $(e).text("Agregar Medio de Pago");
+    $("#forma_pago_select_2_bloque").hide();
+  }
+
 
 }

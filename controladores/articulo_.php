@@ -2611,6 +2611,16 @@ class Articulo_Controller{
                                 }else{
                                     $tpl->assign("nombre_medio_pago",$value6->getNombre());
                                 } 
+
+                                $tpl->newBlock("medio_pago_venta_opciones2");
+                                $desimp = $value6->getDesImp()->getValor();
+                                $desimp_signo = $value6->getDesImp()->getSigno();
+                                $tpl->assign("id_medio_pago",$value6->getId());
+                                if ($desimp != 0) {
+                                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'('.$desimp_signo.'%'.$desimp.')');
+                                }else{
+                                    $tpl->assign("nombre_medio_pago",$value6->getNombre());
+                                }
                             }
                             $muestra = false;   
                     }
