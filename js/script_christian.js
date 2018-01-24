@@ -843,7 +843,7 @@ function guardar_art_general(){
 }
 
 
- function calcular_total(){
+function calcular_total(){
              
             //Realiza Venta. Calculo de TOTAL A PAGAR
             //Valor Forma de PAGO

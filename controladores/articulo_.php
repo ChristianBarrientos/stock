@@ -2548,26 +2548,82 @@ class Articulo_Controller{
 
         public static function vender(){
             if (Ingreso_Controller::es_admin()) {
-
                 $tpl = new TemplatePower("template/vender.html");
                 $tpl->prepare();
-                //Preguntar si posee art cargados
                 if (isset($_SESSION["lotes"])) {
-                    # code...
                     $tpl->newBlock("buscador_visible");
                     $tpl->newBlock("con_articulos_lista");
-
+                    if (Ingreso_Controller::es_admin()) {
+                        $id_usuario = $_SESSION["usuario"]->getId_user();
+                    }else{
+                     $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                    }
+                    $medio_pago = us_medio_pago::obtener($id_usuario);
+                    if (count($medio_pago) != 0) {
+                        $tpl->newBlock("con_medios_pagos");
+                        foreach ($medio_pago as $key6 => $value6) {
+                            $muestra = false;
+                            $date_php = getdate();
+                            $okok_fecha = false;
+                            if ($value6->getId_medio_fechas() != null) {
+                                $fecha_desde = $value6->getId_medio_fechas()->getFecha_hora_inicio();
+                                $fecha_hasta = $value6->getId_medio_fechas()->getFecha_hora_fin();
+                                $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
+                                $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
+                            }
+                            else{
+                                $dias_faltantes_desde = false;
+                                $okok_fecha = true;
+                            }
+                            $dias = $value6->getId_medio_dias()->getDias();
+                            //$dia_hoy = $date_php['wday'];
+                            $hoy = $date_php['year'].'-'.$date_php['mon'].'-'.$date_php['mday'];
+                            if ($okok_fecha) {
+                                if ($dias_faltantes_desde) {
+                                    if ($dias_faltantes_desde <= 0 && $dias_faltantes_hasta >=0) {
+                                        $muestra = true;
+                                    }else{
+                                        $muestra = false;
+                                    }
+                                }
+                            }
+                            else{
+                                $muestra = true;
+                            }
+                            $dia_hoy = $date_php['wday'];
+                            $dias_array = explode ("&", $dias);
+                            $dias_array = str_replace("7","0",$dias_array);
+                            foreach ($dias_array as $keyd => $valued) {
+                                if ($valued == $dia_hoy) {
+                                    $muestra = true;
+                                    break;
+                                }else{
+                                    $muestra = false;
+                                }
+                            }
+                            if ($muestra) {
+                                $tpl->newBlock("medio_pago_venta_opciones");
+                                $desimp = $value6->getDesImp()->getValor();
+                                $desimp_signo = $value6->getDesImp()->getSigno();
+                                $tpl->assign("id_medio_pago",$value6->getId());
+                                if ($desimp != 0) {
+                                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'('.$desimp_signo.'%'.$desimp.')');
+                                }else{
+                                    $tpl->assign("nombre_medio_pago",$value6->getNombre());
+                                } 
+                            }
+                            $muestra = false;   
+                    }
+                    }else{
+                        $tpl->newBlock("sin_medios_pagos");
+                    }
                 }else{
-                    $tpl->newBlock("sin_articulos_lista");
-                    
+                    $tpl->newBlock("sin_articulos_lista");   
                 }
-
             }
-            else{
-               
+            else{ 
                 return Ingreso_Controller::salir();
             }
-
             return $tpl->getOutputContent();
         }
 

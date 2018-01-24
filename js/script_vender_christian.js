@@ -4,14 +4,29 @@ var total_ventas = 0;
 var numero = 0;
 var Ventas = new Array();
 var final3 = '';
+var venta_ ='';
+
 function Venta(id_lote, cantidad,precio_final) {
   this.id_lote = id_lote;
   this.cantidad = cantidad;
   this.precio_final = precio_final;
 }
 
+function Medio_Pago(id_medio_pago, subtotal) {
+  this.id_medio_pago = id_medio_pago;
+  this.subtotal = subtotal;
+}
+
+function Venta_final(ventas, medio_pago,total) {
+  this.ventas = ventas;
+  this.medio_pago = medio_pago;
+  this.total = total;
+}
+
+
 $(document).ready(function()
     {    
+      $('#medio_pago_valor_total').attr('disabled','disabled');
       	/*$("#tags").autocomplete({
 			source: availableTags,
 		});*/ 
@@ -30,12 +45,14 @@ $(document).ready(function()
               lote: out[3]
             }; 
             agregar_fila(params,out,articulo_nombre);
+            calculo_total();
 
           }
         });
 
     	$("#CajaBusqueda").keyup(function(){
     		art_obtener();
+        calculo_total();
             
   		});
 
@@ -90,7 +107,7 @@ function actualiza_cantidad(input){
     $("#total_venta").text(total_ventas.toFixed(2));
     Ventas[id].cantidad = cantidad_n;
   }
-
+  calculo_total();
  
   //console.log("TotalVentas: "+total_ventas);
   //console.log(Ventas[id].precio_final);
@@ -123,8 +140,8 @@ function borrar_fila(input){
         $("#"+this.id+" td").each(function(){
 
               if (counter == 0) {
-                console.log(id_tr_for);
-                console.log(id_tr);
+                //console.log(id_tr_for);
+                //console.log(id_tr);
                  
                 id_id = parseInt(this.innerHTML);
                     //0    2
@@ -149,7 +166,7 @@ function borrar_fila(input){
                 //console.log(id_tr);
                 //console.log(id_id);
                 //console.log(id_tr_);
-                console.log(Ventas);
+                //console.log(Ventas);
                 id_input_ = "cantidad"+id_tr_;
                 id_input_2 = "borrar"+id_tr_;
                 valor = Ventas[id_tr_].cantidad;
@@ -201,6 +218,8 @@ function borrar_fila(input){
     numero = 0;
 
   }
+
+  calculo_total();
 }
 
 
@@ -327,10 +346,7 @@ function agregar_fila(params,out,articulo_nombre){
 
         }
         if(bandera){
-
-          if (response == '' || response == 'anonymous') {
-            console.log("Yees");
-          }         
+         
           var json = JSON.parse(response);
 
           if (json.status == 'ok'){
@@ -366,4 +382,46 @@ function agregar_fila(params,out,articulo_nombre){
         $("#total_venta").text(total_ventas.toFixed(2));
         $("#CajaBusqueda").val("");
       }); 
+}
+
+function calculo_total(element){
+  
+  let id_forma_pago = document.getElementById("valor_pago_select");
+  //$( "#myselect" ).val();
+  //let select_forma = String($("#forma_pago_select option:selected").html());
+  let select_forma = String($("#forma_pago_select option:selected").html());
+  let valor_forma = String(select_forma);
+
+  let forma_pago_porciento = valor_forma.substr(-5);
+  let separador  = "";
+  let array_auxiliar = forma_pago_porciento.split(separador);
+  let signo_medio_pago = array_auxiliar[0];
+
+  let forma_pago_sin_porciento = forma_pago_porciento.replace(/%/,"");
+  let forma_pago_sin_menos = forma_pago_sin_porciento.replace(/-/,"");
+  let porcentaje_medio_pago = forma_pago_sin_menos.replace(/\(|\)/g,"");
+
+  if(select_forma.indexOf('%') != -1){
+    valor_parcial_porciento = (Number(porcentaje_medio_pago) * Number(total_ventas))/100;      
+    if (signo_medio_pago == '-') {
+      valor_finali_finali = Number(total_ventas) - Number(valor_parcial_porciento);
+    }
+    else{
+      valor_finali_finali = Number(total_ventas) + Number(valor_parcial_porciento);
+    }
+  }else{  
+    valor_finali_finali = Number(total_ventas);
+  }
+
+  $("#total_venta_final").text(valor_finali_finali.toFixed(1));
+
+  $('#medio_pago_valor_total').attr('disabled',' ');
+  console.log("calculo_total");
+  console.log("id_forma_pago: "+id_forma_pago);
+
+  //medio_pago = new Medio_Pago(id_forma_pago);
+
+  venta_ = new Venta_final(Ventas,id_forma_pago,valor_finali_finali);
+  console.log(venta_);
+
 }
