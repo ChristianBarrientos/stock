@@ -2627,6 +2627,18 @@ class Articulo_Controller{
                     }else{
                         $tpl->newBlock("sin_medios_pagos");
                     }
+
+                    if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
+                        $tpl->newBlock("con_locales");
+                        foreach ($_SESSION['locales'] as $key => $value) {
+                            $tpl->newBlock("locales_");
+                            $tpl->assign("id_local", $value->getId_local());
+                            $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+                        }     
+                    }
+                    else{
+                        $tpl->newBlock("sin_locales");
+                    }
                 }else{
                     $tpl->newBlock("sin_articulos_lista");   
                 }

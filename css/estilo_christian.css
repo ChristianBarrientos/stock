@@ -163,3 +163,7 @@ div#modal_galeri_backcolor{
   border-radius: 50%;
   transition: all .5s;
 }
+.trans{
+  margin: 0;
+  text-align: center;
+}

@@ -46,7 +46,7 @@ class art_gmedio_pago {
                 $medios_pago []= art_venta_medio_pago::generar($res_fil['id_medio_pago']);
             }
 
-            $gmedio_pago = new art_gmedio_pago($res_fil['id_gmedio_pago'],$medios_pago);}
+            $gmedio_pago = new art_gmedio_pago($res_fil['id_gmedio_pago'],$medios_pago);
             return $gmedio_pago;
         }
         else{

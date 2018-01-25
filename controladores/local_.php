@@ -4,28 +4,19 @@ class Local_Controller{
         function mostrar(){
                 $tpl = new TemplatePower("template/locales.html");
                 $tpl->prepare();
-                if (Ingreso_Controller::admin_ok()) {
-                        
-                        if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
-                            foreach ($_SESSION['locales'] as $key => $value) {
-                                $tpl->newBlock("con_locales");
-
-                                $tpl->assign("nombre", htmlentities($value->getNombre(), ENT_QUOTES));
-                                $tpl->assign("descripcion", htmlentities($value->getDescripcion(), ENT_QUOTES));
-                                $tpl->assign("direccion", $value->getId_zona());
-                                
-                                $tpl->assign("id_local", $value->getId_local());
-                                
-                            }
-                            //$tpl->newBlock("agregar_local");
-                            
-                                
-                               
-                        }
-                        else{
-                            
-                               $tpl->newBlock("sin_locales");
-                        }
+                if (Ingreso_Controller::admin_ok()) {    
+                    if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
+                        foreach ($_SESSION['locales'] as $key => $value) {
+                            $tpl->newBlock("con_locales");
+                            $tpl->assign("nombre", htmlentities($value->getNombre(), ENT_QUOTES));
+                            $tpl->assign("descripcion", htmlentities($value->getDescripcion(), ENT_QUOTES));
+                            $tpl->assign("direccion", $value->getId_zona());
+                            $tpl->assign("id_local", $value->getId_local());
+                        }     
+                    }
+                    else{
+                        $tpl->newBlock("sin_locales");
+                    }
                 }
                 else{
                         return Ingreso_Controller::salir();

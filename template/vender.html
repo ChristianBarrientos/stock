@@ -1,10 +1,12 @@
 <div class="container" id="lista_ventas_realizadas">
+	<h3>Vender Articulos</h3>	
 	<div class="row">
 		<!-- START BLOCK : buscador_visible -->
 		<h4 id="Sinresultados"></h4>
 		<div id="bloodhound tag" class="ui-widget col-md-12 col-xs-12">
 				<span class="input-group-addon" id="basic-addon1">Buscar</span>
-	  			<input  id="CajaBusqueda" class="typeahead" type="text" placeholder="Ingrese una palabra referida al articulo.">
+	  			<input  id="CajaBusqueda" class="typeahead form-control" type="text" placeholder="Ingrese una palabra referida al articulo.">
+
 			</div>
 		<!-- END BLOCK : buscador_visible -->	
 	</div>
@@ -82,6 +84,26 @@
 			</div>
 		 
 		<!-- END BLOCK : con_medios_pagos -->
+		<br><br>
+		<!-- START BLOCK : con_locales -->
+		<div class="form-group" id="forma_pago_select_2_bloque">        
+				<label class="control-label col-md-4 col-xs-12" for="local_select">Seleccione el Local:</label>
+				<div class="col-md-7 col-xs-12">
+					<select required id="local_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="local_seleciona()">
+						<option disabled value="null" selected >Elija un Local</option>
+						<!-- START BLOCK : locales_ -->
+						<option value="{id_local}">{nombre_local}</option>
+						<!-- END BLOCK : locales_ -->		  	
+					</select>	
+				</div>
+			</div>
+		<!-- END BLOCK : con_locales -->
+
+		<!-- START BLOCK : sin_locales -->
+		<div class="alert alert-warning">
+		  <strong>Atencion!</strong> No posee locales cargados. Debe cargarlos!
+		</div>
+		<!-- END BLOCK : sin_locales -->
 
 		<!-- START BLOCK : sin_medios_pagos -->
 		<div class="alert alert-warning">
@@ -91,7 +113,9 @@
 	</div>
 	<br><br>
 	<div class="row">
-		<button id="btn_vender" type="button" class="btn btn-success">Vender!</button>
+		<div class="col-md-9 col-md-offset-3">
+			<button id="btn_vender" type="button" class="btn btn-success btn-lg ">Vender!</button>
+		</div>
 	</div>
 
 

@@ -46,7 +46,7 @@ class art_gunico {
                 $lote_local []= art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
             }
 
-            $gunico = new art_gunico($res_fil['id_gunico'],$lote_local);}
+            $gunico = new art_gunico($res_fil['id_gunico'],$lote_local);
             return $gunico;
         }
         else{

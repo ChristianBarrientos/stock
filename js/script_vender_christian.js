@@ -4,6 +4,7 @@ var total_ventas = 0;
 var numero = 0;
 var Ventas = new Array();
 var Medios_Pagos = new Array();
+var total_final = 0;
 var final3 = '';
 var venta_ ='';
 
@@ -18,10 +19,16 @@ function Medio_Pago(id_medio_pago, subtotal) {
   this.subtotal = subtotal;
 }
 
-function Venta_final(ventas, medio_pago,total) {
+function Local(id_local, nombre) {
+  this.id_local = id_local;
+  this.nombre = nombre;
+}
+
+function Venta_final(ventas, medio_pago,total,local = null) {
   this.ventas = ventas;
   this.medio_pago = medio_pago;
   this.total = total;
+  this.local = local;
 }
 
 
@@ -64,10 +71,30 @@ $(document).ready(function()
 
     $('#btn_vender').click(function(){ 
 
-      alert("Venderas");
-      console.log(Ventas);
-      console.log(venta_);
+      if (typeof venta_.local !== 'undefined') {
+        alert("Venderas");
+        //console.log(venta_);
+        let Datos = new FormData();
+        venta_aux = JSON.stringify(venta_);
+        //data: {'array':JSON.stringify(array)},//capturo array     
+        Datos.append("Venta_",venta_aux);
 
+        $.ajax({
+          url: "controladores/vende_.php",
+          method: "POST",
+          data: Datos,
+          cache: false,
+          contentType: false,
+          processData: false,    
+          success: function(Respuesta){
+            var valores = Respuesta;
+            console.log(valores);
+            }
+        });
+
+      }else{
+        //console.log(venta_);
+      }
     });
 	});	
 
@@ -90,7 +117,6 @@ $('.cerrar-modal').click(function(){
 
     });
 
-
 function actualiza_cantidad(input){
 
   let cantidad_n = input.value;
@@ -110,14 +136,10 @@ function actualiza_cantidad(input){
       auxiliar = precio * diff;
       total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
     }
-  
     $("#total_venta").text(total_ventas.toFixed(2));
     Ventas[id].cantidad = cantidad_n;
   }
   calculo_total();
- 
-  //console.log("TotalVentas: "+total_ventas);
-  //console.log(Ventas[id].precio_final);
 
 }
 
@@ -132,103 +154,49 @@ function borrar_fila(input){
 
   total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
   $("#total_venta").text(total_ventas.toFixed(2));
-
-  
   
   let counter = 0;
-
-  
   $('#tabla_pv tr').each(function() {
      
     id_tr_for = parseInt(this.id);
     
-
     if (this.id != null && this.id != '' && this.id != 'venta_total') {
         $("#"+this.id+" td").each(function(){
-
-              if (counter == 0) {
-                //console.log(id_tr_for);
-                //console.log(id_tr);
-                 
-                id_id = parseInt(this.innerHTML);
-                    //0    2
-                if (id_tr < id_tr_for && id_tr_for != 0)  {
-                  //if (parseInt(this.innerHTML) != 1) {
-
-                  id_tr_ = id_tr_for - 1;
-                  //this.id = parseInt(this.id) - 1;
-                  //}else{
-                  //  id_tr_ = 0;
-                  //} 
-                }else{
-                  //if (id_tr_for != 0) {
-                  //  id_tr_ = id_tr_for - 1;
-                    //this.id = parseInt(this.id) - 1;
-                  //}else{
-                    id_tr_ = id_tr_for;
-                    //this.id = this.id;
-                  //}
-                  
-                }
-                //console.log(id_tr);
-                //console.log(id_id);
-                //console.log(id_tr_);
-                //console.log(Ventas);
-                id_input_ = "cantidad"+id_tr_;
-                id_input_2 = "borrar"+id_tr_;
-                valor = Ventas[id_tr_].cantidad;
-
-                //if (id_tr_ == 0) {
-                //  this.innerHTML = id_tr_ + 1;
-                //}else{
-                id_tr_for_2 = id_tr_;
-                  this.innerHTML = id_tr_ + 1;
-                //}
-                
-                //console.log("Elemento: "+this.innerHTML);
-              }
-              if (counter == 2) {
-                //posicion = counter - 1;
-
-                input = "<input id='"+id_input_+"' type='number' size='5' value="+valor+" min='1' onchange='actualiza_cantidad(this)'>";
-                this.innerHTML = input;
-                //console.log("Elemento: "+this.innerHTML);
-              }
-              if (counter == 4) {
-                button = "<button id="+id_input_2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
-                this.innerHTML = button;
-                //console.log("Elemento: "+this.innerHTML);
-              }
-              counter = counter + 1;
-          });
-         
-        //this.id = this.id - 1;
+          if (counter == 0) {
+            id_id = parseInt(this.innerHTML);
+            if (id_tr < id_tr_for && id_tr_for != 0)  {
+              id_tr_ = id_tr_for - 1;
+            }else{
+              id_tr_ = id_tr_for;
+            }
+            id_input_ = "cantidad"+id_tr_;
+            id_input_2 = "borrar"+id_tr_;
+            valor = Ventas[id_tr_].cantidad;
+            id_tr_for_2 = id_tr_;
+            this.innerHTML = id_tr_ + 1;
+          }
+          if (counter == 2) {
+            input = "<input id='"+id_input_+"' type='number' size='5' value="+valor+" min='1' onchange='actualiza_cantidad(this)'>";
+            this.innerHTML = input;
+          }
+          if (counter == 4) {
+            button = "<button id="+id_input_2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
+            this.innerHTML = button;
+          }
+          counter = counter + 1;
+      });
         numero = numero - 1;
         this.id = parseInt(id_tr_for_2);
     }
-    //if (id_tr <= id_tr_for && id_tr_for != 0)  {
-    //  this.id = parseInt(this.id) - 1;
-
-    //}else{
-      
-      
-                    //this.id = parseInt(this.id) - 1;
-      
-                  
-    //}
     counter = 0;
   });
   Ventas.splice(id_tr, 1);
   $("#"+id_tr+"").remove();
-  
   if (Ventas.length == 0) {
     numero = 0;
-
   }
-
   calculo_total();
 }
-
 
 function art_obtener(){
    
@@ -327,16 +295,10 @@ function busqueda_auto(){
 }
 
 function agregar_fila(params,out,articulo_nombre){
-  $.get("template/venta_/ajax_venta2.php", params, function (response) {
-        //console.log(response);   
+  $.get("template/venta_/ajax_venta2.php", params, function (response) {  
         let bandera = true;
         if (Ventas.length != 0) {
-          //console.log("Array Ventas: "+Ventas);
-          //console.log("Id_Lote: "+params.lote);
-
-          //console.log(Ventas.length);
           for (var i = 0; i < Ventas.length; i++) {
-            //console.log(Ventas[i]);
             if (Ventas[i].id_lote == params.lote) {
                 id_tr_aux = "cantidad"+i;
                 cantidad_vv = $("#"+id_tr_aux).val();
@@ -350,14 +312,10 @@ function agregar_fila(params,out,articulo_nombre){
               bandera = true; 
             }
           }
-
         }
         if(bandera){
-         
           var json = JSON.parse(response);
-
           if (json.status == 'ok'){
-                        //console.log(json.result);
             let costo = json.result.precio_base;
             let importe = json.result.importe;
             let moneda = json.result.moneda;
@@ -429,7 +387,7 @@ function calculo_total(){
 
   Medios_Pagos = [];
   if (!($("#forma_pago_select_2_bloque").hasClass("hide"))) {
-    console.log("If");
+    
     input_value_1 = $("#medio_pago_valor_total").val();
     medio_pago1 = new Medio_Pago(id_forma_pago,input_value_1);
     Medios_Pagos.push(medio_pago1);
@@ -450,8 +408,8 @@ function calculo_total(){
   }
 
 
-
-  venta_ = new Venta_final(Ventas,Medios_Pagos,valor_finali_finali);
+  total_final = valor_finali_finali.toFixed(1);
+  //venta_ = new Venta_final(Ventas,Medios_Pagos,total_final);
   
 
 }
@@ -477,6 +435,13 @@ function agregar_elimina_medio_pago(e){
     $(e).text("Agregar Medio de Pago");
     $("#forma_pago_select_2_bloque").hide();
   }
+}
 
 
+function local_seleciona(){
+  let id_local = document.getElementById("local_select").value;
+  let select_forma = String($("#local_select option:selected").html());
+  let nombre_local = String(select_forma);
+  local = new Local(id_local,nombre_local);
+  venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local);
 }

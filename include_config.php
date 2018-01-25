@@ -68,6 +68,8 @@ include('model/art_moneda.model.php');
 include('model/us_moneda.model.php');
 include('model/us_sl_liquidacion.model.php');
 include('model/sl_gsgsueldo.model.php');
+include('model/art_gunico.model.php');
+include('model/art_gmedio_pago.model.php');
 
 
 //include('template/venta_/ajax_venta.php');
