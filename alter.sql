@@ -61,3 +61,7 @@ ALTER TABLE art_unico ADD FOREIGN KEY (ig_gunico) REFERENCES art_gunico(ig_gunic
 
 ALTER TABLE art_venta CHANGE id_medio_pago id_gmedio_pago INTEGER NOT NULL;
 ALTER TABLE art_venta ADD FOREIGN KEY (id_gmedio_pago) REFERENCES art_gmedio_pago(id_gmedio_pago) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+//25/01/2018
+ALTER TABLE art_gunico add rg_detalle VARCHAR(150) NOT NULL;
+ALTER TABLE art_gmedio_pago add rg_detalle VARCHAR(150) NOT NULL;

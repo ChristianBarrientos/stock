@@ -3,20 +3,22 @@ class art_gunico {
 	
 	private $id_gunico;
     private $id_lote_local;
+    private $rg_detalle;
 
-    public function __construct($id_gunico, $id_lote_local)
+    public function __construct($id_gunico, $id_lote_local,$rg_detalle)
     {
         $this->id_gunico = $id_gunico;
         $this->id_lote_local = $id_lote_local;
+        $this->rg_detalle = $rg_detalle;
     }
 
-    public static function alta($id_lote_local){
+    public static function alta($id_lote_local,$rg_detalle){
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_gunico = art_gunico::ultimo_id();
         
-        $sql = "INSERT INTO `art_gunico`(`id_gunico`, `id_lote_local`) VALUES (0,$id_lote_local)";
+        $sql = "INSERT INTO `art_gunico`(`id_gunico`, `id_lote_local`, `rg_detalle`) VALUES (0,$id_lote_local,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
              
@@ -46,7 +48,7 @@ class art_gunico {
                 $lote_local []= art_lote_local::generar_lote_local_id_($res_fil['id_lote_local']);
             }
 
-            $gunico = new art_gunico($res_fil['id_gunico'],$lote_local);
+            $gunico = new art_gunico($res_fil['id_gunico'],$lote_local,$res_fil['rg_detalle']);
             return $gunico;
         }
         else{
@@ -74,6 +76,17 @@ class art_gunico {
     public function setFecha_hora($id_lote_local)
     {
         $this->id_lote_local = $id_lote_local;
+        return $this;
+    }
+
+    public function getRg_detalle()
+    {
+        return $this->rg_detalle;
+    }
+    
+    public function setRg_detalle($rg_detalle)
+    {
+        $this->rg_detalle = $rg_detalle;
         return $this;
     }
 

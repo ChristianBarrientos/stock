@@ -68,7 +68,19 @@
 
 			</div>
 			<div class="clearfix"></div>
+			
 
+			<div class="form-group">        
+				<label class="control-label col-md-4 col-xs-12" for="cantidad_cuotas">Cuotas:</label>
+				<div class="col-md-7 col-xs-12">
+					<select required id="cantidad_cuotas" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="calculo_total()">
+						<option disabled value="null" selected >Elija cantidad de Cuotas</option>
+						<!--<option value="1" selected >1 Cuota</option>-->
+						<!--<option value="{id_medio_pago}">{nombre_medio_pago}</option>-->
+					</select>	
+				</div>
+			</div>
+			<div class="clearfix"></div>
 			<div class="form-group" id="forma_pago_select_2_bloque">        
 				<label class="control-label col-md-4 col-xs-12" for="forma_pago_select_2">Medio de Pago 2:</label>
 				<div class="col-md-7 col-xs-12">

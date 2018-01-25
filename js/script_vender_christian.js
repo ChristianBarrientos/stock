@@ -30,13 +30,14 @@ function Venta_final(ventas, medio_pago,total,local = null) {
   this.total = total;
   this.local = local;
 }
-
+$( "#cantidad_cuotas" ).prop( "disabled", true );
 
 $(document).ready(function()
     {   
        
       //$('#medio_pago_valor_total').attr('disabled','false');
       $( "#medio_pago_valor_total" ).prop( "disabled", true );
+      
       $("#forma_pago_select_2_bloque").hide();
       
       
@@ -72,14 +73,37 @@ $(document).ready(function()
     $('#btn_vender').click(function(){ 
 
       if (typeof venta_.local !== 'undefined') {
-        alert("Venderas");
+        //alert("Venderas");
         //console.log(venta_);
         let Datos = new FormData();
         venta_aux = JSON.stringify(venta_);
         //data: {'array':JSON.stringify(array)},//capturo array     
         Datos.append("Venta_",venta_aux);
+        //console.log(venta_);
 
-        $.ajax({
+        //console.log(venta_.local.id_local);
+        //console.log(venta_.total);
+        
+        
+
+        //valores.result[i].id_lote
+        //for (i=0;i<venta_.medio_pago.length;i++) {
+            // hacer algo con a[i];
+            //console.log(venta_.medio_pago[i].id_medio_pago);
+        //}
+
+        var params = {
+          id_local: venta_.local.id_local,
+          total: venta_.total,
+          medios_pago: venta_.medio_pago,
+          articulos:venta_.ventas
+        };
+        //console.log(params);
+        $.get("controladores/vende_.php", params, function (response) {
+
+
+        });
+        /*$.ajax({
           url: "controladores/vende_.php",
           method: "POST",
           data: Datos,
@@ -90,7 +114,7 @@ $(document).ready(function()
             var valores = Respuesta;
             console.log(valores);
             }
-        });
+        });*/
 
       }else{
         //console.log(venta_);
@@ -330,11 +354,7 @@ function agregar_fila(params,out,articulo_nombre){
                         //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
             var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+articulo_nombre+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td>"+button+"</td></tr>";
             $('#venta_total').before(fila);
-
             numero = numero + 1;
-            ///CajaBusqueda
-            
-            
           }else{
             console.log("Sin Resultados");
           }
@@ -410,9 +430,39 @@ function calculo_total(){
 
   total_final = valor_finali_finali.toFixed(1);
   //venta_ = new Venta_final(Ventas,Medios_Pagos,total_final);
-  
+  calcular_cuotas();
 
 }
+
+function calcular_cuotas() {
+  let cuota = 0;
+  let texto_opt = '';
+  var length = select.options.length;
+  for (i = 0; i < length; i++) {
+    select.options[i] = null;
+  }
+  console.log("CalculandoCuotas");
+  for (var i = 1; i<= 12; i++) {
+      cuota = total_final/i;
+      //selected="selected"
+      cuota = parseFloat(cuota);
+      texto_opt = i+"x"+cuota.toFixed(1);
+      //$('#cantidad_cuotas').append('<option value="'+i+'" >'+texto_opt+'</option>');
+      console.log(texto_opt);
+
+      var x = document.getElementById("cantidad_cuotas");
+      var option = document.createElement("option");
+      option.text = texto_opt;
+      option.value = i;
+      x.add(option);
+  
+  }
+  //$("#cantidad_cuotas").prop( "disabled", false );
+  //let id_local = document.getElementById("cantidad_cuotas").value;
+  //let select_forma = String($("#cantidad_cuotas option:selected").html());
+  //let nombre_local = String(select_forma);
+}
+
 //calcular diferencia medios de pagos
 function calcular_diferencia_mp(el){
 

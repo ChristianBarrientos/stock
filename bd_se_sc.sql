@@ -550,6 +550,7 @@ CREATE TABLE  us_medio_pago (
 CREATE TABLE  art_gmedio_pago (
      id_gmedio_pago INTEGER AUTO_INCREMENT NOT NULL,
      id_medio_pago INTEGER NOT NULL,
+     rg_detalle VARCHAR(100) NOT NULL,
      FOREIGN KEY (id_medio_pago) REFERENCES art_venta_medio_pago(id_medio_pago) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_gmedio_pago)
      ) ENGINE=InnoDB;
@@ -592,6 +593,7 @@ CREATE TABLE  art_no_venta (
 CREATE TABLE  art_gunico (
      id_gunico INTEGER AUTO_INCREMENT NOT NULL,
      id_lote_local INTEGER NOT NULL,
+     rg_detalle VARCHAR(150) NOT NULL,
      FOREIGN KEY (id_lote_local) REFERENCES art_lote_local(id_lote_local) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_gunico)
      ) ENGINE=InnoDB;

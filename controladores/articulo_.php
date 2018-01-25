@@ -2699,6 +2699,26 @@ class Articulo_Controller{
             //return $tpl->getOutputContent();
         }
 
+        public static function facturacion_finalizar($id_lote,$total,$medios_pago,$articulos){
+            if (Ingreso_Controller::es_admin()) {
+
+                $Respuesta = art_lote::facturacion_ajax($id_lote);
+                //echo "Aca";
+                //print_r($Respuesta);
+                //echo "FinAca";
+                if ($Respuesta) {
+                    # code...
+                   return $Respuesta;
+                }else{
+                    echo "Mal";
+                }
+            }
+            else{  
+                return Ingreso_Controller::salir();
+            }
+            //return $tpl->getOutputContent();
+        }
+
 
        public static function cargar_art_general(){
             if (isset($nombre)) {
