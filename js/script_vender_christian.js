@@ -74,7 +74,7 @@ $(document).ready(function()
 
     $('#btn_vender').click(function(){ 
 
-      if (typeof venta_.local !== 'undefined' || typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') {
+      if ((typeof venta_.local !== 'undefined' || typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
         //console.log(venta_);
         calculo_total();
