@@ -2612,13 +2612,11 @@ class Articulo_Controller{
                                     $tpl->assign("nombre_medio_pago",$value6->getNombre());
                                 } 
 
-                                $tpl->newBlock("medio_pago_venta_opciones2");
+                                
                                 $desimp = $value6->getDesImp()->getValor();
-                                $desimp_signo = $value6->getDesImp()->getSigno();
-                                $tpl->assign("id_medio_pago",$value6->getId());
-                                if ($desimp != 0) {
-                                    $tpl->assign("nombre_medio_pago",$value6->getNombre().'('.$desimp_signo.'%'.$desimp.')');
-                                }else{
+                                if ($desimp == 0) {
+                                    $tpl->newBlock("medio_pago_venta_opciones2");
+                                    $tpl->assign("id_medio_pago",$value6->getId());
                                     $tpl->assign("nombre_medio_pago",$value6->getNombre());
                                 }
                             }

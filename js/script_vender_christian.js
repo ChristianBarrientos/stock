@@ -5,6 +5,8 @@ var numero = 0;
 var Ventas = new Array();
 var Medios_Pagos = new Array();
 var total_final = 0;
+var cantidad_cuotas = 0;
+
 var final3 = '';
 var venta_ ='';
 
@@ -77,7 +79,8 @@ $(document).ready(function()
         //console.log(venta_);
         let Datos = new FormData();
         venta_aux = JSON.stringify(venta_);
-        //data: {'array':JSON.stringify(array)},//capturo array     
+        //data: {'array':JSON.stringify(array)},//capturo array    
+        
         Datos.append("Venta_",venta_aux);
         //console.log(venta_);
 
@@ -96,9 +99,10 @@ $(document).ready(function()
           id_local: venta_.local.id_local,
           total: venta_.total,
           medios_pago: venta_.medio_pago,
-          articulos:venta_.ventas
+          articulos:venta_.ventas,
+          cuotas: cantidad_cuotas
         };
-        //console.log(params);
+        console.log(params);
         $.get("controladores/vende_.php", params, function (response) {
 
 
@@ -161,7 +165,7 @@ function actualiza_cantidad(input){
       total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
     }
     $("#total_venta").text(total_ventas.toFixed(2));
-    Ventas[id].cantidad = cantidad_n;
+    Ventas[id].cantidad = cantidad_n;//
   }
   calculo_total();
 
@@ -170,11 +174,16 @@ function actualiza_cantidad(input){
 function borrar_fila(input){
 
   var oID = $(input).attr("id");
-   
+  console.log($(input).val());
+  //$(input).val(1);
+  console.log($(input).val());
+
   id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
   let cantidad = Ventas[id_tr].cantidad;
   let precio = Ventas[id_tr].precio_final;
   let auxiliar = cantidad * precio;
+
+  //Ventas[id_tr].cantidad = 1;
 
   total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
   $("#total_venta").text(total_ventas.toFixed(2));
@@ -189,8 +198,10 @@ function borrar_fila(input){
           if (counter == 0) {
             id_id = parseInt(this.innerHTML);
             if (id_tr < id_tr_for && id_tr_for != 0)  {
+              //console.log("If");
               id_tr_ = id_tr_for - 1;
             }else{
+              //console.log("Else");
               id_tr_ = id_tr_for;
             }
             id_input_ = "cantidad"+id_tr_;
@@ -200,8 +211,8 @@ function borrar_fila(input){
             this.innerHTML = id_tr_ + 1;
           }
           if (counter == 2) {
-            input = "<input id='"+id_input_+"' type='number' size='5' value="+valor+" min='1' onchange='actualiza_cantidad(this)'>";
-            this.innerHTML = input;
+            input_out = "<input id='"+id_input_+"' type='number' size='5' value="+valor+" min='1' onchange='actualiza_cantidad(this)'>";
+            this.innerHTML = input_out;
           }
           if (counter == 4) {
             button = "<button id="+id_input_2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
@@ -425,6 +436,8 @@ function calculo_total(){
     medio_pago2 = new Medio_Pago(id_forma_pago,input_value_2);
     Medios_Pagos.push(medio_pago1);
     Medios_Pagos.push(medio_pago2);
+
+    console.log("Medios_pago");
   }
 
 
@@ -434,43 +447,59 @@ function calculo_total(){
 
 }
 
-function calcular_cuotas() {
-  let cuota = 0;
-  let texto_opt = '';
-  var length = select.options.length;
-  for (i = 0; i < length; i++) {
-    select.options[i] = null;
-  }
-  console.log("CalculandoCuotas");
-  for (var i = 1; i<= 12; i++) {
-      cuota = total_final/i;
-      //selected="selected"
-      cuota = parseFloat(cuota);
-      texto_opt = i+"x"+cuota.toFixed(1);
-      //$('#cantidad_cuotas').append('<option value="'+i+'" >'+texto_opt+'</option>');
-      console.log(texto_opt);
+function borrar_options(select){
+  $(select).html("");
+}
 
-      var x = document.getElementById("cantidad_cuotas");
-      var option = document.createElement("option");
-      option.text = texto_opt;
-      option.value = i;
-      x.add(option);
-  
+function calcular_cuotas() {
+  let id_forma_pago = document.getElementById("forma_pago_select").value;
+  // && cantidad_cuotas == 0
+  if (id_forma_pago != 'null') {
+    let cuota = 0;
+    let texto_opt = '';
+    var select = document.getElementById("cantidad_cuotas");
+    borrar_options(select);
+
+    for (var i = 1; i<= 12; i++) {
+        cuota = total_final/i;
+        //selected="selected"
+        cuota = parseFloat(cuota);
+        texto_opt = i+" x "+cuota.toFixed(1);
+        //$('#cantidad_cuotas').append('<option value="'+i+'" >'+texto_opt+'</option>')
+        var x = document.getElementById("cantidad_cuotas");
+        var option = document.createElement("option");
+        option.text = texto_opt;
+        option.value = i;
+        x.add(option);
+    }
+
+    $("#cantidad_cuotas").selectpicker("refresh");
+    //$("#cantidad_cuotas").prop( "disabled", false );
+    //let id_local = document.getElementById("cantidad_cuotas").value;
+    let select_forma = String($("#cantidad_cuotas option:selected").html());
+    cantidad_cuotas = String(select_forma);
+    //console.log(cantidad_cuotas);
   }
-  //$("#cantidad_cuotas").prop( "disabled", false );
-  //let id_local = document.getElementById("cantidad_cuotas").value;
-  //let select_forma = String($("#cantidad_cuotas option:selected").html());
-  //let nombre_local = String(select_forma);
+
 }
 
 //calcular diferencia medios de pagos
 function calcular_diferencia_mp(el){
 
   $("#medio_pago_valor_total").on('input', function(){
-    var cant = parseInt(this.value, valor_finali_finali.toFixed(1));
-    $(this).attr('max', valor_finali_finali.toFixed(1));
+    var cant = parseInt(this.value, parseFloat(total_final).toFixed(1));
+    $(this).attr('max', parseFloat(total_final).toFixed(1));
   });
+  calculo_total_2m();
 
+}
+
+function calculo_total_2m(){
+  let input_1 = document.getElementById("medio_pago_valor_total").value;
+  let input_2 = parseFloat(total_final) - parseFloat(input_1);
+  $("#medio_pago_valor_total_2").val(input_2.toFixed(1));
+  //calculo_total();
+  
 }
 
 function agregar_elimina_medio_pago(e){
@@ -495,3 +524,5 @@ function local_seleciona(){
   local = new Local(id_local,nombre_local);
   venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local);
 }
+
+
