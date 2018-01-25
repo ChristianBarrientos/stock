@@ -2616,7 +2616,7 @@ class Articulo_Controller{
                                 $desimp = $value6->getDesImp()->getValor();
                                 if ($desimp == 0) {
                                     $tpl->newBlock("medio_pago_venta_opciones2");
-                                    $tpl->assign("id_medio_pago",$value6->getId());
+                                    $tpl->assign("id_medio_pago2",$value6->getId());
                                     $tpl->assign("nombre_medio_pago",$value6->getNombre());
                                 }
                             }
