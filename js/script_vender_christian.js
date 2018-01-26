@@ -37,6 +37,14 @@ $( "#cantidad_cuotas" ).prop( "disabled", true );
 
 $(document).ready(function()
     {   
+      $('#div_carga')
+          .hide()
+          .ajaxStart(function() {
+            $(this).show();
+          })
+        .ajaxStop(function() {
+            $(this).hide();
+          });
        
       //$('#medio_pago_valor_total').attr('disabled','false');
       $( "#medio_pago_valor_total" ).prop( "disabled", true );
@@ -92,10 +100,23 @@ $(document).ready(function()
           articulos:venta_.ventas,
           cuotas: cantidad_cuotas
         };
-        console.log(params);
+        
         $.get("controladores/vende_.php", params, function (response) {
-          
-          console.log(response);
+          var valores = JSON.parse(response);
+          console.log(valores);
+
+          //console.log(response['status']);
+
+          if (valores.status == 'ok') {
+            console.log("Vendido");
+            clear_full();
+            alert("EXITO! Venta realizada con exito. " + valores.result['rg_detalle']);
+
+
+          }else{
+            console.log("Error")
+            alert("ERROR! No se pudo generar la venta con exito. Revise que los datos ingresados esten completos.");
+          }
           //var json = JSON.parse(response);
           /*if (json.status == 'ok'){
             console.log("OK");
@@ -485,7 +506,7 @@ function calcular_cuotas() {
     
     //if (typeof local_.id_local !== 'undefined') {
     if (una_vez) {
-      console.log("aC");
+      
       $("#cantidad_cuotas").selectpicker("refresh");
       una_vez = false;
     }
@@ -557,5 +578,27 @@ function cantidad_cuotas_act(){
 
 function una_vez(){
   una_vez = true;
+}
+
+function clear_full() {
+  var tabla = document.getElementById("tabla_pv");
+  borrar_options(tabla);
+  let tabla_nueva = '<table id="tabla_pv" cellpadding="15" class="table table-bordered " align="center"><thead><tr><th>N°</th><th>Articulo</th><th>Cantidad</th><th>Precio/Unidad</th></tr></thead><tbody><tr id="venta_total"><td  colspan='+"3"+' ><strong>SubTotal:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta"><label></strong></td></tr><tr id="venta_total"><td  colspan='+"3"+' ><strong>Total:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta_final"><label></strong></td></tr></tbody></table>';
+  var div_contenedor_tabla = document.getElementById("Resultados");
+  $(div_contenedor_tabla).html(tabla_nueva);
+  
+  articulos = [];
+  total_ventas = 0;
+  numero = 0;
+  Ventas = [];
+  Medios_Pagos = [];
+  total_final = 0;
+  local_ = '';
+  cantidad_cuotas = '';
+  final3 = '';
+  venta_ ='';
+  id_aux = 0;
+  una_vez = true;
+
 }
 

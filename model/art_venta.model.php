@@ -27,10 +27,10 @@ class art_venta {
         $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuario`, `id_promo`, `id_gmedio_pago`, `total`, `cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_promo,$id_gmedio_pago,$total,'$cuotas',$id_cambio)";
         $res = $baseDatos->query($sql);
         if ($res) {
-            printf("Errormessage: %s\n", $baseDatos->error);
+            //printf("Errormessage: %s\n", $baseDatos->error);
             return $id_venta;
         }else{
-                printf("Errormessage: %s\n", $baseDatos->error); 
+                //printf("Errormessage: %s\n", $baseDatos->error); 
             return false;
         }
     }
@@ -87,7 +87,6 @@ class art_venta {
 
             $cantidad_lote_new = intval($cantidad_lote) - intval($cantidad_vendida); 
             $cantidad_lote_local_new = intval($cantidad_lote_local) - intval($cantidad_vendida); 
-
             //Update en Art_lote
             $update_art_lote = art_lote::update_cantidad_total($lote->getId_lote(),$cantidad_lote_new);
             //Update en art_lote_local

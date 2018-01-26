@@ -2709,12 +2709,8 @@ class Articulo_Controller{
                     $id = $value['id_lote'];
                     $cantidad = $value['cantidad'];
 
-                    echo $id;
-                    echo "&&";
-                    echo $cantidad;
-
-                    $lote_local_aux = art_lote_local::obtener_lote_local_oper($id,$id_local);
-                    
+                    $id_lote_local_aux = art_lote_local::obtener_lote_local_oper($id,$id_local);
+                    $lote_local_aux = art_lote_local::generar_lote_local_id_($id_lote_local_aux);
                      
                     $id_lote_local = $lote_local_aux->getId_lote_local();
 
@@ -2804,7 +2800,7 @@ class Articulo_Controller{
                         $facutacion_estado = false;
                     }
                     if ($facutacion_estado) {
-                        $Respuesta = art_venta::facturacion($lote_local_array);
+                        $Respuesta = art_venta::facturacion_($lote_local_array);
 
                     }else{
                         $data['status'] = 'err';
