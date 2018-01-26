@@ -2631,6 +2631,10 @@ class Articulo_Controller{
                         foreach ($_SESSION['locales'] as $key => $value) {
                             $tpl->newBlock("locales_");
                             $tpl->assign("id_local", $value->getId_local());
+                            if (count($_SESSION['locales']) == 1) {
+                                $tpl->assign("selected", 'selected');
+                            }
+
                             $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
                         }     
                     }
@@ -2697,18 +2701,117 @@ class Articulo_Controller{
             //return $tpl->getOutputContent();
         }
 
-        public static function facturacion_finalizar($id_lote,$total,$medios_pago,$articulos){
+        public static function facturacion_finalizar($total,$medios_pago,$articulos,$cuotas,$id_local){
             if (Ingreso_Controller::es_admin()) {
+                $lote_local_array = array();
 
-                $Respuesta = art_lote::facturacion_ajax($id_lote);
-                //echo "Aca";
-                //print_r($Respuesta);
-                //echo "FinAca";
-                if ($Respuesta) {
-                    # code...
-                   return $Respuesta;
+                foreach ($articulos as $key => $value) {
+                    $id = $value['id_lote'];
+                    $cantidad = $value['cantidad'];
+
+                    echo $id;
+                    echo "&&";
+                    echo $cantidad;
+
+                    $lote_local_aux = art_lote_local::obtener_lote_local_oper($id,$id_local);
+                    
+                     
+                    $id_lote_local = $lote_local_aux->getId_lote_local();
+
+                    $marca = $lote_local_aux->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+                    $articulo = $lote_local_aux->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+                    $tipo = $lote_local_aux->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+                    
+                    $lote_aux = $lote_local_aux->getId_lote();
+                    $costo = $lote_aux->getPrecio_base();
+                    $moneda = $lote_aux->getId_moneda()->getValor();
+                    $importe = $lote_aux->getImporte();
+                    $precio_final = floatval($costo) * floatval($moneda);
+                    $importe_aux = ((floatval($importe) * floatval($precio_final))/100);
+                    $precio_finali_finali = round(floatval($importe_aux) + floatval($precio_final), 2);
+
+                    $nombre_art = $articulo.','.$marca.','.$tipo.'($'.$precio_finali_finali.')';
+
+                    $lote_local['id_lote_local'] = $id_lote_local;
+                    $lote_local['cantidad'] = $cantidad;
+                    $lote_local['rg_detalle'] = $nombre_art;
+                    
+                    $lote_local_array[] = $lote_local;
+                }
+                //Alta en art_gunico
+                $medio_pago = array();
+                foreach ($medios_pago as $key2 => $value2) {
+                    $id_mp = $value2['id_medio_pago'];
+                    $mp_aux = art_venta_medio_pago::generar($id_mp);
+
+                    $nombre_mp = $mp_aux->getNombre();
+                    $des_imp = $mp_aux->getDesImp()->getValor().'('.$mp_aux->getDesImp()->getSigno().')';
+
+                    $mp['id'] = $id_mp;
+                    //$mp['subtotal'] = $value2['subtotal'];
+                    $mp['rg_detalle'] = $nombre_mp.','.$des_imp.','.$value2['subtotal'];
+                    $medio_pago[] = $mp;
+                }
+                $error_mp = false;
+                $id_gmedio_next = art_gmedio_pago::ultimo_id();
+                foreach ($medio_pago as $key4 => $value4) {
+                    $ok_gmp = art_gmedio_pago::alta($id_gmedio_next,$value4['id'],$value4['rg_detalle']);
+                    if ($ok_gmp) {
+                        $error_mp = false;
+                    }else{
+                        $error_mp = true;
+                        break;
+                    }
+                }
+
+                $error_gunico = false;
+                $id_gunico_next = art_gunico::ultimo_id();
+                foreach ($lote_local_array as $key3 => $value3) {
+                    $ok = art_gunico::alta($id_gunico_next,$value3['id_lote_local'],$value3['rg_detalle']);
+                    if ($ok) {
+                        $error_gunico = false;
+                    }else{
+                        $error_gunico = true;
+                        break;
+                    }
+                }
+                
+                if ($error_gunico || $error_mp) {
+
+                    $data['status'] = 'err';
+                    $data['result'] = $error_mp.','. $error_gunico;
+                    $Respuesta = $data;
+                    return $Respuesta;
+                    //echo json_encode($Respuesta);
+                    
                 }else{
-                    echo "Mal";
+                    $facutacion_estado = true;
+                    $hoy = getdate();
+                    $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                    $id_usuario = $_SESSION["usuario"]->getId_user();
+                    
+                    $id_venta = art_venta::alta($fecha_venta,$id_usuario,$id_gmedio_next,$total,$cuotas);
+                    if ($id_venta) {
+                        //Alta art_unico
+                        $id_unico = art_unico::alta_art_unico($id_gunico_next,$id_venta);
+
+                        if ($id_unico) {
+                            $facutacion_estado = true;
+                        }else{
+                            $facutacion_estado = false;
+                        }
+                    }else{
+                        $facutacion_estado = false;
+                    }
+                    if ($facutacion_estado) {
+                        $Respuesta = art_venta::facturacion($lote_local_array);
+
+                    }else{
+                        $data['status'] = 'err';
+                        $data['result'] = '';
+                        $Respuesta = $data;
+                    }
+                    return $Respuesta;
                 }
             }
             else{  

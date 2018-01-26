@@ -12,23 +12,18 @@ class art_gunico {
         $this->rg_detalle = $rg_detalle;
     }
 
-    public static function alta($id_lote_local,$rg_detalle){
+    public static function alta($id_gunico,$id_lote_local,$rg_detalle){
         global $baseDatos;
-        
-        //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_gunico = art_gunico::ultimo_id();
-        
-        $sql = "INSERT INTO `art_gunico`(`id_gunico`, `id_lote_local`, `rg_detalle`) VALUES (0,$id_lote_local,'$rg_detalle')";
+        $sql = "INSERT INTO `art_gunico`(`id_gunico`, `id_lote_local`, `rg_detalle`) VALUES ($id_gunico,$id_lote_local,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
-             
             return $id_gunico;
-        }else{
-             
+        }else{    
             return false;
         }
-
     }
+
     public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_gunico'";

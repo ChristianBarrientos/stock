@@ -71,6 +71,44 @@ class art_venta {
         }
     }
 
+    public static function facturacion_($lote_local_cantidad){
+        global $baseDatos;
+
+
+        global $baseDatos;
+        foreach ($lote_local_cantidad as $key => $value) {
+
+            $id_lote_local = $value['id_lote_local'];
+            $cantidad_vendida = $value['cantidad'];
+            $lote_local_generado = art_lote_local::generar_lote_local_id_($id_lote_local);
+            $cantidad_lote_local = $lote_local_generado->getCantidad_parcial();
+            $lote = $lote_local_generado->getId_lote();
+            $cantidad_lote = $lote->getCantidad();
+
+            $cantidad_lote_new = intval($cantidad_lote) - intval($cantidad_vendida); 
+            $cantidad_lote_local_new = intval($cantidad_lote_local) - intval($cantidad_vendida); 
+
+            //Update en Art_lote
+            $update_art_lote = art_lote::update_cantidad_total($lote->getId_lote(),$cantidad_lote_new);
+            //Update en art_lote_local
+            $update_art_lote_local = art_lote_local::update_cantidad_parcial($id_lote_local,$cantidad_lote_local_new);
+
+        } 
+        
+        if ($update_art_lote && $update_art_lote_local) {
+             
+            $data['status'] = 'ok';
+            $data['result'] = $lote_local_cantidad;
+            
+            return $data;
+        }
+        else{
+            $data['status'] = 'err';
+            $data['result'] = '';
+            return false;
+        }
+    }
+
     public static function update_id_cambio($id_venta,$id_cambio){
         global $baseDatos;
         $res = $baseDatos->query(" UPDATE `art_venta` SET `id_cambio`='$id_cambio' WHERE id_venta = $id_venta");  

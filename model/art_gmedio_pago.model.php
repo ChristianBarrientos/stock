@@ -12,12 +12,12 @@ class art_gmedio_pago {
         $this->rg_detalle = $rg_detalle;
     }
 
-    public static function alta($id_medio_pago,$rg_detalle){
+    public static function alta($id_gmedio_pago,$id_medio_pago,$rg_detalle){
         global $baseDatos;
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_gmedio_pago = art_gmedio_pago::ultimo_id();
         
-        $sql = "INSERT INTO `art_gmedio_pago`(`id_gmedio_pago`, `id_medio_pago`, `rg_detalle`) VALUES (0,$id_medio_pago,'$rg_detalle')";
+        $sql = "INSERT INTO `art_gmedio_pago`(`id_gmedio_pago`, `id_medio_pago`, `rg_detalle`) VALUES ($id_gmedio_pago,$id_medio_pago,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
              

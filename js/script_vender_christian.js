@@ -74,31 +74,17 @@ $(document).ready(function()
   		});
 
     $('#btn_vender').click(function(){ 
-
-      if ((typeof venta_.local !== 'undefined' || typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
+      //typeof venta_.local !== 'undefined' ||
+      if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
         //console.log(venta_);
         calculo_total();
         venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
         console.log(venta_);
         let Datos = new FormData();
-        venta_aux = JSON.stringify(venta_);
-        //data: {'array':JSON.stringify(array)},//capturo array    
+        venta_aux = JSON.stringify(venta_); 
         
         Datos.append("Venta_",venta_aux);
-        //console.log(venta_);
-
-        //console.log(venta_.local.id_local);
-        //console.log(venta_.total);
-        
-        
-
-        //valores.result[i].id_lote
-        //for (i=0;i<venta_.medio_pago.length;i++) {
-            // hacer algo con a[i];
-            //console.log(venta_.medio_pago[i].id_medio_pago);
-        //}
-
         var params = {
           id_local: venta_.local.id_local,
           total: venta_.total,
@@ -108,7 +94,16 @@ $(document).ready(function()
         };
         console.log(params);
         $.get("controladores/vende_.php", params, function (response) {
-
+          
+          console.log(response);
+          //var json = JSON.parse(response);
+          /*if (json.status == 'ok'){
+            console.log("OK");
+            console.log(json);
+          }else{
+            console.log("ERROR");
+            console.log(json);
+          }*/
 
         });
         /*$.ajax({
