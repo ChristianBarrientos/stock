@@ -10,6 +10,7 @@ var cantidad_cuotas = '';
 var final3 = '';
 var venta_ ='';
 var id_aux = 0;
+var una_vez = true;
 function Venta(id_lote, cantidad,precio_final) {
   this.id_lote = id_lote;
   this.cantidad = cantidad;
@@ -382,7 +383,7 @@ function agregar_fila(params,out,articulo_nombre){
 }
 
 function calculo_total(){
-  
+  //id_aux_2 = 1;
   let id_forma_pago = document.getElementById("forma_pago_select").value;
   //$( "#myselect" ).val();
   //let select_forma = String($("#forma_pago_select option:selected").html());
@@ -421,7 +422,7 @@ function calculo_total(){
   //let bandera = $("#forma_pago_select_2").val();
 
   let bandera = document.getElementById("forma_pago_select_2").value;
-  console.log(bandera);
+  //console.log(bandera);
   //if (!($("#forma_pago_select_2").hasClass("hide"))) {
   let saltillo = true;
   if (id_aux == 0 || id_aux == 1) {
@@ -440,9 +441,10 @@ function calculo_total(){
       var cant = parseInt(this.value, valor_finali_finali.toFixed(1));
       $(this).attr('max', valor_finali_finali.toFixed(1));
     });
+    //id_aux_2 = 0;
 
   }else{
-    console.log("2DosMP");
+    //console.log("2DosMP");
     id_forma_pago = document.getElementById("forma_pago_select").value;
     let id_forma_pago2 = document.getElementById("forma_pago_select_2").value;
     input_value_1 = $("#medio_pago_valor_total").val();
@@ -455,7 +457,9 @@ function calculo_total(){
 
   total_final = valor_finali_finali.toFixed(1);
   //venta_ = new Venta_final(Ventas,Medios_Pagos,total_final);
+  //id_aux_2 = 0;
   calcular_cuotas();
+  //id_aux_2 = 1;
   calcular_diferencia_mp();
 }
 
@@ -471,7 +475,6 @@ function calcular_cuotas() {
     let texto_opt = '';
     var select = document.getElementById("cantidad_cuotas");
     borrar_options(select);
-
     for (var i = 1; i<= 12; i++) {
         cuota = total_final/i;
         //selected="selected"
@@ -484,15 +487,20 @@ function calcular_cuotas() {
         option.value = i;
         x.add(option);
     }
-
-    $("#cantidad_cuotas").selectpicker("refresh");
+    
+    //if (typeof local_.id_local !== 'undefined') {
+    if (una_vez) {
+      console.log("aC");
+      $("#cantidad_cuotas").selectpicker("refresh");
+      una_vez = false;
+    }
+    
     //$("#cantidad_cuotas").prop( "disabled", false );
     //let id_local = document.getElementById("cantidad_cuotas").value;
     let select_forma = String($("#cantidad_cuotas option:selected").html());
     cantidad_cuotas = String(select_forma);
-    //console.log(cantidad_cuotas);
+    console.log(cantidad_cuotas);
   }
-
 }
 
 //calcular diferencia medios de pagos
@@ -552,4 +560,7 @@ function cantidad_cuotas_act(){
   cantidad_cuotas = String(select_forma);
 }
 
+function una_vez(){
+  una_vez = true;
+}
 

@@ -1,15 +1,9 @@
 <div class="menu_articulos_admin">
-
-
-
-
-
 	<div class="container-fluid">
 	<!--container-fluid-->
 		<div class="row encabezado">
 			<div class="col-md-6 col-xs-4">
 				<div class="titulo-secciones panel-heading">Articulos</div>
-
 			</div>
 			<div class="col-md-4 col-xs-12">
 					<a href="index.php?action=Articulo::cargar_deposito">
@@ -17,7 +11,6 @@
 					</a>
 			</div>
 		</div>
-
 		<div class="row">
 		<!-- START BLOCK : buscador_visible -->
 			<div class="col-md-6 col-xs-12">
@@ -26,10 +19,6 @@
 				
 			</div>
 		<!-- END BLOCK : buscador_visible -->
-			
-
-			
-			
 		</div>
 		<br>
 		<!-- START BLOCK : con_articulos_actualiza_lote_masivo2 -->
@@ -47,7 +36,6 @@
 			<div class="col-md-6 col-md-offset-2 col-xs-12">
 				<div class="alert alert-warning center-block">
 					<h3>No posee articulos en el deposito.</h3>
-					
 				</div>
 			</div>
 			<!-- END BLOCK : sin_articulos -->
@@ -57,8 +45,6 @@
 		<!-- START BLOCK : con_articulos_nolista -->
 
 			<div class="col-md-6 col-xs-12">
-			 
-			
 				<div class="panel panel-default">
 				  <div class="panel-body">
 				  </div>
@@ -124,9 +110,13 @@
 	            <td> 
 	            	
 					
-					<button {disabled_ok} type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
+					<!--<button {disabled_ok} type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
 							Vender
-					</button>
+					</button>-->
+					
+					<!-- START BLOCK : asigna_moneda -->
+					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
+					<!-- START BLOCK : asigna_moneda -->
 					<br>
 					<!-- START BLOCK : actualiza_stock_boton -->
 					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
@@ -141,6 +131,7 @@
 					</button>
 					
 					<!-- START BLOCK : actualiza_precio_boton -->
+
 					<!--<button type="button" class="btn btn-danger">Eliminar</button>	
 					<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->
 

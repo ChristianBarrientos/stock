@@ -57,7 +57,7 @@
 			<div class="form-group">        
 				<label class="control-label col-md-4 col-xs-12" for="forma_pago_select">Medio de Pago 1:</label>
 				<div class="col-md-7 col-xs-12">
-					<select required id="forma_pago_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="calculo_total()">
+					<select required id="forma_pago_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="calculo_total()" onclick="una_vez()">
 						<option disabled value="null" selected >Elija un Medio</option>
 						<!-- START BLOCK : medio_pago_venta_opciones -->
 						<option value="{id_medio_pago}">{nombre_medio_pago}</option>
