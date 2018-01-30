@@ -14,11 +14,11 @@ class art_gunico {
 
     public static function alta($id_gunico,$id_lote_local,$rg_detalle){
         global $baseDatos;
-        $id_gunico = art_gunico::ultimo_id();
+        //$id_gunico = art_gunico::ultimo_id();
         $sql = "INSERT INTO `art_gunico`(`id_gunico`, `id_lote_local`, `rg_detalle`) VALUES ($id_gunico,$id_lote_local,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
-            return $id_gunico;
+            return true;
         }else{    
             return false;
         }

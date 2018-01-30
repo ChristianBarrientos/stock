@@ -63,7 +63,7 @@
 				<label class="control-label col-md-4 col-xs-12" for="forma_pago_select">Medio de Pago 1:</label>
 				<div class="col-md-7 col-xs-12">
 					<select required id="forma_pago_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="calculo_total()" onclick="una_vez()">
-						<option disabled value="null" selected >Elija un Medio</option>
+						<option disabled value="0" selected >Elija un Medio</option>
 						<!-- START BLOCK : medio_pago_venta_opciones -->
 						<option value="{id_medio_pago}">{nombre_medio_pago}</option>
 						<!-- END BLOCK : medio_pago_venta_opciones -->		  	
@@ -79,7 +79,7 @@
 				<label class="control-label col-md-4 col-xs-12" for="cantidad_cuotas">Cuotas:</label>
 				<div class="col-md-7 col-xs-12">
 					<select data-live-search="true" data-live-search-style="startsWith"  required id="cantidad_cuotas" class="selectpicker" onchange="cantidad_cuotas_act()" >
-						<option disabled value="null" selected >Elija cantidad de Cuotas</option>
+						<option disabled value="0" selected >Elija cantidad de Cuotas</option>
 						
 					</select>	
 				</div>
@@ -106,7 +106,7 @@
 				<label class="control-label col-md-4 col-xs-12" for="local_select">Seleccione el Local:</label>
 				<div class="col-md-7 col-xs-12">
 					<select required id="local_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="local_seleciona()">
-						<option disabled value="null" selected >Elija un Local</option>
+						<option disabled value="0" selected >Elija un Local</option>
 						<!-- START BLOCK : locales_ -->
 						<option {selected} value="{id_local}">{nombre_local}</option>
 						<!-- END BLOCK : locales_ -->		  	

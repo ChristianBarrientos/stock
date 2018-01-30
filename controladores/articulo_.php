@@ -2722,9 +2722,11 @@ class Articulo_Controller{
                     $costo = $lote_aux->getPrecio_base();
                     $moneda = $lote_aux->getId_moneda()->getValor();
                     $importe = $lote_aux->getImporte();
+
                     $precio_final = floatval($costo) * floatval($moneda);
                     $importe_aux = ((floatval($importe) * floatval($precio_final))/100);
-                    $precio_finali_finali = round(floatval($importe_aux) + floatval($precio_final), 2);
+                    //$precio_finali_finali = round(floatval($importe_aux) + floatval($precio_final), 2);
+                    $precio_finali_finali = round(floatval($importe) * floatval($precio_final), 2);
 
                     $nombre_art = $articulo.','.$marca.','.$tipo.'($'.$precio_finali_finali.')';
 
@@ -2762,12 +2764,16 @@ class Articulo_Controller{
 
                 $error_gunico = false;
                 $id_gunico_next = art_gunico::ultimo_id();
+                //print_r("ComienzoArray") ;
+                //print_r($lote_local_array);
+                //print_r("FINARRAY") ;
                 foreach ($lote_local_array as $key3 => $value3) {
                     $ok = art_gunico::alta($id_gunico_next,$value3['id_lote_local'],$value3['rg_detalle']);
                     if ($ok) {
                         $error_gunico = false;
                     }else{
                         $error_gunico = true;
+                        echo "acaERRORR";
                         break;
                     }
                 }
@@ -2781,6 +2787,7 @@ class Articulo_Controller{
                     //echo json_encode($Respuesta);
                     
                 }else{
+                    //print_r($id_gunico_next);
                     $facutacion_estado = true;
                     $hoy = getdate();
                     $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];

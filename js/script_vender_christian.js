@@ -102,10 +102,14 @@ $(document).ready(function()
         };
         
         $.get("controladores/vende_.php", params, function (response) {
+          //console.log(response);
+          //console.log(response['status']);
+          //console.log("Despues");
+          //var valores = JSON.parse(JSON.stringify(response));
           var valores = JSON.parse(response);
           console.log(valores);
 
-          //console.log(response['status']);
+          //console.log(valores);
 
           if (valores.status == 'ok') {
             console.log("Vendido");
@@ -142,6 +146,11 @@ $(document).ready(function()
 
       }else{
         //console.log(venta_);
+        console.log(venta_.ventas);
+        console.log(venta_.medio_pago);
+        console.log(venta_.total);
+        console.log(Ventas.length);
+
         alert("Faltan Datos por Completar!");
       }
     });
@@ -274,10 +283,12 @@ function art_obtener(){
       contentType: false,
       processData: false,
     success: function(Respuesta){ 
-    
+    //var valores = JSON.parse(JSON.stringify(Respuesta));
+    //var valores = JSON.stringify(Respuesta);
     var valores = JSON.parse(Respuesta);
     //var valores = Respuesta;
-    //console.log(valores["1"]);
+    //console.log(valores);
+    //console.log(valores['status']);
     
     if (valores.status == 'ok') {
        
@@ -505,17 +516,19 @@ function calcular_cuotas() {
     }
     
     //if (typeof local_.id_local !== 'undefined') {
+    
+
+    
     if (una_vez) {
-      
-      $("#cantidad_cuotas").selectpicker("refresh");
+      let select_forma = String($("#cantidad_cuotas option:selected").html());
+      cantidad_cuotas = String(select_forma);
       una_vez = false;
     }
+    $("#cantidad_cuotas").selectpicker("refresh");
     
     //$("#cantidad_cuotas").prop( "disabled", false );
     //let id_local = document.getElementById("cantidad_cuotas").value;
-    let select_forma = String($("#cantidad_cuotas option:selected").html());
-    cantidad_cuotas = String(select_forma);
-    console.log(cantidad_cuotas);
+    
   }
 }
 
@@ -581,22 +594,29 @@ function una_vez(){
 }
 
 function clear_full() {
+  document.getElementById("forma_pago_select").value = '1';
   var tabla = document.getElementById("tabla_pv");
   borrar_options(tabla);
   let tabla_nueva = '<table id="tabla_pv" cellpadding="15" class="table table-bordered " align="center"><thead><tr><th>N°</th><th>Articulo</th><th>Cantidad</th><th>Precio/Unidad</th></tr></thead><tbody><tr id="venta_total"><td  colspan='+"3"+' ><strong>SubTotal:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta"><label></strong></td></tr><tr id="venta_total"><td  colspan='+"3"+' ><strong>Total:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta_final"><label></strong></td></tr></tbody></table>';
   var div_contenedor_tabla = document.getElementById("Resultados");
+
   $(div_contenedor_tabla).html(tabla_nueva);
   
+  //Venta_final(Ventas,Medios_Pagos,total_final,local_)
+  //Venta_final(ventas, medio_pago,total,local = null)
+
+  venta_ .ventas='';
+  //venta_ .medio_pago='';
+  venta_ .total='';
   articulos = [];
   total_ventas = 0;
   numero = 0;
   Ventas = [];
   Medios_Pagos = [];
   total_final = 0;
-  local_ = '';
+  //local_ = '';
   cantidad_cuotas = '';
   final3 = '';
-  venta_ ='';
   id_aux = 0;
   una_vez = true;
 

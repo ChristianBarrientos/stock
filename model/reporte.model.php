@@ -28,31 +28,24 @@ class reporte {
 
     public static function reporte_av_todos(){
         global $baseDatos;
-        
         $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au
                                 WHERE au.id_venta = av.id_venta");  
-
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-        
         if (count($filas) != 0) {
             $art_unico = array();
             //$usuario_prvd = array(0);
+            print_r($filas);
             foreach ($filas as $clave => $valor) {
-               
                 $art_unico[] = art_unico::generar_unico($valor['id_unico']);
-
             }
-             
-            
-             
             return $art_unico;
         }
         else{
-           
             return false;
         }
     }
+
     public static function reporte_vm(){
 
     	
