@@ -220,6 +220,10 @@ class Articulo_Controller{
 
                                             $nombre_att = $valor->getNombre();
                                             $valor_att = $valor->getValor();
+                                            if ($valor_att == 'unknow' || $valor_att == 'unknwon') {
+                                                $valor_att = 'Sin Definir';
+                                            }
+
                                             $attrf = $attrf.$valor_att.' ('.$nombre_att.')'.'<br>';
                                         }
 
@@ -290,6 +294,11 @@ class Articulo_Controller{
                                     $tpl->assign("id_art_lote",$value->getId_lote());
                                     $tpl->assign("id_art_lote_stock_actual",$value->getId_lote());
                                     $contadori = 0;
+
+                                    
+                                    $tpl->newBlock("actualiza_atrs_");
+                                    $tpl->assign("id_lote",$value->getId_lote());
+                                    
                                     //Mostrar con local
                                    
                                     foreach ($nom_local__ as $key6 => $value6) {
@@ -342,7 +351,7 @@ class Articulo_Controller{
                                             $actualiza_stock_bandera = 0;
                                             # code...
                                         }else{
-                                             $actualiza_stock_bandera = 0;
+                                            $actualiza_stock_bandera = 0;
                                         }
                                     }
                                     $actualiza_stock_bandera = 0;
@@ -350,6 +359,41 @@ class Articulo_Controller{
                                     //Actualizar Precio Modal
 
                                     $tpl->gotoBlock("_ROOT");
+                                    $tpl->newBlock("modal_actualizar_atrs");
+                                    $tpl->assign("id_lote",$value->getId_lote());
+                                    $tpl->assign("id_art_lote",$value->getId_lote());
+                                    if ($value->getId_gc() != null) {
+                                        # code...
+                                        $gc = $value->getId_gc()->getId_categoria();
+                                     
+                                        $attrf = '';
+                                        foreach ($gc as $clave => $valor) {
+
+                                            $nombre_att = $valor->getNombre();
+                                            $valor_att = $valor->getValor();
+                                            $id_cg = $valor->getId_categoria();
+
+                                            $tpl->newBlock("seccion_atr_act");
+                                            $tpl->assign("nombre_atr",$nombre_att);
+                                            if ($valor_att == 'unknow' || $valor_att == 'unknwon') {
+                                                $tpl->assign("valor_atr",'Sin Definir');
+                                            }else{
+                                                $tpl->assign("valor_atr",$valor_att);
+                                            }
+
+                                            $tpl->assign("id_atr",$id_cg);
+                                        
+                                        }
+
+                                        //$tpl->assign("attr",$attrf);
+                                    
+                                    }
+                                    else{
+                                        $tpl->newBlock("sin_atr");
+                                        //$tpl->assign("sin_atr",'Sin Atributos.');
+                                    }
+
+
                                     $tpl->newBlock("modal_actualizar_precio_masivo");
                                     $tpl->newBlock("modal_actualizar_precio");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
@@ -2856,11 +2900,41 @@ class Articulo_Controller{
 
         }
 
-        public static function cargar_art_tipo(){
+        public static function actualiza_atrs(){
 
-        $nombre = ucwords(strtolower($_POST['art_tipo']));
-       
+        if (Ingreso_Controller::es_admin()) {
+            $atr = $_POST['atr_act'];
+            $id_atr = $_POST['id_atr_act'];
 
+            $counter = 0;
+            $error = false;
+            foreach ($atr as $key => $value) {
+            
+                $okup = art_categoria::update_valores($id_atr[$counter],$value);
+
+                if ($okup) {
+                    $error = false;
+                }else{
+                    $error = true;
+                }
+
+                $counter = $counter + 1 ;
+            }
+            
+            if (!$error) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+                $tpl->newBlock("modifica_attr");
+                
+            }else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+            }
+        }else{  
+            return Ingreso_Controller::salir();
+            }
+        
+        return $tpl->getOutputContent();
         }
 
 }
