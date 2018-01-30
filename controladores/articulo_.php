@@ -2728,7 +2728,7 @@ class Articulo_Controller{
                     //$precio_finali_finali = round(floatval($importe_aux) + floatval($precio_final), 2);
                     $precio_finali_finali = round(floatval($importe) * floatval($precio_final), 2);
 
-                    $nombre_art = $articulo.','.$marca.','.$tipo.'($'.$precio_finali_finali.')';
+                    $nombre_art = $articulo.','.$marca.','.$tipo.','.'($'.$precio_finali_finali.')';
 
                     $lote_local['id_lote_local'] = $id_lote_local;
                     $lote_local['cantidad'] = $cantidad;

@@ -86,10 +86,11 @@ $(document).ready(function()
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
         //console.log(venta_);
-        local_seleciona();
-        calculo_total();
-        venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
         console.log(venta_);
+        repaso_general();
+        
+        venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
+        
         let Datos = new FormData();
         venta_aux = JSON.stringify(venta_); 
         
@@ -116,6 +117,7 @@ $(document).ready(function()
           if (valores.status == 'ok') {
             console.log("Vendido");
             clear_full();
+            console.log(valores);
             alert("EXITO! Venta realizada con exito. " + valores.result['rg_detalle']);
 
 
@@ -597,7 +599,7 @@ function una_vez(){
 }
 
 function clear_full() {
-  document.getElementById("forma_pago_select").value = '1';
+  //document.getElementById("forma_pago_select").value = '1';
   var tabla = document.getElementById("tabla_pv");
   borrar_options(tabla);
   let tabla_nueva = '<table id="tabla_pv" cellpadding="15" class="table table-bordered " align="center"><thead><tr><th>N°</th><th>Articulo</th><th>Cantidad</th><th>Precio/Unidad</th></tr></thead><tbody><tr id="venta_total"><td  colspan='+"3"+' ><strong>SubTotal:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta"><label></strong></td></tr><tr id="venta_total"><td  colspan='+"3"+' ><strong>Total:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta_final"><label></strong></td></tr></tbody></table>';
@@ -623,5 +625,12 @@ function clear_full() {
   id_aux = 0;
   una_vez = true;
 
+}
+
+function repaso_general(){
+  //una_vez();
+  cantidad_cuotas_act();
+  local_seleciona();
+  calculo_total();
 }
 

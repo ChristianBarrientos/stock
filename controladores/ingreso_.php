@@ -1435,21 +1435,20 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		//ini_set('display_errors', 0);
 		//ini_set('log_errors', 1);
 
-
-       	
 		$respuesta_final = array();
 		$medio_limpio = array();
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 	  	//print_r($respuesta);
-	   
+	   	$nombres_mp2 = '';
+		$nom_completo2 = '';
+		$una_veez = true;
+		$precio_unitario_art2 = 0;
+
 		foreach ($respuesta as $key => $value) {
 
 			$medio_pago = $value->getId_venta()->getId_gmedio_pago()->getId_medio_pago();
-			$nombres_mp = '';
-			$nom_completo = '';
-			$una_veez = true;
-			$precio_unitario_art = 0;
+
 			foreach ($medio_pago as $key1 => $value1) {
 				 
 				$nombre_mediopago = $value1->getNombre();
@@ -1462,9 +1461,10 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 				}
 
 				if ($una_veez) {
-					 $nombres_mp =$nombres_mp.$nombre_mediopago.$des_imp;
+					 $nombres_mp2 =$nombres_mp2.$nombre_mediopago.$des_imp;
 				}else{
-					$nombres_mp =$nombres_mp.'-'.$nombre_mediopago.$des_imp;
+					$nombres_mp2 =$nombres_mp2.'-'.$nombre_mediopago.$des_imp;
+					$una_veez = false;
 				}
 			}
 		
@@ -1476,17 +1476,20 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 
 			$gunico = $value->getId_gunico();
 			$total_art_count = count($gunico);
-			$counter = 0;
-			foreach ($gunico as $key6 => $value6) {
-				$gunico_lote_local = $value6->getId_lote_local();
+			
+		   
+			//foreach ($gunico as $key6 => $value6) {
+				$gunico_lote_local = $gunico->getId_lote_local();
 				//$cantidad_lote_local = $value6->getCantidad();
-
+				$cantidad = $gunico->getCantidad();
+				$rg_detalle = $gunico->getRg_detalle();
+				$counter = 0;
 				foreach ($gunico_lote_local as $key2 => $value2) { 
 					$lote = $value2->getId_lote();
 					$nombre_art = $lote->getId_art_conjunto()->getId_articulo()->getNombre();
 					$nom_marca = $lote->getId_art_conjunto()->getId_marca()->getNombre();
 					$nom_tipo = $lote->getId_art_conjunto()->getId_tipo()->getNombre();
-					$nom_completo = $nom_marca.','.$nom_tipo;
+					$nom_completo2 = $nom_marca.','.$nom_tipo.'('.$cantidad[$counter].')';
 
 					if (count($porciones) >1) {
 						$cantidad_cuotas = $porciones[0];
@@ -1495,26 +1498,33 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 					}else{
 						$precio_final_final = $porciones[0];
 					}
-					$prc_costo = $lote->getPrecio_base();
-					$prc_importe = $lote->getImporte();
-					$prc_moneda =$lote->getId_moneda()->getValor();
-					$prc_axu = floatval($prc_costo) * floatval($prc_moneda);
-					$precio_unitario_art = floatval($prc_axu) * floatval($prc_importe);
+					//$prc_costo = $lote->getPrecio_base();
+					//$prc_importe = $lote->getImporte();
+					//$prc_moneda =$lote->getId_moneda()->getValor();
+					//$prc_axu = floatval($prc_costo) * floatval($prc_moneda);
+
+					$precio_aux = explode(",", $rg_detalle);
+					$precio_rg_aux = str_replace('(','',$precio_aux[3]);
+					$precio_unitario_art2 = str_replace(')','',$precio_rg_aux);
+
+					//$precio_unitario_art2 = floatval($prc_axu) * floatval($prc_importe);
 					$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
 					$medio_limpio[] = $medio_sin;
-					
+
+					$counter = $counter + 1 ;
+
 				}
-				//if ($total_art_count == $counter ) {
-				$respuesta_final[] = [$numero_cont,$nom_completo,$nombres_mp,$precio_unitario_art,''];
-				//}else{
-				//	$respuesta_final[] = [$numero_cont,$nom_completo,$nombres_mp,$precio_unitario_art,$precio_final];
-				//}
-				$numero_cont = $numero_cont + 1;
-				$counter = $counter + 1 ;
-			}
+			//}
+
+			$respuesta_final[] = [$numero_cont,$nom_completo2,$nombres_mp2,$precio_unitario_art2,$precio_final];
+			$numero_cont = $numero_cont + 1;
+
+			$nombres_mp2 = '';
+				
+
 		}
 		
-		print_r($respuesta_final);
+		//print_r($respuesta_final);
 
 		$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
