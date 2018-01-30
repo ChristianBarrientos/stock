@@ -105,7 +105,7 @@
 		<div class="form-group" id="forma_pago_select_2_bloque">        
 				<label class="control-label col-md-4 col-xs-12" for="local_select">Seleccione el Local:</label>
 				<div class="col-md-7 col-xs-12">
-					<select required id="local_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onchange="local_seleciona()">
+					<select required id="local_select" class="selectpicker" data-live-search="true" data-live-search-style="startsWith" class="selectpicker" onclick="local_seleciona()" onchange="local_seleciona()">
 						<option disabled value="0" selected >Elija un Local</option>
 						<!-- START BLOCK : locales_ -->
 						<option {selected} value="{id_local}">{nombre_local}</option>

@@ -382,8 +382,6 @@ class Ingreso_Controller{
         
         $fecha_desde = $_POST['fecha_desde'];
         $fecha_hasta = $_POST['fecha_hasta'];
-       
-        
 
         if (isset($_SESSION["usuario"])){
         	if ($_SESSION["permiso"] != 'ADMIN') {
@@ -472,7 +470,7 @@ class Ingreso_Controller{
         		# code...
         		break;
         }
-        return $tpl->getOutputContent();
+        //return $tpl->getOutputContent();
     }
 
 
@@ -852,6 +850,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 			//$tpl->newBlock("con_articulos_lista_cabeza");
 			$tpl->newBlock("buscador_visible");
 			$reversed = array_reverse($respuesta);
+			//print_r($reversed);
 			foreach ($reversed as $key => $value) {
 				$tpl->newBlock("con_articulos_lista_cuerpo");
 
@@ -859,19 +858,21 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 				$tpl->assign("numero", $contador);
 				$contador = $contador + 1;
 				//Nombre Articulo
-				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
-				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
-				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+				$gunico = $value->getId_gunico();
+				$nombre_art = $gunico->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
+				$nom_marca = $gunico->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
+				$nom_tipo = $gunico->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
+
 				$nombre_art_vendido = $nombre_art.','.$nom_marca.','.$nom_tipo;
 
 				//generar lote local para obtener el local
-				if ($value->getId_lote_local()->getId_lote()->getId_gc()) {
+				if ($gunico->getId_lote_local()->getId_lote()->getId_gc()) {
 					# code...
 			
-				if ($value->getId_lote_local()->getId_lote()->getId_gc() != null) {
+				if ($gunico->getId_lote_local()->getId_lote()->getId_gc() != null) {
 					# code...
 				
-				$gc = $value->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
+				$gc = $gunico->getId_lote_local()->getId_lote()->getId_gc()->getId_categoria();
 
 				$attrs = '';
                 foreach ($gc as $clave => $valor) {
@@ -1322,7 +1323,6 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 		foreach ($respuesta as $key => $value) {
-			// 
 			$medio_pago = $value->getId_venta()->getMedio();
 			if (strcmp($medio_pago, "Credito Personal")  == 0 ) {
 				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -1332,21 +1332,10 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 				$nom_completo = $nom_marca.','.$nom_tipo;
 				$local_venta = $value->getId_lote_local()->getId_local()->getNombre();
 				$vendedor = $value->getId_venta()->getId_usuario()->getUsuario();
-
-			
-			 
-			
-			
 				$precio_final = $value->getId_venta()->getTotal();
-
-				$medio_sin = str_replace('$','',$precio_final);
-
-			 
+				$medio_sin = str_replace('$','',$precio_final);			 
 				$porciones = explode("x", $medio_sin);
-			
-			 
-		 
-			 
+
 				if (count($porciones) >1) {
 					$cantidad_cuotas = $porciones[0];
 					$precio_base = $porciones[1];
@@ -1360,8 +1349,6 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 				$respuesta_final[] = [$numero_cont,$nom_completo,$local_venta,$vendedor,$medio_pago,$precio_final];
 				$numero_cont = $numero_cont + 1;
 			}
-			
-
 		}
 
 		 
@@ -1369,6 +1356,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		$row = 0;
 		$banban = true;
 		$banban2 = true;
+
 		foreach ( $respuesta_final as $dataRow ) {
 
   			// Create the left header cell
@@ -1418,62 +1406,131 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
     	
     }
     public static function reporte_co($fecha_desde,$fecha_hasta,$medio,$local){
-    	//$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta);
     	$todo = false;
-    	 
-    	$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
     	if ($medio != 0) {
-    		# code...
     		$medio_ = art_venta_medio_pago::generar($medio);
     	}
     	if ($local != 0) {
-    		# code...
     		$local_ = art_local::generar_local_2($local);
     	}
     	
-        
-    	/*if ($medio == 0) {
-    		# code...
+    	if ($medio == 0) {
     		if ($local == 0) {
-    			# code...
     			$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0,0);
     		}
     		
     		if (is_numeric($local)) {
-    			# code...
-    			
     		}else{
     			$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,0,$local->getId_local());
     		}	
-    		
     		$todo = true;
     	}else{
     		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio->getId_medio(),$local->getId_local());
     		$medio_nombre_segmentacion = $medio->getNombre();
     	}
-    	print_r($respuesta);*/
-    	//p 
-
-    	//$medio_obj = art_venta_medio::generar_venta_medio($medio);
     	
     	ini_set("session.auto_start", 0);
-       	$pdf = new FPDF( 'P', 'mm', 'A4' );
+    	//ob_start();
+		//error_reporting(E_ALL & ~E_NOTICE);
+		//ini_set('display_errors', 0);
+		//ini_set('log_errors', 1);
+
+
+       	
+		$respuesta_final = array();
+		$medio_limpio = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+	  	//print_r($respuesta);
+	   
+		foreach ($respuesta as $key => $value) {
+
+			$medio_pago = $value->getId_venta()->getId_gmedio_pago()->getId_medio_pago();
+			$nombres_mp = '';
+			$nom_completo = '';
+			$una_veez = true;
+			$precio_unitario_art = 0;
+			foreach ($medio_pago as $key1 => $value1) {
+				 
+				$nombre_mediopago = $value1->getNombre();
+				$des_imp_valor = $value1->getDesImp()->getValor();
+				if ($des_imp_valor != 0) {
+					$des_imp_signo = $value1->getDesImp()->getSigno();
+					$des_imp = '('.$des_imp_signo.$des_imp_valor.'%)';
+				}else{
+					$des_imp = '';
+				}
+
+				if ($una_veez) {
+					 $nombres_mp =$nombres_mp.$nombre_mediopago.$des_imp;
+				}else{
+					$nombres_mp =$nombres_mp.'-'.$nombre_mediopago.$des_imp;
+				}
+			}
+		
+
+			$precio_final = $value->getId_venta()->getTotal();
+			$medio_sin = str_replace('$','',$precio_final);
+			$porciones = explode("x", $medio_sin);
+			$cuotas = $value->getId_venta()->getCuotas();
+
+			$gunico = $value->getId_gunico();
+			$total_art_count = count($gunico);
+			$counter = 0;
+			foreach ($gunico as $key6 => $value6) {
+				$gunico_lote_local = $value6->getId_lote_local();
+				//$cantidad_lote_local = $value6->getCantidad();
+
+				foreach ($gunico_lote_local as $key2 => $value2) { 
+					$lote = $value2->getId_lote();
+					$nombre_art = $lote->getId_art_conjunto()->getId_articulo()->getNombre();
+					$nom_marca = $lote->getId_art_conjunto()->getId_marca()->getNombre();
+					$nom_tipo = $lote->getId_art_conjunto()->getId_tipo()->getNombre();
+					$nom_completo = $nom_marca.','.$nom_tipo;
+
+					if (count($porciones) >1) {
+						$cantidad_cuotas = $porciones[0];
+						$precio_base = $porciones[1];
+						$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
+					}else{
+						$precio_final_final = $porciones[0];
+					}
+					$prc_costo = $lote->getPrecio_base();
+					$prc_importe = $lote->getImporte();
+					$prc_moneda =$lote->getId_moneda()->getValor();
+					$prc_axu = floatval($prc_costo) * floatval($prc_moneda);
+					$precio_unitario_art = floatval($prc_axu) * floatval($prc_importe);
+					$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
+					$medio_limpio[] = $medio_sin;
+					
+				}
+				//if ($total_art_count == $counter ) {
+				$respuesta_final[] = [$numero_cont,$nom_completo,$nombres_mp,$precio_unitario_art,''];
+				//}else{
+				//	$respuesta_final[] = [$numero_cont,$nom_completo,$nombres_mp,$precio_unitario_art,$precio_final];
+				//}
+				$numero_cont = $numero_cont + 1;
+				$counter = $counter + 1 ;
+			}
+		}
+		
+		print_r($respuesta_final);
+
+		$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
 		$hoy = getdate();
         $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
 
-		$permiso = $_SESSION['usuario']->setId_Acceso();
+		$permiso = $_SESSION['usuario']->getAcceso();
 		if (strcmp($permiso, "ADMIN" ) == 0 ) {
-			# code...
 			$id_jefe = $_SESSION['usuario']->getId_user();
 		}else{
 			
 			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
 		}
-		
-
+	
 		$tocliente = ot_cliente::generar($id_jefe);
 		$nombre_ng = $tocliente->getNombre();
 
@@ -1483,7 +1540,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		
 		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
 		if ($local != 0) {
-			# code...
+		 
 			$pdf->Write( 6, "\nLocal: ".$local_->getNombre());
 			$locales_todos = false;
 		}else{
@@ -1492,108 +1549,32 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		}
 		
 		$pdf->Ln( 12 );
-
 		$pdf->SetDrawColor( 0, 0, 0 );
 		$pdf->Ln( 15 );
 		$pdf->SetTextColor( 0, 0, 0);
 		$pdf->SetFillColor( 255, 255, 255 );
-		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
-		
-		// Nombre Columnas
 		$pdf->SetTextColor( 0, 0, 0 );
 		$pdf->SetFillColor( 255, 255, 255 );
-		$columnas = ['N°','Articulo','Medio de Pago','Precio Final'];//'cuotas'
+		$columnas = ['N°','Articulo','Medio de Pago','SubTotal','Total'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
 			if ($i == 0) {
 				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}else{
+				if ($i == 1) {
+					$pdf->Cell( 66, 12, $columnas[$i], 1, 0, 'C', true );
+				}else{
+					if ($i == 3) {
+						$pdf->Cell( 20, 12, $columnas[$i], 1, 0, 'C', true );
+					}
+					else{
+						$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
+					}
+				}
 			}
-			 
-			else{
-				$pdf->Cell( 47, 12, $columnas[$i], 1, 0, 'C', true );
-			}
+			
 		   
 		}
-		//Agregando las Filas
-		
-		$respuesta_final = array();
-		$medio_limpio = array();
-	 	$precio_recaudacion_ = 0;
-	 	$numero_cont = 1;
-	 	
-	 	
-	 	 
-		foreach ($respuesta as $key => $value) {
-			// 
-			
-			$id_medio_descripcion = $value->getId_venta()->getMedio_pago()->getId_medio_tipo()->getNombre();
-			//$descripcion_medio = art_venta_medio_descripcion::generar_venta_medio_descripcion($id_medio_descripcion);
-
-			$nombre_medio_pago = $value->getId_venta()->getMedio_pago()->getNombre();
-			//if ($todo) {
-				# code...
-				 
-				$medio_nombre_segmentacion = $nombre_medio_pago;
-
-			//}
-
-			//$id_local_respuesta = $value->getId_lote_local()->getId_local()->getId_local();
-			//if ($locales_todos) {
-				# code...
-
-			//}else{
-				//if (!($id_local_respuesta == $local->getId_local())) {
-					# code...
-					//continue;
-					//}
-				//}else{
-					//break;
-				//}
-			
-
-
-			//$medio_pago = $descripcion_medio->getNombre();
-			if (strcmp($nombre_medio_pago, $medio_nombre_segmentacion)  == 0  ) {
-
-				$nombre_art = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
-				$nom_marca = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
-				$nom_tipo = $value->getId_lote_local()->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
-
-				$nom_completo = $nom_marca.','.$nom_tipo;
-				
-
-			
-			 
-			
-			
-				$precio_final = $value->getId_venta()->getTotal();
-
-				$medio_sin = str_replace('$','',$precio_final);
-
-			 
-				$porciones = explode("x", $medio_sin);
-			
-			 	$cuotas = $value->getId_venta()->getCuotas();
-		 
-			 
-				if (count($porciones) >1) {
-					$cantidad_cuotas = $porciones[0];
-					$precio_base = $porciones[1];
-					$precio_final_final = (integer)$cantidad_cuotas * (integer)$precio_base;
-				}else{
-				//entra sin cuotas
-					$precio_final_final = $porciones[0];
-				}
-				$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
-				$medio_limpio[] = $medio_sin;
-
-				$respuesta_final[] = [$numero_cont,$nom_completo,$nombre_medio_pago,$precio_final];//$cuotas
-				$numero_cont = $numero_cont + 1;
-			}
-			
-
-		}
-
 		 
 		$fill = false;
 		$row = 0;
@@ -1602,10 +1583,10 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		foreach ( $respuesta_final as $dataRow ) {
 
   			// Create the left header cell
-	  		/*$pdf->SetFont( 'Arial', 'B', 15 );
-	  		$pdf->SetTextColor( 0, 0, 0 );
-	  		$pdf->SetFillColor( 255, 255, 255 );
-	  		$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );*/
+	  		//$pdf->SetFont( 'Arial', 'B', 15 );
+	  		//$pdf->SetTextColor( 0, 0, 0 );
+	  		//$pdf->SetFillColor( 255, 255, 255 );
+	  		//$pdf->Cell( 46, 12, " " . $rowLabels[$row], 1, 0, 'L', $fill );
 
   			// Create the data cells
 	  		$pdf->SetTextColor( 0, 0, 0 );
@@ -1617,22 +1598,38 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 	  				$pdf->Ln( 12 );
 	  				if ($i == 0) {
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}else{
+	  					if ($i == 1) {
+							$pdf->Cell( 66, 12, $dataRow[$i], 1, 0, 'C', true );
+						}else{
+							if ($i == 3) {
+								$pdf->Cell( 20, 12, $dataRow[$i], 1, 0, 'C', true );
+							}
+							else{
+								$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
+							}
+						}
 	  				}
-	  				else{
-	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
-	  				}
+	  				
 	  				
 	  				$banban2 = false;
 	  			}else{
 
 	  				if ($i == 0) {
 	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
-	  				}
-	  				else{
-	  					$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}else{
+	  					if ($i == 1) {
+							$pdf->Cell( 66, 12, $dataRow[$i], 1, 0, 'C', true );
+						}else{
+							if ($i == 3) {
+								$pdf->Cell( 20, 12, $dataRow[$i], 1, 0, 'C', true );
+							}
+							else{
+								$pdf->Cell( 47, 12, $dataRow[$i], 1, 0, 'C', true );
+							}
+						}
 	  				}
 	  			}
-	  		  
 	  		}
 
 	  		$row++;
@@ -1644,10 +1641,9 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "I" );
-
-    	
+		$pdf->Output( "reportvc.pdf", "I" );	
     }
+
     public static function reporte_vem($fecha_desde,$fecha_hasta){
     	//$respuesta = reporte::reporte_vem($fecha_desde,$fecha_hasta);
     	$respuesta = reporte::reporte_av($fecha_desde,$fecha_hasta);

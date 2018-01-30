@@ -86,6 +86,7 @@ $(document).ready(function()
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
         //console.log(venta_);
+        local_seleciona();
         calculo_total();
         venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
         console.log(venta_);
@@ -106,8 +107,9 @@ $(document).ready(function()
           //console.log(response['status']);
           //console.log("Despues");
           //var valores = JSON.parse(JSON.stringify(response));
+          
           var valores = JSON.parse(response);
-          console.log(valores);
+           
 
           //console.log(valores);
 
@@ -576,6 +578,7 @@ function agregar_elimina_medio_pago(e){
 }
 
 function local_seleciona(){
+  console.log("local_seleciona");
   let id_local = document.getElementById("local_select").value;
   let select_forma = String($("#local_select option:selected").html());
   let nombre_local = String(select_forma);

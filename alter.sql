@@ -65,3 +65,6 @@ ALTER TABLE art_venta ADD FOREIGN KEY (id_gmedio_pago) REFERENCES art_gmedio_pag
 //25/01/2018
 ALTER TABLE art_gunico add rg_detalle VARCHAR(150) NOT NULL;
 ALTER TABLE art_gmedio_pago add rg_detalle VARCHAR(150) NOT NULL;
+
+//30/01/2018
+ALTER TABLE art_gunico add cantidad INTEGER  NOT NULL;

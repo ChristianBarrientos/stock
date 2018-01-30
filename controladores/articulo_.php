@@ -2631,9 +2631,9 @@ class Articulo_Controller{
                         foreach ($_SESSION['locales'] as $key => $value) {
                             $tpl->newBlock("locales_");
                             $tpl->assign("id_local", $value->getId_local());
-                            if (count($_SESSION['locales']) == 1) {
-                                $tpl->assign("selected", 'selected');
-                            }
+                            //if (count($_SESSION['locales']) == 1) {
+                            //    $tpl->assign("selected", 'selected');
+                            //}
 
                             $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
                         }     
@@ -2768,20 +2768,30 @@ class Articulo_Controller{
                 //print_r($lote_local_array);
                 //print_r("FINARRAY") ;
                 foreach ($lote_local_array as $key3 => $value3) {
-                    $ok = art_gunico::alta($id_gunico_next,$value3['id_lote_local'],$value3['rg_detalle']);
+                    $ok = art_gunico::alta($id_gunico_next,$value3['id_lote_local'],$value3['rg_detalle'],$value3['cantidad']);
                     if ($ok) {
                         $error_gunico = false;
                     }else{
                         $error_gunico = true;
-                        echo "acaERRORR";
+                        //echo "acaERRORR";
                         break;
                     }
                 }
                 
                 if ($error_gunico || $error_mp) {
-
-                    $data['status'] = 'err';
-                    $data['result'] = $error_mp.','. $error_gunico;
+                    if ($error_gunico && $error_mp) {
+                        $data['status'] = 'err2';
+                        $data['result'] = 'Error al cargar gmedio_pago y art_gunico';
+                    }else{
+                        if ($error_gunico){
+                            $data['status'] = 'err2';
+                            $data['result'] = 'Error al cargar art_gunico';
+                        }else{
+                            $data['status'] = 'err2';
+                            $data['result'] = 'Error al cargar gmedio_pago';
+                        }
+                    }
+                   
                     $Respuesta = $data;
                     return $Respuesta;
                     //echo json_encode($Respuesta);

@@ -16,7 +16,7 @@ class art_gmedio_pago {
         global $baseDatos;
         //$id_contacto_tel = $this::alta_contacto($telefono);
         //$id_gmedio_pago = art_gmedio_pago::ultimo_id();
-        
+
         $sql = "INSERT INTO `art_gmedio_pago`(`id_gmedio_pago`, `id_medio_pago`, `rg_detalle`) VALUES ($id_gmedio_pago,$id_medio_pago,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
@@ -44,9 +44,9 @@ class art_gmedio_pago {
         if (count($filas) != 0) {
             $medios_pago = array();
             foreach ($filas as $key => $value) {
-                $medios_pago []= art_venta_medio_pago::generar($res_fil['id_medio_pago']);
+                $medios_pago []= art_venta_medio_pago::generar($value['id_medio_pago']);
             }
-            $gmedio_pago = new art_gmedio_pago($res_fil['id_gmedio_pago'],$medios_pago,$res_fil['rg_detalle']);
+            $gmedio_pago = new art_gmedio_pago($value['id_gmedio_pago'],$medios_pago,$value['rg_detalle']);
             return $gmedio_pago;
         }
         else{

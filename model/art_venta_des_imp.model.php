@@ -10,10 +10,7 @@ class art_venta_des_imp {
     {
         $this->id_des_imp = $id_des_imp;
         $this->valor = $valor;
-     
         $this->signo = $signo;
-    
-       
     }
 
     public static function alta($valor,$signo){

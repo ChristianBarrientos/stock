@@ -29,7 +29,7 @@ class art_lote_local {
         
         $sql = "INSERT INTO `art_lote_local`(`id_lote_local`, `id_lote`, `id_local`, `cantidad_parcial`, `id_carga`) VALUES (0,$id_lote,$id_local,$cantidad_parcial,$id_carga)";
         $res = $baseDatos->query($sql);
-        printf("Errormessage: %s\n", $baseDatos->error);
+        //printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
              
             return $id_lote_local;
@@ -83,7 +83,7 @@ class art_lote_local {
     public static function generar_lote_local_id_($id_lote_local){
        
         global $baseDatos;
-        //echo $id_lote_local;
+        
         $res = $baseDatos->query("SELECT * FROM art_lote_local WHERE id_lote_local = $id_lote_local");  
 
         $res_fil = $res->fetch_assoc();
