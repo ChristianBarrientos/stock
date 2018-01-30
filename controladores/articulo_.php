@@ -319,6 +319,10 @@ class Articulo_Controller{
                                         
                                         //Fin Modal Venta
                                     }
+
+                                    $tpl->newBlock("ver_cb");
+                                    $tpl->assign("id_lote",$value->getId_lote());
+
                                     $tpl->gotoBlock("_ROOT");
                                     
                                     $contadori = 0;
@@ -359,6 +363,12 @@ class Articulo_Controller{
                                     //Actualizar Precio Modal
 
                                     $tpl->gotoBlock("_ROOT");
+                                    $tpl->newBlock("modal_codigo_ver");
+                                    $codigo_barras = $value->getId_cb();
+
+                                    $tpl->assign("id_lote",$value->getId_lote());
+                                    $tpl->assign("art_codigo",$codigo_barras);
+                                    
                                     $tpl->newBlock("modal_actualizar_atrs");
                                     $tpl->assign("id_lote",$value->getId_lote());
                                     $tpl->assign("id_art_lote",$value->getId_lote());
@@ -838,11 +848,20 @@ class Articulo_Controller{
                 if ($us_monedas) {
                     $monedas = $us_monedas->getId_moneda();
                     $tpl->newBlock("art_moneda_si");
+                    $cnt_moneda = count($monedas);
+                    $moneda_unica = false;
                     foreach ($monedas as $key6 => $value6) {
-                    
-                    $tpl->newBlock("cargar_moneda");
-                    $tpl->assign("valor_id_moneda", $value6->getId());
-                    $tpl->assign("nombre_moneda", $value6->getNombre().' ('.$value6->getValor().')');
+                        if ($cnt_moneda == 1) {
+                            $moneda_unica = true;
+                        }
+                        $tpl->newBlock("cargar_moneda");
+                        $tpl->assign("valor_id_moneda", $value6->getId());
+                        $tpl->assign("nombre_moneda", $value6->getNombre().' ('.$value6->getValor().')');
+                        if ($moneda_unica) {
+                            $tpl->assign("selected_moneda", 'selected');
+                        }else{
+                             $tpl->assign("selected_ninguno", 'selected');
+                        }
                     }
 
                 }else{

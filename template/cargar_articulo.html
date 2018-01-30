@@ -254,9 +254,9 @@
 	    
 	            <div class="col-md-4 col-sm-3 col-xs-12">
 				      <select required name="art_moneda" id="select_art_moneda" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"> 
-				      <option disabled value="null" selected >Ninguno</option>
+				      <option disabled value="null" {selected_ninguno} >Ninguno</option>
 				      <!-- START BLOCK : cargar_moneda -->
-				        <option value="{valor_id_moneda}">{nombre_moneda}</option>
+				        <option value="{valor_id_moneda}" {selected_moneda}>{nombre_moneda}</option>
 				      <!-- END BLOCK : cargar_moneda -->
 				      </select>
 				      
