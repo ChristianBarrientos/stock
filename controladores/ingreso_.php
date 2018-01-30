@@ -1425,8 +1425,9 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
     		}	
     		$todo = true;
     	}else{
-    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio->getId_medio(),$local->getId_local());
-    		$medio_nombre_segmentacion = $medio->getNombre();
+    		$respuesta = reporte::reporte_co($fecha_desde,$fecha_hasta,$medio,$local);
+    		$medio_generado = art_venta_medio_pago::generar($medio);
+    		$medio_nombre_segmentacion = $medio_generado->getNombre();
     	}
     	
     	ini_set("session.auto_start", 0);
@@ -1484,6 +1485,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 				$cantidad = $gunico->getCantidad();
 				$rg_detalle = $gunico->getRg_detalle();
 				$counter = 0;
+
 				foreach ($gunico_lote_local as $key2 => $value2) { 
 					$lote = $value2->getId_lote();
 					$nombre_art = $lote->getId_art_conjunto()->getId_articulo()->getNombre();
@@ -1503,9 +1505,10 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 					//$prc_moneda =$lote->getId_moneda()->getValor();
 					//$prc_axu = floatval($prc_costo) * floatval($prc_moneda);
 
-					$precio_aux = explode(",", $rg_detalle);
+					$precio_aux = explode(",", $rg_detalle[0]);
 					$precio_rg_aux = str_replace('(','',$precio_aux[3]);
 					$precio_unitario_art2 = str_replace(')','',$precio_rg_aux);
+
 
 					//$precio_unitario_art2 = floatval($prc_axu) * floatval($prc_importe);
 					$precio_recaudacion_ = $precio_recaudacion_ + $precio_final_final;
@@ -1651,7 +1654,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		
 		$pdf->Ln( 12 );
 		ob_end_clean();
-		$pdf->Output( "reportvc.pdf", "I" );	
+		$pdf->Output( "reportvc.pdf", "I" );			
     }
 
     public static function reporte_vem($fecha_desde,$fecha_hasta){

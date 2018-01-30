@@ -55,28 +55,25 @@ class reporte {
     }
     public static function reporte_co($fecha_desde,$fecha_hasta,$medio,$local){
         global $baseDatos;
-        if ($medio == 0 && $local == 0) {
 
+        if ($medio == 0 && $local == 0) {
+  
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_gmedio_pago` AS gmp
                                 WHERE (av.fecha_hora BETWEEN '$fecha_desde' AND '$fecha_hasta') AND (au.id_venta = av.id_venta 
                                                 AND gmp.id_gmedio_pago = av.id_gmedio_pago  )"); //LIMIT 30
         }
         if ($medio != 0 && $local == 0) {
-            # code...
             
-            $res = $baseDatos->query("SELECT * 
-                                FROM `art_venta` AS av, `art_unico` as au, `art_venta_medio_pago` AS vm, `art_gmedio_pago` AS gmp
-                                WHERE av.fecha_hora 
-                                                BETWEEN '$fecha_desde' AND '$fecha_hasta'
-                                                AND au.id_venta = av.id_venta 
-                                                AND gmp.id_gmedio_pago = av.id_gmedio_pago 
-                                                AND gmp.id_medio_pago = '$medio'"); 
+            echo "Ejecuta Esto";
+            $res = $baseDatos->query("SELECT * FROM `art_venta` AS av, `art_unico` as au, `art_gmedio_pago` AS gmp
+                WHERE (av.fecha_hora BETWEEN '$fecha_desde' AND '$fecha_hasta')
+                AND (au.id_venta = av.id_venta AND gmp.id_gmedio_pago = av.id_gmedio_pago 
+                AND gmp.id_medio_pago = $medio)"); 
         }
 
         if ($medio == 0 && $local != 0) {
-            # code...
-             
+              
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio_pago` AS vm, `art_gmedio_pago` AS gmp
                                 WHERE av.fecha_hora 
@@ -89,15 +86,23 @@ class reporte {
         }
 
         if ($medio != 0 && $local != 0) {
+            echo "aca";
+            echo $fecha_desde;
+            echo "&&";
+            echo $fecha_hasta;
+            echo "&&";
+            echo $medio;
+            echo "&&";
+            echo $local;
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio_pago` AS vm, `art_gmedio_pago` AS gmp
                                 WHERE av.fecha_hora 
                                                 BETWEEN '$fecha_desde' AND '$fecha_hasta'
                                                 AND au.id_venta = av.id_venta 
                                                 AND gmp.id_gmedio_pago = av.id_gmedio_pago 
-                                                AND gmp.id_medio_pago = '$medio'
+                                                AND gmp.id_medio_pago = $medio
                                                 AND ll.id_lote_local = au.id_lote_local 
-                                                AND ll.id_local = '$local'"); 
+                                                AND ll.id_local = $local"); 
         }
 
             
@@ -105,12 +110,12 @@ class reporte {
         //printf("Errormessage: %s\n", $baseDatos->error);
        
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-       
+         
         if (count($filas) != 0) {
             $art_unico = array();
             //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
-               
+              
                 $art_unico[] = art_unico::generar_unico($valor['id_unico']);
             }
             return $art_unico;
