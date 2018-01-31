@@ -448,20 +448,7 @@ class Articulo_Controller{
             $id_empleado_venta_local_art = $_GET['id_local'];
             $_SESSION['usuario']->setLocal_Actual($id_empleado_venta_local_art);
             $id_usuario_oo = $_SESSION['usuario']->getId_user();
-            /*
-        [seconds] => 40
-        [minutes] => 58
-        [hours]   => 21
-        [mday]    => 17
-        [wday]    => 2
-        [mon]     => 6
-        [year]    => 2003
-        [yday]    => 167
-        [weekday] => Tuesday
-        [month]   => June
-        [0]       => 1055901520
-        $hoy = getdate();
-        */
+
             $hoy = getdate();
             $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
             //Tomar asistencia
@@ -496,7 +483,7 @@ class Articulo_Controller{
                     
                 }
                 
-               
+
                 $id_usuario_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
                 
                 $tpl = new TemplatePower("template/seccion_operador_articulos.html");
@@ -2610,17 +2597,30 @@ class Articulo_Controller{
         
 
         public static function vender(){
+            $es_admin = false;
+            if (isset($_GET['id_local'])) {
+                $id_local_oper = $_GET['id_local'];
+            }else{
+                $id_local_oper = false;
+            }
+            
+
             if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+                }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+                //return Ingreso_Controller::salir();
+            }
                 $tpl = new TemplatePower("template/vender.html");
                 $tpl->prepare();
+                usuario::obtener_lote_us($id_usuario);
                 if (isset($_SESSION["lotes"])) {
                     $tpl->newBlock("buscador_visible");
                     $tpl->newBlock("con_articulos_lista");
-                    if (Ingreso_Controller::es_admin()) {
-                        $id_usuario = $_SESSION["usuario"]->getId_user();
-                    }else{
-                     $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
-                    }
+                    
                     $medio_pago = us_medio_pago::obtener($id_usuario);
                     if (count($medio_pago) != 0) {
                         $tpl->newBlock("con_medios_pagos");
@@ -2692,30 +2692,47 @@ class Articulo_Controller{
                     if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])) {
                         $tpl->newBlock("con_locales");
                         foreach ($_SESSION['locales'] as $key => $value) {
-                            $tpl->newBlock("locales_");
-                            $tpl->assign("id_local", $value->getId_local());
-                            //if (count($_SESSION['locales']) == 1) {
-                            //    $tpl->assign("selected", 'selected');
-                            //}
+                            if ($id_local_oper) {
+                                $id_local_ = $value->getId_local();
+                                if ($id_local_ == $id_local_oper) {
+                                    $tpl->newBlock("locales_");
+                                    $tpl->assign("id_local", $value->getId_local());
+                                    $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+                                    $tpl->assign("selected", 'selected');
+                                }
+                            }else{
+                                $tpl->newBlock("locales_");
+                                $tpl->assign("id_local", $value->getId_local());
+                                //if (count($_SESSION['locales']) == 1) {
+                                //    $tpl->assign("selected", 'selected');
+                                //}
 
-                            $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+                                $tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+                            }
+                            
                         }     
                     }
                     else{
                         $tpl->newBlock("sin_locales");
                     }
                 }else{
+
                     $tpl->newBlock("sin_articulos_lista");   
                 }
-            }
-            else{ 
-                return Ingreso_Controller::salir();
-            }
+            
             return $tpl->getOutputContent();
         }
 
         public static function cargar_art_venta($DatosAjax){
             if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+                //return Ingreso_Controller::salir();
+            }
 
                 $Datos = $DatosAjax;
                 //require_once 'controladores/articulo_.php';
@@ -2729,17 +2746,21 @@ class Articulo_Controller{
                     //echo "Mal";
                 }
 
-            }
-            else{
-               
-                return Ingreso_Controller::salir();
-            }
+             
 
             //return $tpl->getOutputContent();
         }
         
         public static function facturacion_input($id_lote){
             if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+                //return Ingreso_Controller::salir();
+            }
 
                 
                 //require_once 'controladores/articulo_.php';
@@ -2754,20 +2775,23 @@ class Articulo_Controller{
                 }else{
                     //echo "Mal";
                 }
-
-            }
-            else{
-               
-                return Ingreso_Controller::salir();
-            }
+ 
 
             //return $tpl->getOutputContent();
         }
 
         public static function facturacion_finalizar($total,$medios_pago,$articulos,$cuotas,$id_local){
             if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+                //return Ingreso_Controller::salir();
+            }
                 $lote_local_array = array();
-
+                 
                 foreach ($articulos as $key => $value) {
                     $id = $value['id_lote'];
                     $cantidad = $value['cantidad'];
@@ -2824,12 +2848,8 @@ class Articulo_Controller{
                         break;
                     }
                 }
-
                 $error_gunico = false;
                 $id_gunico_next = art_gunico::ultimo_id();
-                //print_r("ComienzoArray") ;
-                //print_r($lote_local_array);
-                //print_r("FINARRAY") ;
                 foreach ($lote_local_array as $key3 => $value3) {
                     $ok = art_gunico::alta($id_gunico_next,$value3['id_lote_local'],$value3['rg_detalle'],$value3['cantidad']);
                     if ($ok) {
@@ -2889,10 +2909,7 @@ class Articulo_Controller{
                     }
                     return $Respuesta;
                 }
-            }
-            else{  
-                return Ingreso_Controller::salir();
-            }
+            
             //return $tpl->getOutputContent();
         }
 

@@ -84,6 +84,11 @@ class Ingreso_Controller{
 			$tpl->newBlock("operador"); 
 			$tpl->assign("usuario", $_SESSION["usuario"]->getUsuario());
 			$tpl->assign("select_menu", $active);
+			//Obtener Admin
+			$id_jefe = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+			$ot_cl = ot_cliente::generar($id_jefe);
+        	$nombre_cliente = $ot_cl->getNombre();
+			$tpl->assign("nombre_cliente", $nombre_cliente);
 		}
 		else{
 			$tpl->newBlock("fuera");    
@@ -130,6 +135,10 @@ class Ingreso_Controller{
                     //$user_admin = usuario::generar_usuario($id_usuario_jefe);
                     //$_SESSION['usuario']::obtener_locales($user_admin);
                     //usuario::obtener_lote_us($user_admin->getId_user());
+
+                    //return Articulo_Controller::vender();
+
+                     
 					return Ingreso_Controller::menu_operador();
 				}
 				else{
@@ -280,11 +289,11 @@ class Ingreso_Controller{
 			$tpl->newBlock("con_sucursales");
 			foreach ($locales as $key => $value) {
 				//tenes que recorrer el array de lcoales y omstrar la informatcion asi lo pueda eleguir.
-				
-				$zona = mp_zona::obtener_zona__explicita_2($value["id_zona"]);
-				$local = us_local::obtener_empleados_local($value["id_local"]);
-				$locales_info_id = art_local::obtener_id_local($zona["id_zona"]);
-				$local_ok = art_local::generar_local_2($locales_info_id);
+				 
+				//$zona = mp_zona::obtener_zona__explicita_2($value["id_zona"]);
+				//$local = us_local::obtener_empleados_local($value["id_local"]);
+				//$locales_info_id = art_local::obtener_id_local($zona["id_zona"]);
+				$local_ok = art_local::generar_local_2($value["id_local"]);
 				
 				$tpl->newBlock("emp_sucursales");
 				

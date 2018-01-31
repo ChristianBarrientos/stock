@@ -68,3 +68,8 @@ ALTER TABLE art_gmedio_pago add rg_detalle VARCHAR(150) NOT NULL;
 
 //30/01/2018
 ALTER TABLE art_gunico add cantidad INTEGER  NOT NULL;
+
+//31/01/2018
+AGREGADO EN CASSARO CHOPP
+ALTER TABLE us_sueldos add aguinaldo BOOLEAN  NOT NULL;
+ALTER TABLE us_sl_liquidacion add fecha_hasta DATETIME  NOT NULL;

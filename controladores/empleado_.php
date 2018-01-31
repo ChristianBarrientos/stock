@@ -200,11 +200,11 @@ class Empleado_Controller{
                     $okok = us_gastos::alta($id_jefe,$id_us_ggs);
 
                 }else{
-                    
+                  
                     $us_ggs = $us_gastos->getId_us_ggs();
 
                     foreach ($us_ggs as $key => $value) {
-                        # code...
+                   
                         $gasto = $value->getId_gasto();
                         $nombregs = $gasto->getNombre();
                         if (strcmp($nombregs, "Sueldos" ) == 0) {
@@ -221,7 +221,7 @@ class Empleado_Controller{
                     }
                     //Preguntar si existe un gasto con el nombre de Sueldos
                     if ($id_gasto_sueldos != null) {
-                        # code...
+                        
                         //Agregar Gasto al grupo
 
                         $hoy = getdate();
@@ -230,15 +230,6 @@ class Empleado_Controller{
                         
                         $id_ggs = $id_gasto_sueldos->getId_ggs()->getId_ggs();
                         $okok = gs_grupo::agrega($id_ggs,$id_gasto_unico);
-                       
-                        if ($okok) {
-                            # code...
-                            echo "Bien";
-                        }else{
-                            echo "Mal";
-                        }
-
-
 
                     }else{
                         $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
@@ -267,10 +258,15 @@ class Empleado_Controller{
 
                 if ($okok && $okuser) {
                     //Agregar gasto unico a us_gmv
+                    
+
                     $id_gmv = us_gmv::alta($id_gasto_unico);
+                
                     //Agregar gmv a us_sueldo
                     if ($aguinaldo == 1 OR $aguinaldo == 0) {
+
                         $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo,$aguinaldo);
+                        
                     }else{
                         return Ingreso_Controller::salir();
                     }
@@ -414,11 +410,19 @@ class Empleado_Controller{
 
                         //obtener sueldo
                         $us_sueldos = us_sueldos::obtener($id_usuario);
-                    
-                        $sueldo_base = $us_sueldos->getBasico();
-                  
-                        $aguinaldo = $us_sueldos->getAguinaldo();
-                        echo $aguinaldo;
+                         
+                        if ($us_sueldos) {
+                            
+                            $sueldo_base = $us_sueldos[0]->getBasico();
+                         
+                            $aguinaldo = $us_sueldos[0]->getAguinaldo();
+                        }else{
+                            
+                            $aguinaldo = false;
+                            $sueldo_base = 0;
+                        }
+                       
+                       
 
                         $tpl->newBlock("form");
                         $tpl->assign("id_empleado", $id_usuario);
@@ -675,7 +679,7 @@ class Empleado_Controller{
         if ($ok_up) {
             //Update en us sueldos
                 $us_sueldos = us_sueldos::obtener($id_usuario_empleado);
-                $id_sueldo = $us_sueldos->getId();
+                $id_sueldo = $us_sueldos[0]->getId();
                
                 $okok = us_sueldos::update($id_sueldo,'basico',$sueldo_base);
                 if ($okok) {
@@ -685,7 +689,7 @@ class Empleado_Controller{
 
                 if ($okok) {
                     //Actualizacion de Gastos
-                    $id_gmv = $us_sueldos->getId_gmv();
+                    $id_gmv = $us_sueldos[0]->getId_gmv();
                     $gmv = $id_gmv->getId_gs_mv(); 
                     $gs_uncio_habilitados = array();
                     foreach ($gmv as $key => $value) {

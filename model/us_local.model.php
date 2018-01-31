@@ -33,10 +33,10 @@ class us_local {
         }
     }
 
-    public static function obtener_tabla_us_local_operador($id_zona){
+    public static function obtener_tabla_us_local_operador($id_local){
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_zona = '$id_zona'");  
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_local = '$id_local'");  
 
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {

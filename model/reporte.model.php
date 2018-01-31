@@ -64,8 +64,7 @@ class reporte {
                                                 AND gmp.id_gmedio_pago = av.id_gmedio_pago  )"); //LIMIT 30
         }
         if ($medio != 0 && $local == 0) {
-            
-            echo "Ejecuta Esto";
+
             $res = $baseDatos->query("SELECT * FROM `art_venta` AS av, `art_unico` as au, `art_gmedio_pago` AS gmp
                 WHERE (av.fecha_hora BETWEEN '$fecha_desde' AND '$fecha_hasta')
                 AND (au.id_venta = av.id_venta AND gmp.id_gmedio_pago = av.id_gmedio_pago 
@@ -86,14 +85,6 @@ class reporte {
         }
 
         if ($medio != 0 && $local != 0) {
-            echo "aca";
-            echo $fecha_desde;
-            echo "&&";
-            echo $fecha_hasta;
-            echo "&&";
-            echo $medio;
-            echo "&&";
-            echo $local;
             $res = $baseDatos->query("SELECT * 
                                 FROM `art_venta` AS av, `art_unico` as au, `art_lote_local` as ll, `art_venta_medio_pago` AS vm, `art_gmedio_pago` AS gmp
                                 WHERE av.fecha_hora 

@@ -258,13 +258,10 @@ class usuario {
             $lotes_us = array();
             $lote_local = array();
             
-            //$usuario_prvd = array(0);
             foreach ($filas as $clave => $valor) {
                 $lotes_us[] = art_lote::generar_lote($valor['id_lote']);  
                 $lote_local[] = art_lote_local::generar_lote_local($valor['id_lote']); 
-            }
-
-            //$res_fil['id_zona'];    
+            }   
             $_SESSION["lote_local"] = $lote_local;
             $_SESSION["lotes"] = $lotes_us;
             return true;
@@ -277,42 +274,42 @@ class usuario {
 
     public static function obtener_jefe($id_usuario_oper){
         global $baseDatos;
-
-        $res = $baseDatos->query("SELECT `id_usuarios_local`, `id_usuarios`, `id_zona` FROM `us_local` WHERE id_usuarios = $id_usuario_oper ");    
+        $res = $baseDatos->query("SELECT `id_usuarios_local`, `id_usuarios`, `id_local` FROM `us_local` WHERE id_usuarios = $id_usuario_oper ");    
         $filas = $res->fetch_all(MYSQLI_ASSOC);
-        
         if (count($filas) != 0){
-            
-            
-            
-            //$usuario_prvd = array(0);
-            
             $bandera = false;
             foreach ($filas as $clave => $valor) {
-                $local = art_local::generar_local($valor['id_zona']);
+                //$local = art_local::generar_local($valor['id_zona']);
                  
-                $usuarios_por_zona_us_locales = us_local::obtener_tabla_us_local_operador($valor['id_zona']);
+                $usuarios_por_zona_us_locales = us_local::obtener_empleados_local($valor['id_local']);
 
-                foreach ($usuarios_por_zona_us_locales as $key2 => $value2) {
+                 
+                if (count($usuarios_por_zona_us_locales) > 1) {
+                    foreach ($usuarios_por_zona_us_locales as $key2 => $value2) {
+                      
+                        $user  = usuario::generar_usuario($value2['id_usuarios']);  
+                        if (strcmp($user->getAcceso(), "ADMIN" ) == 0){
+                            $id_admin = $user->getId_user();
+                            $bandera = true;
+                            break;
+                        }
+                    }
+                }else{
                     $user  = usuario::generar_usuario($value2['id_usuarios']);  
-
                     if (strcmp($user->getAcceso(), "ADMIN" ) == 0){
                         $id_admin = $user->getId_user();
                         $bandera = true;
                         break;
                     }
                 }
+                
                 if ($bandera == true) {
-                    # code...
                     break;
                 }
-                    
-
             }
             return $id_admin;
         }
         else{
-           
             return false;
         }
     }

@@ -83,12 +83,13 @@ $(document).ready(function()
 
     $('#btn_vender').click(function(){ 
       //typeof venta_.local !== 'undefined' ||
+      
+      repaso_general();
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
         //console.log(venta_);
-        console.log(venta_);
-        repaso_general();
         
+        console.log(venta_);
         venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
         
         let Datos = new FormData();
@@ -629,8 +630,13 @@ function clear_full() {
 
 function repaso_general(){
   //una_vez();
-  cantidad_cuotas_act();
+  console.log("Local Seleciona");
   local_seleciona();
+  console.log("LCantidad Cuotas");
+  cantidad_cuotas_act();
+  console.log("Calculo Total");
   calculo_total();
+  console.log("Fin Repaso");
+
 }
 

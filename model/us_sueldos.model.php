@@ -85,11 +85,11 @@ class us_sueldos {
        
     }
 
-    public static function obtener(){
+    public static function obtener($id_user){
         //obtener empleados por local
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM `us_sueldos`");  
+        $res = $baseDatos->query("SELECT * FROM `us_sueldos` WHERE id_usuario = $id_user ");  
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         if (count($filas) != 0) {
             $us_sueldos = array();
@@ -103,6 +103,7 @@ class us_sueldos {
             return $us_sueldos;
         }
         else{
+
             return false;
         }
        
