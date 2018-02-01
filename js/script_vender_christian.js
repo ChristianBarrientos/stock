@@ -61,12 +61,12 @@ $(document).ready(function()
           var code = (e.keyCode ? e.keyCode : e.which);
           
           if(code==13){
-            var delayInMilliseconds = 1000; //1 second
-
-            setTimeout(function() {
-              let art;
-              console.log("EnterKey");
-              art_obtener();
+            //var delayInMilliseconds = 100; //1 second
+            let art;
+            console.log("EnterKey2");
+            art_obtener();
+            //setTimeout(function() {
+              
               //articulos = articulos.unique();
               
               /*out = art.split(',');
@@ -86,7 +86,7 @@ $(document).ready(function()
                 agregar_fila(params,out,articulo_nombre);
                 calculo_total();
               }*/
-            }, delayInMilliseconds);
+            //}, delayInMilliseconds);
             
             
 
