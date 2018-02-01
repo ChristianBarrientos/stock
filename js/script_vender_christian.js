@@ -93,7 +93,7 @@ $(document).ready(function()
           }else{
             if(code==32){
 
-              console.log("Aca");
+              
               art_obtener();
               calculo_total();
             }else{
