@@ -75,6 +75,7 @@ ALTER TABLE us_sueldos add aguinaldo BOOLEAN  NOT NULL;
 ALTER TABLE us_sl_liquidacion add fecha_hasta DATETIME  NOT NULL;
 
 //01/0/2018
+AGREGADO EN MOTOMATCH
 
 DROP TABLE IF EXISTS art_unico, art_venta;
 

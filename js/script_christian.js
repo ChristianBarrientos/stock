@@ -936,6 +936,30 @@ function enviar_datos_venta(){
     $("#precio_final_art_venta").val(Valor_Total_Pago);
 }
 
+function calculo_ganancia(){
+    console.log("Aca");
+    let pf = parseFloat($("#art_precio_final").val());
+    let pc = parseFloat($("#art_precio_base").val());
+    var moneda = String($("#select_art_moneda option:selected").html());
+    let pm_aux = moneda.replace(/^[a-zA-Z\s]*/,"");
+    let pm = parseFloat(pm_aux.replace(/\(|\)/g,""));
+    let im = 0;
+    if (pf != null && pc != null && pm != null) {
+
+        im = (pf/pc) / pm;
+        
+        $("#art_ganancia").val(im.toFixed(2));
+        
+
+
+    }else{
+        console.log("No se puede realizar el calculo.");
+    }
+
+    $("#total_pagar").text("Pesos Argentinos:$" + pf.toFixed(2));
+    $("#valor_calculado_ganancia").text("Pesos Argentinos: " + pf.toFixed(2));
+}
+
 
  
 
