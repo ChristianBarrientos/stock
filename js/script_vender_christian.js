@@ -57,29 +57,59 @@ $(document).ready(function()
 		});*/ 
 
     $("#CajaBusqueda").keypress(function(e) {
+          //busqueda_auto();
           var code = (e.keyCode ? e.keyCode : e.which);
+          
           if(code==13){
-            let art;
-            art = art_obtener();
-            //articulos = articulos.unique();
-            
-            out = art.split(',');
-                  //console.log(out);
-            articulo_nombre = out[0]+','+out[1]+','+out[2];
-            var params = {
-              lote: out[3]
-            }; 
-            agregar_fila(params,out,articulo_nombre);
-            calculo_total();
+            var delayInMilliseconds = 1000; //1 second
 
+            setTimeout(function() {
+              let art;
+              console.log("EnterKey");
+              art_obtener();
+              //articulos = articulos.unique();
+              
+              /*out = art.split(',');
+                    //console.log(out);
+              articulo_nombre = out[0]+','+out[1]+','+out[2];
+              var params = {
+                lote: out[3]
+              }; 
+              console.log(params);
+              console.log(params.lote);
+              if (params.lote == null || params == null) {
+                console.log("EntroIF");
+              }else{
+                console.log("EntroELSE");
+                console.log(params);
+                console.log(params.lote);
+                agregar_fila(params,out,articulo_nombre);
+                calculo_total();
+              }*/
+            }, delayInMilliseconds);
+            
+            
+
+          }else{
+            if(code==32){
+
+              console.log("Aca");
+              art_obtener();
+              calculo_total();
+            }else{
+              console.log("Else");
+              //alert("Pulsaste la tecla con código: "+e.which);
+            }
           }
+
         });
 
-    	$("#CajaBusqueda").keyup(function(){
+    	/*$("#CajaBusqueda").keyup(function(){
+        console.log("Aca");
     		art_obtener();
         calculo_total();
             
-  		});
+  		});*/
 
     $('#btn_vender').click(function(){ 
       //typeof venta_.local !== 'undefined' ||
@@ -123,6 +153,8 @@ $(document).ready(function()
 
 
           }else{
+            console.log(valores);
+
             console.log("Error")
             alert("ERROR! No se pudo generar la venta con exito. Revise que los datos ingresados esten completos.");
           }
@@ -209,9 +241,9 @@ function actualiza_cantidad(input){
 function borrar_fila(input){
 
   var oID = $(input).attr("id");
-  console.log($(input).val());
+  //console.log($(input).val());
   //$(input).val(1);
-  console.log($(input).val());
+  //console.log($(input).val());
 
   id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
   let cantidad = Ventas[id_tr].cantidad;
@@ -269,13 +301,23 @@ function borrar_fila(input){
 }
 
 function art_obtener(){
-   
+  let cb = false;
+  //console.log("art_obtener");
   let Busqueda = $("#CajaBusqueda").val();
-
+  if (!isNaN(Busqueda) || (Busqueda.indexOf("MOTOMATCH") > -1)) {
+    console.log("Solo Numeros");
+    cb = true;
+  }else{
+    console.log("ELSE");
+    
+  }
+  //console.log(Busqueda);
+  //console.log("Finart_obtener");
   let Datos = new FormData();
 
   if (Busqueda.length >= 2 && (Busqueda != '' || Busqueda != null)) {
     //alert(Busqueda);
+    //console.log("DentroDelIF");
     var dataList = document.querySelector('#json-art'),
     input = document.querySelector('#art');
                 
@@ -290,6 +332,7 @@ function art_obtener(){
     success: function(Respuesta){ 
     //var valores = JSON.parse(JSON.stringify(Respuesta));
     //var valores = JSON.stringify(Respuesta);
+    //console.log(Respuesta);
     var valores = JSON.parse(Respuesta);
     //var valores = Respuesta;
     //console.log(valores);
@@ -329,16 +372,34 @@ function art_obtener(){
 
         } 
       }
-
-      busqueda_auto();
-                    
+      if (cb) {
+        //console.log("CB");
+        //console.log(articulos[0]);
+        out = articulos[0].split(',');
+        articulo_nombre = articulos[0];
+        var params = {
+          lote: out[3]
+        }; 
+        //console.log(params);
+        //console.log(params.lote);
+        $("#Sinresultados").html(' ');
+        //console.log("LlamaFuncionAgregarFila");
+        agregar_fila(params,out,articulo_nombre);
+        articulos = [];
+      }else{
+        busqueda_auto();
+      }
+      
+             
     }else{
-     
+      console.log("SinCoincidencias");
       $("#Sinresultados").html('Sin Coincidencias');
     }          
             }
           });
-        } 
+    }else{
+      console.log("EntroAlElse");
+    }
         
       return final3;
       }
@@ -346,6 +407,7 @@ function art_obtener(){
 function busqueda_auto(){
   //console.log(articulos);
   //console.log("BusquedaAuto");
+
   $("#CajaBusqueda").autocomplete({
     source: articulos,
     select: function (event, item) {
@@ -356,7 +418,10 @@ function busqueda_auto(){
       var params = {
         lote: out[3]
       }; 
+      //console.log(params);
+      //console.log(params.lote);
       $("#Sinresultados").html(' ');
+      //console.log("LlamaFuncionAgregarFila");
       agregar_fila(params,out,articulo_nombre);
       
     }
@@ -364,6 +429,7 @@ function busqueda_auto(){
 }
 
 function agregar_fila(params,out,articulo_nombre){
+  //console.log("AgregarFila");
   $.get("template/venta_/ajax_venta2.php", params, function (response) {  
         let bandera = true;
         if (Ventas.length != 0) {
@@ -383,6 +449,7 @@ function agregar_fila(params,out,articulo_nombre){
           }
         }
         if(bandera){
+          //console.log(response);
           var json = JSON.parse(response);
           if (json.status == 'ok'){
             let costo = json.result.precio_base;

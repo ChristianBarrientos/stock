@@ -86,15 +86,47 @@ class articulo {
         /*$res = $baseDatos->query("SELECT lote.id_lote,tipo.nombre
                                 FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto
                                 WHERE tipo.nombre LIKE '%".$nombre_art."%' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '%".$nombre_art."%' ");  */
-                                 
-        $Like = "%".$nombre_art."%";
-        /*$res = $baseDatos->query("SELECT lote.id_lote, art.nombre AS Art,marca.nombre AS Marca,tipo.nombre AS Tipo, lote.importe , lote.precio_base FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_marca as marca, art_articulo as art WHERE tipo.nombre LIKE '$Like' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '$Like'"); */
+
+        if (Ingreso_Controller::es_admin()) {
+            $id_usuario =  $_SESSION["usuario"]->getId_user();
+        }else{
+            $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+        }
+        $ot_cl = ot_cliente::generar($id_usuario);
+        $nombre_cliente = $ot_cl->getNombre();
+
+        $pos = strpos($nombre_art, $nombre_cliente);
+        $bandera = false;
+        if (is_numeric($nombre_art)) {
+            $bandera = false;
+        }else{
+            if ($pos === false) {
+                $bandera = true;
+            }else{
+                $bandera = false;
+            }
+        }
+         
+            //$bandera
+        if ($bandera) {
+             
         
-        $res = $baseDatos->query("
-            SELECT lote.id_lote ,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca 
-            FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca 
-            WHERE ((tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') OR (lote.codigo_barras LIKE '$Like')) AND (tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca)
-            ");
+            $Like = "%".$nombre_art."%";
+            /*$res = $baseDatos->query("SELECT lote.id_lote, art.nombre AS Art,marca.nombre AS Marca,tipo.nombre AS Tipo, lote.importe , lote.precio_base FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_marca as marca, art_articulo as art WHERE tipo.nombre LIKE '$Like' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '$Like'"); */
+            
+            $res = $baseDatos->query("
+                SELECT lote.id_lote ,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca 
+                FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca 
+                WHERE ((tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') OR (lote.codigo_barras LIKE '$Like')) AND (tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca)
+                ");
+        }else{
+             
+            $res = $baseDatos->query("
+                SELECT lote.id_lote ,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca 
+                FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca 
+                WHERE (lote.codigo_barras = '$nombre_art') AND (tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca)
+                ");
+        }
 
         /*$res = $baseDatos->query("SELECT DISTINCT lote.id_lote,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca, lote.importe , lote.precio_base, moneda.valor AS Moneda FROM art_moneda AS moneda, art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca WHERE (tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca AND moneda.id_moneda = lote.id_moneda OR lote.codigo_barras LIKE '$Like'");*/
 
