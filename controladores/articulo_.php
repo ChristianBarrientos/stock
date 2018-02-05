@@ -794,7 +794,8 @@ class Articulo_Controller{
                 }
 
                 $codigo_generado = $nombre_cliente.$numero_;
-
+                $codigo_generado = str_replace(' ','',$codigo_generado);
+                
                 $tpl->assign("art_codigo_", $codigo_generado);
                 $tpl->assign("art_codigo", $codigo_generado);
 
@@ -1178,6 +1179,7 @@ class Articulo_Controller{
             }
 
         }
+        $codigo_barras = str_replace(' ','',$codigo_barras);
 
         $nombre_art_general_generado = articulo::generar_articulo($id_articulo);
         $nombre_art_marca_generado = art_marca::generar_marca($id_marca);

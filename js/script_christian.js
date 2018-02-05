@@ -960,6 +960,21 @@ function calculo_ganancia(){
     $("#valor_calculado_ganancia").text("Pesos Argentinos: " + pf.toFixed(2));
 }
 
+/*String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
+
+function elimina_espacios(){
+     
+    let cb = $("#art_codigo_barras").val();
+    if (cb.trim().length == 0) {
+         alert('Campo vacio');
+    }
+}
+
+function desabilita_input(this){
+    //var input = document.getElementById('input');
+    this.disabled = true;
+}*/
+
 
  
 
