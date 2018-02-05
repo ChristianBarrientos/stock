@@ -37,6 +37,8 @@ $( "#cantidad_cuotas" ).prop( "disabled", true );
 
 $(document).ready(function()
     {   
+      foco_cajabusqueda();
+
       $('#div_carga')
           .hide()
           .ajaxStart(function() {
@@ -90,18 +92,18 @@ $(document).ready(function()
             
             
 
-          }else{
-            if(code==32){
+          }/*else{
+            if(code== 40){
 
-              
+              console.log("TeclaParaAbajo");
               art_obtener();
               calculo_total();
             }else{
               console.log("Else");
               //alert("Pulsaste la tecla con código: "+e.which);
             }
-          }
-
+          }*/
+          foco_cajabusqueda();
         });
 
     	/*$("#CajaBusqueda").keyup(function(){
@@ -141,9 +143,13 @@ $(document).ready(function()
           //var valores = JSON.parse(JSON.stringify(response));
           
           var valores = JSON.parse(response);
-           
-
+          
+          //console.log("Response"); 
+          //console.log(response);
+          //console.log("FinResponse"); 
+          //console.log("Valores"); 
           //console.log(valores);
+          //console.log("FinResponse"); 
 
           if (valores.status == 'ok') {
             console.log("Vendido");
@@ -191,6 +197,7 @@ $(document).ready(function()
         alert("Faltan Datos por Completar!");
       }
     });
+    foco_cajabusqueda();
 	});	
 
 
@@ -692,6 +699,7 @@ function clear_full() {
   final3 = '';
   id_aux = 0;
   una_vez = true;
+  foco_cajabusqueda();
 
 }
 
@@ -704,6 +712,14 @@ function repaso_general(){
   console.log("Calculo Total");
   calculo_total();
   console.log("Fin Repaso");
+  foco_cajabusqueda();
 
+}
+
+function foco_cajabusqueda(){
+  if ( $("#CajaBusqueda").length ) {
+    document.getElementById("CajaBusqueda").focus();
+  }
+  
 }
 
