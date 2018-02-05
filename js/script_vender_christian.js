@@ -316,8 +316,9 @@ function art_obtener(){
   //console.log("art_obtener");
   let Busqueda = $("#CajaBusqueda").val();
   if (!isNaN(Busqueda) || (Busqueda.indexOf("MOTOMATCH") > -1)) {
-    console.log("Solo Numeros");
+    console.log("Solo Numeros CB");
     cb = true;
+    Busqueda = Busqueda.replace(" ","");
   }else{
     console.log("ELSE");
     
