@@ -12,3 +12,5 @@
 		echo json_encode($Respuesta);
 			
 	}
+
+?>
