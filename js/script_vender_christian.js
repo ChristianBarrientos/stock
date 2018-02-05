@@ -60,6 +60,8 @@ $(document).ready(function()
 
     $("#CajaBusqueda").keypress(function(e) {
           //busqueda_auto();
+          $(".tap2").show();
+          $(".tap1").show();
           var code = (e.keyCode ? e.keyCode : e.which);
           
           if(code==13){
@@ -115,7 +117,8 @@ $(document).ready(function()
 
     $('#btn_vender').click(function(){ 
       //typeof venta_.local !== 'undefined' ||
-      
+      $(".tap2").show();
+      $(".tap1").show();
       repaso_general();
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
         //alert("Venderas");
@@ -141,7 +144,8 @@ $(document).ready(function()
           //console.log(response['status']);
           //console.log("Despues");
           //var valores = JSON.parse(JSON.stringify(response));
-          
+          $(".tap2").hide();
+          $(".tap1").hide();
           var valores = JSON.parse(response);
           
           //console.log("Response"); 
@@ -340,68 +344,74 @@ function art_obtener(){
     //var valores = JSON.parse(JSON.stringify(Respuesta));
     //var valores = JSON.stringify(Respuesta);
     //console.log(Respuesta);
-    var valores = JSON.parse(Respuesta);
-    //var valores = Respuesta;
-    //console.log(valores);
-    //console.log(valores['status']);
+    $(".tap2").hide();
+    $(".tap1").hide();
     
-    if (valores.status == 'ok') {
+
        
-      $("#Sinresultados").html(' ');
-      //console.log(Object.keys(valores.result));
-      //console.log(valores.result);
-      //console.log(valores.result.unique()); 
-      //valores.result = valores.result.unique();
+      var valores = JSON.parse(Respuesta);
+      //var valores = Respuesta;
+      //console.log(valores);
+      //console.log(valores['status']);
       
-      for (var i = 0; i <= valores.result.length; i++) {
-
-        if (typeof valores.result[i] !== 'undefined') {
-          art = valores.result[i].Articulo;
-          marca = ','.concat(valores.result[i].Marca);
-          tipo = ','.concat(valores.result[i].Tipo);
-          art_marca = art.concat(marca);
-          id_lote = valores.result[i].id_lote;
-          precio_final = valores.result[i].precio_base;
-          attr = valores.result[i].attr;
-                                     //moneda = valores.result[i].moneda;
-          let nombre_art = art_marca.concat(tipo);
-          let final = nombre_art.concat(',');
-          let final2 = final.concat(id_lote);
-          let final22 = final2.concat(',');
-          final3 = final22.concat(attr);
-                                     //let final33 = final3.concat(',');
-                                     //let final4 = final33.concat(moneda);
-          articulos.push(final3);
-          articulos = articulos.unique();
-                         //console.log(valores.result[i].id_lote);
-                         //console.log(valores.result[i].importe);
-                         //console.log(valores.result[i].precio_base);
-
-        } 
-      }
-      if (cb) {
-        //console.log("CB");
-        //console.log(articulos[0]);
-        out = articulos[0].split(',');
-        articulo_nombre = articulos[0];
-        var params = {
-          lote: out[3]
-        }; 
-        //console.log(params);
-        //console.log(params.lote);
+      if (valores.status == 'ok') {
+         
         $("#Sinresultados").html(' ');
-        //console.log("LlamaFuncionAgregarFila");
-        agregar_fila(params,out,articulo_nombre);
-        articulos = [];
+        //console.log(Object.keys(valores.result));
+        //console.log(valores.result);
+        //console.log(valores.result.unique()); 
+        //valores.result = valores.result.unique();
+        
+        for (var i = 0; i <= valores.result.length; i++) {
+
+          if (typeof valores.result[i] !== 'undefined') {
+            art = valores.result[i].Articulo;
+            marca = ','.concat(valores.result[i].Marca);
+            tipo = ','.concat(valores.result[i].Tipo);
+            art_marca = art.concat(marca);
+            id_lote = valores.result[i].id_lote;
+            precio_final = valores.result[i].precio_base;
+            attr = valores.result[i].attr;
+                                       //moneda = valores.result[i].moneda;
+            let nombre_art = art_marca.concat(tipo);
+            let final = nombre_art.concat(',');
+            let final2 = final.concat(id_lote);
+            let final22 = final2.concat(',');
+            final3 = final22.concat(attr);
+                                       //let final33 = final3.concat(',');
+                                       //let final4 = final33.concat(moneda);
+            articulos.push(final3);
+            articulos = articulos.unique();
+                           //console.log(valores.result[i].id_lote);
+                           //console.log(valores.result[i].importe);
+                           //console.log(valores.result[i].precio_base);
+
+          } 
+        }
+        if (cb) {
+          //console.log("CB");
+          //console.log(articulos[0]);
+          out = articulos[0].split(',');
+          articulo_nombre = articulos[0];
+          var params = {
+            lote: out[3]
+          }; 
+          //console.log(params);
+          //console.log(params.lote);
+          $("#Sinresultados").html(' ');
+          //console.log("LlamaFuncionAgregarFila");
+          agregar_fila(params,out,articulo_nombre);
+          articulos = [];
+        }else{
+          busqueda_auto();
+        }
+        
+               
       }else{
-        busqueda_auto();
+        console.log("SinCoincidencias");
+        $("#Sinresultados").html('Sin Coincidencias. No se encuentra cargador el articulo: '+Busqueda);
       }
-      
              
-    }else{
-      console.log("SinCoincidencias");
-      $("#Sinresultados").html('Sin Coincidencias');
-    }          
             }
           });
     }else{

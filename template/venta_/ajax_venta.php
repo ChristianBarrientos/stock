@@ -17,7 +17,8 @@ class Ajax{
 		$Respuesta = Articulo_Controller::cargar_art_venta($Datos);
 		  
 		if (count($Respuesta) == 0 OR $Respuesta == '' OR $Respuesta == null) {
-			echo "<h3>Sin Resultados</h3>";
+			//echo "";
+			echo json_encode("<h3>Sin Resultados</h3>");
 		}else{
 		 	//print_r($Respuesta);//
 		 	//echo "<script type='text/javascript'>
