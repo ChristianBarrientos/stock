@@ -402,51 +402,27 @@ class Venta_Controller{
 
     public static function cargar_ventas_antiguas(){
         if (Ingreso_Controller::admin_ok()) {
-            //code
-          
-               
                 $tpl = new TemplatePower("template/cargar_art_ventas_antiguas.html");
                 $tpl->prepare();
                 $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
-                if (isset($_SESSION["lote_local"])) {
-                    
-                    foreach ($_SESSION["lote_local"] as $key => $value) {
-                        # code...
-                        foreach ($value as $key2 => $value2) {
-                            # code...
-                            $tpl->newBlock("art_lote_local");
-                            $art = $value2->getId_lote()->getId_art_conjunto()->getId_articulo()->getNombre();
-                            $marca = $value2->getId_lote()->getId_art_conjunto()->getId_marca()->getNombre();
-                            $tipo = $value2->getId_lote()->getId_art_conjunto()->getId_tipo()->getNombre();
-                            $nombre_lote = $marca.', '.$tipo;
-
-                            $nombre_local = $value2->getId_local()->getNombre();
-                            $tpl->assign("id_lote_local",$value2->getId_lote_local());
-                            $tpl->assign("nombre_lote_local",$nombre_lote.'('.$nombre_local.')');
-                         }
+                if (isset($_SESSION["locales"])) {
+                     
+                    foreach ($_SESSION["locales"] as $key => $value) {
+                        $tpl->newBlock("lista_locales");
+                        $tpl->assign("id_local",$value->getId_local());
+                        $tpl->assign("nombre_local",$value->getNombre());
                     }
                     $medios_pago = art_venta_medio_pago::obtener($_SESSION['usuario']->getId_user());
                     foreach ($medios_pago as $key3 => $value3) {
-                        # code...
                         $tpl->newBlock("art_venta_medio_pago");
                         $tpl->assign("id_medio_pago",$value3->getId());
                         $tpl->assign("nombre_medio_pago",$value3->getNombre() );
-                    }
-                  
-                    //$tpl->assign("id_lote_local", );
-                    //$tpl->assign("nombre_lote_local", );
-                    
-                    
+                    }   
                 }
                 else
                 {
                     $tpl->newBlock("sin_art_lote_local");
                 }
-                
-
-                
-                
-          
         }
         else{
             return Ingreso_Controller::salir();
@@ -460,59 +436,57 @@ class Venta_Controller{
         if (Ingreso_Controller::es_admin()) {
             $bandera = false;
 
-            $lote_local = $_POST['alta_venta_antigua_art_lote'];
-            $monto_venta_antigua = $_POST['monto_venta_antigua'];
             $fecha_venta_antigua = $_POST['fecha_venta_antigua'];
             $medio_pago_venta_antigua = $_POST['medio_pago_venta_antigua'];
+            $local_venta_antigua = $_POST['local_venta_antigua'];
 
+            $art_comprobante = $_POST['art_comprobante'];
+            $art_articulo = $_POST['art_articulo'];
+            $art_total = $_POST['art_total'];
+            $rg_detalle = array();
+            
+            //parse_str($art_comprobante[0], $output_comprobante2);
+            //print_r(key($output_comprobante2));
+
+            for ($i=0; $i < count($art_comprobante); $i++) { 
+                $art_comprobante_val = "$art_comprobante[$i]";
+                $art_articulo_val = "$art_articulo[$i]";
+                $art_total_val = "$art_total[$i]";
+                $local_venta_antigua_val = "$local_venta_antigua";
+                //parse_str($art_comprobante[$i], $output_comprobante);
+                //parse_str($art_articulo[$i], $output_articulo);
+                //parse_str($art_total[$i], $output_total);
+                 
+                //$rg_detalle[] = parse_str($art_comprobante_val).','.parse_str($art_articulo_val).','.parse_str($art_total_val).','.parse_str($local_venta_antigua);
+                $rg_detalle[] = $art_comprobante_val.','.$art_articulo_val.','.$art_total_val.','.$local_venta_antigua_val;
+                //print_r($rg_detalle);
+            }
             $id_usuario = $_SESSION['usuario']->getId_user();
 
+            $medio_pago = art_venta_medio_pago::generar($medio_pago_venta_antigua);
+            $nombre = $medio_pago->getNombre();
+            $des_imp_valor = $medio_pago->getDesImp()->getValor();
+            $des_imp_signo = $medio_pago->getDesImp()->getSigno();
+            $rg_detalle_mp = $nombre.','.'('.$des_imp_signo.' '.$des_imp_valor.')';
+             
 
+            $id_gmedio_pago = art_gmedio_pago::alta_2($medio_pago_venta_antigua,$rg_detalle_mp);
 
-            $counter = 0;
-            
-            $okok = true;
-            foreach ($lote_local as $key => $value) {
-            # code...
-                $id_venta = null;
-                $id_art_unico = null;
+            if ($id_gmedio_pago) {
 
-                $id_venta = art_venta::alta($fecha_venta_antigua[$counter],$id_usuario,$medio_pago_venta_antigua[$counter],$monto_venta_antigua[$counter],null);
+                for ($i=0; $i < count($rg_detalle) ; $i++) { 
+                    $valores = explode (",", $rg_detalle[$i]); 
+                    $total = $valores[2];
 
-                if ($id_venta) {
-               
-                     
-                    $id_art_unico = art_unico::alta_art_unico($value,$id_venta);
-                    if ($id_art_unico) {
-                        # code...
-                       
-                        $obj_lote_loca = art_lote_local::generar_lote_local_id_($value);
-                        $id_lote = $obj_lote_loca->getId_local()->getId_local();
-                        $obj_lote_local = $obj_lote_loca;
-                        
-                        $cantidad_total_art_lote = $obj_lote_local->getId_lote()->getCantidad();
-                        $cantidad_parcial_art_lote_local = $obj_lote_local->getCantidad_parcial();
-
-                        $cantidad_total_ult = (int)$cantidad_total_art_lote - 1;
-                        $cantidad_parcial_ult = (int)$cantidad_parcial_art_lote_local - 1;
-
-
-                        $okokok = art_lote_local::actualiza_($cantidad_total_ult,$cantidad_parcial_ult,$value,$id_lote);
-                        
-                    }else{
-                        echo "MalUnico";
-                        $okok = false;
-                    }
-
+                    $cuotas = '1 x '.$total;
+                    $okok = art_venta::alta($fecha_venta_antigua,$id_usuario,$id_gmedio_pago,$total,$cuotas,'null','null',$rg_detalle[$i]);
+                    
                 }
-                else{
-                    echo "MalVenta";
-                    $okok = false;
-                }
-                $counter = $counter + 1;
-
+                
+            }else{
+                $okok = false;
             }
-            
+
             if ($okok) {
                 $tpl = new TemplatePower("template/exito.html");
                 $tpl->prepare();
@@ -521,6 +495,7 @@ class Venta_Controller{
                 
             }
             else{
+
                 $tpl = new TemplatePower("template/error.html");
                 $tpl->prepare();
             }

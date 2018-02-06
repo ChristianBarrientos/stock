@@ -23,11 +23,7 @@ class Articulo_Controller{
                 
                             
                             foreach ($_SESSION['lotes'] as $key => $value) {
-                            $vueltas = 0;
-                            //foreach ($_SESSION["lote_local"] as $key => $value) {
-                             
-
-                                //foreach ($value as $key2 => $value2) {
+                                $vueltas = 0;
                                 $cantidad = $cantidad + 1;
                                 
 
@@ -40,16 +36,7 @@ class Articulo_Controller{
                                 $nombre_ = str_replace(' ','',$nombre_);
 
                                 $nombre_ = $marca.','.$tipo;
-                                /*$si_arra = $value->getId_gc()->getId_categoria();
-                               
-                                
-                                */
-                                
                                 if (True) {
-                                    # code...
-                                
-                                    
-                                    //Para el modal galery
                                     $tpl->newBlock("modal_galery_fotos");
                                     
                                     $tpl->assign("id_lote",'lode_id_'.$value->getId_lote());

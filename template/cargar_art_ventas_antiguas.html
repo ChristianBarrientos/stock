@@ -1,91 +1,112 @@
+
 <div class="container">
 	
 	  <h2>Ventas</h2>
 	  <h3>Cargar Ventas Antiguas</h3>
  							        
-	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Venta::alta_ventas_antiguas" method="post">
-	
-	   
-	    <h3>Detalles</h3>
-	     <a id="uno_mas_ventaanrigua">Añadir nuevo detalle</a>
+	<form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Venta::alta_ventas_antiguas" method="post"> 
+	<div class="row">
+	    <div class="form-group">
+	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
+	    		<label  for="select_art_general">Fecha (*):</label>
+	    	</div>
+			<div class="col-md-4 col-sm-3 col-xs-12">
+			      	
+  				<div class='input-group date' id='datetimepicker'>
+			        <input  placeholder="AAAA-MM-DD" name="fecha_venta_antigua" type='text' class="form-control" />
+			        <span class="input-group-addon">
+			            <span class="glyphicon glyphicon-calendar"></span>
+			        </span>
+			    </div>
+			    <script type="text/javascript">
+				$(function () {
+				    	
+				    $('#datetimepicker').datetimepicker({
+				        	//
+				    	format: 'YYYY-MM-DD'
+				    });
+				});
+				</script>
+			</div>  
+			       
+		</div>       
+	      
+	</div>
+	<div class="row">
+	    <div class="form-group">
+	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
+	    		<label  for="select_art_general">Medio Pago: (*):</label>
+	    	</div>
+		     
+			<div class="col-md-4 col-sm-3 col-xs-12">
+			      	
+  				<select required name="medio_pago_venta_antigua" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+		      <!-- START BLOCK : art_venta_medio_pago -->
+		        <option value="{id_medio_pago}">{nombre_medio_pago}</option>
+		      <!-- END BLOCK : art_venta_medio_pago -->
+					      
+		    	</select>
+			</div>  
+			       
+		</div>       
+	      
+	</div>
+
+	<div class="row">
+	    <div class="form-group">
+	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
+	    		<label  for="select_art_general">Local: (*):</label>
+	    	</div>
+		    <!--</div>-->
+		     
+			<div class="col-md-4 col-sm-3 col-xs-12">
+			      	
+  				<select required name="local_venta_antigua" id="select_art_tipo" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
+		      <!-- START BLOCK : lista_locales -->
+		        <option value="{id_local}">{nombre_local}</option>
+		      <!-- END BLOCK : lista_locales -->
+					      
+		    	</select>
+			</div>  
+			       
+		</div>       
+	      
+	</div>
+	 
+
+	<h3>Detalles</h3>
+	<a id="uno_mas_ventaanrigua">Añadir nuevo detalle</a>
 	  <div id="supremo">
 	    <div class="form-group" id="div_formulario">
-	     <div class="row " id="bloque_gastos_detalles">
-	
-	     <div class="control-label col-md-1 col-sm-1 col-xs-12">
-	      <label  for="gs_unico_nombre">Articulo:</label>
-	      </div>
-	      
+	    <div class="row " id="bloque_gastos_detalles">
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				     <select required name="alta_venta_antigua_art_lote[]" id="select_art_lote_local" data-live-search="true">
-				      <!-- START BLOCK : art_lote_local -->
-				        <option value="{id_lote_local}">{nombre_lote_local}</option>
-				      <!-- END BLOCK : art_lote_local -->
-
-				      <!-- START BLOCK : sin_art_lote_local -->
-				      <!-- END BLOCK : sin_art_lote_local -->
-				      
-				      </select>
+				    <input required type="text" class="form-control" id="art_comprobante" placeholder="Numero de Comprobante." name="art_comprobante[]">
 				      
 			    </div>
 
 		    </div>
 
-		<div class=" control-label col-md-1  col-sm-1 col-xs-12">
-	      <label  for="gs_unico_valor">Monto:</label>
-	      </div>
-	      
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input type="text" class="form-control" id="gs_unico_valor" placeholder="Valor del Gasto." name="monto_venta_antigua[]">
+				    <input required type="text" class="form-control" id="art_articulo" placeholder="Numero de Articulo." name="art_articulo[]">
 				      
 			    </div>
 
 		    </div>
-		     
-		    <div class="col-md-3 col-sm-3 col-xs-12">
-		    	<div class='input-group date' id='datetimepicker'>
-			            <input  placeholder="AAAA-MM-DD" name="fecha_venta_antigua[]" type='text' class="form-control" />
-			            <span class="input-group-addon">
-			                <span class="glyphicon glyphicon-calendar"></span>
-			            </span>
-			        </div>
-		
+
+		    <div>
+		    	<div class="col-md-3 col-sm-3 col-xs-12">
+				    <input required type="text" class="form-control" id="art_total" placeholder="Total de la Venta." name="art_total[]">
+				      
+			    </div>
+
 		    </div>
-
-		    <script type="text/javascript">
-				    $(function () {
-				    	
-				        $('#datetimepicker').datetimepicker({
-				        	//
-				        	format: 'YYYY-MM-DD HH:MM:SS'
-				        });
-				    });
-				</script>
-
-	    	
-	  
 		    
 		</div>	
 	   
 	
-			<div class="control-label col-md-6 col-sm-6 col-xs-12">
-	      		<label  for="gs_unico_nombre">Medio Pago:</label>
-	      	</div>
-	      
-		    <div>
-		    	<div class="col-md-6 col-sm-6 col-xs-12">
-				     <select required name="medio_pago_venta_antigua[]" id="select_art_tipo" data-live-search="true">
-				      <!-- START BLOCK : art_venta_medio_pago -->
-				        <option value="{id_medio_pago}">{nombre_medio_pago}</option>
-				      <!-- END BLOCK : art_venta_medio_pago -->
-				      
-				      </select>
-				      
-			    </div>
-
-		    </div>
+			
 
 		
 		
@@ -96,7 +117,7 @@
 	    <div class="form-group">
 	    
 	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
-	        	<button type="submit" id ="art_carga_btn" class="btn btn-default">Cargar</button>
+	        	<button id ="art_carga_btn" class="btn btn-default">Cargar</button>
 	      	</div>
 	      <!-- START BLOCK : con_locales_empl --> 
 	    <!-- END BLOCK : con_locales_empl -->    
@@ -105,7 +126,7 @@
   			<strong>Alerta!</strong> {mensaje_alerta}
 		</div>
 	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
-	        	<button disabled="disabled" type="submit" class="btn btn-default">Cargar</button>
+	        	<button disabled="disabled"  class="btn btn-default">Cargar</button>
 	      	</div>
 	    <!-- END BLOCK : sin_locales_empl_2 -->     
 	      

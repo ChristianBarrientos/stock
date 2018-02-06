@@ -28,6 +28,23 @@ class art_gmedio_pago {
         }
     }
     
+
+    public static function alta_2($id_medio_pago,$rg_detalle){
+        global $baseDatos;
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_gmedio_pago = art_gmedio_pago::ultimo_id();
+
+        $sql = "INSERT INTO `art_gmedio_pago`(`id_gmedio_pago`, `id_medio_pago`, `rg_detalle`) VALUES (0,$id_medio_pago,'$rg_detalle')";
+        $res = $baseDatos->query($sql);
+        if ($res) {
+             
+            return $id_gmedio_pago;
+        }else{
+             
+            return false;
+        }
+    }
+
     public static function ultimo_id(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_gmedio_pago'";

@@ -120,3 +120,7 @@ CREATE TABLE  art_unico (
      FOREIGN KEY (id_venta) REFERENCES art_venta(id_venta) ON DELETE NO ACTION ON UPDATE CASCADE,
      KEY (id_unico)
      ) ENGINE=InnoDB;
+
+//Agregado MOTOMATCH 
+
+ALTER TABLE art_venta add rg_detalle VARCHAR(50) NULL;

@@ -9,8 +9,9 @@ class art_venta {
     private $cuotas;
     private $total;
     private $id_cambio;
+    private $rg_detalle;
 
-    public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_gmedio_pago,$total,$cuotas,$id_cambio){
+    public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_gmedio_pago,$total,$cuotas,$id_cambio,$rg_detalle = null){
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
         $this->id_usuario = $id_usuario;
@@ -19,12 +20,13 @@ class art_venta {
         $this->total = $total;
         $this->cuotas = $cuotas;
         $this->id_cambio = $id_cambio;
+        $this->rg_detalle = $rg_detalle;
     }
 
-    public static function alta($fecha_hora,$id_usuario,$id_gmedio_pago,$total,$cuotas,$id_cambio = 'null',$id_promo = 'null'){
+    public static function alta($fecha_hora,$id_usuario,$id_gmedio_pago,$total,$cuotas,$id_cambio = 'null',$id_promo = 'null',$rg_detalle = 'null'){
         global $baseDatos;
         $id_venta = art_venta::ultimo_id();
-        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuario`, `id_promo`, `id_gmedio_pago`, `total`, `cuotas`, `id_cambio`) VALUES (0,'$fecha_hora',$id_usuario,$id_promo,$id_gmedio_pago,$total,'$cuotas',$id_cambio)";
+        $sql = "INSERT INTO `art_venta`(`id_venta`, `fecha_hora`, `id_usuario`, `id_promo`, `id_gmedio_pago`, `total`, `cuotas`, `id_cambio`,`rg_detalle`) VALUES (0,'$fecha_hora',$id_usuario,$id_promo,$id_gmedio_pago,$total,'$cuotas',$id_cambio,'$rg_detalle')";
         $res = $baseDatos->query($sql);
         if ($res) {
             //printf("Errormessage: %s\n", $baseDatos->error);

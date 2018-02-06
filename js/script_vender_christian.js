@@ -311,7 +311,25 @@ function borrar_fila(input){
   calculo_total();
 }
 
+function obtener_lista_articulos(){
+  console.log("Obtener_Articulos");
+  $.ajax({
+    url: "template/venta_/ajax_obt.php",
+    method: "POST",
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(Respuesta){ 
+      console.log(Respuesta);
+   
+               
+    }
+  });
+
+}
+
 function art_obtener(){
+  obtener_lista_articulos();
   let cb = false;
   let Busqueda = $("#CajaBusqueda").val();
   if (!isNaN(Busqueda) || (Busqueda.indexOf("MOTOMATCH") > -1)) {
@@ -340,7 +358,8 @@ function art_obtener(){
       //var valores = Respuesta;
       console.log(valores);
       //console.log(valores['status']);
-      
+      $(".tap2").hide();
+      $(".tap1").hide(); 
       if (valores.status == 'ok') {
          
         $("#Sinresultados").html(' ');
@@ -387,8 +406,7 @@ function art_obtener(){
         console.log("SinCoincidencias");
         $("#Sinresultados").html('Sin Coincidencias. No se encuentra cargador el articulo: '+Busqueda);
       }
-      $(".tap2").hide();
-      $(".tap1").hide();   
+        
              
             }
           });
