@@ -974,7 +974,22 @@ function desabilita_input(this){
     //var input = document.getElementById('input');
     this.disabled = true;
 }*/
+function sumatoria_ventas_antiguas(){
+    console.log("sumatoria_ventas_antiguas");
+    //let pf = parseFloat($("#art_precio_final").val());
+    var nombres_paises = $(".art_total");
+    let total_ = 0;
+    
 
+    for (var i = 0; i <= nombres_paises.length; i++) {
+        console.log(nombres_paises.val());
+        total_ = total_  + parseFloat(nombres_paises.val());
+    }
+
+    console.log(total_);
+
+    //$("#venta_totales").text("" + total_.toFixed(2));
+}
 
  
 

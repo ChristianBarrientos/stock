@@ -81,7 +81,7 @@
 	    <div class="row " id="bloque_gastos_detalles">
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input required type="text" class="form-control" id="art_comprobante" placeholder="Numero de Comprobante." name="art_comprobante[]">
+				    <input required type="number" min="1" class="form-control" id="art_comprobante" placeholder="Numero de Comprobante." name="art_comprobante[]">
 				      
 			    </div>
 
@@ -89,7 +89,7 @@
 
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input required type="text" class="form-control" id="art_articulo" placeholder="Numero de Articulo." name="art_articulo[]">
+				    <input required type="number" min="1" class="form-control" id="art_articulo" placeholder="Numero de Articulo." name="art_articulo[]">
 				      
 			    </div>
 
@@ -97,7 +97,7 @@
 
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
-				    <input required type="text" class="form-control" id="art_total" placeholder="Total de la Venta." name="art_total[]">
+				    <input required  min="1" type="number" class="form-control art_total" id="art_total" placeholder="Total de la Venta." name="art_total[]">
 				      
 			    </div>
 
@@ -105,15 +105,14 @@
 		    
 		</div>	
 	   
-	
-			
-
-		
-		
-		
 	    </div>
 	    <div class="clearfix"></div>
 	</div>
+
+	<!--<div class="clearfix">
+		<h4>Total de Ventas: <span id="venta_totales"></span></h4>
+					
+	</div>-->
 	    <div class="form-group">
 	    
 	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
