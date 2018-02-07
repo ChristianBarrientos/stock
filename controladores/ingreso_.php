@@ -388,9 +388,11 @@ class Ingreso_Controller{
 	public static function reportes (){
 		//Ingreso_Controller::setear_conf();
         $clave_reporte = $_GET['clave_reporte'];
+        //if ($clave_reporte != 12) {
+        	$fecha_desde = $_POST['fecha_desde'];
+        	$fecha_hasta = $_POST['fecha_hasta'];
+        //}
         
-        $fecha_desde = $_POST['fecha_desde'];
-        $fecha_hasta = $_POST['fecha_hasta'];
 
         if (isset($_SESSION["usuario"])){
         	if ($_SESSION["permiso"] != 'ADMIN') {
@@ -472,6 +474,18 @@ class Ingreso_Controller{
         		$sl_fecha_hasta = $_POST['fecha_hasta'];
 
         		$tpl = Ingreso_Controller::registro_gs($gs_tipo,$gs_fecha_desde,$gs_fecha_hasta);
+
+        		break;
+
+        	case 12:
+        		# Imprimir sueldos con detalles
+        		/*$rpm_mes = $_POST['rpm_mes'];
+        		$aux = explode('-', $rpm_mes);
+
+        		$anio = $aux[0];
+        		$mes = $aux[1];*/
+        		 
+        		$tpl = Ingreso_Controller::reporte_por_semana($fecha_desde,$fecha_hasta);
 
         		break;
         	
@@ -624,12 +638,18 @@ public static function registro_sl($fecha_desde,$fecha_hasta){
     	
     }
 
-public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
-    	$respuesta = reporte::reporte_gs($gs_tipo,$fecha_desde,$fecha_hasta);
-    	// 
+public static function obtener_dia($fecha_hasta){
+	$dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+	$dia = $dias[date('N', strtotime($fecha_hasta))];
+	return $dia;
+}
 
+public static function reporte_por_semana($fecha_desde,$fecha_hasta){
+	//$respuesta = reporte::reporte_gs($gs_tipo,$fecha_desde,$fecha_hasta);
+	//Obtener Ingresos por Locales
+	$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
 
-    	ini_set("session.auto_start", 0);
+	ini_set("session.auto_start", 0);
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
 		$hoy = getdate();
@@ -637,7 +657,348 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		$pdf->Ln( 16 );
 		$pdf->SetFont( 'Arial', '', 12 );
 
-		$permiso = $_SESSION['usuario']->setId_Acceso();
+		$permiso = $_SESSION['usuario']->getId_Acceso();
+
+		if (strcmp($permiso, "ADMIN" ) == 0 ) {
+			# code...
+			$id_jefe = $_SESSION['usuario']->getId_user();
+		}else{
+			
+			$id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+		}
+		
+
+		$tocliente = ot_cliente::generar($id_jefe);
+		$nombre_ng = $tocliente->getNombre();
+
+		$nombre_negocio = $nombre_ng."\n";
+
+		
+		$pdf->Write( 6, $nombre_negocio."Reporte Semanal\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n");
+		
+		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+		$pdf->Ln( 12 );
+
+		$pdf->SetDrawColor( 0, 0, 0 );
+		$pdf->Ln( 15 );
+		$pdf->SetTextColor( 0, 0, 0);
+		$pdf->SetFillColor( 255, 255, 255 );
+		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+		
+		// Nombre Columnas
+		$pdf->SetTextColor( 0, 0, 0 );
+		$pdf->SetFillColor( 255, 255, 255 );
+		$pdf->Write( 6, "Ingresos:" );
+		$pdf->Ln( 12 );
+		$columnas = array();
+		$columnas[] = 'Dia';
+		foreach ($_SESSION["locales"] as $key => $value) {
+			$nombre_local = $value->getNombre();
+			$columnas[] = $nombre_local;
+		}
+		 
+
+		for ( $i=0; $i<count($columnas); $i++ ) {
+			if ($i == 0) {
+				$pdf->Cell( 10, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+			 
+			else{
+				$pdf->Cell( 37, 12, $columnas[$i], 1, 0, 'C', true );
+			}
+		   
+		}
+		//Agregando las Filas
+		
+		$respuesta_final = array();
+		$array_aux_ventas = array();
+	 	$precio_recaudacion_ = 0;
+	 	$numero_cont = 1;
+	 	
+
+		foreach ($respuesta as $key => $value) {
+
+			$fecha_venta = $value->getFecha_hora();
+
+			$dia_venta = Ingreso_Controller::obtener_dia($fecha_venta);
+
+			$rg_detalle_ = $value->getRg_detalle();
+			$rg_detalle__aux = explode(',', $rg_detalle_);
+
+			$id_local = $rg_detalle__aux[3];
+
+			$nro_comprobante = $rg_detalle__aux[0];
+
+			$ganancia_venta = $value->getTotal();
+
+			$medio_pago_aux = $value->getId_gmedio_pago()->getId_medio_pago();
+
+			$tipo_medio_pago = $medio_pago_aux[0]->getId_medio_tipo()->getNombre();
+
+			$nombre_medio_pago = $medio_pago_aux[0]->getNombre();
+
+			$precio_recaudacion_ = $precio_recaudacion_ + $ganancia_venta;
+
+			$array_aux_ventas[] = [$fecha_venta,$dia_venta,$id_local,$nro_comprobante,$ganancia_venta,$tipo_medio_pago,$nombre_medio_pago];		
+		}
+
+		$lunes_array = array();
+		$martes_array = array();
+		$miercoles_array = array();
+		$jueves_array = array();
+		$viernes_array = array();
+		$sabado_array = array();
+		$domindo_array = array();
+
+		foreach ($array_aux_ventas as $key2 => $value2) {
+
+			$dia_aux = $value2[1];
+			switch ($dia_aux) {
+				case 'Lunes':
+					$lunes_array[] = $value2;
+					break;
+				case 'Martes':
+					$martes_array[] = $value2;
+					break;
+				case 'Miercoles':
+					$miercoles_array[] = $value2;
+					break;
+				case 'Jueves':
+					$jueves_array[] = $value2;
+					break;
+				case 'Viernes':
+					$viernes_array[] = $value2;
+					break;
+				case 'Sabado':
+					$sabado_array[] = $value2;
+					break;
+				case 'Domingo':
+					$domindo_array[] = $value2;
+					break;
+				
+				default:
+					# code...
+					break;
+			}	
+		}
+
+
+		$total_ventas_array_lunes = array();
+		$venta_total_dia = 0;
+
+		/*echo "Lunes";
+		print_r($lunes_array);
+		echo "Martes";
+		print_r($martes_array);
+		echo "Miercoles";
+		print_r($miercoles_array);
+		echo "Jueves";
+		print_r($jueves_array);
+		echo "Viernes";
+		print_r($viernes_array);
+		echo "Sabado";
+		print_r($sabado_array);
+		echo "Domingo";
+		print_r($domindo_array);*/
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			
+			foreach ($lunes_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+
+			$total_ventas_array_lunes[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['LUN',$total_ventas_array_lunes[0]];
+
+		$total_ventas_array_martes = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			 
+			foreach ($martes_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_martes[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['MAR',$total_ventas_array_martes[0]];
+		$total_ventas_array_miercoles = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			 
+			foreach ($miercoles_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_miercoles[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['MIE',$total_ventas_array_miercoles[0]];
+		$total_ventas_array_jueves = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			
+			foreach ($jueves_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_jueves[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['JUE',$total_ventas_array_jueves[0]];
+		$total_ventas_array_viernes = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			
+			foreach ($viernes_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_viernes[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['VIE',$total_ventas_array_viernes[0]];
+		$total_ventas_array_sabado = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			
+			foreach ($sabado_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_sabado[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['SAB',$total_ventas_array_sabado[0]];
+		$total_ventas_array_domingo = array();
+
+		foreach ($_SESSION["locales"] as $key => $value3) {
+			$id_local_ = $value3->getId_local();
+			
+			foreach ($domingo_array as $key => $value) {
+				$id_venta_local = $value[2];
+				$venta_del_dia = $value[4];
+				if ($id_local_ == $id_venta_local) {
+					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+				}
+			}
+			$total_ventas_array_domingo[] = $venta_total_dia;
+			$venta_del_dia = 0;
+			$venta_total_dia = 0;
+			  
+		}
+
+		$respuesta_final[] = ['DOM',$total_ventas_array_domingo[0]];
+
+		$fill = false;
+		$row = 0;
+		$banban = true;
+		$banban2 = true;
+		foreach ( $respuesta_final as $dataRow ) {
+
+	  		$pdf->SetTextColor( 0, 0, 0 );
+	  		$pdf->SetFillColor(  255, 255, 255 );
+	  		$pdf->SetFont( 'Arial', '', 12 );
+
+	  		for ( $i=0; $i<count($columnas); $i++ ) {
+	  			if ($banban2) {
+	  				$pdf->Ln( 12 );
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				
+	  				$banban2 = false;
+	  			}else{
+
+	  				if ($i == 0) {
+	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  				else{
+	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  				}
+	  			}
+	  		  
+	  		}
+
+	  		$row++;
+	  		$fill = !$fill;
+	  		$pdf->Ln( 12 );
+		}
+		$pdf->Cell( 0, 15, 'Total de Ingresos: $'.$precio_recaudacion_, 1, 0, 'C', true );
+		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+	 
+		$pdf->Ln( 150 );
+
+		$pdf->Write( 6, "Egresos:" );
+		$pdf->Ln( 12 );
+		 
+		Ingreso_Controller::registro_gs(0,$fecha_desde,$fecha_hasta,$pdf);
+
+		$pdf->Ln( 12 );
+		ob_end_clean();
+		$pdf->Output( "report.pdf", "I" );
+
+	//Obtener Gastos
+	//Obtener Resumenes por Medio de Pago
+	 
+	
+
+}
+
+public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta,$pdf = null){
+    	$respuesta = reporte::reporte_gs($gs_tipo,$fecha_desde,$fecha_hasta);
+    	// 
+    	$permiso = $_SESSION['usuario']->setId_Acceso();
 		if (strcmp($permiso, "ADMIN" ) == 0 ) {
 			# code...
 			$id_jefe = $_SESSION['usuario']->getId_user();
@@ -657,22 +1018,34 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		}else{
 			$tipo_gs_nombre = $respuesta[0][0][1];
 		}
+		$bandera_pdf = true;
+    	if ($pdf != null) {
+    		$bandera_pdf = false;
+    	}
+    	if ($bandera_pdf) {
+    		ini_set("session.auto_start", 0);
+    		$pdf = new FPDF( 'P', 'mm', 'A4' );
+	    	$pdf->AddPage();
+			$hoy = getdate();
+	        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+			$pdf->Ln( 16 );
+			$pdf->SetFont( 'Arial', '', 12 );
+			$pdf->Write( 6, $nombre_negocio."Reporte de Gastos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'Tipo de Gastos: '.$tipo_gs_nombre );
 		
-		$pdf->Write( 6, $nombre_negocio."Reporte de Gastos\n"."Generado por: ".$_SESSION["usuario"]->getUsuario()."\nFecha de Generacion: ".$ahora."\n".'Tipo de Gastos: '.$tipo_gs_nombre );
-		
-		$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
-		$pdf->Ln( 12 );
+			$pdf->Write( 6, "\nFecha Desde: ".$fecha_desde."\nFecha Hasta: ".$fecha_hasta);
+			$pdf->Ln( 12 );
 
-		$pdf->SetDrawColor( 0, 0, 0 );
-		$pdf->Ln( 15 );
-		$pdf->SetTextColor( 0, 0, 0);
-		$pdf->SetFillColor( 255, 255, 255 );
-		//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
-		
-		// Nombre Columnas
-		$pdf->SetTextColor( 0, 0, 0 );
-		$pdf->SetFillColor( 255, 255, 255 );
-		//se saco medios de pago
+			$pdf->SetDrawColor( 0, 0, 0 );
+			$pdf->Ln( 15 );
+			$pdf->SetTextColor( 0, 0, 0);
+			$pdf->SetFillColor( 255, 255, 255 );
+			//$pdf->Cell( 46, 12, " PRODUCT", 1, 0, 'L', true );
+			
+			// Nombre Columnas
+			$pdf->SetTextColor( 0, 0, 0 );
+			$pdf->SetFillColor( 255, 255, 255 );
+    	}
+       	
 		$columnas = ['N°','Nombre','Tipo','Valor','Fecha','Movimientos'];
 
 		for ( $i=0; $i<count($columnas); $i++ ) {
@@ -837,9 +1210,12 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta){
 		$pdf->Cell( 0, 15, 'Total de Gastos: $'.$precio_recaudacion_, 1, 0, 'C', true );
 		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
 		
-		$pdf->Ln( 12 );
-		ob_end_clean();
-		$pdf->Output( "report.pdf", "I" );
+		if ($bandera_pdf) {
+			$pdf->Ln( 12 );
+			ob_end_clean();
+			$pdf->Output( "report.pdf", "I" );
+		}
+		
     	
     }
     public static function registro_ventas(){

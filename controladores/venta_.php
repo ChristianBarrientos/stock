@@ -447,6 +447,7 @@ class Venta_Controller{
             
             //parse_str($art_comprobante[0], $output_comprobante2);
             //print_r(key($output_comprobante2));
+            $id_usuario = $_SESSION['usuario']->getId_user();
 
             for ($i=0; $i < count($art_comprobante); $i++) { 
                 $art_comprobante_val = "$art_comprobante[$i]";
@@ -458,10 +459,10 @@ class Venta_Controller{
                 //parse_str($art_total[$i], $output_total);
                  
                 //$rg_detalle[] = parse_str($art_comprobante_val).','.parse_str($art_articulo_val).','.parse_str($art_total_val).','.parse_str($local_venta_antigua);
-                $rg_detalle[] = $art_comprobante_val.','.$art_articulo_val.','.$art_total_val.','.$local_venta_antigua_val;
+                $rg_detalle[] = $art_comprobante_val.','.$art_articulo_val.','.$art_total_val.','.$local_venta_antigua_val.','.$id_usuario;
                 //print_r($rg_detalle);
             }
-            $id_usuario = $_SESSION['usuario']->getId_user();
+            //$id_usuario = $_SESSION['usuario']->getId_user();
 
             $medio_pago = art_venta_medio_pago::generar($medio_pago_venta_antigua);
             $nombre = $medio_pago->getNombre();

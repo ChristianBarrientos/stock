@@ -248,6 +248,40 @@ class reporte {
         }
         
     }
+
+    public static function reporte_por_semana($fecha_desde,$fecha_hasta){
+        global $baseDatos;
+        //Obtener los gastos y sus tipos
+        $permisos = $_SESSION['usuario']->getAcceso();
+        if ($permisos == 'ADMIN') {
+            $id_jefe = $_SESSION['usuario']->getId_user();
+        }else{
+            $id_jefe = usuario::obtener_jefe($_SESSION['usuario']->getId_user());
+        }
+
+        $us_ventas = art_venta::obtener($id_jefe);
+            
+        $us_ventas_filtradas = array();
+        
+        foreach ($us_ventas as $key => $value) {
+
+            $fecha2 = explode(" ",$fecha_desde);
+            $fecha3 = $fecha2[0];
+            $fecha_desde_ = strtotime("$fecha3");
+            $fecha2 = explode(" ",$fecha_hasta);
+            $fecha3 = $fecha2[0];
+            $fecha_hasta_ = strtotime("$fecha3");
+
+            $fecha_hora = strtotime($value->getFecha_hora());
+
+            if ($fecha_desde_ <= $fecha_hora && $fecha_hasta_ >= $fecha_hora) {
+                $us_ventas_filtradas[] = $value;       
+            }    
+        }
+         
+        return $us_ventas_filtradas; 
+    }
+
     public static function reporte_sa(){
 
         global $baseDatos;

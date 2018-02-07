@@ -10,7 +10,7 @@ class art_venta {
     private $total;
     private $id_cambio;
     private $rg_detalle;
-
+//RG DETALLE --> NUMERO DE COMPTOBANTE , NUMERO DE ARTICULO , TOTAL , ID LOCAL , ID USUARIO    PEDIDO POR MOTOMATCH
     public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_gmedio_pago,$total,$cuotas,$id_cambio,$rg_detalle = null){
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;
@@ -62,13 +62,55 @@ class art_venta {
             $id_promo = $res_fil['id_promo'];
             if ($res_fil['id_cambio'] != null) {
                 $art_unico_cambio = art_unico::generar_unico($res_fil['id_cambio']);
-                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$art_unico_cambio);
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$art_unico_cambio,$res_fil['rg_detalle']);
             }else{
-                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$res_fil['id_cambio']);
+                $venta = new art_venta($res_fil['id_venta'],$res_fil['fecha_hora'],$id_usuario,$id_promo,$id_gmedio_pago,$res_fil['total'],$res_fil['cuotas'],$res_fil['id_cambio'],$res_fil['rg_detalle']);
             }
             return $venta;
         }
         else{
+            return false;
+        }
+    }
+
+    public static function obtener($id_usuario){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_venta` WHERE rg_detalle IS NOT NULL");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+           
+            $ventas = array();
+            //Momentanemente bandera
+            
+            foreach ($filas as $key => $value) {
+                $aux = explode(',',$value['rg_detalle']);
+
+                //MOMENTANEAMENTE
+                
+                if (count($aux) == 5) {
+                    $id_user_carga = $aux[4];
+                    if ($id_user_carga == $id_usuario) {
+
+                        $ventas[] = art_venta::generar($value['id_venta']);
+
+                    }else{
+                        continue;
+                    }
+                }else{
+                    continue;
+                }
+                //FinMomentanemaente
+                 
+                
+                
+
+                 
+            }
+           
+            return $ventas;
+        }
+        else{
+            
             return false;
         }
     }
@@ -213,6 +255,17 @@ class art_venta {
     public function setId_cambio($id_cambio)
     {
         $this->id_cambio = $id_cambio;
+        return $this;
+    }
+
+    public function getRg_detalle()
+    {
+        return $this->rg_detalle;
+    }
+    
+    public function setRg_detalle($rg_detalle)
+    {
+        $this->rg_detalle = $rg_detalle;
         return $this;
     }
 
