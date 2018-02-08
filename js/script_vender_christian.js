@@ -254,6 +254,8 @@ function art_obtener(){
                
       }else{
         console.log("SinCoincidencias");
+        $(".tap2").hide();
+        $(".tap1").hide();
         $("#Sinresultados").html('Sin Coincidencias. No se encuentra cargador el articulo: '+Busqueda);
       }
             }
