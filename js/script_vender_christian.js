@@ -279,7 +279,6 @@ function busqueda_auto(){
       }; 
       $("#Sinresultados").html(' ');
       agregar_fila(params,out,articulo_nombre);
-      
     }
   });
 }
