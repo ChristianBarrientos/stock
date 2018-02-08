@@ -448,21 +448,20 @@ class Venta_Controller{
             //parse_str($art_comprobante[0], $output_comprobante2);
             //print_r(key($output_comprobante2));
             $id_usuario = $_SESSION['usuario']->getId_user();
-
+           
             for ($i=0; $i < count($art_comprobante); $i++) { 
-                $art_comprobante_val = "$art_comprobante[$i]";
-                $art_articulo_val = "$art_articulo[$i]";
-                $art_total_val = "$art_total[$i]";
-                $local_venta_antigua_val = "$local_venta_antigua";
-                //parse_str($art_comprobante[$i], $output_comprobante);
-                //parse_str($art_articulo[$i], $output_articulo);
-                //parse_str($art_total[$i], $output_total);
-                 
-                //$rg_detalle[] = parse_str($art_comprobante_val).','.parse_str($art_articulo_val).','.parse_str($art_total_val).','.parse_str($local_venta_antigua);
-                $rg_detalle[] = $art_comprobante_val.','.$art_articulo_val.','.$art_total_val.','.$local_venta_antigua_val.','.$id_usuario;
-                //print_r($rg_detalle);
+                if (!($art_comprobante[$i] == 0 OR $art_articulo[$i] == 0 OR $art_total[$i] == 0)) {
+                    
+                    $art_comprobante_val = "$art_comprobante[$i]";
+                    $art_articulo_val = "$art_articulo[$i]";
+                    $art_total_val = "$art_total[$i]";
+                    $local_venta_antigua_val = "$local_venta_antigua";
+                     
+                    $rg_detalle[] = $art_comprobante_val.','.$art_articulo_val.','.$art_total_val.','.$local_venta_antigua_val.','.$id_usuario;
+                }
+                
             }
-            //$id_usuario = $_SESSION['usuario']->getId_user();
+            
 
             $medio_pago = art_venta_medio_pago::generar($medio_pago_venta_antigua);
             $nombre = $medio_pago->getNombre();
@@ -474,6 +473,8 @@ class Venta_Controller{
             $id_gmedio_pago = art_gmedio_pago::alta_2($medio_pago_venta_antigua,$rg_detalle_mp);
 
             if ($id_gmedio_pago) {
+                 
+
 
                 for ($i=0; $i < count($rg_detalle) ; $i++) { 
                     $valores = explode (",", $rg_detalle[$i]); 

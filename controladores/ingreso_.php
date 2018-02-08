@@ -649,7 +649,8 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 	//Obtener Ingresos por Locales
 	$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
 
-	ini_set("session.auto_start", 0);
+		ini_set("session.auto_start", 0);
+
        	$pdf = new FPDF( 'P', 'mm', 'A4' );
     	$pdf->AddPage();
 		$hoy = getdate();
@@ -694,7 +695,22 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 		$columnas[] = 'Dia';
 		foreach ($_SESSION["locales"] as $key => $value) {
 			$nombre_local = $value->getNombre();
-			$columnas[] = $nombre_local;
+			if (strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				continue;
+			}else{
+				if (strlen($nombre_local) > 13) {
+					$nombre_aux = explode(' ', $nombre_local);
+					$nombre_aux_finali = '';
+					foreach ($nombre_aux as $ja => $jaja) {
+						$da = substr($jaja, 0, 4);
+						$nombre_aux_finali = $nombre_aux_finali.' '.$da;
+					}
+					//$nombre_local = substr($nombre_local, 0, 13);
+					$nombre_local = $nombre_aux_finali;
+				}
+				$columnas[] = $nombre_local;
+			}
+			
 		}
 		 
 
@@ -726,10 +742,11 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			$rg_detalle__aux = explode(',', $rg_detalle_);
 
 			$id_local = $rg_detalle__aux[3];
-
+			
 			$nro_comprobante = $rg_detalle__aux[0];
 
-			$ganancia_venta = $value->getTotal();
+			$ganancia_venta = floatval($value->getTotal());
+			//$ganancia_venta = floatval($rg_detalle__aux[2]);
 
 			$medio_pago_aux = $value->getId_gmedio_pago()->getId_medio_pago();
 
@@ -737,7 +754,7 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 
 			$nombre_medio_pago = $medio_pago_aux[0]->getNombre();
 
-			$precio_recaudacion_ = $precio_recaudacion_ + $ganancia_venta;
+			$precio_recaudacion_ = floatval($precio_recaudacion_) + floatval($ganancia_venta);
 
 			$array_aux_ventas[] = [$fecha_venta,$dia_venta,$id_local,$nro_comprobante,$ganancia_venta,$tipo_medio_pago,$nombre_medio_pago];		
 		}
@@ -773,7 +790,7 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 					$sabado_array[] = $value2;
 					break;
 				case 'Domingo':
-					$domindo_array[] = $value2;
+					$domingo_array[] = $value2;
 					break;
 				
 				default:
@@ -781,8 +798,8 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 					break;
 			}	
 		}
-
-
+		echo "Cantidad de Ventas";
+		print_r(count($martes_array));
 		$total_ventas_array_lunes = array();
 		$venta_total_dia = 0;
 
@@ -800,39 +817,102 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 		print_r($sabado_array);
 		echo "Domingo";
 		print_r($domindo_array);*/
+		/*$dias = array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+		foreach ($dias as $key => $value) {
+			switch ($value) {
+				case 'Lunes':
+					foreach ($_SESSION["locales"] as $key => $value3) {
+						$id_local_ = $value3->getId_local();
+						
+						foreach ($lunes_array as $key => $value) {
+							$id_venta_local = $value[2];
+							$venta_del_dia = $value[4];
+
+							if ($id_local_ == $id_venta_local) {
+								$venta_total_dia = $venta_total_dia + $venta_del_dia;
+							}
+						}
+
+						$total_ventas_array_lunes[] = $venta_total_dia;
+						$venta_del_dia = 0;
+						$venta_total_dia = 0;
+						  
+					}
+					 
+					break;
+				case 'Martes':
+					
+					break;
+				case 'Miercoles':
+					 
+					break;
+				case 'Jueves':
+					
+					break;
+				case 'Viernes':
+					
+					break;
+				case 'Sabado':
+					
+					break;
+				case 'Domingo':
+					
+					break;
+				
+				default:
+					# code...
+					break;
+			}
+		}*/
+		$ultima_fila_reporte = array();
+		foreach ($_SESSION["locales"] as $key => $value) {
+			$id_local_ = $value->getId_local();
+			$ultima_fila_reporte[$id_local_] = 0;
+		}
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			
-			foreach ($lunes_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
+			$nombre_local = $value->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($lunes_array as $key => $value) {
+					$id_venta_local = $value[2];
+					$venta_del_dia = $value[4];
 
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+					if ($id_local_ == $id_venta_local) {
+						$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+						$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+					}
 				}
+			}else{
+				continue;
 			}
-
 			$total_ventas_array_lunes[] = $venta_total_dia;
 			$venta_del_dia = 0;
 			$venta_total_dia = 0;
 			  
 		}
 
-		$respuesta_final[] = ['LUN',$total_ventas_array_lunes[0]];
+		$respuesta_final[] = ['LUN',$total_ventas_array_lunes];
 
 		$total_ventas_array_martes = array();
-
+		//print_r($martes_array);
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			 
-			foreach ($martes_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($martes_array as $key => $value) {
+					$id_venta_local = $value[2];
+					$venta_del_dia = $value[4];
+					
+					if ($id_local_ == $id_venta_local) {
+						$venta_total_dia = floatval($venta_total_dia) + floatval($venta_del_dia);
+
+						$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+					}
 				}
+			}else{
+				continue;
 			}
 			$total_ventas_array_martes[] = $venta_total_dia;
 			$venta_del_dia = 0;
@@ -840,18 +920,25 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			  
 		}
 
-		$respuesta_final[] = ['MAR',$total_ventas_array_martes[0]];
+
+		$respuesta_final[] = ['MAR',$total_ventas_array_martes];
 		$total_ventas_array_miercoles = array();
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			 
-			foreach ($miercoles_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($miercoles_array as $key => $value) {
+					$id_venta_local = $value[2];
+					$venta_del_dia = $value[4];
+					if ($id_local_ == $id_venta_local) {
+						$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+						$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+					}
 				}
+			}else{
+				continue;
 			}
 			$total_ventas_array_miercoles[] = $venta_total_dia;
 			$venta_del_dia = 0;
@@ -859,18 +946,24 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			  
 		}
 
-		$respuesta_final[] = ['MIE',$total_ventas_array_miercoles[0]];
+		$respuesta_final[] = ['MIE',$total_ventas_array_miercoles];
 		$total_ventas_array_jueves = array();
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			
-			foreach ($jueves_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($jueves_array as $key => $value) {
+					$id_venta_local = $value[2];
+					$venta_del_dia = $value[4];
+					if ($id_local_ == $id_venta_local) {
+						$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+						$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+					}
 				}
+			}else{
+				continue;
 			}
 			$total_ventas_array_jueves[] = $venta_total_dia;
 			$venta_del_dia = 0;
@@ -878,18 +971,25 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			  
 		}
 
-		$respuesta_final[] = ['JUE',$total_ventas_array_jueves[0]];
+		$respuesta_final[] = ['JUE',$total_ventas_array_jueves];
 		$total_ventas_array_viernes = array();
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			
-			foreach ($viernes_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($viernes_array as $key => $value) {
+					$id_venta_local = $value[2];
+					$venta_del_dia = $value[4];
+					if ($id_local_ == $id_venta_local) {
+						$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+						$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+					}
 				}
+			}
+			else{
+				continue;
 			}
 			$total_ventas_array_viernes[] = $venta_total_dia;
 			$venta_del_dia = 0;
@@ -897,18 +997,24 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			  
 		}
 
-		$respuesta_final[] = ['VIE',$total_ventas_array_viernes[0]];
+		$respuesta_final[] = ['VIE',$total_ventas_array_viernes];
 		$total_ventas_array_sabado = array();
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			
-			foreach ($sabado_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
-				}
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+				foreach ($sabado_array as $key => $value) {
+						$id_venta_local = $value[2];
+						$venta_del_dia = $value[4];
+						if ($id_local_ == $id_venta_local) {
+							$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+							$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+						}
+					}
+			}else{
+				continue;
 			}
 			$total_ventas_array_sabado[] = $venta_total_dia;
 			$venta_del_dia = 0;
@@ -916,32 +1022,52 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 			  
 		}
 
-		$respuesta_final[] = ['SAB',$total_ventas_array_sabado[0]];
+		$respuesta_final[] = ['SAB',$total_ventas_array_sabado];
 		$total_ventas_array_domingo = array();
 
 		foreach ($_SESSION["locales"] as $key => $value3) {
 			$id_local_ = $value3->getId_local();
-			
-			foreach ($domingo_array as $key => $value) {
-				$id_venta_local = $value[2];
-				$venta_del_dia = $value[4];
-				if ($id_local_ == $id_venta_local) {
-					$venta_total_dia = $venta_total_dia + $venta_del_dia;
+			$nombre_local = $value3->getNombre();
+			if (!strcmp($nombre_local, "DEPOSITO" ) == 0 ) {
+
+				if (isset($domingo_array)) {
+				
+					foreach ($domingo_array as $key => $value) {
+						$id_venta_local = $value[2];
+						$venta_del_dia = $value[4];
+						if ($id_local_ == $id_venta_local) {
+							$venta_total_dia = $venta_total_dia + $venta_del_dia;
+
+							$ultima_fila_reporte[$id_local_] = $ultima_fila_reporte[$id_local_] + floatval($venta_total_dia) ;
+						}
+					}
 				}
+			}else{
+				continue;
 			}
+
 			$total_ventas_array_domingo[] = $venta_total_dia;
 			$venta_del_dia = 0;
 			$venta_total_dia = 0;
 			  
 		}
+		
+		$respuesta_final[] = ['DOM',$total_ventas_array_domingo];
 
-		$respuesta_final[] = ['DOM',$total_ventas_array_domingo[0]];
+		/*print_r($respuesta_final[0][0]);
 
+		print_r($respuesta_final[0][1][0]);
+		print_r($respuesta_final[0][1][1]);
+		print_r($respuesta_final[0][1][2]);
+		print_r($respuesta_final[0][1][3]);
+		*/
 		$fill = false;
 		$row = 0;
 		$banban = true;
 		$banban2 = true;
-		foreach ( $respuesta_final as $dataRow ) {
+
+		 
+		/*foreach ( $respuesta_final as $dataRow ) {
 
 	  		$pdf->SetTextColor( 0, 0, 0 );
 	  		$pdf->SetFillColor(  255, 255, 255 );
@@ -951,20 +1077,22 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 	  			if ($banban2) {
 	  				$pdf->Ln( 12 );
 	  				if ($i == 0) {
-	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 10, 12, $dataRow[0], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 37, 12, $dataRow[1][$i] , 1, 0, 'C', true );
 	  				}
 	  				
 	  				$banban2 = false;
 	  			}else{
 
 	  				if ($i == 0) {
-	  					$pdf->Cell( 10, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					$pdf->Cell( 10, 12, $dataRow[0], 1, 0, 'C', true );
 	  				}
 	  				else{
-	  					$pdf->Cell( 37, 12, $dataRow[$i], 1, 0, 'C', true );
+	  					
+
+	  					$pdf->Cell( 37, 12, $dataRow[1][$i] , 1, 0, 'C', true );
 	  				}
 	  			}
 	  		  
@@ -975,30 +1103,32 @@ public static function reporte_por_semana($fecha_desde,$fecha_hasta){
 	  		$pdf->Ln( 12 );
 		}
 		$pdf->Cell( 0, 15, 'Total de Ingresos: $'.$precio_recaudacion_, 1, 0, 'C', true );
-		//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
-	 
-		$pdf->Ln( 150 );
 
-		$pdf->Write( 6, "Egresos:" );
+		
 		$pdf->Ln( 12 );
+		ob_end_clean(); 
+		$pdf->Output( "ReportePorSemana.pdf", "I" );*/				
 		 
-		Ingreso_Controller::registro_gs(0,$fecha_desde,$fecha_hasta,$pdf);
-
-		$pdf->Ln( 12 );
-		ob_end_clean();
-		$pdf->Output( "report.pdf", "I" );
+		
+		//Ingreso_Controller::registro_gs(0,$fecha_desde,$fecha_hasta);
 
 	//Obtener Gastos
 	//Obtener Resumenes por Medio de Pago
 	 
-	
+			//$pdf->Write( 6, "Reporte de Articulos Vendidos\nAscenso Positivo\n"." Generado por: ".$_SESSION["usuario"]->getUsuario()."\n Fecha de Generacion: ".$ahora );
+	 
+		//$pdf->Ln( 150 );
+
+		//$pdf->Write( 6, "Egresos:" );
+		//$pdf->Ln( 12 );
+		 
 
 }
 
 public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta,$pdf = null){
     	$respuesta = reporte::reporte_gs($gs_tipo,$fecha_desde,$fecha_hasta);
     	// 
-    	$permiso = $_SESSION['usuario']->setId_Acceso();
+    	$permiso = $_SESSION['usuario']->getId_Acceso();
 		if (strcmp($permiso, "ADMIN" ) == 0 ) {
 			# code...
 			$id_jefe = $_SESSION['usuario']->getId_user();
@@ -1065,21 +1195,26 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta,$pdf = nul
 	 	$precio_recaudacion_ = 0;
 	 	$numero_cont = 1;
 	 	
- 
+ 	 
 		foreach ($respuesta as $key => $value) {
  			 
  			 
 			$tipo_gs = $value[0][0];
 
-			$gs_unico = $value[1];
+			$gs_unico = $value[1][0];
 			
+			 
+
 			if ($gs_tipo == 0) {
 				# code...
-			
-			foreach ($gs_unico[0] as $key2 => $value2) {
+			//$gs_unico[0]
+			 
+			foreach ($gs_unico as $key2 => $value2) {
 				# code...
 				 
 				//$gs_unico_ = $value2->getId_ggs()->getId_gasto_unico();
+				//print_r($value2);
+			 	
 				$nombre_gs = $value2->getNombre();
 				$valor_gs = $value2->getValor();
 				$fecha_gs = $value2->getFecha_hora();
@@ -1092,7 +1227,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta,$pdf = nul
 				if ($movimientos_gs != null) {
 					# code...
 				 
-					$sgd_unico = $movimientos->getId_sub_gasto();
+					$sgd_unico = $movimientos_gs->getId_sub_gasto();
 
 					$nombres_sgs = array();
 					foreach ($sgd_unico as $key3 => $value3) {
@@ -1213,7 +1348,7 @@ public static function registro_gs($gs_tipo,$fecha_desde,$fecha_hasta,$pdf = nul
 		if ($bandera_pdf) {
 			$pdf->Ln( 12 );
 			ob_end_clean();
-			$pdf->Output( "report.pdf", "I" );
+			$pdf->Output( "ReporteDeGastos.pdf", "I" );
 		}
 		
     	

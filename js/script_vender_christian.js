@@ -47,89 +47,31 @@ $(document).ready(function()
         .ajaxStop(function() {
             $(this).hide();
           });
-       
-      //$('#medio_pago_valor_total').attr('disabled','false');
       $( "#medio_pago_valor_total" ).prop( "disabled", true );
-      
       $("#forma_pago_select_2_bloque").hide();
       
-      
-      	/*$("#tags").autocomplete({
-			source: availableTags,
-		});*/ 
 
     $("#CajaBusqueda").keypress(function(e) {
-          //busqueda_auto();
           $(".tap2").show();
           $(".tap1").show();
           var code = (e.keyCode ? e.keyCode : e.which);
-          
           if(code==13){
-            //var delayInMilliseconds = 100; //1 second
             let art;
             console.log("EnterKey2");
             art_obtener();
-            //setTimeout(function() {
-              
-              //articulos = articulos.unique();
-              
-              /*out = art.split(',');
-                    //console.log(out);
-              articulo_nombre = out[0]+','+out[1]+','+out[2];
-              var params = {
-                lote: out[3]
-              }; 
-              console.log(params);
-              console.log(params.lote);
-              if (params.lote == null || params == null) {
-                console.log("EntroIF");
-              }else{
-                console.log("EntroELSE");
-                console.log(params);
-                console.log(params.lote);
-                agregar_fila(params,out,articulo_nombre);
-                calculo_total();
-              }*/
-            //}, delayInMilliseconds);
-            
-            
-
-          }/*else{
-            if(code== 40){
-
-              console.log("TeclaParaAbajo");
-              art_obtener();
-              calculo_total();
-            }else{
-              console.log("Else");
-              //alert("Pulsaste la tecla con código: "+e.which);
-            }
-          }*/
+          }
           foco_cajabusqueda();
         });
 
-    	/*$("#CajaBusqueda").keyup(function(){
-        console.log("Aca");
-    		art_obtener();
-        calculo_total();
-            
-  		});*/
-
     $('#btn_vender').click(function(){ 
-      //typeof venta_.local !== 'undefined' ||
       $(".tap2").show();
       $(".tap1").show();
       repaso_general();
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
-        //alert("Venderas");
-        //console.log(venta_);
-        
         console.log(venta_);
         venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
-        
         let Datos = new FormData();
         venta_aux = JSON.stringify(venta_); 
-        
         Datos.append("Venta_",venta_aux);
         var params = {
           id_local: venta_.local.id_local,
@@ -138,91 +80,35 @@ $(document).ready(function()
           articulos:venta_.ventas,
           cuotas: cantidad_cuotas
         };
-        
         $.get("controladores/vende_.php", params, function (response) {
-          //console.log(response);
-          //console.log(response['status']);
-          //console.log("Despues");
-          //var valores = JSON.parse(JSON.stringify(response));
           $(".tap2").hide();
           $(".tap1").hide();
           var valores = JSON.parse(response);
-          
-          //console.log("Response"); 
-          //console.log(response);
-          //console.log("FinResponse"); 
-          //console.log("Valores"); 
-          //console.log(valores);
-          //console.log("FinResponse"); 
-
           if (valores.status == 'ok') {
             console.log("Vendido");
             clear_full();
             console.log(valores);
             alert("EXITO! Venta realizada con exito. " + valores.result['rg_detalle']);
-
-
           }else{
             console.log(valores);
-
-            console.log("Error")
             alert("ERROR! No se pudo generar la venta con exito. Revise que los datos ingresados esten completos.");
           }
-          //var json = JSON.parse(response);
-          /*if (json.status == 'ok'){
-            console.log("OK");
-            console.log(json);
-          }else{
-            console.log("ERROR");
-            console.log(json);
-          }*/
-
         });
-        /*$.ajax({
-          url: "controladores/vende_.php",
-          method: "POST",
-          data: Datos,
-          cache: false,
-          contentType: false,
-          processData: false,    
-          success: function(Respuesta){
-            var valores = Respuesta;
-            console.log(valores);
-            }
-        });*/
 
       }else{
-        //console.log(venta_);
         console.log(venta_.ventas);
         console.log(venta_.medio_pago);
         console.log(venta_.total);
         console.log(Ventas.length);
-
         alert("Faltan Datos por Completar!");
       }
     });
     foco_cajabusqueda();
 	});	
 
-
-//Eliminar Duplicados
 Array.prototype.unique=function(a){
   return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
 });
-
-//Eliminar Fila
-$('#cerrar-modal').click(function(){ 
-
-    alert("Borraras");
-
-    });
-
-$('.cerrar-modal').click(function(){ 
-
-    alert("Borraras");
-
-    });
-
 function actualiza_cantidad(input){
 
   let cantidad_n = input.value;
@@ -252,34 +138,23 @@ function actualiza_cantidad(input){
 function borrar_fila(input){
 
   var oID = $(input).attr("id");
-  //console.log($(input).val());
-  //$(input).val(1);
-  //console.log($(input).val());
-
   id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
   let cantidad = Ventas[id_tr].cantidad;
   let precio = Ventas[id_tr].precio_final;
   let auxiliar = cantidad * precio;
-
-  //Ventas[id_tr].cantidad = 1;
-
   total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));
   $("#total_venta").text(total_ventas.toFixed(2));
-  
   let counter = 0;
   $('#tabla_pv tr').each(function() {
      
     id_tr_for = parseInt(this.id);
-    
     if (this.id != null && this.id != '' && this.id != 'venta_total') {
         $("#"+this.id+" td").each(function(){
           if (counter == 0) {
             id_id = parseInt(this.innerHTML);
             if (id_tr < id_tr_for && id_tr_for != 0)  {
-              //console.log("If");
               id_tr_ = id_tr_for - 1;
             }else{
-              //console.log("Else");
               id_tr_ = id_tr_for;
             }
             id_input_ = "cantidad"+id_tr_;
@@ -311,36 +186,16 @@ function borrar_fila(input){
   calculo_total();
 }
 
-function obtener_lista_articulos(){
-  console.log("Obtener_Articulos");
-  $.ajax({
-    url: "template/venta_/ajax_obt.php",
-    method: "POST",
-    cache: false,
-    contentType: false,
-    processData: false,
-    success: function(Respuesta){ 
-      console.log(Respuesta);
-   
-               
-    }
-  });
-
-}
-
 function art_obtener(){
-  obtener_lista_articulos();
   let cb = false;
   let Busqueda = $("#CajaBusqueda").val();
-  if (!isNaN(Busqueda) || (Busqueda.indexOf("MOTOMATCH") > -1)) {
+  Busqueda = Busqueda.replace(" ","");
+  if (!isNaN(Busqueda) || (Busqueda.indexOf("MOTOMATCH") > -1) || (Busqueda.indexOf("CASSAROCHOPP") > -1) ) {
     console.log("Solo Numeros CB");
     cb = true;
-    Busqueda = Busqueda.replace(" ","");
-  }else{
-    console.log("ELSE");
-    
-  } 
+  }
   let Datos = new FormData();
+
   if (Busqueda.length >= 2 && (Busqueda != '' || Busqueda != null)) {
     var dataList = document.querySelector('#json-art'),
     input = document.querySelector('#art');
@@ -354,19 +209,12 @@ function art_obtener(){
       contentType: false,
       processData: false,
     success: function(Respuesta){ 
+    
       var valores = JSON.parse(Respuesta);
-      //var valores = Respuesta;
-      console.log(valores);
-      //console.log(valores['status']);
-      $(".tap2").hide();
-      $(".tap1").hide(); 
+      
       if (valores.status == 'ok') {
          
         $("#Sinresultados").html(' ');
-        //console.log(Object.keys(valores.result));
-        //console.log(valores.result);
-        //console.log(valores.result.unique()); 
-        //valores.result = valores.result.unique();
         
         for (var i = 0; i <= valores.result.length; i++) {
 
@@ -378,6 +226,7 @@ function art_obtener(){
             id_lote = valores.result[i].id_lote;
             precio_final = valores.result[i].precio_base;
             attr = valores.result[i].attr;
+                                  
             let nombre_art = art_marca.concat(tipo);
             let final = nombre_art.concat(',');
             let final2 = final.concat(id_lote);
@@ -389,25 +238,24 @@ function art_obtener(){
           } 
         }
         if (cb) {
-
           out = articulos[0].split(',');
           articulo_nombre = articulos[0];
           var params = {
             lote: out[3]
           }; 
+
           $("#Sinresultados").html(' ');
           agregar_fila(params,out,articulo_nombre);
           articulos = [];
         }else{
           busqueda_auto();
         }
-            
+        
+               
       }else{
         console.log("SinCoincidencias");
         $("#Sinresultados").html('Sin Coincidencias. No se encuentra cargador el articulo: '+Busqueda);
       }
-        
-             
             }
           });
     }else{
@@ -418,23 +266,16 @@ function art_obtener(){
       }
 
 function busqueda_auto(){
-  //console.log(articulos);
-  //console.log("BusquedaAuto");
 
   $("#CajaBusqueda").autocomplete({
     source: articulos,
     select: function (event, item) {
-      //console.log(item.item);
       out = item.item.value.split(',');
-      //console.log(out);
       articulo_nombre = item.item.value;
       var params = {
         lote: out[3]
       }; 
-      //console.log(params);
-      //console.log(params.lote);
       $("#Sinresultados").html(' ');
-      //console.log("LlamaFuncionAgregarFila");
       agregar_fila(params,out,articulo_nombre);
       
     }
@@ -442,9 +283,10 @@ function busqueda_auto(){
 }
 
 function agregar_fila(params,out,articulo_nombre){
-  //console.log("AgregarFila");
   $.get("template/venta_/ajax_venta2.php", params, function (response) {  
         let bandera = true;
+        $(".tap2").hide();
+        $(".tap1").hide();
         if (Ventas.length != 0) {
           for (var i = 0; i < Ventas.length; i++) {
             if (Ventas[i].id_lote == params.lote) {
@@ -462,7 +304,6 @@ function agregar_fila(params,out,articulo_nombre){
           }
         }
         if(bandera){
-          //console.log(response);
           var json = JSON.parse(response);
           if (json.status == 'ok'){
             let costo = json.result.precio_base;
@@ -475,8 +316,6 @@ function agregar_fila(params,out,articulo_nombre){
             input = "<input id='"+id_input+"' type='number' size='5' value='1' min='1' onchange='actualiza_cantidad(this)'>";
             button = "<button id="+id_input2+" type='button' onclick='borrar_fila(this)' class='btn btn-danger'>X</button>";
             numero_col = numero + 1;
-                        //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td><input id="+id_input2+" class='cerrar-modal' name='modal' type='radio' onclick='borrar_fila(this)'/> <label for='cerrar-modal'> X </label> </td></tr>";
-                        //var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+item.item.value+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td></tr>";
             var fila="<tr id="+numero+"><td>"+numero_col+"</td><td>"+articulo_nombre+"</td><td WIDTH='10'>"+input+"</td><td>"+precio_final.toFixed(2)+"</td><td>"+button+"</td></tr>";
             $('#venta_total').before(fila);
             numero = numero + 1;
@@ -485,9 +324,7 @@ function agregar_fila(params,out,articulo_nombre){
           }
           venta = new Venta(out[3],$("#"+id_input).val(),precio_final.toFixed(2));         
           Ventas.push(venta);
-        //console.log(Ventas);
         }   
-        
         total_ventas = parseFloat(total_ventas) + parseFloat(precio_final.toFixed(2));
         $("#total_venta").text(total_ventas.toFixed(2));
         $("#CajaBusqueda").val("");
@@ -495,10 +332,7 @@ function agregar_fila(params,out,articulo_nombre){
 }
 
 function calculo_total(){
-  //id_aux_2 = 1;
   let id_forma_pago = document.getElementById("forma_pago_select").value;
-  //$( "#myselect" ).val();
-  //let select_forma = String($("#forma_pago_select option:selected").html());
   let select_forma = String($("#forma_pago_select option:selected").html());
   let valor_forma = String(select_forma);
 
@@ -524,25 +358,19 @@ function calculo_total(){
   }
 
   $("#total_venta_final").text(valor_finali_finali.toFixed(1));
-
-  //$('#medio_pago_valor_total').attr('disabled',' ');
   $("#medio_pago_valor_total" ).prop( "disabled", false );
 
   let valor = $("#agrega_medio_pago").val();
 
   Medios_Pagos = [];
-  //let bandera = $("#forma_pago_select_2").val();
 
   let bandera = document.getElementById("forma_pago_select_2").value;
-  //console.log(bandera);
-  //if (!($("#forma_pago_select_2").hasClass("hide"))) {
   let saltillo = true;
   if (id_aux == 0 || id_aux == 1) {
     saltillo = true;
   }else{
     saltillo = false;
   }
-  //if ((bandera == 0 || bandera == 'null') && saltillo) {
   if (saltillo) {
     input_value_1 = $("#medio_pago_valor_total").val();
     medio_pago1 = new Medio_Pago(id_forma_pago,input_value_1);
@@ -553,10 +381,8 @@ function calculo_total(){
       var cant = parseInt(this.value, valor_finali_finali.toFixed(1));
       $(this).attr('max', valor_finali_finali.toFixed(1));
     });
-    //id_aux_2 = 0;
 
   }else{
-    //console.log("2DosMP");
     id_forma_pago = document.getElementById("forma_pago_select").value;
     let id_forma_pago2 = document.getElementById("forma_pago_select_2").value;
     input_value_1 = $("#medio_pago_valor_total").val();
@@ -568,10 +394,7 @@ function calculo_total(){
   }
 
   total_final = valor_finali_finali.toFixed(1);
-  //venta_ = new Venta_final(Ventas,Medios_Pagos,total_final);
-  //id_aux_2 = 0;
   calcular_cuotas();
-  //id_aux_2 = 1;
   calcular_diferencia_mp();
 }
 
@@ -581,7 +404,6 @@ function borrar_options(select){
 
 function calcular_cuotas() {
   let id_forma_pago = document.getElementById("forma_pago_select").value;
-  // && cantidad_cuotas == 0
   if (id_forma_pago != 'null') {
     let cuota = 0;
     let texto_opt = '';
@@ -589,35 +411,23 @@ function calcular_cuotas() {
     borrar_options(select);
     for (var i = 1; i<= 12; i++) {
         cuota = total_final/i;
-        //selected="selected"
         cuota = parseFloat(cuota);
         texto_opt = i+" x "+cuota.toFixed(1);
-        //$('#cantidad_cuotas').append('<option value="'+i+'" >'+texto_opt+'</option>')
         var x = document.getElementById("cantidad_cuotas");
         var option = document.createElement("option");
         option.text = texto_opt;
         option.value = i;
         x.add(option);
     }
-    
-    //if (typeof local_.id_local !== 'undefined') {
-    
-
-    
     if (una_vez) {
       let select_forma = String($("#cantidad_cuotas option:selected").html());
       cantidad_cuotas = String(select_forma);
       una_vez = false;
     }
-    $("#cantidad_cuotas").selectpicker("refresh");
-    
-    //$("#cantidad_cuotas").prop( "disabled", false );
-    //let id_local = document.getElementById("cantidad_cuotas").value;
-    
+    $("#cantidad_cuotas").selectpicker("refresh"); 
   }
 }
 
-//calcular diferencia medios de pagos
 function calcular_diferencia_mp(el){
 
   $("#medio_pago_valor_total").on('input', function(){
@@ -632,8 +442,6 @@ function calculo_total_2m(){
   let input_1 = document.getElementById("medio_pago_valor_total").value;
   let input_2 = parseFloat(total_final) - parseFloat(input_1);
   $("#medio_pago_valor_total_2").val(input_2.toFixed(1));
-  //calculo_total();
-  
 }
 
 function agregar_elimina_medio_pago(e){
@@ -642,20 +450,14 @@ function agregar_elimina_medio_pago(e){
   if (valor == 1) {
     $(e).val(2);
     $(e).text("Eliminar Medio de Pago");
-    //$("#forma_pago_select_2").val('null');
     id_aux = 2;
-    //$("#forma_pago_select_2 option[value="+ 0 +"]").attr("selected",true);
     $("#forma_pago_select_2_bloque").show();
 
   }else{
     $(e).val(1);
     $(e).text("Agregar Medio de Pago");
     id_aux = 1
-    //$("#forma_pago_select_2").val('-1');
-    //$("#forma_pago_select_2 option[value="+ 0 +"]").attr("selected",true);
     $("#forma_pago_select_2_bloque").hide();
-
-
   }
   calculo_total();
 }
@@ -680,19 +482,14 @@ function una_vez(){
 }
 
 function clear_full() {
-  //document.getElementById("forma_pago_select").value = '1';
   var tabla = document.getElementById("tabla_pv");
   borrar_options(tabla);
   let tabla_nueva = '<table id="tabla_pv" cellpadding="15" class="table table-bordered " align="center"><thead><tr><th>N°</th><th>Articulo</th><th>Cantidad</th><th>Precio/Unidad</th></tr></thead><tbody><tr id="venta_total"><td  colspan='+"3"+' ><strong>SubTotal:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta"><label></strong></td></tr><tr id="venta_total"><td  colspan='+"3"+' ><strong>Total:</strong> </td><td  colspan='+"1"+' ><strong> $ <label id="total_venta_final"><label></strong></td></tr></tbody></table>';
   var div_contenedor_tabla = document.getElementById("Resultados");
 
   $(div_contenedor_tabla).html(tabla_nueva);
-  
-  //Venta_final(Ventas,Medios_Pagos,total_final,local_)
-  //Venta_final(ventas, medio_pago,total,local = null)
 
   venta_ .ventas='';
-  //venta_ .medio_pago='';
   venta_ .total='';
   articulos = [];
   total_ventas = 0;
@@ -700,7 +497,6 @@ function clear_full() {
   Ventas = [];
   Medios_Pagos = [];
   total_final = 0;
-  //local_ = '';
   cantidad_cuotas = '';
   final3 = '';
   id_aux = 0;
@@ -710,7 +506,6 @@ function clear_full() {
 }
 
 function repaso_general(){
-  //una_vez();
   console.log("Local Seleciona");
   local_seleciona();
   console.log("LCantidad Cuotas");
