@@ -163,6 +163,7 @@ class reporte {
             
             $gastos = array();
             $gastos_unicos = array();
+            $se_agrega = false;
             foreach ($gasto as $key => $value) {
                 # code...
                 $gasto2 = $value->getId_gasto();
@@ -183,15 +184,28 @@ class reporte {
                         $fecha_hasta_ = strtotime("$fecha3");
 
                         $fecha_hora = strtotime($value3->getFecha_hora());
+                        /*echo "\n";
+                        echo "Fecha_delGasto";
+                        echo "\n";
+                        print_r($value3->getFecha_hora());
+                        echo "\n";
+                        echo "FinFechaGsato";
+                        echo "\n";*/
 
-                        if ($fecha_desde_ < $fecha_hora && $fecha_hasta_ > $fecha_hora) {
-                            $gastos_unicos[] = $gasto_;
+                        if ($fecha_desde_ <= $fecha_hora && $fecha_hasta_ >= $fecha_hora) {
                              
-                            break;
+                            $gastos_unicos[] = $value3;
+                            $se_agrega = true;
+                            continue;
                         }
                     //}
                 }
-                $gastos []= [[$nombre_gs,$tipo_gs],$gastos_unicos];
+
+                if ($se_agrega) {
+                    $gastos []= [[$nombre_gs,$tipo_gs],$gastos_unicos];
+                    $se_agrega = false;
+                }
+                
                  
                 unset($gastos_unicos);
                 $gastos_unicos = array();

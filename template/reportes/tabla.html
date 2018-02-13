@@ -1,0 +1,147 @@
+{encabezado}
+<!-- START BLOCK : boton_pdf -->
+<a href="index.php?action=Reportes::armar_pdf&clave_reporte=1&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}">
+  <button type="button" class="btn btn-primary">Generar PDF</button>
+</a>
+<!-- END BLOCK : boton_pdf -->
+<div align="center">
+  <h1>INGRESOS</h1>
+  <table cellpadding="15" class="table table-bordered " align="center">
+    <thead>
+      <tr>
+        <!-- START BLOCK : columna_tabla -->
+        <th>{nombre_columna}</th> 
+        <!-- END BLOCK : columna_tabla -->
+      </tr>
+    </thead>
+    <tbody>
+      <!-- START BLOCK : filas_tabla -->
+      <tr>
+
+        <!-- START BLOCK : datos_fila_tabla_3 -->
+        <td>{dato_fila0}</td>
+        <td>{dato_fila1}</td>
+        <td>{dato_fila2}</td>
+        <td>{dato_fila3}</td>
+        <td>{dato_fila4}</td>
+        <!-- END BLOCK : datos_fila_tabla_3 -->
+
+        <!-- START BLOCK : datos_fila_tabla_1 -->
+        <td>{dato_fila0}</td>
+        <td>{dato_fila1}</td>
+
+        <!-- END BLOCK : datos_fila_tabla_1 -->
+
+      </tr>
+      <!-- END BLOCK : filas_tabla -->
+      
+      <!-- START BLOCK : total_ventas -->
+      <tr id="venta_total">
+
+        <td  colspan='{cantidad_locales}' >
+          <strong> Total: $  {total_ventas}</strong> 
+          <strong> Promedio en 6 Dias: $  {total_ventas_promedio}</strong> 
+          <strong> Medio Pago: CONTADO - EFECTIVO</strong>
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_ventas -->
+
+    </tbody>
+  </table>
+
+</div>
+
+<div align="center">
+  <h1>EGRESOS</h1>
+  <!-- START BLOCK : gastos_tabla -->
+  <h4 align="left">{titulo_gasto}</h4>
+  <table cellpadding="15" class="table table-bordered " align="center">
+    <thead>
+      <tr>
+
+        <th>Fecha</th> 
+        <th>Nombre</th> 
+        <th>SubTotal</th> 
+        
+      </tr>
+    </thead>
+    <tbody>
+      <!-- START BLOCK : filas_tabla_gs -->
+      <tr>
+
+        <td>{fecha_gasto}</td>
+        <td>{nombre_subagsto}</td>
+        <td>{subtotal}</td>
+
+      </tr>
+      <!-- END BLOCK : filas_tabla_gs -->
+      
+      <!-- START BLOCK : total_gs -->
+      <tr>
+
+        <td  colspan='3' >
+          <strong> Total: $  {total_gsunico_valor}</strong> 
+
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_gs -->
+
+    </tbody>
+  </table>
+  <!-- END BLOCK : gastos_tabla -->
+  <!-- START BLOCK : total_egresos -->
+  <h4 align="left"><strong>Total de Egresos: {total_egresos}</strong></h4>
+  <!-- END BLOCK : total_egresos -->
+</div>
+
+<!-- START BLOCK : ventas_nocontado -->
+<div align="center">
+  <h3>Ventas con TARJETAS - CREDITOS - CHEQUES</h3>
+  
+  <!-- START BLOCK : tabla_nocontado -->
+  <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
+  <table cellpadding="15" class="table table-bordered " align="center">
+    <thead>
+      <tr>
+
+        <th>Local</th> 
+        <th>Fecha</th> 
+        <th>Nro. Comp</th> 
+        <th>Monto</th> 
+        
+      </tr>
+    </thead>
+    <tbody>
+      <!-- START BLOCK : filas_tabla_nocontado -->
+      <tr>
+        <td>{local}</td>
+        <td>{fecha_gasto}</td>
+        <td>{nrocomp}</td>
+        <td>$ {monto}</td>
+
+      </tr>
+      <!-- END BLOCK : filas_tabla_nocontado -->
+      
+      <!-- START BLOCK : total_nocontado -->
+      <tr>
+
+        <td  colspan='3' >
+          <strong align="left"> Total de ventas con {nombre_mp}: $  {total_por_mp}</strong> 
+
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_nocontado -->
+
+    </tbody>
+  </table>
+  <!-- END BLOCK : tabla_nocontado -->
+
+
+</div>
+<!-- END BLOCK : ventas_nocontado -->
+
+
+

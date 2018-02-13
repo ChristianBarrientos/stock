@@ -1,4 +1,5 @@
 <?php
+
 /*Seteamos el arreglo de conexión con la base de datos*/
 $config["db"]="stock";
 $config["dbuser"]="root";

@@ -7,6 +7,11 @@
 			</div>
 			
 		</div>
+	<a href="index.php?action=Reportes::generar_pdf">
+		<button type="button" class="btn btn-info">DomPDF</button>
+	</a>
+		
+
 		<div class="row">
 
 			<!-- START BLOCK : sin_sucursales -->
@@ -149,7 +154,7 @@
 				</div>
 				<div class="cleearfix"></div>
 					<div class="col-md-2 col-xs-6">
-						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#rps_">Resumen por Mes</button>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#rps_">Reporte Por Semana</button>
 					</div>
 				
 				
@@ -362,7 +367,7 @@
 					</div>
 					<div class="modal-body">
 					 	<div class="form_flotante" id="form_art_general">
-						<form target="_blank" class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Ingreso::reportes&clave_reporte=12" method="post">
+						<form target="_blank" class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Reportes::generar_html&clave_reporte=1" method="post">
 								
 								<h3>Fecha Desde</h3>
 								<div class='input-group date' id='rps_1'>

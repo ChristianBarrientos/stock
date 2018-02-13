@@ -3,312 +3,312 @@ class Empleado_Controller{
 
 	public static function cargar_empleado(){
 		if (isset($_SESSION["usuario"])){
-        	if ($_SESSION["permiso"] == 'ADMIN') {
-        		$tpl = new TemplatePower("template/cargar_empleado.html");
-				$tpl->prepare();
-				
-                  
-				foreach ($_SESSION['locales'] as $key => $value) {
-                        $tpl->newBlock("locales_empleado_alta");
-                        $cadena = $value->getId_zona();
-                        $direccion = after_last (',', $cadena);
+           if ($_SESSION["permiso"] == 'ADMIN') {
+              $tpl = new TemplatePower("template/cargar_empleado.html");
+              $tpl->prepare();
+              
+              
+              foreach ($_SESSION['locales'] as $key => $value) {
+                $tpl->newBlock("locales_empleado_alta");
+                $cadena = $value->getId_zona();
+                $direccion = after_last (',', $cadena);
 
-                        $tpl->assign("id_local", $value->getId_local());
-                        $tpl->assign("nombre_local", $value->getNombre());
-                                
-                                
-                }
-                if (count($_SESSION['locales']) == 0) {
-                	$tpl->newBlock("sin_locales_empl");
-                	$tpl->newBlock("sin_locales_empl_2");
-                }else{
-                	$tpl->newBlock("con_locales_empl");
-                }
-				
-        	}
-        	
-        }
-        else{
-       		return Ingreso_Controller::salir();
-		}
-
-		return $tpl->getOutputContent();
-
-	}
-
-	public static function menu(){
-            $tpl = new TemplatePower("template/seccion_admin_empleado.html");
-            $tpl->prepare();
-			if (Ingreso_Controller::es_admin()) {
-				
-			    $empleados_si = false;
-            }else{
-                return Ingreso_Controller::salir();
-
+                $tpl->assign("id_local", $value->getId_local());
+                $tpl->assign("nombre_local", $value->getNombre());
+                
+                
             }
-			if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
+            if (count($_SESSION['locales']) == 0) {
+               $tpl->newBlock("sin_locales_empl");
+               $tpl->newBlock("sin_locales_empl_2");
+           }else{
+               $tpl->newBlock("con_locales_empl");
+           }
+           
+       }
+       
+   }
+   else{
+       return Ingreso_Controller::salir();
+   }
 
-				
-				foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
+   return $tpl->getOutputContent();
+
+}
+
+public static function menu(){
+    $tpl = new TemplatePower("template/seccion_admin_empleado.html");
+    $tpl->prepare();
+    if (Ingreso_Controller::es_admin()) {
+        
+     $empleados_si = false;
+ }else{
+    return Ingreso_Controller::salir();
+
+}
+if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
+
+    
+    foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
 
 					//foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
-						
-                        
+      
+        
 
-						if ($valor->getAcceso() == 'OPER') {
-                            
-							$empleados_si = true;
-							$tpl->newBlock("con_empleados");
-							$tpl->assign("empl_nombre",$valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
-                            $fecha_alta = $valor->getId_datos()->getFecha_alta();
+      if ($valor->getAcceso() == 'OPER') {
+        
+         $empleados_si = true;
+         $tpl->newBlock("con_empleados");
+         $tpl->assign("empl_nombre",$valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
+         $fecha_alta = $valor->getId_datos()->getFecha_alta();
                             //if (strcmp($fecha_alta, "0000-00-0" ) == 0 ) {
-                            if ($fecha_alta ==  0000-00-0 ) {
-                                $tpl->assign("empl_fecha_alta", 'Sin Definir.');
-                            }else{
+         if ($fecha_alta ==  0000-00-0 ) {
+            $tpl->assign("empl_fecha_alta", 'Sin Definir.');
+        }else{
 
-                                $tpl->assign("empl_fecha_alta", $fecha_alta);    
-                            }
-							$empl_dni = $valor->getId_datos()->getDni();
-                            if ($empl_dni == null) {
-                                $tpl->assign("empl_dni", 'Sin Definir.');
-                            }
-                            else{
-                                $tpl->assign("empl_dni",$empl_dni );
-                            }
-							$fecha_nac = $valor->getId_datos()->getFecha_nac();
-                            if ($fecha_nac == 0000-00-0) {
-                                $tpl->assign("empl_fecha_nac", 'Sin Definir.');
-                            }
-                            else{
-                                $tpl->assign("empl_fecha_nac",$fecha_nac );
-                            }
-							$empl_direccion = $valor->getId_contacto()->getDireccion();
-                            if ($empl_direccion == 'NULL') {
-                                $tpl->assign("empl_direccion", 'Sin Definir.');
-                            }else{
-                                $tpl->assign("empl_direccion",$empl_direccion );
-                            }
-							$empl_correo = $valor->getId_contacto()->getCorreo();
-                            if ($empl_correo == 'NULL') {
-                                $tpl->assign("empl_correo", 'Sin Definir.');
-                            }
-                            else{
-                                $tpl->assign("empl_correo",$empl_correo );
-                            }
-							$empl_telefono = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
-                            if ($empl_telefono == '0-') {
-                                $tpl->assign("empl_telefono", 'Sin Definir.');
-                            }else{
-                                $tpl->assign("empl_telefono",$empl_telefono );
-                            }
-							
-							$tpl->assign("empl_foto", $valor->getId_datos()->getFoto());
+            $tpl->assign("empl_fecha_alta", $fecha_alta);    
+        }
+        $empl_dni = $valor->getId_datos()->getDni();
+        if ($empl_dni == null) {
+            $tpl->assign("empl_dni", 'Sin Definir.');
+        }
+        else{
+            $tpl->assign("empl_dni",$empl_dni );
+        }
+        $fecha_nac = $valor->getId_datos()->getFecha_nac();
+        if ($fecha_nac == 0000-00-0) {
+            $tpl->assign("empl_fecha_nac", 'Sin Definir.');
+        }
+        else{
+            $tpl->assign("empl_fecha_nac",$fecha_nac );
+        }
+        $empl_direccion = $valor->getId_contacto()->getDireccion();
+        if ($empl_direccion == 'NULL') {
+            $tpl->assign("empl_direccion", 'Sin Definir.');
+        }else{
+            $tpl->assign("empl_direccion",$empl_direccion );
+        }
+        $empl_correo = $valor->getId_contacto()->getCorreo();
+        if ($empl_correo == 'NULL') {
+            $tpl->assign("empl_correo", 'Sin Definir.');
+        }
+        else{
+            $tpl->assign("empl_correo",$empl_correo );
+        }
+        $empl_telefono = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
+        if ($empl_telefono == '0-') {
+            $tpl->assign("empl_telefono", 'Sin Definir.');
+        }else{
+            $tpl->assign("empl_telefono",$empl_telefono );
+        }
+        
+        $tpl->assign("empl_foto", $valor->getId_datos()->getFoto());
 
-                            $tpl->assign("id_empleado", $valor->getId_user());
-						}
+        $tpl->assign("id_empleado", $valor->getId_user());
+    }
 					//}	
-				}
-				
-				
+}
 
-			}
-            
-			if (!($empleados_si)) {
-				$tpl->newBlock("sin_empleados");
-			}
+
+
+}
+
+if (!($empleados_si)) {
+    $tpl->newBlock("sin_empleados");
+}
 			//else{
 			//	return Ingreso_Controller::salir();
 			//}
-		
-			return $tpl->getOutputContent();
-	}
+
+return $tpl->getOutputContent();
+}
 
 
-    public static function alta_empelado(){
-        $nombre = ucwords(strtolower($_POST['empl_nombre']));
-        $apellido = ucwords(strtolower($_POST['empl_apellido']));
-        $genero = $_POST['empl_genero'];
-        $dni = $_POST['empl_dni'];
-        $fecha_nac = $_POST['empl_fecha_nac'];
-        $fecha_alta = $_POST['empl_fecha_alta'];
-        $direccion = ucwords(strtolower($_POST['empl_direccion']));
-        $correo = ucwords(strtolower($_POST['empl_correo']));
-        $telefono = $_POST['empl_telefono'];
+public static function alta_empelado(){
+    $nombre = ucwords(strtolower($_POST['empl_nombre']));
+    $apellido = ucwords(strtolower($_POST['empl_apellido']));
+    $genero = $_POST['empl_genero'];
+    $dni = $_POST['empl_dni'];
+    $fecha_nac = $_POST['empl_fecha_nac'];
+    $fecha_alta = $_POST['empl_fecha_alta'];
+    $direccion = ucwords(strtolower($_POST['empl_direccion']));
+    $correo = ucwords(strtolower($_POST['empl_correo']));
+    $telefono = $_POST['empl_telefono'];
 
-        $aguinaldo = $_POST['empl_aguinaldo'];
-        $usuario = $_POST['empl_usuario'];
-        $pass = $_POST['empl_pass'];
-        $locales = $_POST['empl_local'];
+    $aguinaldo = $_POST['empl_aguinaldo'];
+    $usuario = $_POST['empl_usuario'];
+    $pass = $_POST['empl_pass'];
+    $locales = $_POST['empl_local'];
 
-        $sueldo = $_POST['empl_sueldo'];
+    $sueldo = $_POST['empl_sueldo'];
 
-        if ($dni == null) {
-            $dni = 'NULL';
-        }
-        if ($fecha_nac == null) {
-            $fecha_nac = 'NULL';
-        }
-        if ($fecha_alta == null) {
-            $fecha_alta = 'NULL';
-        }
-        if ($direccion == null) {
-            $direccion = 'NULL';
-        }
-        if ($correo == null) {
-            $correo = 'NULL';
-        }
-        if ($telefono == null) {
-            $telefono = 'NULL';
-        }
-       
+    if ($dni == null) {
+        $dni = 'NULL';
+    }
+    if ($fecha_nac == null) {
+        $fecha_nac = 'NULL';
+    }
+    if ($fecha_alta == null) {
+        $fecha_alta = 'NULL';
+    }
+    if ($direccion == null) {
+        $direccion = 'NULL';
+    }
+    if ($correo == null) {
+        $correo = 'NULL';
+    }
+    if ($telefono == null) {
+        $telefono = 'NULL';
+    }
+    
         //Cargar en tabla us_datos
         //ucwords(strtolower($_POST['empl_correo']))
-       
-        $id_datos = us_datos::alta_datos($fecha_alta,$nombre,$apellido,$fecha_nac,$dni,2,$genero);
-        $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
-          
-        if ($id_datos && $id_contacto) {
+    
+    $id_datos = us_datos::alta_datos($fecha_alta,$nombre,$apellido,$fecha_nac,$dni,2,$genero);
+    $id_contacto = us_prvd_contacto::alta_contacto($direccion,$correo,$telefono);
+    
+    if ($id_datos && $id_contacto) {
             //Preguntar si existe usuario con el mismo nombre de user
-            $okuser = usuario::verificar_existencia($usuario);
-            if ($okuser) {
-                $id_usuario = usuario::alta_usuario($id_datos,$id_contacto,'OPER',$usuario,$pass);
+        $okuser = usuario::verificar_existencia($usuario);
+        if ($okuser) {
+            $id_usuario = usuario::alta_usuario($id_datos,$id_contacto,'OPER',$usuario,$pass);
+        }
+        
+        if ($id_usuario != 'null' OR $id_usuario != 0 && $okuser) {
+           
+            foreach ($locales as $key) {
+               
+                $id_zona = mp_zona::obtener_zona($key);
+                us_local::agregar_us_a_local($id_usuario,$key);
             }
-            
-            if ($id_usuario != 'null' OR $id_usuario != 0 && $okuser) {
-                 
-                foreach ($locales as $key) {
-                     
-                    $id_zona = mp_zona::obtener_zona($key);
-                    us_local::agregar_us_a_local($id_usuario,$key);
-                }
                 //Preguntar si tiene grupo de gastos definido
-                $id_jefe = $_SESSION['usuario']->getId_user();
+            $id_jefe = $_SESSION['usuario']->getId_user();
 
-                $us_gastos = us_gastos::obtener($id_jefe);
-                if ($us_gastos == null) {
+            $us_gastos = us_gastos::obtener($id_jefe);
+            if ($us_gastos == null) {
                     # code...
                     //Generar Gasto desde 0
-                    $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
+                $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
+                $hoy = getdate();
+                $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
+                
+                $id_gs_grupo = gs_grupo::alta($id_gasto_unico);
+                
+                $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_gs_grupo);
+                $id_us_ggs = us_ggs::alta($id_gasto);
+                $okok = us_gastos::alta($id_jefe,$id_us_ggs);
+
+            }else{
+              
+                $us_ggs = $us_gastos->getId_us_ggs();
+
+                foreach ($us_ggs as $key => $value) {
+                 
+                    $gasto = $value->getId_gasto();
+                    $nombregs = $gasto->getNombre();
+                    if (strcmp($nombregs, "Sueldos" ) == 0) {
+                       
+                        $id_gasto_sueldos = $value->getId_gasto();
+
+                        break;
+                    }else{
+                            //Crear Gastos Sueldos
+                            //Preguntar si tiene gastos el usuario
+
+                        $id_gasto_sueldos = null;
+                    }
+                }
+                    //Preguntar si existe un gasto con el nombre de Sueldos
+                if ($id_gasto_sueldos != null) {
+                    
+                        //Agregar Gasto al grupo
+
                     $hoy = getdate();
                     $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
                     $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
                     
-                    $id_gs_grupo = gs_grupo::alta($id_gasto_unico);
-                    
-                    $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_gs_grupo);
-                    $id_us_ggs = us_ggs::alta($id_gasto);
-                    $okok = us_gastos::alta($id_jefe,$id_us_ggs);
+                    $id_ggs = $id_gasto_sueldos->getId_ggs()->getId_ggs();
+                    $okok = gs_grupo::agrega($id_ggs,$id_gasto_unico);
 
                 }else{
-                  
-                    $us_ggs = $us_gastos->getId_us_ggs();
-
-                    foreach ($us_ggs as $key => $value) {
-                   
-                        $gasto = $value->getId_gasto();
-                        $nombregs = $gasto->getNombre();
-                        if (strcmp($nombregs, "Sueldos" ) == 0) {
-                             
-                            $id_gasto_sueldos = $value->getId_gasto();
-
-                            break;
-                        }else{
-                            //Crear Gastos Sueldos
-                            //Preguntar si tiene gastos el usuario
-
-                            $id_gasto_sueldos = null;
-                        }
-                    }
-                    //Preguntar si existe un gasto con el nombre de Sueldos
-                    if ($id_gasto_sueldos != null) {
-                        
-                        //Agregar Gasto al grupo
-
-                        $hoy = getdate();
-                        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
-                        $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
-                        
-                        $id_ggs = $id_gasto_sueldos->getId_ggs()->getId_ggs();
-                        $okok = gs_grupo::agrega($id_ggs,$id_gasto_unico);
-
-                    }else{
-                        $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
-                
+                    $id_gs_des = gs_descripcion::alta('Sueldos','Sueldos de los empleados');
+                    
 
                         //Crear gasto
-                        $hoy = getdate();
-                        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
-                        $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
+                    $hoy = getdate();
+                    $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+                    $id_gasto_unico = gs_gasto_unico::alta($nombre,$sueldo,'true',$ahora);
 
-                        $id_ggs = gs_grupo::alta($id_gasto_unico);
+                    $id_ggs = gs_grupo::alta($id_gasto_unico);
 
-                        $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_ggs);
+                    $id_gasto = gs_gastos::alta('Sueldos',$id_gs_des,$id_ggs);
 
                         //Agregar a us_ggs
-                        
-                        $id_us_ggs = $us_ggs[0]->getId_us_ggs();
-                        $okok = us_ggs::agrega($id_us_ggs,$id_gasto);
-                        
+                    
+                    $id_us_ggs = $us_ggs[0]->getId_us_ggs();
+                    $okok = us_ggs::agrega($id_us_ggs,$id_gasto);
+                    
                         //Crear Gasto 
 
 
-                    }
-                    
                 }
+                
+            }
 
-                if ($okok && $okuser) {
+            if ($okok && $okuser) {
                     //Agregar gasto unico a us_gmv
-                    
+                
 
-                    $id_gmv = us_gmv::alta($id_gasto_unico);
+                $id_gmv = us_gmv::alta($id_gasto_unico);
                 
                     //Agregar gmv a us_sueldo
-                    if ($aguinaldo == 1 OR $aguinaldo == 0) {
+                if ($aguinaldo == 1 OR $aguinaldo == 0) {
 
-                        $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo,$aguinaldo);
-                        
-                    }else{
-                        return Ingreso_Controller::salir();
-                    }
-                    
-                    if ($id_us_sueldos) {
-                        # code...
-                        $tpl = new TemplatePower("template/exito.html");
-                        $tpl->prepare();
-                    }else{
-                        $tpl = new TemplatePower("template/error.html");
-                        $tpl->prepare();
-                    }
+                    $id_us_sueldos = us_sueldos::alta($id_usuario,$id_gmv,$sueldo,$aguinaldo);
                     
                 }else{
-                    if (!$okuser) {
-                        # code...
-                        $tpl = new TemplatePower("template/cargar_empleado.html");
-                        $tpl->prepare();
-                        $tpl->newBlock("error_usuario");
-                        
-
-                    }else{
-                        $tpl = new TemplatePower("template/error.html");
-                        $tpl->prepare();
-                    }
-                    
+                    return Ingreso_Controller::salir();
                 }
-               
+                
+                if ($id_us_sueldos) {
+                        # code...
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare();
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+                
+            }else{
+                if (!$okuser) {
+                        # code...
+                    $tpl = new TemplatePower("template/cargar_empleado.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("error_usuario");
+                    
+
+                }else{
+                    $tpl = new TemplatePower("template/error.html");
+                    $tpl->prepare();
+                }
+                
             }
-            else{
-               
-                $tpl = new TemplatePower("template/error.html");
-                $tpl->prepare();
-            }
+            
         }
         else{
-            
+         
             $tpl = new TemplatePower("template/error.html");
             $tpl->prepare();
         }
-        return $tpl->getOutputContent();
     }
+    else{
+        
+        $tpl = new TemplatePower("template/error.html");
+        $tpl->prepare();
+    }
+    return $tpl->getOutputContent();
+}
 
 	/*public static function alta_empelado(){
 
@@ -380,8 +380,8 @@ class Empleado_Controller{
             $tpl->newBlock("error_usuario");
         }
         return $tpl->getOutputContent();
-	}*/
-	
+    }*/
+    
     function modificar($mal_local = false){
         $id_usuario = $_GET['id_empleado'];
         $tpl = new TemplatePower("template/modificar_empleado.html");
@@ -389,128 +389,128 @@ class Empleado_Controller{
         
         
         foreach ($_SESSION["locales_empleados"] as $key => $valor) {
-             
+           
                // foreach ($value as $clave => $valor) {
-                       
-                   
-                    if ($id_usuario == $valor->getId_user()) {
+         
+         
+            if ($id_usuario == $valor->getId_user()) {
 
-                        $nombre_ = $valor->getId_datos()->getNombre();
-                        $apellido_ = $valor->getId_datos()->getApellido();
-                        $dni_ = $valor->getId_datos()->getDni();
-                        $fecha_alt_ = $valor->getId_datos()->getFecha_alta();
-                        $genero_ = $valor->getId_datos()->getGenero();
-                        $fecha_nac_ =  $valor->getId_datos()->getFecha_nac();
-                        $direccion_ = $valor->getId_contacto()->getDireccion();
-                        $correo_ = $valor->getId_contacto()->getCorreo();
-                        $telefono_ = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
+                $nombre_ = $valor->getId_datos()->getNombre();
+                $apellido_ = $valor->getId_datos()->getApellido();
+                $dni_ = $valor->getId_datos()->getDni();
+                $fecha_alt_ = $valor->getId_datos()->getFecha_alta();
+                $genero_ = $valor->getId_datos()->getGenero();
+                $fecha_nac_ =  $valor->getId_datos()->getFecha_nac();
+                $direccion_ = $valor->getId_contacto()->getDireccion();
+                $correo_ = $valor->getId_contacto()->getCorreo();
+                $telefono_ = $valor->getId_contacto()->getNro_caracteristica().'-'.$valor->getId_contacto()->getNro_telefono();
 
-                        $usuario_ = $valor->getUsuario();
-                        $pass_ = $valor->getPass();
+                $usuario_ = $valor->getUsuario();
+                $pass_ = $valor->getPass();
 
                         //obtener sueldo
-                        $us_sueldos = us_sueldos::obtener($id_usuario);
-                         
-                        if ($us_sueldos) {
-                            
-                            $sueldo_base = $us_sueldos[0]->getBasico();
-                         
-                            $aguinaldo = $us_sueldos[0]->getAguinaldo();
-                        }else{
-                            
-                            $aguinaldo = false;
-                            $sueldo_base = 0;
-                        }
-                       
-                       
+                $us_sueldos = us_sueldos::obtener($id_usuario);
+                
+                if ($us_sueldos) {
+                    
+                    $sueldo_base = $us_sueldos[0]->getBasico();
+                    
+                    $aguinaldo = $us_sueldos[0]->getAguinaldo();
+                }else{
+                    
+                    $aguinaldo = false;
+                    $sueldo_base = 0;
+                }
+                
+                
 
-                        $tpl->newBlock("form");
-                        $tpl->assign("id_empleado", $id_usuario);
-                        $tpl->assign("nombre__", $nombre_);
-                        $tpl->assign("apellido__", $apellido_);
-                        $tpl->assign("dni__", $dni_);
-                        $tpl->assign("fecha_alt__", $fecha_alt_);
-                        $tpl->assign("fecha_nac__", $fecha_nac_);
-                        $tpl->assign("sueldo_base", $sueldo_base);
+                $tpl->newBlock("form");
+                $tpl->assign("id_empleado", $id_usuario);
+                $tpl->assign("nombre__", $nombre_);
+                $tpl->assign("apellido__", $apellido_);
+                $tpl->assign("dni__", $dni_);
+                $tpl->assign("fecha_alt__", $fecha_alt_);
+                $tpl->assign("fecha_nac__", $fecha_nac_);
+                $tpl->assign("sueldo_base", $sueldo_base);
 
-                                               $tpl->assign("direccion__", $direccion_);
-                        $tpl->assign("correo__", $correo_);
-                        $tpl->assign("telefono__", $telefono_);
-                        $tpl->assign("usuario__", $usuario_);
-                        $tpl->assign("pass__", $pass_);
-                        $tpl->assign("genero__", $genero_);
+                $tpl->assign("direccion__", $direccion_);
+                $tpl->assign("correo__", $correo_);
+                $tpl->assign("telefono__", $telefono_);
+                $tpl->assign("usuario__", $usuario_);
+                $tpl->assign("pass__", $pass_);
+                $tpl->assign("genero__", $genero_);
 
-                        $tpl->newBlock("datos_modificar_empleado");
+                $tpl->newBlock("datos_modificar_empleado");
 
-                        $tpl->assign("nombre_", $nombre_);
-                        $tpl->assign("apellido_", $apellido_);
-                        $tpl->assign("dni_", $dni_);
-                        $tpl->assign("fecha_alt_", $fecha_alt_);
-                        $tpl->assign("fecha_nac_", $fecha_nac_);
-                        $tpl->assign("sueldo_base_", $sueldo_base);
-                        if ($aguinaldo == true) {
-                            
-                            
-                            $tpl->assign("selected_si", 'selected="selected"');
-                             
-                        }else{
-                            $tpl->assign("selected_no", 'selected="selected"');
-                        }
+                $tpl->assign("nombre_", $nombre_);
+                $tpl->assign("apellido_", $apellido_);
+                $tpl->assign("dni_", $dni_);
+                $tpl->assign("fecha_alt_", $fecha_alt_);
+                $tpl->assign("fecha_nac_", $fecha_nac_);
+                $tpl->assign("sueldo_base_", $sueldo_base);
+                if ($aguinaldo == true) {
+                    
+                    
+                    $tpl->assign("selected_si", 'selected="selected"');
+                    
+                }else{
+                    $tpl->assign("selected_no", 'selected="selected"');
+                }
 
-                        $tpl->assign("direccion_", $direccion_);
-                        
-                        if ($correo_ == 'NULL') {
-                            $tpl->assign("correo_", '');
-                        }else{
-                            $tpl->assign("correo_", $correo_);
-                        }
-                        $tpl->assign("telefono_", $telefono_);
-                        $tpl->assign("usuario_", $usuario_);
-                        $tpl->assign("pass_", $pass_);
+                $tpl->assign("direccion_", $direccion_);
+                
+                if ($correo_ == 'NULL') {
+                    $tpl->assign("correo_", '');
+                }else{
+                    $tpl->assign("correo_", $correo_);
+                }
+                $tpl->assign("telefono_", $telefono_);
+                $tpl->assign("usuario_", $usuario_);
+                $tpl->assign("pass_", $pass_);
                         //$tpl->assign("genero_", $genero_);
 
 
-                    }
+            }
 
+            
+        }
+
+        if ($mal_local) {
+            $tpl->newBlock("local_no_selecciono");
+        }
+        foreach ($_SESSION['locales'] as $key => $value) {
+
+            $tpl->newBlock("locales_empleado_alta");
+            $cadena = $value->getId_zona();
+            $id_local = $value->getId_local();
+            $direccion = after_last (',', $cadena);
+            $tpl->assign("id_local", $value->getId_local());
+            $tpl->assign("nombre_local", $value->getNombre());
+
+            
+            foreach ($_SESSION["locales_empleados"] as $key2 => $value2) {
+             
+             
+                if ($id_usuario == $value2->getId_user()) {
+                    $local = art_local::generar_local($value->getId_local());
+                    $id_zona = $local->getId_local();
                     
-                }
-
-                if ($mal_local) {
-                    $tpl->newBlock("local_no_selecciono");
-                }
-                foreach ($_SESSION['locales'] as $key => $value) {
-
-                    $tpl->newBlock("locales_empleado_alta");
-                    $cadena = $value->getId_zona();
-                    $id_local = $value->getId_local();
-                    $direccion = after_last (',', $cadena);
-                    $tpl->assign("id_local", $value->getId_local());
-                    $tpl->assign("nombre_local", $value->getNombre());
-
-                  
-                    foreach ($_SESSION["locales_empleados"] as $key2 => $value2) {
-                       
-                       
-                        if ($id_usuario == $value2->getId_user()) {
-                            $local = art_local::generar_local($value->getId_local());
-                            $id_zona = $local->getId_local();
-                           
-                            if (us_local::empleado_local_esta($id_usuario,$id_local)) {
+                    if (us_local::empleado_local_esta($id_usuario,$id_local)) {
                                 # code...
-                                
-                                $tpl->assign("checked_sel", 'checked');
-                            }
-                        }
-                        # code...
+                        
+                        $tpl->assign("checked_sel", 'checked');
                     }
                 }
+                        # code...
+            }
+        }
         //}   
-    return $tpl->getOutputContent();    
+        return $tpl->getOutputContent();    
 
     }
 
     public static function alta_modificacion(){
- 
+       
         $id_usuario_empleado = $_GET['id_empleado'];
         $sueldo_base = $_POST['empl_sueldo'];
         $nombre__ = ucwords(strtolower($_GET['nombre__']));
@@ -528,7 +528,7 @@ class Empleado_Controller{
 
         $datos_viejos = array($nombre__,$apellido__,$genero__,$dni__,$fecha_nac__,$fecha_alta__,$direccion__,$correo__,$telefono__,$usuario__,$pass__,$locales__);
         $aguinaldo = $_POST['empl_aguinaldo'];   
-                 
+        
         $nombre = ucwords(strtolower($_POST['empl_nombre']));
         $apellido = ucwords(strtolower($_POST['empl_apellido']));
         $genero = $_POST['empl_genero'];
@@ -541,27 +541,27 @@ class Empleado_Controller{
         $usuario = $_POST['empl_usuario'];
         $pass = $_POST['empl_pass'];
         $locales = $_POST['empl_local'];
- 
-       
+        
+        
         $error = false;
-       
+        
         //Borrar en us_local
-       
+        
         if (count($locales) <= 0) {
           
             return Empleado_Controller::modificar(true);
         }
         $borrado = us_local::borrar_registros($id_usuario_empleado);
-         
+        
         if (!($borrado)) {
             //Cargar Nuevos Locales
             foreach ($locales as $clave => $valor) {
 
                 $local = art_local::generar_local_3($valor);
-                 
+                
                 $id_zona = $local->getId_zona()->getId_zona();
                 $alta_nueva_locales = us_local::agregar_us_a_local($id_usuario_empleado,$id_zona);
-              
+                
                 if ($alta_nueva_locales) {
                     # code...
                 }else{
@@ -574,23 +574,23 @@ class Empleado_Controller{
         }
         
         if (!(usuario::verificar_existencia($usuario)) && $usuario != $usuario__) {
-               
-                $tpl = new TemplatePower("template/error.html");
-                $tpl->prepare();
-                return $tpl->getOutputContent();
+         
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+            return $tpl->getOutputContent();
             
             
         }
         if ($error)
-            {
-                
-                $tpl = new TemplatePower("template/error.html");
-                $tpl->prepare();
-                return $tpl->getOutputContent();
-            }
+        {
+            
+            $tpl = new TemplatePower("template/error.html");
+            $tpl->prepare();
+            return $tpl->getOutputContent();
+        }
 
         $datos_nuevos = array($nombre,$apellido,$genero,$dni,$fecha_nac,$fecha_alta,$direccion,$correo,$telefono,$usuario,$pass,$locales);
-         
+        
         $locales_empleado = usuario::obtener_locales_empleado($id_usuario_empleado);
         /*foreach ($_SESSION["locales_empleados"] as $key => $value) {
 
@@ -604,83 +604,83 @@ class Empleado_Controller{
                          
                     }
                 }
-        }*/
+            }*/
 
-     
-        $ser_empleado = usuario::generar_usuario($id_usuario_empleado);
-        $id_datos = $ser_empleado->getId_datos()->getId_datos();
-        $id_contacto = $ser_empleado->getId_contacto()->getId_contacto();
-        
-        for ($i=0; $i < count($datos_nuevos) ; $i++) { 
-            $ok_up = true;
-            if ($datos_nuevos[$i] == $datos_viejos[$i]) {
-             
+            
+            $ser_empleado = usuario::generar_usuario($id_usuario_empleado);
+            $id_datos = $ser_empleado->getId_datos()->getId_datos();
+            $id_contacto = $ser_empleado->getId_contacto()->getId_contacto();
+            
+            for ($i=0; $i < count($datos_nuevos) ; $i++) { 
+                $ok_up = true;
+                if ($datos_nuevos[$i] == $datos_viejos[$i]) {
+                   
                 //no pasa naa
-            }
-            else{
-               
-                switch ($i) {
-                    case 0:
+                }
+                else{
+                 
+                    switch ($i) {
+                        case 0:
                         # cambiar nombre
-             
+                        
                         $ok_up = us_datos::up_nombre($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 1:
+                        case 1:
                         # cambiar apellido
                         $ok_up = us_datos::up_apellido($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 2:
+                        case 2:
                         # cambiar genero
                         $ok_up = us_datos::up_genero($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 3:
+                        case 3:
                         # cambiar dni
                         $ok_up = us_datos::up_dni($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 4:
+                        case 4:
                         # cambiar fecha_nac
                         $ok_up = us_datos::up_fecha_nac($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 5:
+                        case 5:
                         # cambiar fecha_alta
                         //us_datos::up_fecha_alta($id_datos,$datos_nuevos[$i]);
                         break;
-                    case 6:
+                        case 6:
                         # cambiar direccion
                         $ok_up = us_prvd_contacto::up_direccion($id_contacto,$datos_nuevos[$i]);
                         break;
-                    case 7:
+                        case 7:
                         # cambiar correo
                         $ok_up = us_prvd_contacto::up_correo($id_contacto,$datos_nuevos[$i]);
                         break;
-                    case 8:
+                        case 8:
                         # cambiar telefono
                         break;
-                    case 9:
+                        case 9:
                         # cambiar usuario
 
                         $ok_up = usuario::up_usuario($id_usuario_empleado,$datos_nuevos[$i]);
                         break;
-                    case 10:
+                        case 10:
                         # cambiar pass
                         $ok_up = usuario::up_pass($id_usuario_empleado,$datos_nuevos[$i]);
                         break;
-                    case 11:
+                        case 11:
                         # cambiar locales
                         break;
-                    
-                    default:
+                        
+                        default:
                         # code...
                         break;
+                    }
                 }
             }
-        }
-     
-        if ($ok_up) {
+            
+            if ($ok_up) {
             //Update en us sueldos
                 $us_sueldos = us_sueldos::obtener($id_usuario_empleado);
                 $id_sueldo = $us_sueldos[0]->getId();
-               
+                
                 $okok = us_sueldos::update($id_sueldo,'basico',$sueldo_base);
                 if ($okok) {
                     $okok = us_sueldos::update($id_sueldo,'aguinaldo',$aguinaldo);
@@ -698,7 +698,7 @@ class Empleado_Controller{
                             //Verdadero esta habilitado, se guarda-
                             $id_gs_unico = $value->getId_gasto_unico();
                             $gs_uncio_habilitados[] = $value->getId_gasto_unico();
-                         
+                            
                             $okok = $value->update($id_gs_unico,'valor',$sueldo_base);
                         }
                     }
@@ -706,79 +706,79 @@ class Empleado_Controller{
                     //Solo deberia haber un solo gasto sueldo de un empleado habilitado, si exsiten mas de dos es xq no se liquido sueldo anteriormente.   
                 }
                 if ($okok) {
-                        $tpl = new TemplatePower("template/exito.html");
-                        $tpl->prepare(); 
-                    }
+                    $tpl = new TemplatePower("template/exito.html");
+                    $tpl->prepare(); 
+                }
                 else{
                     $tpl = new TemplatePower("template/error.html");
                     $tpl->prepare();
                 }
-               
+                
             }
-        else{
-            $tpl = new TemplatePower("template/error.html");
-            $tpl->prepare();
+            else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
 
 
+            }
+
+            return $tpl->getOutputContent();
         }
 
-        return $tpl->getOutputContent();
-    }
+        function art_vender_empelado(){
+            $tpl = new TemplatePower("template/exito.html");
+            $tpl->prepare();
+        }
 
-    function art_vender_empelado(){
-        $tpl = new TemplatePower("template/exito.html");
-        $tpl->prepare();
-    }
+        function liquidar_sueldo(){
+            if (Ingreso_Controller::es_admin()) {
+                $us_sueldos = us_sueldos::obtener();
 
-    function liquidar_sueldo(){
-        if (Ingreso_Controller::es_admin()) {
-            $us_sueldos = us_sueldos::obtener();
+                $fecha_desde = $_POST['fecha_desde'];
+                $fecha_hasta = $_POST['fecha_hasta'];
 
-            $fecha_desde = $_POST['fecha_desde'];
-            $fecha_hasta = $_POST['fecha_hasta'];
+                if ($us_sueldos) {
+                    $counter = 1;
+                    $tpl = new TemplatePower("template/seccion_admin_sueldos.html");
+                    $tpl->prepare();
+                    $tpl->newBlock("lista_sueldo");
+                    $total_sueldos = 0;
+                    $total_anticipo = 0;
+                    $total_pagar = 0;
+                    foreach ($us_sueldos as $key => $value) {
 
-            if ($us_sueldos) {
-                $counter = 1;
-                $tpl = new TemplatePower("template/seccion_admin_sueldos.html");
-                $tpl->prepare();
-                $tpl->newBlock("lista_sueldo");
-                $total_sueldos = 0;
-                $total_anticipo = 0;
-                $total_pagar = 0;
-                foreach ($us_sueldos as $key => $value) {
-
-                    $tpl->newBlock("lista_datos_sueldos");
-                    $nombre = $value->getId_usuario()->getId_datos()->getNombre();
-                    $apellido = $value->getId_usuario()->getId_datos()->getApellido();
-                    $basico = $value->getBasico();
-                    $total_anticipos = 0;
-                    $anticipos = $value->getId_gmv()->getId_gs_mv()[0]->getId_gsub_gasto();
+                        $tpl->newBlock("lista_datos_sueldos");
+                        $nombre = $value->getId_usuario()->getId_datos()->getNombre();
+                        $apellido = $value->getId_usuario()->getId_datos()->getApellido();
+                        $basico = $value->getBasico();
+                        $total_anticipos = 0;
+                        $anticipos = $value->getId_gmv()->getId_gs_mv()[0]->getId_gsub_gasto();
 
 
                     //print_r($anticipos);
                     //->getId_sub_gasto()
-                    if ($anticipos != null) {
+                        if ($anticipos != null) {
                         # code...
-                        $anticipos = $anticipos->getId_sub_gasto();
-                        foreach ($anticipos as $key2 => $value2) {
-                            $valor_subgasto = $value2->getValor();
-                            $total_anticipos = $total_anticipos + $valor_subgasto;
-                        }
-                    }else{
-                        $total_anticipos = 0;
-                    }
-                    
-                    $aguinaldo = $value->getAguinaldo();
-                    //Comprobar si es mes de que se paga el aguinaldo
-                    if ($aguinaldo == true) {
-                        $id_user = $value->getId_usuario()->getId_user();
-                        if ($id_user == 21) {
-                            $aguinaldo = 7500;
+                            $anticipos = $anticipos->getId_sub_gasto();
+                            foreach ($anticipos as $key2 => $value2) {
+                                $valor_subgasto = $value2->getValor();
+                                $total_anticipos = $total_anticipos + $valor_subgasto;
+                            }
                         }else{
-
-                         $aguinaldo = $basico/2;
+                            $total_anticipos = 0;
                         }
-                    }else{
+                        
+                        $aguinaldo = $value->getAguinaldo();
+                    //Comprobar si es mes de que se paga el aguinaldo
+                        if ($aguinaldo == true) {
+                            $id_user = $value->getId_usuario()->getId_user();
+                            if ($id_user == 21) {
+                                $aguinaldo = 7500;
+                            }else{
+
+                               $aguinaldo = $basico/2;
+                           }
+                       }else{
                         $aguinaldo = 'NO';
                     }
                     $neto = $basico - $total_anticipos + $aguinaldo;

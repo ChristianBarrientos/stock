@@ -10,7 +10,7 @@ class art_venta {
     private $total;
     private $id_cambio;
     private $rg_detalle;
-//RG DETALLE --> NUMERO DE COMPTOBANTE , NUMERO DE ARTICULO , TOTAL , ID LOCAL , ID USUARIO    PEDIDO POR MOTOMATCH
+//RG DETALLE --> NUMERO DE COMPROBANTE , NUMERO DE ARTICULO , TOTAL , ID LOCAL , ID USUARIO   ----------------------- PEDIDO POR MOTOMATCH
     public function __construct($id_venta, $fecha_hora,$id_usuario,$id_promo,$id_gmedio_pago,$total,$cuotas,$id_cambio,$rg_detalle = null){
         $this->id_venta = $id_venta;
         $this->fecha_hora = $fecha_hora;

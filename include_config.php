@@ -10,6 +10,7 @@ include('controladores/articulo_.php');
 include('controladores/proveedor_.php');
 include('controladores/venta_.php');
 include('controladores/gasto_.php');
+include('controladores/reportes_.php');
 
 /*Modelos*/
 include('model/usuario.model.php');
@@ -72,6 +73,7 @@ include('model/art_gunico.model.php');
 include('model/art_gmedio_pago.model.php');
 
 
+
 //include('template/venta_/ajax_venta.php');
 
 
@@ -88,12 +90,7 @@ session_start();
 
 global $config;
 if ($config["dbEngine"]=="MYSQL"){
-	$baseDatos = new mysqli($config["dbhost"],$config["dbuser"],$config["dbpass"],$config["db"]);
-	
-	
-	
-}else{
-	echo "Error BD";
+	$baseDatos = new mysqli($config["dbhost"],$config["dbuser"],$config["dbpass"],$config["db"]);	
 }
 
 ?>
