@@ -14,6 +14,8 @@
       background-color: #AAE833;
     }*/
   </style>
+  <!--Queda Pensando con el Bootstrap-->
+  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
 </head>
 <!-- START BLOCK : boton_pdf -->
 <a href="index.php?action=Reportes::armar_pdf&clave_reporte=1&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}">
@@ -26,7 +28,7 @@
   <button type="button" class="btn btn-primary">Generar PDF</button>
 </a>
 <!-- END BLOCK : boton_pdf_global -->
-<div align="center">
+<div class="container-fluid" align="center">
   <h2 class="subraya">INGRESOS</h2>
   <table cellpadding="10" class="table table-bordered " align="center">
     <thead>
@@ -97,7 +99,7 @@
 </div>
 
 <div style="page-break-after:always;"></div>
-<div align="center">
+<div class="container-fluid" align="center">
   <h2 class="subraya">EGRESOS</h2>
 <!-- START BLOCK : gastos_tabla --> 
   <h4 align="left">{titulo_gasto}</h4>
@@ -183,7 +185,7 @@
 </div>
 
 
-<div align="center">
+<div class="container-fluid" align="center">
   <h2 class="subraya">Ventas con Otros Medios</h2>
 <!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
