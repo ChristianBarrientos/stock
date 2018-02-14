@@ -71,6 +71,13 @@ class Reportes_Controller{
 			//Reportes_Controller::generar_pdf($tpl);
 			break;
 
+			case 3:
+			//Reportes de Ventas
+
+			$tpl = Reportes_Controller::reporte_ventas($fecha_desde,$fecha_hasta);
+			//Reportes_Controller::generar_pdf($tpl);
+			break;
+
 			
 			default:
 				# code...
@@ -113,6 +120,13 @@ class Reportes_Controller{
 			$tpl = Reportes_Controller::reporte_global($fecha_mes_anio,false);
 			Reportes_Controller::generar_pdf($tpl);
 			break;
+
+			case 3:
+			//Reportes de Ventas
+
+			$tpl = Reportes_Controller::reporte_ventas($fecha_desde,$fecha_hasta);
+			Reportes_Controller::generar_pdf($tpl);
+			break;
 			
 			default:
 				# code...
@@ -139,6 +153,10 @@ class Reportes_Controller{
 		return $my_date->format('Y-m-d');
 
 		 
+	}
+
+	public static function reporte_ventas($fecha_desde,$fecha_hasta){
+
 	}
 
 	public static function reporte_global($fecha_mes_anio,$sb = true){
