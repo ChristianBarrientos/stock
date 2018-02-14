@@ -5,6 +5,7 @@ var numero = 0;
 var Ventas = new Array();
 var Medios_Pagos = new Array();
 var total_final = 0;
+var total_final_final = 0;
 var local_ = '';
 var cantidad_cuotas = '';
 var final3 = '';
@@ -68,18 +69,19 @@ $(document).ready(function()
       $(".tap1").show();
       repaso_general();
       if (( typeof venta_.ventas !== 'undefined' || typeof venta_.medio_pago !== 'undefined' || typeof venta_.total !== 'undefined') && Ventas.length >= 1) {
-        console.log(venta_);
+        
         venta_ = new Venta_final(Ventas,Medios_Pagos,total_final,local_);
         let Datos = new FormData();
         venta_aux = JSON.stringify(venta_); 
         Datos.append("Venta_",venta_aux);
         var params = {
           id_local: venta_.local.id_local,
-          total: venta_.total,
+          total: total_ventas.toFixed(2),
           medios_pago: venta_.medio_pago,
           articulos:venta_.ventas,
           cuotas: cantidad_cuotas
         };
+        console.log(params);
         $.get("controladores/vende_.php", params, function (response) {
           $(".tap2").hide();
           $(".tap1").hide();
@@ -348,6 +350,7 @@ function calculo_total(){
 
   if(select_forma.indexOf('%') != -1){
     valor_parcial_porciento = (Number(porcentaje_medio_pago) * Number(total_ventas))/100;      
+
     if (signo_medio_pago == '-') {
       valor_finali_finali = Number(total_ventas) - Number(valor_parcial_porciento);
     }
@@ -355,9 +358,10 @@ function calculo_total(){
       valor_finali_finali = Number(total_ventas) + Number(valor_parcial_porciento);
     }
   }else{  
+
     valor_finali_finali = Number(total_ventas);
   }
-
+  valor_finali_finali_2 = Number(total_ventas);
   $("#total_venta_final").text(valor_finali_finali.toFixed(1));
   $("#medio_pago_valor_total" ).prop( "disabled", false );
 
@@ -395,6 +399,7 @@ function calculo_total(){
   }
 
   total_final = valor_finali_finali.toFixed(1);
+  total_final_final = valor_finali_finali_2.toFixed(1);
   calcular_cuotas();
   calcular_diferencia_mp();
 }
@@ -502,6 +507,7 @@ function clear_full() {
   final3 = '';
   id_aux = 0;
   una_vez = true;
+   
   foco_cajabusqueda();
 
 }
