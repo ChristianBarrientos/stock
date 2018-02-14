@@ -427,7 +427,7 @@ class Reportes_Controller{
 
 
 					$monto_gs = $value2->getValor();
-					$tpl->newBlock("filas_tabla_gs");
+					$tpl->newBlock("filas_tabla_gs_detallado");
 					$tpl->assign("fecha_gasto",$fecha_gs);
 					$tpl->assign("nombre_subagsto",strtoupper($nombre_detalle_gs));
 					$tpl->assign("subtotal",$monto_gs);
