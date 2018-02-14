@@ -20,6 +20,12 @@
   <button type="button" class="btn btn-primary">Generar PDF</button>
 </a>
 <!-- END BLOCK : boton_pdf -->
+
+<!-- START BLOCK : boton_pdf_global -->
+<a href="index.php?action=Reportes::armar_pdf&clave_reporte=2&fecha_mes_anio={fecha_mes_anio}">
+  <button type="button" class="btn btn-primary">Generar PDF</button>
+</a>
+<!-- END BLOCK : boton_pdf_global -->
 <div align="center">
   <h2 class="subraya">INGRESOS</h2>
   <table cellpadding="10" class="table table-bordered " align="center">
@@ -33,6 +39,14 @@
     <tbody>
       <!-- START BLOCK : filas_tabla -->
       <tr>
+        
+        <!-- START BLOCK : datos_fila_tabla_global -->
+        <td>{dato_fila0}</td>
+        <td>{dato_fila1}</td>
+        <td>{dato_fila2}</td>
+        <td>{dato_fila3}</td>
+        <!-- END BLOCK : datos_fila_tabla_global -->
+
 
         <!-- START BLOCK : datos_fila_tabla_3 -->
         <td>{dato_fila0}</td>
@@ -63,14 +77,29 @@
       </tr>
       <!-- END BLOCK : total_ventas -->
 
+      <!-- START BLOCK : total_global -->
+      <tr id="venta_total">
+
+        <td class="separacion_td" colspan='{cantidad_columnas}' >
+          <strong> Total Contado-Efectivo: $  {total_total_ventas_contado}</strong> --
+          <strong> Total Otros Medios: $  {total_total_ventas_omp}</strong> --
+          <strong> Total Capital Acumulado: $  {total_total_ventas_total}</strong> 
+          
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_global -->
+
+
     </tbody>
   </table>
 
 </div>
+
 <div style="page-break-after:always;"></div>
 <div align="center">
   <h2 class="subraya">EGRESOS</h2>
-  <!-- START BLOCK : gastos_tabla -->
+<!-- START BLOCK : gastos_tabla --> 
   <h4 align="left">{titulo_gasto}</h4>
   <table cellpadding="10" class="table table-bordered ">
     <thead>
@@ -109,15 +138,54 @@
     </tbody>
   </table>
   <!-- END BLOCK : gastos_tabla -->
+
+  <!-- START BLOCK : gastos_tabla_global --> 
+  <h4 align="left">{titulo_gasto}</h4>
+  <table cellpadding="10" class="table table-bordered ">
+    <thead>
+      <tr>
+
+        <th>Titulo Gasto</th> 
+        <th>Total</th> 
+         
+        
+      </tr>
+    </thead>
+    <tbody>
+      <!-- START BLOCK : filas_tabla_gs -->
+      <tr>
+
+        <td>{nombre_gasto}</td>
+        <td>{total}</td>
+
+      </tr>
+      <!-- END BLOCK : filas_tabla_gs -->
+      
+      <!-- START BLOCK : total_gs_global -->
+      <tr>
+
+        <td  class="separacion_td" colspan='3' >
+          <strong> Total de Gastos: $  {total_gastos}</strong> 
+
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_gs_global -->
+
+    </tbody>
+  </table>
+  <!-- END BLOCK : gastos_tabla_global -->
+
+
   <!-- START BLOCK : total_egresos -->
   <h4 align="left"><strong>Total de Egresos: {total_egresos}</strong></h4>
   <!-- END BLOCK : total_egresos -->
 </div>
 
-<!-- START BLOCK : ventas_nocontado -->
+
 <div align="center">
   <h2 class="subraya">Ventas con Otros Medios</h2>
-  
+<!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
   <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
   <table cellpadding="10" class="table table-bordered ">

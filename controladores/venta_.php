@@ -135,6 +135,7 @@ public static function confirmar_alta_parametros_medio(){
         	//code
        $error = false;
        $nombre = $_POST['venta_medio_parametro_nombre'];
+       $nombre = str_replace(",", "-", $nombre);
        $medio_tipo = $_POST['venta_medio_parametro_descripcion'];
 
        $valor_desimp = $_POST['venta_medio_parametro_desimp'];

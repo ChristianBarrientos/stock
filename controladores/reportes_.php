@@ -54,14 +54,22 @@ class Reportes_Controller{
 
 		$fecha_desde = $_POST['fecha_desde'];
 		$fecha_hasta = $_POST['fecha_hasta'];
+		$fecha_mes_anio = $_POST['fecha_mes_anio'];
 
 		switch ($clave_reporte) {
 			case 1:
 				//Reportes Semanales
 
-			$tpl = Reportes_Controller::reporte_por_Semana($fecha_desde,$fecha_hasta);
+			$tpl = Reportes_Controller::reporte_global_detallado($fecha_desde,$fecha_hasta);
 				//Reportes_Controller::generar_pdf($tpl);
 			break;	
+
+			case 2:
+			//Reporte Global sin Detalles
+
+			$tpl = Reportes_Controller::reporte_global($fecha_mes_anio);
+			//Reportes_Controller::generar_pdf($tpl);
+			break;
 
 			
 			default:
@@ -83,21 +91,28 @@ class Reportes_Controller{
 		if (isset($_POST['fecha_desde'])) {
 			$fecha_desde = $_POST['fecha_desde'];
 			$fecha_hasta = $_POST['fecha_hasta'];
+			$fecha_mes_anio = $_POST['fecha_mes_anio'];
 		}else{
 			$fecha_desde = $_GET['fecha_desde'];
 			$fecha_hasta = $_GET['fecha_hasta'];
+			$fecha_mes_anio = $_GET['fecha_mes_anio'];
 		}
 		
-		echo $fecha_desde;
-		echo $fecha_hasta;
+
 		switch ($clave_reporte) {
 			case 1:
-				//Reportes Semanales
+			//Reporte Global con Detalles
 
-			$tpl = Reportes_Controller::reporte_por_Semana($fecha_desde,$fecha_hasta,false);
+			$tpl = Reportes_Controller::reporte_global_detallado($fecha_desde,$fecha_hasta,false);
 			Reportes_Controller::generar_pdf($tpl);
 			break;	
 
+			case 2:
+			//Reporte Global sin Detalles
+
+			$tpl = Reportes_Controller::reporte_global($fecha_mes_anio,false);
+			Reportes_Controller::generar_pdf($tpl);
+			break;
 			
 			default:
 				# code...
@@ -105,25 +120,175 @@ class Reportes_Controller{
 		}
 	}
 
-	public static function obtener_dia($fecha){
+	public static function obtener_dia($fecha,$sb = true){
 		$dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
 		$dia = $dias[date('N', strtotime($fecha))];
 		return $dia;
 	}
 
-	public static function reporte_por_Semana($fecha_desde,$fecha_hasta,$sb = true){
+	public static function nombre_mes($anio,$mes){
+		//setlocale(LC_TIME, 'spanish');  
+		$nombre=strftime("%B",mktime(0, 0, 0, $mes, 1, $anio)); 
+		return $nombre;
+	} 
+
+	public static function ultimo_dia_mes($mes,$anio){
+		$my_date = new DateTime();
+
+		$my_date->modify('last day of'.' '.$mes.' '.$anio);
+		return $my_date->format('Y-m-d');
+
+		 
+	}
+
+	public static function reporte_global($fecha_mes_anio,$sb = true){
+
+		$fecha_array = explode('-', $fecha_mes_anio);
+		$nombre_mes = Reportes_Controller::nombre_mes($fecha_array[0],$fecha_array[1]);
+
+		$fecha_hasta = Reportes_Controller::ultimo_dia_mes($nombre_mes,$fecha_array[0]);
+		$fecha_desde = $fecha_mes_anio.'-'.'01';
+
 		$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
-		
 		$tpl = new TemplatePower("template/reportes/tabla.html");
 		$tpl->prepare();
 
+		$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global',$fecha_desde,$fecha_hasta);
+		$tpl->assign("encabezado",$encabezado_html);
+		
+		
+		 
+		$opciones = ['LOCAL','Ventas CONTADO-EFECTIVO','Ventas OTROS MEDIOS','Ventas TOTAL'];
+		foreach ($opciones as $key => $value) {
+			$tpl->newBlock("columna_tabla");
+			$tpl->assign("nombre_columna",$value);
+		}
+
+		$total_ventas_contado = 0;
+		$total_ventas_omp = 0;
+		$total_ventas_total = 0;
+
+		$total_total_ventas_contado = 0;
+		$total_total_ventas_omp = 0;
+		$total_total_ventas_total = 0;
+
+		$resultado_final = array();
+		foreach ($_SESSION['locales'] as $key2 => $value2) {
+
+			$nombre_local = $value2->getNombre();
+			$id_loca_flag = $value2->getId_local();
+			foreach ($respuesta as $key => $value) {
+				$id_venta = $value->getId_venta();
+				if ($id_venta == 'BORRADO') {
+					continue;
+				}else{
+					$rg_detalle = $value->getRg_detalle();
+					$rg_detalle_array = explode(',', $rg_detalle);
+					$id_local = $rg_detalle_array[3];
+					
+					$rg_detalle_mp = $value->getId_gmedio_pago()->getRg_detalle();
+					$rg_detalle_mp_array = explode(',', $rg_detalle_mp);
+					$nombre_mp = $rg_detalle_mp_array[0];
+					if ($id_loca_flag == $id_local) {
+					
+						if (((strpos(strtoupper($nombre_mp),'CONTADO')) ||  (strpos(strtoupper($nombre_mp),'EFECTIVO')))) {
+
+							$total_ventas_contado = floatval($total_ventas_contado) + floatval($value->getTotal());
+							
+
+						}else{
+							$total_ventas_omp = floatval($total_ventas_omp) + floatval($value->getTotal());
+						}
+						$total_ventas_total = floatval($total_ventas_total) + floatval($value->getTotal());
+						$value->setId_venta('BORRADO');
+					}
+
+				}
+			}
+
+			$total_total_ventas_contado = floatval($total_total_ventas_contado) + floatval($total_ventas_contado);
+
+			$total_total_ventas_omp = floatval($total_total_ventas_omp) + floatval($total_ventas_omp);
+
+			$total_total_ventas_total = floatval($total_total_ventas_total) + floatval($total_ventas_total);
+
+			$resultado_final[] = [$nombre_local,$total_ventas_contado,$total_ventas_omp,$total_ventas_total];
+
+			$total_ventas_contado = 0;
+			$total_ventas_omp = 0;
+			$total_ventas_total = 0; 
+		}
+		 
+		foreach ($resultado_final as $key => $value) {
+ 			
+ 			$tpl->newBlock("filas_tabla");
+ 			$tpl->newBlock("datos_fila_tabla_global");
+ 			
+ 			$tpl->assign("dato_fila0",$value[0]);
+ 			$tpl->assign("dato_fila1",$value[1]);
+ 			$tpl->assign("dato_fila2",$value[2]);
+ 			$tpl->assign("dato_fila3",$value[3]);
+		}
+
+		
+		$tpl->newBlock("total_global");
+		$tpl->assign("cantidad_columnas",count($opciones));
+		$tpl->assign("total_total_ventas_contado",$total_total_ventas_contado);
+ 		$tpl->assign("total_total_ventas_omp",$total_total_ventas_omp);
+ 		$tpl->assign("total_total_ventas_total",$total_total_ventas_total);
+
+ 		$respuesta_gs = reporte::reporte_gs(0,$fecha_desde,$fecha_hasta);
+ 		$total_egresos = 0;
+ 		$total_gs_unico = 0;
+ 		$tpl->newBlock("gastos_tabla_global");
+
+ 		foreach ($respuesta_gs as $key => $value) {
+ 			$nombre_gs = $value[0][0];
+ 			$detalles_gs = $value[1];
+
+ 			$tpl->newBlock("filas_tabla_gs");
+ 			$tpl->assign("nombre_gasto",strtoupper($nombre_gs));
+
+ 			foreach ($detalles_gs as $key2 => $value2) {
+ 				$nombre_detalle_gs = $value2->getnombre();
+ 				$fecha_gs = $value2->getFecha_hora();
+
+ 				$fecha_gs = explode(" ", $fecha_gs);
+ 				$fecha_gs = $fecha_gs[0];
+
+
+ 				$monto_gs = $value2->getValor();
+ 				 
+ 				$total_gs_unico = $total_gs_unico + $monto_gs;
+
+ 			}
+ 			$tpl->assign("total",$total_gs_unico);
+ 			
+ 			$total_egresos = $total_egresos + $total_gs_unico;
+ 			$total_gs_unico = 0;
+ 		}
+ 		$tpl->newBlock("total_gs_global");
+ 		$tpl->assign("total_gastos",$total_egresos);
+ 		
+
+		if ($sb) {
+
+			$tpl->newBlock("boton_pdf_global");
+			$tpl->assign("fecha_mes_anio",$fecha_mes_anio);
+
+		}
+		return $tpl->getOutputContent();
+
+	}
+
+	public static function encabezado_reporte($titulo,$fecha_desde,$fecha_hasta){
 		$encabezado = new TemplatePower("template/reportes/encabezados.html");
 		$encabezado->prepare();
 		$encabezado->newBlock("encabezado_reporte_1");
 		$ot_cl = ot_cliente::generar($_SESSION["usuario"]->getId_user());
 		$nombre_cliente = $ot_cl->getNombre();
 		$encabezado->assign("nombre_cliente",$nombre_cliente);
-		$encabezado->assign("titulo",'Reporte Global');
+		$encabezado->assign("titulo",$titulo);
 		$usuario = $_SESSION["usuario"]->getUsuario();
 		$encabezado->assign("usuario",$usuario);
 		$hoy = getdate();
@@ -134,9 +299,16 @@ class Reportes_Controller{
 
 		$encabezado->assign("fecha_desde",'('.$dia_desde.') '.$fecha_desde);
 		$encabezado->assign("fecha_hasta",'('.$dia_hasta.') '.$fecha_hasta);
+		return $encabezado->getOutputContent();
+	}
 
+	public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = true){
+		$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
+		
+		$tpl = new TemplatePower("template/reportes/tabla.html");
+		$tpl->prepare();
 
-		$encabezado_html =  $encabezado->getOutputContent();
+		$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global Detallado',$fecha_desde,$fecha_hasta);
 		$tpl->assign("encabezado",$encabezado_html);
 
 		if (isset($_SESSION['locales'])) {
@@ -225,13 +397,13 @@ class Reportes_Controller{
 			
 			$fecha_desde_dia_array_ = explode('-', $fecha_desde);
 			$fecha_hasta_dia_array_ = explode('-', $fecha_hasta);
-			 
 
-			$fecha_desde_dia = $fecha_desde_dia_array_[2];
-			$fecha_hasta_dia = $fecha_hasta_dia_array_[2];
-			
-			$diff_dias = $fecha_hasta_dia -  $fecha_desde_dia;
-			$diff_dias = $diff_dias +1;
+
+			$datetime1 = date_create($fecha_desde);
+			$datetime2 = date_create($fecha_hasta);
+			$interval = date_diff($datetime1, $datetime2);
+
+			$diff_dias = intval($interval->format('%a')) +1;
 			$tpl->assign("cantidad_dias",$diff_dias);
 			$tpl->assign("total_ventas_promedio",round(($total_ventas /$diff_dias),2));
 
@@ -252,7 +424,7 @@ class Reportes_Controller{
 
 					$fecha_gs = explode(" ", $fecha_gs);
 					$fecha_gs = $fecha_gs[0];
-					 
+
 
 					$monto_gs = $value2->getValor();
 					$tpl->newBlock("filas_tabla_gs");
@@ -359,7 +531,7 @@ class Reportes_Controller{
 			$tpl->assign("total_ventas_otros_medios",$total_ventas_nocontado);
 			*/
 			if ($sb) {
-				 
+
 				$tpl->newBlock("boton_pdf");
 				$tpl->assign("fecha_desde",$fecha_desde);
 				$tpl->assign("fecha_hasta",$fecha_hasta);
