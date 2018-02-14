@@ -154,7 +154,7 @@
 				</div>
 				<div class="cleearfix"></div>
 					<div class="col-md-2 col-xs-6">
-						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#rps_">Reporte Por Semana</button>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#rps_">Reporte Global</button>
 					</div>
 				
 				
@@ -363,7 +363,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span id = "cerrar_modal" aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel">Seleccione un Mes</h4>
+						<h4 class="modal-title" id="myModalLabel">Seleccione un Rango de Dias</h4>
 					</div>
 					<div class="modal-body">
 					 	<div class="form_flotante" id="form_art_general">
@@ -371,7 +371,7 @@
 								
 								<h3>Fecha Desde</h3>
 								<div class='input-group date' id='rps_1'>
-			            			<input required placeholder="AAAA-MM-DD HH:MM" name="fecha_desde" type='text' class="form-control" />
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_desde" type='text' class="form-control" />
 			            			<span class="input-group-addon">
 			                			<span class="glyphicon glyphicon-calendar"></span>
 			            			</span>
@@ -382,7 +382,7 @@
 				    	
 								        $('#rps_1').datetimepicker({
 				        
-								        	format: 'YYYY-MM-DD HH:MM'
+								        	format: 'YYYY-MM-DD'
 
 
 								        });
@@ -391,7 +391,7 @@
 
 								<h3>Fecha Hasta</h3>
 								<div class='input-group date' id='rps_2'>
-			            			<input required placeholder="AAAA-MM-DD HH:MM" name="fecha_hasta" type='text' class="form-control" />
+			            			<input required placeholder="AAAA-MM-DD" name="fecha_hasta" type='text' class="form-control" />
 			            			<span class="input-group-addon">
 			                			<span class="glyphicon glyphicon-calendar"></span>
 			            			</span>
@@ -402,7 +402,7 @@
 				    	
 								        $('#rps_2').datetimepicker({
 				        
-								        	format: 'YYYY-MM-DD HH:MM'
+								        	format: 'YYYY-MM-DD'
 
 
 								        });

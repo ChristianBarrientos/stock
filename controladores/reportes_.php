@@ -1,5 +1,4 @@
 <?php
-require_once 'php_recurso/dompdf/autoload.inc.php';
 use Dompdf\Dompdf;
 //require __DIR__.'/../vendor/autoload.php';
 //use Spipu\Html2Pdf\Html2Pdf;
@@ -14,7 +13,10 @@ class Reportes_Controller{
 				$dompdf = new Dompdf();
 
 				//$html = file_get_contents("tabla.html");
+				$html = preg_replace('/>\s+</', '><', $html);
+
 				$html=utf8_decode($html);
+
 				$dompdf->loadHtml($html);
 				//ini_set("memory_limit","128M");
 				$dompdf->setPaper('A4');
@@ -118,15 +120,20 @@ class Reportes_Controller{
 		$encabezado = new TemplatePower("template/reportes/encabezados.html");
 		$encabezado->prepare();
 		$encabezado->newBlock("encabezado_reporte_1");
-
+		$ot_cl = ot_cliente::generar($_SESSION["usuario"]->getId_user());
+		$nombre_cliente = $ot_cl->getNombre();
+		$encabezado->assign("nombre_cliente",$nombre_cliente);
 		$encabezado->assign("titulo",'Reporte Global');
 		$usuario = $_SESSION["usuario"]->getUsuario();
 		$encabezado->assign("usuario",$usuario);
 		$hoy = getdate();
 		$ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
 		$encabezado->assign("fecha_actual",$ahora);
-		$encabezado->assign("fecha_desde",$fecha_desde);
-		$encabezado->assign("fecha_hasta",$fecha_hasta);
+		$dia_desde = Reportes_Controller::obtener_dia($fecha_desde);
+		$dia_hasta = Reportes_Controller::obtener_dia($fecha_hasta);
+
+		$encabezado->assign("fecha_desde",'('.$dia_desde.') '.$fecha_desde);
+		$encabezado->assign("fecha_hasta",'('.$dia_hasta.') '.$fecha_hasta);
 
 
 		$encabezado_html =  $encabezado->getOutputContent();
@@ -135,7 +142,7 @@ class Reportes_Controller{
 		if (isset($_SESSION['locales'])) {
 			$cantidad_locales = count($_SESSION['locales']);
 			$tpl->newBlock("columna_tabla");
-			$tpl->assign("nombre_columna",'Dias');
+			$tpl->assign("nombre_columna",'DIAS');
 
 			foreach ($_SESSION['locales'] as $key2 => $value2) {
 
@@ -215,8 +222,18 @@ class Reportes_Controller{
 			$tpl->newBlock("total_ventas");
 			$tpl->assign("cantidad_locales",$cantidad_locales + 1);
 			$tpl->assign("total_ventas",round($total_ventas,2));
+			
+			$fecha_desde_dia_array_ = explode('-', $fecha_desde);
+			$fecha_hasta_dia_array_ = explode('-', $fecha_hasta);
+			 
 
-			$tpl->assign("total_ventas_promedio",round(($total_ventas /6),2));
+			$fecha_desde_dia = $fecha_desde_dia_array_[2];
+			$fecha_hasta_dia = $fecha_hasta_dia_array_[2];
+			
+			$diff_dias = $fecha_hasta_dia -  $fecha_desde_dia;
+			$diff_dias = $diff_dias +1;
+			$tpl->assign("cantidad_dias",$diff_dias);
+			$tpl->assign("total_ventas_promedio",round(($total_ventas /$diff_dias),2));
 
 
 			$respuesta_gs = reporte::reporte_gs(0,$fecha_desde,$fecha_hasta);
@@ -232,6 +249,11 @@ class Reportes_Controller{
 				foreach ($detalles_gs as $key2 => $value2) {
 					$nombre_detalle_gs = $value2->getnombre();
 					$fecha_gs = $value2->getFecha_hora();
+
+					$fecha_gs = explode(" ", $fecha_gs);
+					$fecha_gs = $fecha_gs[0];
+					 
+
 					$monto_gs = $value2->getValor();
 					$tpl->newBlock("filas_tabla_gs");
 					$tpl->assign("fecha_gasto",$fecha_gs);
@@ -268,7 +290,7 @@ class Reportes_Controller{
 			
 			$medios_pago_user = array_unique($medios_pago_user);
 			$total_ventas_mp_nocontado = 0;
-
+			$total_ventas_nocontado = 0;
 			foreach ($medios_pago_user as $key => $value) {
 
 
@@ -300,12 +322,16 @@ class Reportes_Controller{
 									$nrocomp = $rg_detalle_array[0];
 									$local = $rg_detalle_array[3];
 
+									$local_genera = art_local::generar_local_2($local);
+									$local = $local_genera->getNombre();
 
 								}else{
 									$nrocomp = 's/d';
 									$local = 's/d';
 								}
 								$fecha_venta = $value2->getFecha_hora();
+								$fecha_venta = explode(" ", $fecha_venta);
+								$fecha_venta = $fecha_venta[0];
 								$total_res = $value2->getTotal();
 								
 								$tpl->newBlock("filas_tabla_nocontado");
@@ -325,12 +351,15 @@ class Reportes_Controller{
 				$tpl->newBlock("total_nocontado");
 				$tpl->assign("nombre_mp",$value);
 				$tpl->assign("total_por_mp",$total_ventas_mp_nocontado);
+				$total_ventas_nocontado = $total_ventas_nocontado + $total_ventas_mp_nocontado;
 				$total_ventas_mp_nocontado = 0;
 
 			}
+			/*$tpl->newBlock("total_total_nocontado");
+			$tpl->assign("total_ventas_otros_medios",$total_ventas_nocontado);
+			*/
 			if ($sb) {
 				 
-			
 				$tpl->newBlock("boton_pdf");
 				$tpl->assign("fecha_desde",$fecha_desde);
 				$tpl->assign("fecha_hasta",$fecha_hasta);

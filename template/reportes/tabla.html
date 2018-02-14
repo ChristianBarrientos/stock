@@ -1,12 +1,28 @@
-{encabezado}
+<head>
+  {encabezado}
+  <meta charset="UTF-8">
+  <title>Otium</title>
+  <style type="text/css">
+    .separacion_td{
+      border: 2px solid red;
+    }
+    .subraya{
+      text-decoration: underline ;
+    }
+    /*.separacion_td strong{
+       
+      background-color: #AAE833;
+    }*/
+  </style>
+</head>
 <!-- START BLOCK : boton_pdf -->
 <a href="index.php?action=Reportes::armar_pdf&clave_reporte=1&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}">
   <button type="button" class="btn btn-primary">Generar PDF</button>
 </a>
 <!-- END BLOCK : boton_pdf -->
 <div align="center">
-  <h1>INGRESOS</h1>
-  <table cellpadding="15" class="table table-bordered " align="center">
+  <h2 class="subraya">INGRESOS</h2>
+  <table cellpadding="10" class="table table-bordered " align="center">
     <thead>
       <tr>
         <!-- START BLOCK : columna_tabla -->
@@ -38,9 +54,9 @@
       <!-- START BLOCK : total_ventas -->
       <tr id="venta_total">
 
-        <td  colspan='{cantidad_locales}' >
-          <strong> Total: $  {total_ventas}</strong> 
-          <strong> Promedio en 6 Dias: $  {total_ventas_promedio}</strong> 
+        <td class="separacion_td" colspan='{cantidad_locales}' >
+          <strong> Total: $  {total_ventas}</strong> --
+          <strong> Promedio en {cantidad_dias} Dias: $  {total_ventas_promedio} p/dia</strong> --
           <strong> Medio Pago: CONTADO - EFECTIVO</strong>
         </td>
 
@@ -51,12 +67,12 @@
   </table>
 
 </div>
-
+<div style="page-break-after:always;"></div>
 <div align="center">
-  <h1>EGRESOS</h1>
+  <h2 class="subraya">EGRESOS</h2>
   <!-- START BLOCK : gastos_tabla -->
   <h4 align="left">{titulo_gasto}</h4>
-  <table cellpadding="15" class="table table-bordered " align="center">
+  <table cellpadding="10" class="table table-bordered ">
     <thead>
       <tr>
 
@@ -70,7 +86,9 @@
       <!-- START BLOCK : filas_tabla_gs -->
       <tr>
 
-        <td>{fecha_gasto}</td>
+        <td>
+          <p>{fecha_gasto}</p>
+        </td>
         <td>{nombre_subagsto}</td>
         <td>{subtotal}</td>
 
@@ -80,7 +98,7 @@
       <!-- START BLOCK : total_gs -->
       <tr>
 
-        <td  colspan='3' >
+        <td  class="separacion_td" colspan='3' >
           <strong> Total: $  {total_gsunico_valor}</strong> 
 
         </td>
@@ -98,11 +116,11 @@
 
 <!-- START BLOCK : ventas_nocontado -->
 <div align="center">
-  <h3>Ventas con TARJETAS - CREDITOS - CHEQUES</h3>
+  <h2 class="subraya">Ventas con Otros Medios</h2>
   
   <!-- START BLOCK : tabla_nocontado -->
   <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
-  <table cellpadding="15" class="table table-bordered " align="center">
+  <table cellpadding="10" class="table table-bordered ">
     <thead>
       <tr>
 
@@ -117,7 +135,9 @@
       <!-- START BLOCK : filas_tabla_nocontado -->
       <tr>
         <td>{local}</td>
-        <td>{fecha_gasto}</td>
+        <td>
+          <p>{fecha_gasto}</p>  
+        </td>
         <td>{nrocomp}</td>
         <td>$ {monto}</td>
 
@@ -127,8 +147,9 @@
       <!-- START BLOCK : total_nocontado -->
       <tr>
 
-        <td  colspan='3' >
+        <td class="separacion_td" colspan='3' >
           <strong align="left"> Total de ventas con {nombre_mp}: $  {total_por_mp}</strong> 
+
 
         </td>
 
@@ -139,7 +160,12 @@
   </table>
   <!-- END BLOCK : tabla_nocontado -->
 
+<!-- START BLOCK : total_total_nocontado -->
+<p>
+  <strong align="left"> <h3>Total de ventas con OTROS MEDIOS</h3>: $  {total_ventas_otros_medios}</strong> 
+</p>
 
+<!-- END BLOCK : total_total_nocontado -->
 </div>
 <!-- END BLOCK : ventas_nocontado -->
 

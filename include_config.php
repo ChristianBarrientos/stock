@@ -83,6 +83,9 @@ include('php_recurso/class.TemplatePower.inc.php');
 include('php_recurso/filtrar/class.inputfilter.php');
 include('php_recurso/cadenas.php');
 include('php_recurso/fpdf/fpdf.php');
+
+include ('php_recurso/dompdf/autoload.inc.php');
+
 //include('php_recurso/cb/barcode.php');
 
 

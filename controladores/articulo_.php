@@ -2875,7 +2875,15 @@ public static function actualizar_precio_lote(){
         $fecha_venta = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
         $id_usuario = $_SESSION["usuario"]->getId_user();
         
-        $id_venta = art_venta::alta($fecha_venta,$id_usuario,$id_gmedio_next,$total,$cuotas);
+        $nro_comp_rg = art_venta::ultimo_id();
+        $nro_art_rg = art_unico::ultimo_id_unico();
+        $total_rg = $total;
+        $id_local_rg  = $id_local;
+        $id_usuario_rg = $id_usuario;
+
+        $rg_detalle = $nro_comp_rg.','.$nro_art_rg.','.$total_rg.','.$id_local_rg.','.$id_usuario_rg;
+         
+        $id_venta = art_venta::alta($fecha_venta,$id_usuario,$id_gmedio_next,$total,$cuotas,'null','null',$rg_detalle);
         if ($id_venta) {
                         //Alta art_unico
             $id_unico = art_unico::alta_art_unico($id_gunico_next,$id_venta);

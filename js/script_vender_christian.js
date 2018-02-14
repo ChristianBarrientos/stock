@@ -209,7 +209,7 @@ function art_obtener(){
       contentType: false,
       processData: false,
     success: function(Respuesta){ 
-    
+       
       var valores = JSON.parse(Respuesta);
       
       if (valores.status == 'ok') {
