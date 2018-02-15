@@ -128,3 +128,8 @@ ALTER TABLE art_venta add rg_detalle VARCHAR(50) NULL;
 //09/02/18 AGREGADO EN CASSARO
 
 ALTER TABLE art_venta add rg_detalle VARCHAR(50) NULL;
+
+//15/02/2018
+Instalar en els erver
+apt-get install php7.0-mbstring
+para que anda dompdf

@@ -356,11 +356,13 @@ class Reportes_Controller{
 						$rg_detalle_array = explode(',', $rg_detalle);
 
 						$id_local_resp = $rg_detalle_array[3];
+
 						$fecha_venta = $value3->getFecha_hora();
 						$dia_de_venta = Reportes_Controller::obtener_dia($fecha_venta);
 						$medio_pago_venta_nombre = $value3->getId_gmedio_pago()->getRg_detalle(); 
-						if (((strpos(strtoupper($medio_pago_venta_nombre),'CONTADO')) ||  (strpos(strtoupper($medio_pago_venta_nombre),'EFECTIVO')))) {
 
+						if (((strpos(strtoupper($medio_pago_venta_nombre),'CONTADO')) == 0 ||  (strpos(strtoupper($medio_pago_venta_nombre),'EFECTIVO')) == 0)) {
+							
 
 							if (($id_local_resp == $id_local) && (strcmp($value,$dia_de_venta) == 0 )  )  {
 
@@ -368,6 +370,7 @@ class Reportes_Controller{
 								$ventas_del_dia_aux = $ventas_del_dia_aux + $total_res;
 							}
 						}else{
+
 							$ventas_nocontado[] = $value3;
 						}
 					}
@@ -380,20 +383,9 @@ class Reportes_Controller{
 			}
 			$counter = 0;
 
-			for ($i=0; $i < count($ventas_local_dias); $i+=4) { 
+			if (($cantidad_locales == 4)) {
 
-				if ($cantidad_locales == 1) {
-
-					$tpl->newBlock("filas_tabla");
-					$tpl->newBlock("datos_fila_tabla_1");
-					$tpl->assign("dato_fila0",$dias[$counter]);
-					$tpl->assign("dato_fila1",$ventas_local_dias[$i]);
-					$counter = $counter + 1 ;
-
-				}
-
-				if ($cantidad_locales == 4) {
-
+				for ($i=0; $i < count($ventas_local_dias); $i+=4) {
 					$tpl->newBlock("filas_tabla");
 					$tpl->newBlock("datos_fila_tabla_3");
 					$tpl->assign("dato_fila0",$dias[$counter]);
@@ -409,6 +401,19 @@ class Reportes_Controller{
 
 				}
 			}
+
+			if ($cantidad_locales == 1) {
+
+				for ($i=0; $i < count($ventas_local_dias); $i++) { 
+					$tpl->newBlock("filas_tabla");
+					$tpl->newBlock("datos_fila_tabla_1");
+					$tpl->assign("dato_fila0",$dias[$counter]);
+					$tpl->assign("dato_fila1",$ventas_local_dias[$i]);
+					$counter = $counter + 1 ;
+					 
+				}
+			} 
+
 			$tpl->newBlock("total_ventas");
 			$tpl->assign("cantidad_locales",$cantidad_locales + 1);
 			$tpl->assign("total_ventas",round($total_ventas,2));
@@ -468,7 +473,7 @@ class Reportes_Controller{
 			$nombre_cliente = $ot_cl->getNombre();
 
 			$tpl->newBlock("ventas_nocontado");
-
+			 
 			$medios_pago_user = array();
 			foreach ($ventas_nocontado as $key => $value) {
 				$rg_detalle_mp = $value->getId_gmedio_pago()->getRg_detalle();
@@ -481,6 +486,7 @@ class Reportes_Controller{
 			$medios_pago_user = array_unique($medios_pago_user);
 			$total_ventas_mp_nocontado = 0;
 			$total_ventas_nocontado = 0;
+
 			foreach ($medios_pago_user as $key => $value) {
 
 
@@ -494,13 +500,14 @@ class Reportes_Controller{
 					$rg_detalle_mp_array = explode(',', $rg_detalle_mp);
 					$nombre_mp = $rg_detalle_mp_array[0];
 					
-
+					
 					if (strcmp(strtoupper($nombre_mp),strtoupper($value)) == 0) {
 
-						if (strcmp($nombre_cliente,'MOTOMATCH') == 0 ) {
+						//if (strcmp($nombre_cliente,'MOTOMATCH') == 0 ) {
 							$id_venta = $value2->getId_venta();
 							//CONSUME MUCHOS RECURSOR VER OTRA MANERA DE QUE NO RECCORRA DOS VECES LO MISMO
 							if ($id_venta == 'BORRADO') {
+
 								continue;
 							}else{
 
@@ -523,7 +530,7 @@ class Reportes_Controller{
 								$fecha_venta = explode(" ", $fecha_venta);
 								$fecha_venta = $fecha_venta[0];
 								$total_res = $value2->getTotal();
-								
+								 
 								$tpl->newBlock("filas_tabla_nocontado");
 								$tpl->assign("local",$local);
 								$tpl->assign("fecha_gasto",$fecha_venta);
@@ -533,7 +540,7 @@ class Reportes_Controller{
 								$total_ventas_mp_nocontado = $total_ventas_mp_nocontado + $total_res; 
 								$value2->setId_venta('BORRADO');
 							}
-						}
+						//}
 
 					}
 				}
