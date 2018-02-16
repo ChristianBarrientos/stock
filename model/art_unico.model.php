@@ -61,6 +61,26 @@ class art_unico {
             return false;
         }
     }
+
+    public static function obtener_por($id_venta){
+        global $baseDatos;
+        $res = $baseDatos->query("SELECT * FROM `art_unico` WHERE id_venta = $id_venta");  
+        $res_fil = $res->fetch_assoc();
+
+         
+        if (count($res_fil) != 0) {
+            //$id_categoria, $nombre, $valor,$descripcion
+            $id_gunico =  art_gunico::generar($res_fil['id_gunico']);
+            $id_venta = art_venta::generar($res_fil['id_venta']);
+            $unico = new art_unico($res_fil['id_unico'],$id_gunico,$id_venta);
+            
+            return $unico;
+        }
+        else{
+            
+            return false;
+        }
+    }
     
 
     public function getId_unico()

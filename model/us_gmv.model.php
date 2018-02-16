@@ -61,6 +61,27 @@ class us_gmv {
         
     }
 
+    public static function obtener_por($id_gs_mv){
+        //obtener empleados por local
+        global $baseDatos;
+
+        $res = $baseDatos->query("SELECT * FROM `us_gmv` WHERE id_gs_mv = $id_gs_mv");  
+
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0){
+            
+            $id_gs_mv = gs_gasto_unico::generar($res_fil['id_gs_mv']);
+            $us_gmv = new us_gmv($res_fil['id_gmv'],$id_gs_mv);
+            return $us_gmv;
+
+        }
+        else{
+           
+            return false;
+        }
+        
+    }
+
     public static function generar($id_gmv){
         //obtener empleados por local
         global $baseDatos;

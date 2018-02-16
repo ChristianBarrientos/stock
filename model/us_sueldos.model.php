@@ -109,6 +109,31 @@ class us_sueldos {
        
     }
 
+    public static function obtener_por($id_gmv){
+        //obtener empleados por local
+        global $baseDatos;
+         
+        $res = $baseDatos->query("SELECT * FROM `us_sueldos` WHERE id_gmv = $id_gmv ");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            $us_sueldos = array();
+
+            foreach ($filas as $clave => $valor) {
+                $id_gmv = us_gmv::generar($valor['id_gmv']);
+                $id_usuario = usuario::generar_usuario($valor['id_usuario']);
+                $us_sueldos [] = new us_sueldos($valor['id_sueldo'],$id_usuario,$id_gmv,$valor['basico'],$valor['aguinaldo']);
+            }
+
+            return $us_sueldos;
+        }
+        else{
+
+            return false;
+        }
+       
+    }
+
+
     public static function update($id_sueldo, $columna, $nuevo_valor){
         //obtener empleados por local
         global $baseDatos;

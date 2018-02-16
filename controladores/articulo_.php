@@ -221,10 +221,10 @@ class Articulo_Controller{
                             $tpl->assign("attr",'Sin Atributos.');
                         }
 
-                                    //Obtener Codigo de barras
+                                    
                         
                         if ($value->getId_cb() != null) {
-                                        # code...
+                                        
                             $codigo_barras = $value->getId_cb();
                         }
                         

@@ -28,6 +28,12 @@
   <button type="button" class="btn btn-primary">Generar PDF</button>
 </a>
 <!-- END BLOCK : boton_pdf_global -->
+
+<!-- START BLOCK : boton_pdf_ventas -->
+<a href="index.php?action=Reportes::armar_pdf&clave_reporte=3&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}&medio_pago={medio_pago}&local={local}">
+  <button type="button" class="btn btn-primary">Generar PDF</button>
+</a>
+<!-- END BLOCK : boton_pdf_ventas -->
 <div class="container-fluid" align="center">
   <h2 class="subraya">INGRESOS</h2>
   <table cellpadding="10" class="table table-bordered " align="center">
@@ -41,21 +47,23 @@
     <tbody>
       <!-- START BLOCK : filas_tabla -->
       <tr>
-        
-        <!-- START BLOCK : datos_fila_tabla_global -->
+       
+
+
+        <!-- START BLOCK : datos_fila_tabla_4 -->
         <td>{dato_fila0}</td>
         <td>{dato_fila1}</td>
         <td>{dato_fila2}</td>
         <td>{dato_fila3}</td>
-        <!-- END BLOCK : datos_fila_tabla_global -->
-
+        <td>{dato_fila4}</td>
+        <!-- END BLOCK : datos_fila_tabla_4 -->
 
         <!-- START BLOCK : datos_fila_tabla_3 -->
         <td>{dato_fila0}</td>
         <td>{dato_fila1}</td>
         <td>{dato_fila2}</td>
         <td>{dato_fila3}</td>
-        <td>{dato_fila4}</td>
+         
         <!-- END BLOCK : datos_fila_tabla_3 -->
 
         <!-- START BLOCK : datos_fila_tabla_1 -->
@@ -79,13 +87,24 @@
       </tr>
       <!-- END BLOCK : total_ventas -->
 
+      <!-- START BLOCK : total_ventas_2 -->
+      <tr id="venta_total">
+
+        <td class="separacion_td" colspan='{cantidad_columnas}' >
+          <strong> Total: $  {total_ventas}</strong> --
+           
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_ventas_2 -->
+
       <!-- START BLOCK : total_global -->
       <tr id="venta_total">
 
         <td class="separacion_td" colspan='{cantidad_columnas}' >
           <strong> Total Contado-Efectivo: $  {total_total_ventas_contado}</strong> --
           <strong> Total Otros Medios: $  {total_total_ventas_omp}</strong> --
-          <strong> Total Capital Acumulado: $  {total_total_ventas_total}</strong> 
+          <strong> Total Ventas del Mes: $  {total_total_ventas_total}</strong> 
           
         </td>
 
@@ -116,7 +135,7 @@
     <tbody>
       <!-- START BLOCK : filas_tabla_gs_detallado -->
       <tr>
-
+    
         <td>
           <p>{fecha_gasto}</p>
         </td>
@@ -140,6 +159,51 @@
     </tbody>
   </table>
   <!-- END BLOCK : gastos_tabla -->
+
+  <!-- START BLOCK : gastos_tabla_sueldo --> 
+  <h4 align="left">{titulo_gasto}</h4>
+  <table cellpadding="10" class="table table-bordered ">
+    <thead>
+      <tr>
+
+        <th>Empleado</th> 
+        <th>Basico</th> 
+        <th>Total Anticipos</th> 
+        <th>Aguinaldo</th> 
+        <th>Neto a Cobrar</th> 
+        
+      </tr>
+    </thead>
+    <tbody>
+      <!-- START BLOCK : filas_tabla_gs_detallado_sl -->
+      <tr>
+         
+        <td><p>{nombre_emp_sl}</p></td>
+        <td>{basico_emp_sl}</td>
+        <td>{total_anticipos_emp_sl}</td>
+        <td>{aguinaldo_emp_sl}</td>
+        <td>{neto_cobrar_emp_sl}</td>
+
+
+      </tr>
+      <!-- END BLOCK : filas_tabla_gs_detallado_sl -->
+      
+      <!-- START BLOCK : total_gs_sueldo -->
+      <tr>
+
+        <td  class="separacion_td" colspan='3' >
+          <strong> Total de Sueldos: $  {total_sueldos}</strong> 
+          <strong> Total de Anticipos: $  {total_sueldos_anticipos}</strong> 
+          <strong> Total a Pagar: $  {total_sueldos_neto}</strong> 
+
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_gs_sueldo -->
+
+    </tbody>
+  </table>
+  <!-- END BLOCK : gastos_tabla_sueldo -->
 
   <!-- START BLOCK : gastos_tabla_global --> 
   <h4 align="left">{titulo_gasto}</h4>
@@ -186,7 +250,9 @@
 
 
 <div class="container-fluid" align="center">
+  <!-- START BLOCK : titulo_otros_medios -->
   <h2 class="subraya">Ventas con Otros Medios</h2>
+  <!-- END BLOCK : titulo_otros_medios -->
 <!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
   <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
