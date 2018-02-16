@@ -219,14 +219,15 @@ class Reportes_Controller{
 				$nombres_mp =  $nombre_mp;
 			}
 			
-			$mp_generado = art_venta_medio_pago::generar($mp);
-			$mp_generado_nombre = $mp_generado->getNombre();
+			if ($mp != 0) {
+				$mp_generado = art_venta_medio_pago::generar($mp);
+				$mp_generado_nombre = $mp_generado->getNombre();
 
-			if (!(strcmp($mp_generado_nombre,$nombres_mp ) == 0)) {
-				
-				continue;
+				if (!(strcmp($mp_generado_nombre,$nombres_mp ) == 0)) {
+					
+					continue;
+				}
 			}
-
 
 			$art_unico = art_unico::obtener_por($id_venta);
 			if (!$art_unico) {
