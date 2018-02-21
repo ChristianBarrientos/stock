@@ -276,9 +276,11 @@ class reporte {
         $us_ventas = art_venta::obtener($id_jefe);
             
         $us_ventas_filtradas = array();
-        
+        if ($fecha_desde == 0 AND $fecha_hasta == 0) {
+            return $us_ventas;
+        }
         foreach ($us_ventas as $key => $value) {
-
+            
             $fecha2 = explode(" ",$fecha_desde);
             $fecha3 = $fecha2[0];
             $fecha_desde_ = strtotime("$fecha3");
@@ -291,6 +293,7 @@ class reporte {
             if ($fecha_desde_ <= $fecha_hora && $fecha_hasta_ >= $fecha_hora) {
                 $us_ventas_filtradas[] = $value;       
             }    
+
         }
          
         return $us_ventas_filtradas; 

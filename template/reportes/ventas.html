@@ -1,0 +1,98 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Otium</title>
+  <style type="text/css">
+    .separacion_td{
+      border: 2px solid red;
+    }
+    .subraya{
+      text-decoration: underline ;
+    }
+    /*.separacion_td strong{
+       
+      background-color: #AAE833;
+    }*/
+  </style>
+  <!--Queda Pensando con el Bootstrap-->
+  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+</head>
+<!-- START BLOCK : boton_pdf_ventas -->
+<a href="index.php?action=Reportes::armar_pdf&clave_reporte=3&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}&medio_pago={medio_pago}&local={local}">
+  <button type="button" class="btn btn-primary">Generar PDF</button>
+</a>
+<!-- END BLOCK : boton_pdf_ventas -->
+
+<div class="container-fluid" align="center">
+  <h2 class="subraya">Ventas Realizadas</h2>
+  <table cellpadding="10" class="table table-bordered " align="center">
+    <thead>
+      <tr>
+         
+        <th>N°</th> 
+        <th>Articulo</th> 
+        <th>Medio Pago</th> 
+        <th>Precio Final</th> 
+        <th>Fecha y Hora</th> 
+        <th>Operaciones</th> 
+         
+      </tr>
+    </thead>
+    <tbody>
+    <!-- START BLOCK : datos_fila_tabla_4 -->
+      <tr>
+        
+        <td>{dato_fila0}</td>
+        <td>{dato_fila1}</td>
+        <td>{dato_fila2}</td>
+        <td>{dato_fila3}</td>
+        <td>{dato_fila4}</td>
+        <td>
+            <button type="button" class="btn btn-danger btn-md disabled" data-toggle="modal" data-target="#eliminar_venta_{dato_fila5}" id="cargar_marca_btn">
+              Eliminar
+            </button>
+        </td>
+        
+      </tr>
+     <!-- END BLOCK : datos_fila_tabla_4 -->
+      
+      <!-- START BLOCK : total_ventas -->
+      <tr id="venta_total">
+
+        <td class="separacion_td" colspan='{cantidad_locales}' >
+          <strong> Total: $  {total_ventas}</strong> --
+          <strong> Promedio en {cantidad_dias} Dias: $  {total_ventas_promedio} p/dia</strong> --
+          <strong> Medio Pago: CONTADO - EFECTIVO</strong>
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_ventas -->
+
+      <!-- START BLOCK : total_ventas_2 -->
+      <tr id="venta_total">
+
+        <td class="separacion_td" colspan='{cantidad_columnas}' >
+          <strong> Total: $  {total_ventas}</strong> --
+           
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_ventas_2 -->
+
+      <!-- START BLOCK : total_global -->
+      <tr id="venta_total">
+
+        <td class="separacion_td" colspan='{cantidad_columnas}' >
+          <strong> Total Contado-Efectivo: $  {total_total_ventas_contado}</strong> --
+          <strong> Total Otros Medios: $  {total_total_ventas_omp}</strong> --
+          <strong> Total Ventas del Mes: $  {total_total_ventas_total}</strong> 
+          
+        </td>
+
+      </tr>
+      <!-- END BLOCK : total_global -->
+
+
+    </tbody>
+  </table>
+
+</div>
