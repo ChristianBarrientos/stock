@@ -509,7 +509,7 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 	$total_gs_sl = 0;
 	$total_anticipos_emp_sl_final = 0;
 	$tpl->newBlock("gastos_tabla_sueldo");
-	$tpl->assign("titulo_gasto",'Sueldos');
+	$tpl->assign("titulo_gasto",strtoupper('Sueldos'));
 
 	foreach ($respuesta_gs as $key => $value) {
 		$nombre_gs = $value[0][0];
@@ -697,7 +697,18 @@ public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = 
 		}
     	//$ventas_local_dias = new SplFixedArray($cantidad_locales);
 		$ventas_local_dias = array();
-		$dias = array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+		if (condition) {
+			# code...
+		}
+
+		$ot_cl = ot_cliente::generar($_SESSION["usuario"]->getId_user());
+		$nombre_cliente = $ot_cl->getNombre();
+		if ($nombre_cliente == 'MOTOMATCH') {
+			$dias = array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+		}else{
+			$dias = array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+		}
+		
 		$total_ventas = 0;
 		$ventas_nocontado = array();
 		foreach ($dias as $key => $value) {

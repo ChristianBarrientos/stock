@@ -5,14 +5,22 @@
   <style type="text/css">
     /*.separacion_td{
       border: 1px solid red;
-    }
+    }*/
     .subraya{
       text-decoration: underline ;
-    }*/
+    }
     *{
       line-height: 15px;
 
       font-size: 1em;
+    }
+ 
+    table{
+
+        border-collapse: separate;
+        border-spacing: 0px 0px 0px 0px;
+         
+ 
     }
     /*.separacion_td strong{
        
@@ -40,7 +48,7 @@
 </a>
 <!-- END BLOCK : boton_pdf_ventas -->
 <div >
-  <h2 class="subraya">INGRESOS</h2>
+  <h3 class="subraya">INGRESOS</h3>
   <table>
     <thead>
       <tr>
@@ -124,16 +132,17 @@
 
 
 <div>
-  <h2 class="subraya">EGRESOS</h2>
+  <h3 class="subraya">EGRESOS</h3>
 <!-- START BLOCK : gastos_tabla --> 
-  <h4 align="left">{titulo_gasto}</h4>
-  <table>
+  <p align="left">{titulo_gasto}</p>
+  <table id="space">
     <thead>
       <tr>
 
-        <th>Fecha</th> 
-        <th colspan='2'>Nombre</th> 
-        <th>Monto</th> 
+        <th colspan='6'>Fecha</th> 
+        <th colspan='6'>Nombre</th> 
+        
+        <th colspan='6'>Monto</th> 
         
       </tr>
     </thead>
@@ -141,9 +150,10 @@
       <!-- START BLOCK : filas_tabla_gs_detallado -->
       <tr>
     
-        <td>{fecha_gasto}</td>
-        <td colspan='2'>{nombre_subagsto}</td>
-        <td>{subtotal}</td>
+        <td colspan='6'>{fecha_gasto}</td>
+        <td colspan='6'>{nombre_subagsto}</td>
+        
+        <td colspan='6'>{subtotal}</td>
 
       </tr>
       <!-- END BLOCK : filas_tabla_gs_detallado -->
@@ -164,7 +174,7 @@
   <!-- END BLOCK : gastos_tabla -->
 
   <!-- START BLOCK : gastos_tabla_sueldo --> 
-  <h4 align="left">{titulo_gasto}</h4>
+  <p align="left">{titulo_gasto}</p>
   <table>
     <thead>
       <tr>
@@ -209,7 +219,7 @@
   <!-- END BLOCK : gastos_tabla_sueldo -->
 
   <!-- START BLOCK : gastos_tabla_global --> 
-  <h4 align="left">{titulo_gasto}</h4>
+  <p class="subraya" align="left">{titulo_gasto}</p>
   <table>
     <thead>
       <tr>
@@ -247,18 +257,18 @@
 
 
   <!-- START BLOCK : total_egresos -->
-  <h4 align="left"><strong>Total de Egresos: {total_egresos}</strong></h4>
+  <p align="left"><strong>Total de Egresos: {total_egresos}</strong></p>
   <!-- END BLOCK : total_egresos -->
 </div>
 
 
 <div>
   <!-- START BLOCK : titulo_otros_medios -->
-  <h2 class="subraya">Ventas con Otros Medios</h2>
+  <h3 class="subraya">VENTAS CON OTROS MEDIOS</h3>
   <!-- END BLOCK : titulo_otros_medios -->
 <!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
-  <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
+  <p align="left">Ventas con: <strong>{titulo_nombre_mp}</strong></p>
   <table >
     <thead>
       <tr>
@@ -299,7 +309,7 @@
 
 <!-- START BLOCK : total_total_nocontado -->
 <p>
-  <strong align="left"> <h3>Total de ventas con OTROS MEDIOS</h3>: $  {total_ventas_otros_medios}</strong> 
+  <strong align="left"> <p>Total de ventas con OTROS MEDIOS</p>: $  {total_ventas_otros_medios}</strong> 
 </p>
 
 <!-- END BLOCK : total_total_nocontado -->
