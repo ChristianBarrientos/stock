@@ -664,13 +664,18 @@ public static function encabezado_reporte($titulo,$fecha_desde,$fecha_hasta,$id_
 	
 }
 
+public static function fecha_dma_($fecha){
+	$fecha_dma = explode('-', $fecha);
+	$fcha__ = $fecha_dma[2].'/'.$fecha_dma[1].'/'.$fecha_dma[0];
+	return $fcha__;
+}
 public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = true){
 	$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
 	
 	$tpl = new TemplatePower("template/reportes/tabla.html");
 	$tpl->prepare();
 
-	$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global Detallado',$fecha_desde,$fecha_hasta);
+	$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global Detallado',Reportes_Controller::fecha_dma_($fecha_desde),Reportes_Controller::fecha_dma_($fecha_hasta));
 	$tpl->assign("encabezado",$encabezado_html);
 
 	if (isset($_SESSION['locales'])) {
@@ -820,8 +825,8 @@ public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = 
 				$monto_gs = $value2->getValor();
 
 				$tpl->newBlock("filas_tabla_gs_detallado");
-
-				$tpl->assign("fecha_gasto",$fecha_gs);
+				
+				$tpl->assign("fecha_gasto",Reportes_Controller::fecha_dma_($fecha_gs));
 				$tpl->assign("nombre_subagsto",strtoupper($nombre_detalle_gs));
 				$tpl->assign("subtotal",$monto_gs);
 				$total_gs_unico = $total_gs_unico + $monto_gs;
@@ -907,7 +912,7 @@ public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = 
 
 						$tpl->newBlock("filas_tabla_nocontado");
 						$tpl->assign("local",$local);
-						$tpl->assign("fecha_gasto",$fecha_venta);
+						$tpl->assign("fecha_gasto",Reportes_Controller::fecha_dma_($fecha_venta));
 						$tpl->assign("nrocomp",$nrocomp);
 						$tpl->assign("monto",$total_res);
 

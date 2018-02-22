@@ -3,11 +3,16 @@
   <meta charset="UTF-8">
   <title>Otium</title>
   <style type="text/css">
-    .separacion_td{
-      border: 2px solid red;
+    /*.separacion_td{
+      border: 1px solid red;
     }
     .subraya{
       text-decoration: underline ;
+    }*/
+    *{
+      line-height: 15px;
+
+      font-size: 1em;
     }
     /*.separacion_td strong{
        
@@ -34,9 +39,9 @@
   <button type="button" class="btn btn-primary">Generar PDF</button>
 </a>
 <!-- END BLOCK : boton_pdf_ventas -->
-<div class="container-fluid" align="center">
+<div >
   <h2 class="subraya">INGRESOS</h2>
-  <table cellpadding="10" class="table table-bordered " align="center">
+  <table>
     <thead>
       <tr>
         <!-- START BLOCK : columna_tabla -->
@@ -117,17 +122,17 @@
 
 </div>
 
-<div style="page-break-after:always;"></div>
-<div class="container-fluid" align="center">
+
+<div>
   <h2 class="subraya">EGRESOS</h2>
 <!-- START BLOCK : gastos_tabla --> 
   <h4 align="left">{titulo_gasto}</h4>
-  <table cellpadding="10" class="table table-bordered ">
+  <table>
     <thead>
       <tr>
 
         <th>Fecha</th> 
-        <th>Nombre</th> 
+        <th colspan='2'>Nombre</th> 
         <th>Monto</th> 
         
       </tr>
@@ -136,10 +141,8 @@
       <!-- START BLOCK : filas_tabla_gs_detallado -->
       <tr>
     
-        <td>
-          <p>{fecha_gasto}</p>
-        </td>
-        <td>{nombre_subagsto}</td>
+        <td>{fecha_gasto}</td>
+        <td colspan='2'>{nombre_subagsto}</td>
         <td>{subtotal}</td>
 
       </tr>
@@ -162,7 +165,7 @@
 
   <!-- START BLOCK : gastos_tabla_sueldo --> 
   <h4 align="left">{titulo_gasto}</h4>
-  <table cellpadding="10" class="table table-bordered ">
+  <table>
     <thead>
       <tr>
 
@@ -178,7 +181,7 @@
       <!-- START BLOCK : filas_tabla_gs_detallado_sl -->
       <tr>
          
-        <td><p>{nombre_emp_sl}</p></td>
+        <td>{nombre_emp_sl}</td> 
         <td>{basico_emp_sl}</td>
         <td>{total_anticipos_emp_sl}</td>
         <td>{aguinaldo_emp_sl}</td>
@@ -207,7 +210,7 @@
 
   <!-- START BLOCK : gastos_tabla_global --> 
   <h4 align="left">{titulo_gasto}</h4>
-  <table cellpadding="10" class="table table-bordered ">
+  <table>
     <thead>
       <tr>
 
@@ -249,20 +252,20 @@
 </div>
 
 
-<div class="container-fluid" align="center">
+<div>
   <!-- START BLOCK : titulo_otros_medios -->
   <h2 class="subraya">Ventas con Otros Medios</h2>
   <!-- END BLOCK : titulo_otros_medios -->
 <!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
   <h4 align="left">Ventas con: {titulo_nombre_mp}</h4>
-  <table cellpadding="10" class="table table-bordered ">
+  <table >
     <thead>
       <tr>
 
-        <th>Local</th> 
+        <th colspan='2'>Local</th> 
         <th>Fecha</th> 
-        <th>Nro. Comp</th> 
+        <th colspan='2'>Nro. Comp</th> 
         <th>Monto</th> 
         
       </tr>
@@ -270,11 +273,9 @@
     <tbody>
       <!-- START BLOCK : filas_tabla_nocontado -->
       <tr>
-        <td>{local}</td>
-        <td>
-          <p>{fecha_gasto}</p>  
-        </td>
-        <td>{nrocomp}</td>
+        <td colspan='2'>{local}</td>&nbsp; &nbsp;
+        <td>{fecha_gasto}</td>
+        <td colspan='2'>{nrocomp}</td>
         <td>$ {monto}</td>
 
       </tr>
