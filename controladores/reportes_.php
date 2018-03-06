@@ -525,7 +525,7 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 				$total_anticipos_emp_sl = 0;
 				
 				$neto_cobrar = 0;
-
+				$basico = $value2->getValor();
 				
 				$tpl->assign("nombre_emp_sl",strtoupper($value2->getnombre()));
 				$tpl->assign("basico_emp_sl",strtoupper($value2->getValor()));
@@ -549,11 +549,11 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 				$total_gs_sl = $total_gs_sl + $value2->getValor();
 
 				$_us_gmv = us_gmv::obtener_por($value2->getId_gasto_unico());
-				 
+
 				$_sueldo = us_sueldos::obtener_por($_us_gmv->getId());
 
 				$aguinaldo = $_sueldo[0]->getAguinaldo();
-				$basico = $_sueldo[0]->getBasico();
+				
 				if ($aguinaldo) {
 
 					$aguinaldo = floatval($basico) / 2;
@@ -564,7 +564,7 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 				$tpl->assign("aguinaldo_emp_sl",$aguinaldo);
 				$neto_cobrar = (floatval($basico) + floatval($aguinaldo)) - floatval($total_anticipos_emp_sl);
 				$total_sl_pagar = $total_sl_pagar + $neto_cobrar;
-
+				
 				$tpl->assign("neto_cobrar_emp_sl",round($neto_cobrar,2));
 
 			}
