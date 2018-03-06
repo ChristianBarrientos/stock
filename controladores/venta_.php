@@ -441,8 +441,8 @@ public static function confirmar_alta_parametros_medio(){
             $medio_pago_venta_antigua = $_POST['medio_pago_venta_antigua'];
             $local_venta_antigua = $_POST['local_venta_antigua'];
 
-            //$art_comprobante = $_POST['art_comprobante'];
-            $art_comprobante = 99999;
+            $art_comprobante = $_POST['art_comprobante'];
+            //$art_comprobante = 99999;
             $art_articulo = $_POST['art_articulo'];
             $art_total = $_POST['art_total'];
             $rg_detalle = array();
@@ -451,12 +451,12 @@ public static function confirmar_alta_parametros_medio(){
             //print_r(key($output_comprobante2));
             $id_usuario = $_SESSION['usuario']->getId_user();
             
-            for ($i=0; $i < count($art_comprobante); $i++) { 
-                //$art_comprobante[$i] == 0 OR
-                if (!( $art_articulo[$i] == 0 OR $art_total[$i] == 0)) {
+            for ($i=0; $i < count($art_articulo); $i++) { 
+                //
+                if (!( $art_comprobante[$i] == 0 OR $art_articulo[$i] == 0 OR $art_total[$i] == 0)) {
                     
-                    //$art_comprobante_val = "$art_comprobante[$i]";
-                    $art_comprobante_val = "99999";
+                    $art_comprobante_val = "$art_comprobante[$i]";
+                    //$art_comprobante_val = "99999";
                     $art_articulo_val = "$art_articulo[$i]";
                     $art_total_val = "$art_total[$i]";
                     $local_venta_antigua_val = "$local_venta_antigua";
