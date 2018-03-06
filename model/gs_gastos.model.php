@@ -67,6 +67,30 @@ class gs_gastos {
         }
     }
 
+    public static function obtener_por($id_ggs){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `gs_gastos` WHERE id_ggs = $id_ggs");  
+
+        $res_fil = $res->fetch_assoc();
+       
+        if (count($res_fil) != 0) {
+            $id_gs_des = gs_descripcion::generar_gsdes($res_fil['id_gs_des']);
+            $id_ggs = gs_grupo::generar_ggs($res_fil['id_ggs']);
+           
+            $gasto = new gs_gastos($res_fil['id_gasto'],$res_fil['nombre'],$id_gs_des,$id_ggs,$res_fil['habilitado']);
+
+            
+            return $gasto;  
+        }
+        else{
+            
+            return false;
+        }
+    }
+
+
     public static function update($id_gasto, $columna, $nuevo_valor){
         //obtener empleados por local
         global $baseDatos;

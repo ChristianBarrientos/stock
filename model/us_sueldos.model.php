@@ -95,11 +95,12 @@ class us_sueldos {
             $us_sueldos = array();
 
             foreach ($filas as $clave => $valor) {
+
                 $id_gmv = us_gmv::generar($valor['id_gmv']);
                 $id_usuario = usuario::generar_usuario($valor['id_usuario']);
                 $us_sueldos [] = new us_sueldos($valor['id_sueldo'],$id_usuario,$id_gmv,$valor['basico'],$valor['aguinaldo']);
             }
-
+             
             return $us_sueldos;
         }
         else{

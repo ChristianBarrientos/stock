@@ -14,17 +14,26 @@
 					 	<div class="form_flotante" id="form_art_general">
 					 	
 						<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Gasto::alta_gs_unico&id_gasto={id_gasto_}" method="post">
-
-								
-								<a id="uno_mas_gsdetalle">Añadir nuevo detalle</a>
+						<a id="uno_mas_gsdetalle">Añadir nuevo detalle</a>
 	    <div class="form-group">
 	     <div class="row " id="bloque_gastos_detalles">
 		
+			<!-- START BLOCK : si_sueldos -->
+				<div class="col-md-4 col-sm-3 col-xs-12">
+			      	
+	  				<select required id="sl_emp_id" name="sl_emp_id[]" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"> 
+	  				<!-- START BLOCK : cargar_nombre_empleado -->
+	  				  <option value="{emp_id}">{empl_nombre}</option> 
+	  				<!-- END BLOCK : cargar_nombre_empleado -->
+					      	
+	  				</select>
+				</div>  
+			<!-- END BLOCK : si_sueldos -->
 
-	     <div class="control-label col-md-1 col-sm-1 col-xs-12">
-	      <label  for="gs_unico_nombre">Nombre:</label>
-	      </div>
-	      
+			<!-- START BLOCK : no_sueldos -->
+				<div class="control-label col-md-1 col-sm-1 col-xs-12">
+		      		<label  for="gs_unico_nombre">Nombre:</label>
+		      	</div>
 		    <div>
 		    	<div class="col-md-3 col-sm-3 col-xs-12">
 				    <input type="text" class="form-control" id="gs_unico_nombre" placeholder="Subtitulo del Gasto." name="gs_unico_nombre[]">
@@ -32,7 +41,7 @@
 			    </div>
 
 		    </div>
-
+			<!-- END BLOCK : no_sueldos -->
 		<div class=" control-label col-md-1  col-sm-1 col-xs-12">
 	      <label  for="gs_unico_valor">Valor:</label>
 	      </div>
@@ -73,7 +82,9 @@
 			    </div>
 		    </div>
 				</div>
+				<!-- START BLOCK : id_ggs_bloque -->
 				<input type="number" class ="oculta_inputs2" value ="{id_ggs}" name="id_ggs">
+				<!-- END BLOCK : id_ggs_bloque -->
 
 								<button class="agregar btn btn-primary" type="submit">Agregar</button>
 								

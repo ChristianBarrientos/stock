@@ -260,11 +260,14 @@ public static function alta_gs_unico(){
     $gs_unico_valor = $_POST['gs_unico_valor'];
     $gs_unico_fechahora = $_POST['gs_unico_fechahora'];
 
+    //solo si es sueldo
+    $id_gs_sl_emp = $_POST['sl_emp_id'];
     $gs_unico_des = $_POST['gs_unico_des'];
     
     if (Ingreso_Controller::admin_ok()) {
 
         $gasto = gs_gastos::generar_gasto($id_gasto);
+
         if (!(isset($id_ggs))) {
                 # code...
             $id_ggs = $gasto->getId_ggs()->getId_ggs();
@@ -272,28 +275,62 @@ public static function alta_gs_unico(){
 
         $i = 0;
         $array_gs = array();
-        foreach ($gs_unico_nombre as $key => $value) {
-            $gs_unico_nombre_ = $gs_unico_nombre[$i];
-            $gs_unico_valor_ = $gs_unico_valor[$i];
-            $gs_unico_fechahora_ = $gs_unico_fechahora[$i];
-            $gs_unico_des_ = $gs_unico_des[$i];
+         
+        if (isset($id_gs_sl_emp) && $id_gs_sl_emp != null) {
             
+             
+            foreach ($id_gs_sl_emp as $key => $value) {
+           
+                $user =usuario::obtener_tabla_usuario($id_gs_sl_emp[$i]);
 
-            $id_gasto_unico = gs_gasto_unico::alta($gs_unico_nombre_,$gs_unico_valor_,true,$gs_unico_fechahora_,$gs_unico_des_);
+                $gs_unico_nombre_ = $user->getId_datos()->getNombre().' '.$user->getId_datos()->getApellido();
+                $gs_unico_valor_ = $gs_unico_valor[$i];
+                $gs_unico_fechahora_ = $gs_unico_fechahora[$i];
+                $gs_unico_des_ = $gs_unico_des[$i];
+                 
+                $id_gasto_unico = gs_gasto_unico::alta($gs_unico_nombre_,$gs_unico_valor_,true,$gs_unico_fechahora_,$gs_unico_des_);
+                
+                //Agregar a Sueldos
+
+                $sl_sl = us_sueldos::obtener($id_gs_sl_emp[$i]);
+                 
+                $id_gs_mv = $sl_sl[0]->getId_gmv()->getId();
+                echo "ACAA";
+                print_r($id_gasto_unico);
+                echo "$$";
+                print_r($id_gs_mv);
+                $ok_gmv_sl = us_gmv::agrega($id_gs_mv,$id_gasto_unico);
+
+                $array_gs[] = $id_gasto_unico;
+                $i = $i +1;
             
-            $array_gs[] = $id_gasto_unico;
-            $i = $i +1;
+            }
+
+        }else{
+             foreach ($gs_unico_nombre as $key => $value) {
+           
+                $gs_unico_nombre_ = $gs_unico_nombre[$i];
+                $gs_unico_valor_ = $gs_unico_valor[$i];
+                $gs_unico_fechahora_ = $gs_unico_fechahora[$i];
+                $gs_unico_des_ = $gs_unico_des[$i];
+                 
+                
+
+                $id_gasto_unico = gs_gasto_unico::alta($gs_unico_nombre_,$gs_unico_valor_,true,$gs_unico_fechahora_,$gs_unico_des_);
+                
+                $array_gs[] = $id_gasto_unico;
+                $i = $i +1;
             
+            }
         }
+       
 
         
         
         foreach ($array_gs as $key => $value) {
                 # code...
             if ($value != null) {
-             
-                $okok = gs_grupo::agrega($id_ggs,$value);
-                
+                $okok = gs_grupo::agrega($id_ggs,$value); 
             }
 
         }
@@ -377,8 +414,31 @@ public static function gs_mostrar_detalle(){
         $tpl->prepare();
         $tpl->newBlock("modal_agrega_detalles");
 
-        $tpl->assign("id_gasto_", $gasto->getId_gasto());
-        $tpl->assign("id_ggs", $gasto->getId_ggs()->getId_ggs());
+        if ((strcmp(strtoupper($gasto->getId_gs_des()->getNombre()), 'SUELDOS' ) == 0)) {
+            $tpl->assign("id_gasto_", $gasto->getId_gasto());
+            $tpl->newBlock("si_sueldos");
+            if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
+                foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
+                    if ($valor->getAcceso() == 'OPER') {
+                        $empleados_si = true;
+                        $tpl->newBlock("cargar_nombre_empleado");
+                        $tpl->assign("emp_id",$valor->getId_user());
+                        $tpl->assign("empl_nombre",$valor->getId_datos()->getNombre().' '.$valor->getId_datos()->getApellido());
+                        
+                    }      
+                }
+            }
+            
+            $tpl->newBlock("id_ggs_bloque");
+            $tpl->assign("id_ggs", $gasto->getId_ggs()->getId_ggs());
+        }else{
+            $tpl->newBlock("no_sueldos");
+            $tpl->assign("id_gasto_", $gasto->getId_gasto());
+             
+            $tpl->newBlock("id_ggs_bloque");
+            $tpl->assign("id_ggs", $gasto->getId_ggs()->getId_ggs());
+        }
+        
 
         $tpl->newBlock("btn_agregar_detalle");
         $tpl->newBlock("buscador_visible");

@@ -549,7 +549,7 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 				$total_gs_sl = $total_gs_sl + $value2->getValor();
 
 				$_us_gmv = us_gmv::obtener_por($value2->getId_gasto_unico());
-
+				 
 				$_sueldo = us_sueldos::obtener_por($_us_gmv->getId());
 
 				$aguinaldo = $_sueldo[0]->getAguinaldo();

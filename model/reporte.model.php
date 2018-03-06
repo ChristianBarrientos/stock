@@ -165,7 +165,7 @@ class reporte {
             $gastos_unicos = array();
             $se_agrega = false;
             foreach ($gasto as $key => $value) {
-                # code...
+                
                 $gasto2 = $value->getId_gasto();
 
                 $nombre_gs = $gasto2->getNombre();
