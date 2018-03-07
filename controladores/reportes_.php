@@ -412,7 +412,7 @@ public static function reporte_global($fecha_mes_anio,$sb = true){
 	$tpl = new TemplatePower("template/reportes/tabla.html");
 	$tpl->prepare();
 
-	$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global',$fecha_desde,$fecha_hasta_sig);
+	$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global',Reportes_Controller::fecha_dma_($fecha_desde),Reportes_Controller::fecha_dma_($fecha_hasta));
 	$tpl->assign("encabezado",$encabezado_html);
 	
 	
