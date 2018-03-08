@@ -900,7 +900,7 @@ function enviar_datos_venta(){
 }
 
 function calculo_ganancia(){
-    console.log("Aca");
+     
     let pf = parseFloat($("#art_precio_final").val());
     let pc = parseFloat($("#art_precio_base").val());
     var moneda = String($("#select_art_moneda option:selected").html());
@@ -910,8 +910,9 @@ function calculo_ganancia(){
     if (pf != null && pc != null && pm != null) {
 
         im = (pf/pc) / pm;
+        console.log(im);
         
-        $("#art_ganancia").val(im.toFixed(2));
+        $("#art_ganancia").val(im.toFixed(6));
         
 
 

@@ -3,9 +3,10 @@
   <meta charset="UTF-8">
   <title>Otium</title>
   <style type="text/css">
-    /*.separacion_td{
-      border: 1px solid red;
-    }*/
+   
+    .recuadro{
+      border: 2px solid red;
+    }
     .subraya{
       text-decoration: underline ;
     }
@@ -17,12 +18,22 @@
  
     table{
         border-collapse: separate;
-        border-spacing: 0px 5px 0px 0px;
+        border-spacing: 0px 4px 0px 0px;
     }
-    /*.separacion_td strong{
-       
-      background-color: #AAE833;
-    }*/
+
+    table.egresos{
+        border-collapse: separate;
+        border-spacing: 50px 4px 0px 0px;
+    }
+    
+    table.egresos td.largo{
+        width: 250px;
+        
+    }
+
+  
+      
+    
   </style>
   <!--Queda Pensando con el Bootstrap-->
   <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
@@ -46,7 +57,7 @@
 <!-- END BLOCK : boton_pdf_ventas -->
 <div >
   <h3 class="subraya">INGRESOS</h3>
-  <table >
+  <table class="borde_tabla">
     <thead>
       <tr>
         <!-- START BLOCK : columna_tabla -->
@@ -88,8 +99,8 @@
       <!-- START BLOCK : total_ventas -->
       <tr id="venta_total">
 
-        <td width="200px" class="separacion_td" colspan='{cantidad_locales}' >
-          <strong> Total: $  {total_ventas}</strong> --
+        <td width="200px"  colspan='{cantidad_locales}' >
+          <strong class="recuadro"> Total: $  {total_ventas}</strong> --
           <strong> Promedio en {cantidad_dias} Dias: $  {total_ventas_promedio} p/dia</strong> --
           <strong> Medio Pago: CONTADO - EFECTIVO</strong>
         </td>
@@ -100,8 +111,8 @@
       <!-- START BLOCK : total_ventas_2 -->
       <tr id="venta_total">
 
-        <td class="separacion_td" colspan='{cantidad_columnas}' >
-          <strong> Total: $  {total_ventas}</strong> --
+        <td   colspan='{cantidad_columnas}' >
+          <strong class="recuadro"> Total: $  {total_ventas}</strong> --
            
         </td>
 
@@ -114,7 +125,7 @@
         <td class="separacion_td" width="200px" colspan='{cantidad_columnas}' >
           <strong> Total Contado-Efectivo: $  {total_total_ventas_contado}</strong> --
           <strong> Total Otros Medios: $  {total_total_ventas_omp}</strong> --
-          <strong> Total Ventas del Mes: $  {total_total_ventas_total}</strong> 
+          <strong class="recuadro"> Total Ventas del Mes: $  {total_total_ventas_total}</strong> 
           
         </td>
 
@@ -132,12 +143,12 @@
   <h3 class="subraya">EGRESOS</h3>
 <!-- START BLOCK : gastos_tabla --> 
   <p align="left">{titulo_gasto}</p>
-  <table id="space">
+  <table class="egresos">
     <thead>
       <tr>
 
-        <th colspan='6'>Fecha</th> 
-        <th colspan='6'>Nombre</th> 
+        <th >Fecha</th> 
+        <th colspan='10'>Nombre</th> 
         
         <th colspan='6'>Monto</th> 
         
@@ -147,8 +158,8 @@
       <!-- START BLOCK : filas_tabla_gs_detallado -->
       <tr>
     
-        <td colspan='6'>{fecha_gasto}</td>
-        <td colspan='6'>{nombre_subagsto}</td>
+        <td >{fecha_gasto}</td>
+        <td class="largo" colspan='10'>{nombre_subagsto}</td>
         
         <td colspan='6'>{subtotal}</td>
 
@@ -159,7 +170,7 @@
       <tr>
 
         <td  class="separacion_td" colspan='3' >
-          <strong> Total: $  {total_gsunico_valor}</strong> 
+          <strong class="recuadro"> Total: $  {total_gsunico_valor}</strong> 
 
         </td>
 
@@ -175,25 +186,23 @@
   <table>
     <thead>
       <tr>
-
-        <th width="200px">Empleado</th> 
-        <th width="200px">Basico</th> 
-        <th width="200px">Total Anticipos</th> 
-        <th width="200px">Aguinaldo</th> 
-        <th width="200px">Neto a Cobrar</th> 
+      
+        <th>Empleado</th> 
+        <th>Basico</th> 
+        <th>Total Anticipos</th> 
+        <th>Aguinaldo</th> 
+        <th>Neto a Cobrar</th> 
         
       </tr>
     </thead>
     <tbody>
       <!-- START BLOCK : filas_tabla_gs_detallado_sl -->
       <tr>
-         
         <td>{nombre_emp_sl}</td> 
         <td>{basico_emp_sl}</td>
         <td>{total_anticipos_emp_sl}</td>
         <td>{aguinaldo_emp_sl}</td>
         <td>{neto_cobrar_emp_sl}</td>
-
 
       </tr>
       <!-- END BLOCK : filas_tabla_gs_detallado_sl -->
@@ -201,10 +210,10 @@
       <!-- START BLOCK : total_gs_sueldo -->
       <tr>
 
-        <td  class="separacion_td" colspan='3' >
-          <strong> Total de Sueldos: $  {total_sueldos}</strong> 
-          <strong> Total de Anticipos: $  {total_sueldos_anticipos}</strong> 
-          <strong> Total a Pagar: $  {total_sueldos_neto}</strong> 
+        <td  class="separacion_td" colspan='4' >
+          <strong> Total de Sueldos: $  {total_sueldos}</strong> -- 
+          <strong> Total de Anticipos: $  {total_sueldos_anticipos}</strong> -- 
+          <strong class="recuadro"> Total a Pagar: $  {total_sueldos_neto}</strong> 
 
         </td>
 
@@ -241,7 +250,7 @@
       <tr>
 
         <td  class="separacion_td" colspan='3' >
-          <strong> Total de Gastos: $  {total_gastos}</strong> 
+          <strong class="recuadro"> Total de Gastos: $  {total_gastos}</strong> 
 
         </td>
 
@@ -254,7 +263,7 @@
 
 
   <!-- START BLOCK : total_egresos -->
-  <p align="left"><strong>Total de Egresos: {total_egresos}</strong></p>
+  <p align="left"><strong class="recuadro">Total de Egresos: {total_egresos}</strong></p>
   <!-- END BLOCK : total_egresos -->
 </div>
 
@@ -266,7 +275,7 @@
 <!-- START BLOCK : ventas_nocontado -->  
   <!-- START BLOCK : tabla_nocontado -->
   <p align="left">Ventas con: <strong>{titulo_nombre_mp}</strong></p>
-  <table >
+  <table class="egresos" >
     <thead>
       <tr>
 
@@ -280,10 +289,10 @@
     <tbody>
       <!-- START BLOCK : filas_tabla_nocontado -->
       <tr>
-        <td colspan='2'>{local}</td>&nbsp; &nbsp;
+        <td class="largo" colspan='2'>{local}</td>&nbsp; &nbsp;
         <td>{fecha_gasto}</td>
         <td colspan='2'>{nrocomp}</td>
-        <td>$ {monto}</td>
+        <td class="largo">$ {monto}</td>
 
       </tr>
       <!-- END BLOCK : filas_tabla_nocontado -->
@@ -291,8 +300,8 @@
       <!-- START BLOCK : total_nocontado -->
       <tr>
 
-        <td class="separacion_td" colspan='3' >
-          <strong align="left"> Total de ventas con {nombre_mp}: $  {total_por_mp}</strong> 
+        <td   colspan='9'>
+          <strong class="recuadro" align="left"> Total de ventas con {nombre_mp}: $  {total_por_mp}</strong> 
 
 
         </td>
@@ -306,7 +315,7 @@
 
 <!-- START BLOCK : total_total_nocontado -->
 <p>
-  <strong align="left"> <p>Total de ventas con OTROS MEDIOS</p>: $  {total_ventas_otros_medios}</strong> 
+  <strong class="recuadro" align="left"> <p>Total de ventas con OTROS MEDIOS</p>: $  {total_ventas_otros_medios}</strong> 
 </p>
 
 <!-- END BLOCK : total_total_nocontado -->

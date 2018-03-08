@@ -257,7 +257,7 @@
 
 								<h3>Precio Base</h3>
 								 
-								 <input required min="1" type="number" step="0.01" class="form-control" id="art_precio_base_masivo" placeholder="Ingrese precio base del articulo" name="art_precio_base_masivo" >
+								 <input required min="1" type="number" step="0.001" class="form-control" id="art_precio_base_masivo" placeholder="Ingrese precio base del articulo" name="art_precio_base_masivo" >
 								 
 								<h3>Tarjeta Credito(Porcentaje)</h3>
 								 
@@ -301,12 +301,12 @@
 							<form class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Articulo::actualiza_precio&id_art_lote={id_art_lote}" method="post">
 								<h3>Precio Base</h3>
 								<!-- START BLOCK : actualiza_precio_base -->
-								 <input required min="1" type="number" step="0.01"  class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base" value="{precio_base_}"> 
+								 <input required min="1" type="number" step="0.001"  class="form-control" id="art_precio_base" placeholder="Ingrese precio base del articulo" name="art_precio_base" value="{precio_base_}"> 
 								<!-- END BLOCK : actualiza_precio_base -->
 
 								<h3>Importe</h3>
 								<!-- START BLOCK : actualiza_importe_ -->
-								 <input required min="1" type="number" step="0.01"  class="form-control" id="art_importe_ganancia" placeholder="Ingrese importe de ganancia" name="art_importe_ganancia" value="{importe_}"> 
+								 <input required min="0" type="number" step="0.001"  class="form-control" id="art_importe_ganancia" placeholder="Ingrese importe de ganancia" name="art_importe_ganancia" value="{importe_}"> 
 								<!-- END BLOCK : actualiza_importe_ -->
 
 								<!--<h3>Tarjeta Credito(Porcentaje)</h3>-->

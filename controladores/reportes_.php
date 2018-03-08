@@ -392,7 +392,7 @@ public static function reporte_ventas($fecha_desde,$fecha_hasta,$bpdf,$mp,$local
 }
 
 public static function reporte_global($fecha_mes_anio,$sb = true){
-
+		
 	$fecha_array = explode('-', $fecha_mes_anio);
 	$nombre_mes = Reportes_Controller::nombre_mes($fecha_array[0],$fecha_array[1]);
 
@@ -600,10 +600,11 @@ public static function encabezado_reporte($titulo,$fecha_desde,$fecha_hasta,$id_
 		$nombre_cliente = $ot_cl->getNombre();
 		$encabezado->assign("nombre_cliente",$nombre_cliente);
 		$encabezado->assign("titulo",$titulo);
-		$usuario = $_SESSION["usuario"]->getUsuario();
-		$encabezado->assign("usuario",$usuario);
+		//$usuario = $_SESSION["usuario"]->getUsuario();
+		//$encabezado->assign("usuario",$usuario);
 		$hoy = getdate();
-		$ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+		$ahora = $hoy['mday'].'/'.$hoy['mon'].'/'.$hoy['year'];
+	 
 		$encabezado->assign("fecha_actual",$ahora);
 		$dia_desde = Reportes_Controller::obtener_dia($fecha_desde);
 		$dia_hasta = Reportes_Controller::obtener_dia($fecha_hasta);
@@ -697,9 +698,6 @@ public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = 
 		}
     	//$ventas_local_dias = new SplFixedArray($cantidad_locales);
 		$ventas_local_dias = array();
-		if (condition) {
-			# code...
-		}
 
 		$ot_cl = ot_cliente::generar($_SESSION["usuario"]->getId_user());
 		$nombre_cliente = $ot_cl->getNombre();
@@ -820,27 +818,54 @@ public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = 
 
 		$total_gs_unico = 0;
 		$total_egresos = 0;
+		$es_sueldo = false;
 		foreach ($respuesta_gs as $key => $value) {
 			$nombre_gs = $value[0][0];
 			$detalles_gs = $value[1];
 
 			$tpl->newBlock("gastos_tabla");
-			$tpl->assign("titulo_gasto",strtoupper($nombre_gs));
+			if (strcmp(strtoupper($nombre_gs),'SUELDOS') == 0) {
+				$tpl->assign("titulo_gasto",'SUELDOS- ANTICIPOS');
+				$es_sueldo = true;
 
+			}else{
+				$tpl->assign("titulo_gasto",strtoupper($nombre_gs));
+				$es_sueldo = false;
+			}
 			foreach ($detalles_gs as $key2 => $value2) {
 				$nombre_detalle_gs = $value2->getnombre();
 				$fecha_gs = $value2->getFecha_hora();
 
 				$fecha_gs = explode(" ", $fecha_gs);
 				$fecha_gs = $fecha_gs[0];
-				$monto_gs = $value2->getValor();
+				if ($es_sueldo) {
+					
+					$sb_gs = $value2->getId_gsub_gasto();
 
-				$tpl->newBlock("filas_tabla_gs_detallado");
+					if ($sb_gs) {
+						$aux_gsubgasto = 0;
+						 
+						foreach ($sb_gs->getId_sub_gasto() as $key22 => $value22) {
+
+							 
+							$aux_gsubgasto = $aux_gsubgasto + $value22->getValor();
+						}
+						$monto_gs = $aux_gsubgasto;
+					}else{
+						$monto_gs = 0;
+					}
+
+				}else{
+					$monto_gs = $value2->getValor();
+				}
+				if ($monto_gs != 0) {
 				
-				$tpl->assign("fecha_gasto",Reportes_Controller::fecha_dma_($fecha_gs));
-				$tpl->assign("nombre_subagsto",strtoupper($nombre_detalle_gs));
-				$tpl->assign("subtotal",$monto_gs);
-				$total_gs_unico = $total_gs_unico + $monto_gs;
+					$tpl->newBlock("filas_tabla_gs_detallado");
+					$tpl->assign("fecha_gasto",Reportes_Controller::fecha_dma_($fecha_gs));
+					$tpl->assign("nombre_subagsto",strtoupper($nombre_detalle_gs));
+					$tpl->assign("subtotal",$monto_gs);
+					$total_gs_unico = $total_gs_unico + $monto_gs;
+				}
 
 			}
 
