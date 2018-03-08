@@ -133,3 +133,6 @@ ALTER TABLE art_venta add rg_detalle VARCHAR(50) NULL;
 Instalar en els erver
 apt-get install php7.0-mbstring
 para que anda dompdf
+
+//08/03/2018
+ALTER TABLE art_lote MODIFY importe DEC(15,10) NOT NULL;

@@ -184,7 +184,7 @@ class Articulo_Controller{
                         }
 
                         if ($ganancia != null) {
-                            $tpl->assign("ganancia",$ganancia.'%');
+                            $tpl->assign("ganancia",round($ganancia,2).'%');
                         }
                         else{
                             $tpl->assign("ganancia",'0%');
@@ -404,6 +404,7 @@ class Articulo_Controller{
                                         # code...
                                         $tpl->assign("importe_",'0');
                                     }else{
+                                         
                                         $tpl->assign("importe_",$ganancia);
                                     }
                                     
@@ -674,7 +675,7 @@ class Articulo_Controller{
                                 }
 
                                 if ($ganancia != null) {
-                                    $tpl->assign("ganancia",$ganancia.'%');
+                                    $tpl->assign("ganancia",round($ganancia,2).'%');
                                 }
                                 else{
                                     $tpl->assign("ganancia",'0%');

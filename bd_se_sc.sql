@@ -442,7 +442,7 @@ CREATE TABLE  art_lote (
      descripcion VARCHAR(100),
      id_art_fotos INTEGER,
      precio_base DEC(15,2) NOT NULL,
-     importe DEC(15,2) NOT NULL,
+     importe DEC(15,10) NOT NULL,
      id_moneda INTEGER NULL,
      FOREIGN KEY (id_moneda) REFERENCES art_moneda(id_moneda) ON DELETE NO ACTION ON UPDATE CASCADE,
      FOREIGN KEY (id_art_conjunto) REFERENCES art_conjunto(id_art_conjunto) ON DELETE NO ACTION ON UPDATE CASCADE,
