@@ -1,9 +1,11 @@
-<head>
+
   {encabezado}
-  <meta charset="UTF-8">
-  <title>Otium</title>
+
   <style type="text/css">
-   
+   span{
+      margin-bottom: 10px;
+
+    }
     .recuadro{
       border: 2px solid red;
     }
@@ -31,13 +33,8 @@
         
     }
 
-  
-      
-    
   </style>
-  <!--Queda Pensando con el Bootstrap-->
-  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
-</head>
+
 <!-- START BLOCK : boton_pdf -->
 <a href="index.php?action=Reportes::armar_pdf&clave_reporte=1&fecha_desde={fecha_desde}&fecha_hasta={fecha_hasta}">
   <button type="button" class="btn btn-primary">Generar PDF</button>
@@ -213,7 +210,7 @@
         <td  class="separacion_td" colspan='4' >
           <strong> Total de Sueldos: $  {total_sueldos}</strong> -- 
           <strong> Total de Anticipos: $  {total_sueldos_anticipos}</strong> -- 
-          <strong class="recuadro"> Total a Pagar: $  {total_sueldos_neto}</strong> 
+          <strong class="recuadro largo"> Total a Pagar: $  {total_sueldos_neto}</strong> 
 
         </td>
 
