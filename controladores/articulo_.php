@@ -958,8 +958,76 @@ else{
 return $tpl->getOutputContent();
 }
 
+public static function alta_masica_desde_archivo_art($lista){
 
-public static function alta_articulo(){
+$bandera = 0;
+    foreach ($lista as $key => $value) {
+        //Armar art_conjunto
+            //Alta en tipo
+         
+        if ($bandera == 200) {
+            break;
+        }
+        $bandera = $bandera +1;
+        $id_art_tipo = art_tipo::alta_art_tipo(str_replace('\'', '', $value[0]));
+       
+        $id_conjunto = art_conjunto::alta_art_conjunto(57,33,$id_art_tipo);
+        $id_prvd = $value[1];
+        $codigo_barras = 'null';
+        $precio_base = $value[2];
+        $importe = $value[3];
+        $cantidad_total = $value[6];
+        //Codigo
+        $id_categoria = art_categoria::alta('Codigo','Codigo Interno en Numeros',$value[4]);
+        $id_gc = art_grupo_categoria::alta_($id_categoria);
+        $id_art_fotos = 'null';
+        $id_moneda = $value[5];
+        ///
+
+
+        $id_lote = art_lote::alta_art_lote($id_conjunto,$cantidad_total,$codigo_barras,$id_art_fotos,$precio_base,$importe,$id_prvd,$id_gc,$id_moneda);
+
+        if ($id_lote) {
+            $ok_lote = true;
+        }else{
+            return 'Fallo en ID_LOTE';
+        }
+        //Alta en lote_us
+        $ok_lote_us = $_SESSION["usuario"]->alta_lote_us($id_lote);
+        if ($ok_lote_us) {
+            $ok_lote_us = true;
+        }else{
+            return 'Fallo en us_lote';
+        }
+        //Alta Art_lote_local
+        //Art_carga
+        //
+        $hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+
+        $id_user = $_SESSION["usuario"]->getId_user();
+        $id_carga = art_carga::alta_art_carga($ahora,$id_user);
+          
+        $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,1,$cantidad_total,$id_carga);
+
+        $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,2,0,$id_carga);
+
+        $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,3,0,$id_carga);
+
+        $id_lote_local = art_lote_local::alta_art_lote_local($id_lote,4,0,$id_carga);
+
+        if ($id_lote_local) {
+            $ok_lote_local = true;
+        }else{
+            return 'Fallo en lote_local';
+        }
+        
+    }
+
+
+}
+
+public static function alta_articulo($desde_adentro = false){
 
     $id_us_gcat = $_POST['id_us_gcat'];
     $valor_cat_attrs = $_POST['gattr'];
@@ -995,14 +1063,10 @@ public static function alta_articulo(){
 
             if ($una_vez) {  
                 $id_gc = art_grupo_categoria::alta_($id_ct);
-                
-                
                 $counter = $counter + 1;
                 $una_vez = false;
                 continue;
             }
-
-            
             $ok_gct = art_grupo_categoria::alta_($id_ct,$id_gc);
             $counter = $counter + 1;
         }
@@ -1054,44 +1118,45 @@ public static function alta_articulo(){
     /* Luego para cada campo y valor $_POST realizamos lo siguiente */
     $nook = true;
     $art_cantidad_total = 0;
-    foreach ($_POST as $campo => $valor){
-            /* en la variable $concatenamos juntamos el campo y su valor 
-            ;*/
-            for ($i=0; $i <=$total_locales ; $i++) { 
-                //Revisar el contador nos va a dar falsos positivos!!!
-                //Utilizar exoresie¡
-                if ($total_locales[$i]['id_local'] != null) {
-                    $id_local_oper = $total_locales[$i]['id_local'];
-                    $name_local_cantidad = "art_local_cantidad_".$id_local_oper;
-                    $name_local_fecha = "art_carga_local_fecha_".$id_local_oper;
-                    
-                    
-                    //$dias_array = str_replace("7","0",$dias_array);
-                    
-                    
-                    if (strcmp($campo, $name_local_cantidad ) == 0) {
+    if (!$desde_adentro) {
 
-                        //if ($_POST[$name_local_fecha] != null) {
-                        $cantidad_stock = $_POST[$name_local_cantidad];
-                        $stock_cantidad = explode (",", $cantidad_stock);
-                        $final_stock_cant = $stock_cantidad[0];
-                        $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $final_stock_cant,"Fecha" => $_POST[$name_local_fecha]];
-                        $art_cantidad_total = $art_cantidad_total + $final_stock_cant;
+        foreach ($_POST as $campo => $valor){
+                /* en la variable $concatenamos juntamos el campo y su valor 
+                ;*/
+                for ($i=0; $i <=$total_locales ; $i++) { 
+                    //Revisar el contador nos va a dar falsos positivos!!!
+                    //Utilizar exoresie¡
+                    if ($total_locales[$i]['id_local'] != null) {
+                        $id_local_oper = $total_locales[$i]['id_local'];
+                        $name_local_cantidad = "art_local_cantidad_".$id_local_oper;
+                        $name_local_fecha = "art_carga_local_fecha_".$id_local_oper;
                         
-                        //}
-                    }
-                }
-                else{
-                    break;
-                }
+                        
+                        //$dias_array = str_replace("7","0",$dias_array);
+                        
+                        
+                        if (strcmp($campo, $name_local_cantidad ) == 0) {
 
+                            //if ($_POST[$name_local_fecha] != null) {
+                            $cantidad_stock = $_POST[$name_local_cantidad];
+                            $stock_cantidad = explode (",", $cantidad_stock);
+                            $final_stock_cant = $stock_cantidad[0];
+                            $lista_art_locales[]=["Id" => $id_local_oper,"Cantidad" => $final_stock_cant,"Fecha" => $_POST[$name_local_fecha]];
+                            $art_cantidad_total = $art_cantidad_total + $final_stock_cant;
+                            
+                            //}
+                        }
+                    }
+                    else{
+                        break;
+                    }
+
+                    
+                }
+                
                 
             }
-            
-            
         }
-        
-        
 
         //Agregar art_general
         if (is_numeric($art_general)) {
@@ -1245,8 +1310,16 @@ public static function alta_articulo(){
             $tpl->prepare();
 
         }
+        if (!$desde_adentro) {
+            return $tpl->getOutputContent();
+        }else{
+            if ($ok2) {
+                return true;
+            }else{
+                return false;
+            }
+        }
         
-        return $tpl->getOutputContent();
     }
 
 

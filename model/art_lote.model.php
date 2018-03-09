@@ -27,7 +27,7 @@ class art_lote {
         $this->id_moneda = $id_moneda;
       
     }
-
+ 
     public static function alta_art_lote($id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor,$id_gc,$id_moneda,$descripcion = 'null'){
         global $baseDatos;
        
@@ -41,7 +41,7 @@ class art_lote {
              
             return $id_lote;
         }else{
-            //printf("Errormessage: %s\n", $baseDatos->error);
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 

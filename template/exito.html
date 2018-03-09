@@ -4,7 +4,13 @@
 			<div class="col-md-12">
 				<div class="alert alert-success center-block">
 					<h3>Datos Guardados con Exito!</h3>
-					
+					<!-- START BLOCK : articulos_carga -->
+					<h4>Se cargaron <strong>{cantidad_art}</strong> articulos.</h4>
+					<a href="index.php?action=Articulo::mostrar">
+						<button type="button" class="btn btn-primary">Ver</button>
+					</a>
+					<!-- END BLOCK : articulos_carga -->
+
 					<!-- START BLOCK : modifica_attr -->
 					<a href="index.php?action=Articulo::mostrar">
 						<button type="button" class="btn btn-primary">Volver a Lista</button>

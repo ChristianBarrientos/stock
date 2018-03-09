@@ -25,7 +25,7 @@ class art_lote_local {
         global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $$id_lote_local = art_lote_local::ultimo_id_lote_local();
+        $id_lote_local = art_lote_local::ultimo_id_lote_local();
         
         $sql = "INSERT INTO `art_lote_local`(`id_lote_local`, `id_lote`, `id_local`, `cantidad_parcial`, `id_carga`) VALUES (0,$id_lote,$id_local,$cantidad_parcial,$id_carga)";
         $res = $baseDatos->query($sql);

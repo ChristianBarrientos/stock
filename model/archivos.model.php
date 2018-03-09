@@ -9,16 +9,27 @@ class archivo {
 	private $tipo;
 	private $archivo_tmp_name;
 
-public static function  cargar_datos ($nom, $size, $tipo, $archivo_tmp_name, $art_nombre){
+public static function  cargar_datos ($nom, $size, $tipo, $archivo_tmp_name, $art_nombre,$ubi = null){
 		//global $baseDatos;
 		if (!$size== 0) {
             $ruta = $archivo_tmp_name;
             $tipo_a = substr(strrchr($nom, "."), 1);
             //nombre archivo destino $_SESSION["usuario"]->getId_user()
             $autor = $_SESSION["usuario"]->getId_user();
-            $wind = "imagenes/art/";
-            $linux = "/var/www/html/stock/imagenes/art";
-            $destino =  $wind. $autor . "_" . "_" . $art_nombre . "." . $tipo_a;
+            if ($ubi == null) {
+            	$wind = "imagenes/art/";
+            	$linux = "/var/www/html/stock/imagenes/art";
+            	$destino =  $wind. $autor . "_" . "_" . $art_nombre . "." . $tipo_a;
+            	
+            }else{
+            	 
+            	$wind = $ubi;
+            	$linux = "/var/www/html/stock/".$ubi;
+            	$destino =  $wind.  $art_nombre."." . $tipo_a;
+            	 
+            }
+            
+            
 			
 			
 

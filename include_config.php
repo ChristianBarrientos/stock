@@ -2,6 +2,8 @@
 /*Incluir Configuracions Base de Datos */
 include('inc.configuration.php');
 
+include('controladores/archivos_.php');
+
 /*Controladores */
 include('controladores/ingreso_.php');
 include('controladores/local_.php');
@@ -85,7 +87,8 @@ include('php_recurso/cadenas.php');
 include('php_recurso/fpdf/fpdf.php');
 
 include ('php_recurso/dompdf/autoload.inc.php');
-
+include ('php_recurso/Excel/reader.php');
+//require_once 'Excel/reader.php';
 //include('php_recurso/cb/barcode.php');
 
 

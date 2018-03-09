@@ -215,10 +215,66 @@
 				</div>
 			</div>	
 			<!-- END BLOCK : con_datos_reportes -->
+
+			<div class="row">
+				<div class="panel-body"><h2>Datos</h2></div>
+
+				<div  class="col-md-2 col-xs-6">
+					
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#sl_liquidar">Exportar</button>
+
+				</div>
+				<div  class="col-md-2 col-xs-6">
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#archivo_importar">Importar</button>
+				</div>
+			</div>	
+
 		</div>
 	</div>
 
 	<!--Ventanas MOdals -->
+<!-- Importar Archivo -->
+
+
+<div class="container-fluid">
+		<div class="row">
+			<div class="modal fade" id="archivo_importar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" id="modal_galeri_backcolor">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span id = "cerrar_modal" aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Seleccione el Archivo XLS y una opcion</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form_flotante" id="form_art_general">
+			<form target="_blank" class="form-horizontal" role="form" enctype="multipart/form-data" action="index.php?action=Archivos::importar" method="post">
+							<h3>Seleccione el Archivo</h3>
+							<div class="col-md-12">
+								<label class="btn btn-default">
+							    Buscar Archivo <input name = "archivo_xls" type="file" hidden>
+							</label>
+				  				 
+			    			</div>
+			    			<h3>Seleccione una Opcion</h3>
+			    			<div class="radio">
+							  <label><input value='1' type="radio" name="opcion_datos_imp">Articulos</label>
+							</div>
+							<div class="radio">
+							  <label><input value='2' type="radio" name="opcion_datos_imp">Ventas</label>
+							</div>
+				<button class="agregar btn btn-primary" type="submit">Procesar</button>
+
+			</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+
 	<!--Liquidar sueldos -->
 	<div class="container-fluid">
 		<div class="row">
