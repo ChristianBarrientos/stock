@@ -141,7 +141,7 @@ function borrar_fila(input){
 
   var oID = $(input).attr("id");
   id_tr = oID.replace(/^[a-zA-Z\s]*/, "");
-  let cantidad = Ventas[id_tr].cantidad;
+  //let cantidad = Ventas[id_tr].cantidad;
   let precio = Ventas[id_tr].precio_final;
   let auxiliar = cantidad * precio;
   total_ventas = parseFloat(total_ventas) - parseFloat(auxiliar.toFixed(2));

@@ -145,8 +145,8 @@ class Ingreso_Controller{
 				}
 				else{
 					
-					$_SESSION['usuario']::obtener_locales($_SESSION['usuario']);
-					usuario::obtener_lote_us($_SESSION['usuario']->getId_user());
+					//$_SESSION['usuario']::obtener_locales($_SESSION['usuario']);
+					//usuario::obtener_lote_us($_SESSION['usuario']->getId_user());
 					return Ingreso_Controller::menu_admin();
 				}
 				
@@ -174,35 +174,34 @@ class Ingreso_Controller{
 			$tpl = new TemplatePower("template/menu_admin.html");
 			$tpl->prepare();
 			$total_empl = 0;
-			if (isset($_SESSION['locales'])) {
-				//foreach ($_SESSION['locales'] as $key => $value) {
-				
-                //	$total_empl = $total_empl + $value->getCantidad_empl() -1;
-				
-				
-            	//}
+			$articulos_count = usuario::cantidad_articulos();
+			$locales_count = usuario::cantidad_locales($_SESSION['usuario']->getId_user());
 
+			$empleados_count = usuario::cantidad_empleados();
+			$proveedor_count = usuario::cantidad_proveedor();
+			 
+			if ($locales_count >= 1) {
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Locales');
-				$tpl->assign("total", count($_SESSION['locales']));
+				$tpl->assign("total", $locales_count['count(*)']);
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Empleados');
-				$tpl->assign("total", count($_SESSION["locales_empleados"]) - 1 );
+				$tpl->assign("total", $empleados_count);
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Proveedores');
-				if ($_SESSION["proveedores"] == false) {
-					$tpl->assign("total", 0 );
-				}else{
-					$tpl->assign("total", count($_SESSION["proveedores"]) );
-				}
+				//if ($_SESSION["proveedores"] == false) {
+				//	$tpl->assign("total", 0 );
+				//}else{
+					$tpl->assign("total", $proveedor_count );
+				//}
 				
 
 				$tpl->newBlock("con_sucursales");
 				$tpl->assign("titulo", ' Articulos');
-				$tpl->assign("total", count($_SESSION["lotes"]));
+				$tpl->assign("total", $articulos_count['count(*)']);
 				
 				$tpl->newBlock("con_datos_reportes");
 
@@ -224,13 +223,13 @@ class Ingreso_Controller{
 						$tpl->assign("nombre_medio",$value->getNombre());
 					}
 				}
-
-				foreach ($_SESSION['locales']  as $key => $value) {
+				$locales_array = usuario::nombre_locales();
+				foreach ($locales_array  as $key => $value) {
                 # code...
 					
 					$tpl->newBlock("carga_local");
-					$tpl->assign("id_local_",$value->getId_local());
-					$tpl->assign("nombre_local", htmlentities($value->getNombre(), ENT_QUOTES));
+					$tpl->assign("id_local_",$value[0]);
+					$tpl->assign("nombre_local", htmlentities($value[1]));
 				}
 
 				

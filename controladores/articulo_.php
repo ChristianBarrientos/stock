@@ -11,7 +11,7 @@ class Articulo_Controller{
             $_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user());
             if (isset($_SESSION["lotes"])) {
 
-//$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
+        //$_SESSION['usuario']->obtener_lote_us($_SESSION['usuario']->getId_user())
 
                 
                 $tpl->newBlock("con_articulos_lista");
@@ -67,8 +67,10 @@ class Articulo_Controller{
                         $art_lote_local_actual_stock = array();
                                     //$locales_todos = usuario::obtener_locales($_SESSION['usuario']->getId_user());
                         
-
-                        foreach ($_SESSION["lote_local"] as $key2 => $value2) {
+                        $id_lote_local = $value->getId_lote();
+                        $lote_local_porId = art_lote_local::generar_lote_local($id_lote_local);
+                        
+                        foreach ($lote_local_porId as $key2 => $value2) {
 
                             foreach ($value2 as $key3 => $value3) {
                              
@@ -1246,13 +1248,12 @@ public static function alta_articulo($desde_adentro = false){
         // Loop through each file
         $okok_salto = 0;
         //Alta art_fotos
-        if ($total > 1) {
+        /*if ($total > 1) {
             # code...
             
             for($i=0; $i<$total; $i++) {
           //Get the temp file path
-              
-               
+
               $path=  archivo::cargar_datos ($_FILES["fotos_art"]["name"][$i], 
                $_FILES["fotos_art"]["size"][$i],
                $_FILES["fotos_art"]["type"][$i],
@@ -1267,14 +1268,26 @@ public static function alta_articulo($desde_adentro = false){
             {
                 art_fotos::agregar_foto_a_lote_2($id_art_fotos ,$id_foto);
             }
-            
-            
         }
     }
+
     else{
         $id_art_fotos = 'null';
 
-    }
+    }*/
+    
+    $hoy = getdate();
+        
+    $art_nombre = $hoy['year'].'_'.$hoy['mon'].'_'.$hoy['mday'].'_'.$hoy['hours'].'_'.$hoy['minutes'].'_'.$hoy['seconds'];
+
+    
+
+    $imagen = file_get_contents($_POST['imagen_art']);
+    $pat_img = 'imagenes/art/'.$art_nombre.'.jpg';
+    $id_foto = us_prvd_foto::alta_foto($pat_img);
+    $id_art_fotos = art_fotos::agregar_foto_a_lote($id_foto);
+    file_put_contents($pat_img, $imagen);
+
         //agregar a Lote
     $id_lote = art_lote::alta_art_lote($id_conjunto, $art_cantidad_total, $codigo_barras,$id_art_fotos,$art_precio_base,$art_ganancia,$id_proveedor,$id_gc,$moneda);
     

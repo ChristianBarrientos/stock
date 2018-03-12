@@ -50,7 +50,8 @@ class art_carga {
 
         $res_fil = $res->fetch_assoc();
         if (count($res_fil) != 0) {
-            $id_us = usuario::obtener_tabla_usuario($res_fil['id_usuario']);
+            //$id_us = usuario::obtener_tabla_usuario($res_fil['id_usuario']);
+            $id_us = $res_fil['id_usuario'];
             
             $carga = new art_carga($res_fil['id_carga'],$res_fil['fecha_hora'],$id_us);
             return $carga;

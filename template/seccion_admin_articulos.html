@@ -74,13 +74,12 @@
 			
 	
 			<!-- START BLOCK : con_articulos_lista -->
-			<table cellpadding="15" class="table table-bordered " align="center">
+			<table cellpadding="15" class="display" id="mitabla" align="center">
 			<thead>
 			<!-- START BLOCK : con_articulos_lista_cabeza -->
 			 <tr>
 	            <th>N°</th>
 	            <th>Articulo</th>
-	            <!-- colspan="2"-->
 	            <th>Stock</th>
 	            <th>Proveedor</th>            
 	            <th>Precio Costo</th>
@@ -91,7 +90,7 @@
 	             
         	</tr>
         	</thead>
-        	<tbody class="buscar">
+        	<tbody>
         	
 			<!-- END BLOCK : con_articulos_lista_cabeza -->
 			
@@ -105,17 +104,9 @@
 	            <td>{ganancia}</td>
 	            <td>{precio_final}</td>
 	            <td>{attr}</td>
-	            <td hidden>{codigo_barras}</td>
 
 	            <td> 
-	            	
-					
-					<!--<button {disabled_ok} type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{selecionar_local_venta}">
-							Vender
-					</button>-->
-
-
-				
+	        
 
 					<br>
 					<!-- START BLOCK : actualiza_stock_boton -->
@@ -137,18 +128,7 @@
 					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#ver_cb_{id_lote}">Ver Codigo de Barras</button>
 					<!-- START BLOCK : ver_cb -->
 
-					<!--<button type="button" class="btn btn-danger">Eliminar</button>	
-					<button disabled type="button" class="btn btn-warning">Actualizar Fotos</button>-->
-
 				</td>
-
-
-	            <!--<td>
-	            <a href="index.php?action=Articulo::venta_articulo&id_lote_venta={id_lote_venta}">-->
-	            	
-	            <!--</a>
-	            
-	            </td>-->
 	        </tr>
 			<!-- END BLOCK : con_articulos_lista_cuerpo -->
 			 

@@ -13,6 +13,7 @@ include('controladores/proveedor_.php');
 include('controladores/venta_.php');
 include('controladores/gasto_.php');
 include('controladores/reportes_.php');
+include('controladores/autoventa_.php');
 
 /*Modelos*/
 include('model/usuario.model.php');

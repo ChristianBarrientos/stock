@@ -37,37 +37,28 @@ class us_prvd_foto {
     }
 
 
-    public function getId_us_prvd()
+    public function getId()
     {
-        return $this->id_us_prvd;
+        return $this->id_foto;
     }
     
-    public function setId_us_prvd($id_us_prvd)
+    public function setId($id_foto)
     {
-        $this->id_us_prvd = $id_us_prvd;
+        $this->id_foto = $id_foto;
         return $this;
     }
-    public function getId_usuarios()
+    public function getpath_foto()
     {
-        return $this->id_usuarios;
+        return $this->path_foto;
     }
     
-    public function setId_usuarios($id_usuarios)
+    public function setpath_foto($path_foto)
     {
-        $this->id_usuarios = $id_usuarios;
+        $this->path_foto = $path_foto;
         return $this;
     }
 
-    public function getProveedor()
-    {
-        return $this->proveedor;
-    }
-    
-    public function setProveedor($proveedor)
-    {
-        $this->proveedor = $proveedor;
-        return $this;
-    }
+
 
 }
 

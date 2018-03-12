@@ -63,7 +63,7 @@ class art_lote_local {
             foreach ($filas as $clave => $valor) {
 
                 $id_lote = art_lote::generar_lote($valor['id_lote']);
-                $id_local = art_local::generar_local_2($valor['id_local']);
+                $id_local = $valor['id_local']; //art_local::generar_local_2($valor['id_local']);
                 $id_carga = art_carga::generar_carga($valor['id_carga']); 
               
                  

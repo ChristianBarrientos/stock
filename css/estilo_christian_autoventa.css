@@ -1,0 +1,76 @@
+
+
+/*Clientes*/
+
+.nav-stacked li{
+	font-size: 1.5em;
+}
+section#autoventa .cuadrado_foto{
+  width: 100px;
+  height: 100px;
+}
+#carrito_clt,#lista_art_foto,#lista_art {
+	position:relative;
+  
+	height: 600px;
+  width: 100%  
+	border: 1px solid #ddd;
+  
+	background: #f1f1f1;
+	overflow-y: scroll;
+	top: 0px;
+  margin: 3px;
+}
+#lista_art_foto {
+  width: 621px;
+  z-index: 10;
+}
+#lista_art {
+  width: 200px;
+   
+}
+
+#lista_art a{
+   
+  cursor: pointer;
+}
+
+ 
+
+/*#pendientes {
+	height: auto;
+}
+#pendientes_user {
+	padding:-10px;
+	position: absolute;
+	width: 100%;
+	border: 3px solid red;
+	background:#836F6F;
+}*/
+
+/*Cuadrado Responsive*/
+.cuadrado_foto{
+  font-family: sans-serif;
+  color: white;
+  padding: 1em;
+  float:left;
+  width: 20.33%;
+  margin-right:3%;
+  background: deepskyblue;
+  margin-bottom: 5px;
+
+}
+.cuadrado_foto:last-child{
+  margin-right:0;
+}
+.cuadrado_foto:before{
+  content:"";
+  display:block;
+  padding-top:100%;
+  float: left; 
+  /*Flotando el elemento podemos usar el cuadrado como cualquier otra capa y podremos meter contenido. Pero dejará de ser responsive cuando el contenido sea mayor que su alto*/
+}
+.cuadrado_foto{
+  cursor: pointer;
+}
+

@@ -10,7 +10,7 @@
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span id = "cerrar_modal" aria-hidden="true">&times;</span>
 									</button>
-									<h4 class="modal-title" id="myModalLabel">Agregar Articulo General</h4>
+									<h4 class="modal-title" id="myModalLabel">Agregar Articulo  Categoria</h4>
 								</div>
 								<div class="modal-body" id="agregar_ok">
 								 
@@ -46,7 +46,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span id = "cerrar_modal1" aria-hidden="true">&times;</span>
 							</button>
-							<h4 class="modal-title" id="myModalLabel">Agregar Marca Articulo</h4>
+							<h4 class="modal-title" id="myModalLabel">Agregar Nombre Articulo</h4>
 						</div>
 						<div class="modal-body">
 							<div class="form_flotante" id="form_art_marca">
@@ -152,7 +152,7 @@
 	    <div class="row">
 	    <div class="form-group">
 	    	<div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	    		<label  for="select_art_general">General (*):</label>
+	    		<label  for="select_art_general">Categoria (*):</label>
 	    	</div>
 		    <!--</div>-->
 		     
@@ -183,7 +183,7 @@
 	     <div class="row">
 	     	<div class="form-group">
 	     <div class=" col-sm-offset-2 control-label col-sm-2 col-xs-4">
-	      <label for="art_marca">Marca (*):</label>
+	      <label for="art_marca">Nombre (*):</label>
 	      </div>
 	       
 	      		<div class="col-md-4 col-sm-3 col-xs-12">
@@ -400,23 +400,40 @@
 	    
 
 	     
-		<h3>Fotos</h3>
+		<h3>Imagen</h3>
 
 		<div class="form-group">
-	     <div class="row">
+	     <!--<div class="row">
 	      
 	      
 		    <div  id="fotos_art">
 		    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
-		    <label for="art_grupo_att">Agregar Fotos</label>
+		    <label for="art_grupo_att">Subir</label>
 		    </div>
-		    <!--multiple=true -->
+		     
 		    	<div class="col-md-4 col-sm-3 col-xs-8">
 				   <input accept="image/*" capture id="input-b3" name="fotos_art[]" type="file" class="file"  
 					    data-show-upload="false" data-show-caption="true" 
 					    data-msg-placeholder="Seleccione las fotos a subir..">
 			    </div>
+
+
 			    
+		    </div>
+	            
+		</div>	-->
+		<div class="row">
+	      
+	      
+		    <div  id="fotos_art">
+		    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-4">
+		    <label for="art_grupo_att">URL</label>
+		    </div>
+		    <!--multiple=true -->
+		    	<div class="col-md-6 col-sm-3 col-xs-8">
+				   <input type='text' name="imagen_art" >  
+					     
+			    </div>
 		    </div>
 	            
 		</div>	

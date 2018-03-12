@@ -1,0 +1,83 @@
+
+<!--HOME-->
+ 
+		<div id="autoventa" class="container-fluid">
+			<div class="row">
+				<div class="col-xs-3 main-info" id="carrito_clt">
+					<h2>Cliente Compra</h2>
+					 
+				    	<h3 for="art_grupo_att">Nombre:</h3>
+				     
+				     
+					   <h3 type='text' >  
+					   	<strong id="nombre_art"></strong></h3>
+						     
+				    <br>
+				     
+				    	<h3 for="art_grupo_att">Precio:</h3>
+				     
+				     
+					   <h3 type='text' >  
+					   	<strong id="precio_art"></strong></h3>
+					  
+				 <table id="tabla_pv" cellpadding="15" class="table table-bordered " align="center">
+					<thead>
+					
+					 <tr>
+					 	<th>N°</th>
+			            <th>Articulo</th>
+			            <th>Cantidad</th>          
+			            <th>Precio/Unidad</th>
+			        </tr>
+		        	</thead>
+		        	<tbody>
+
+					<tr id="venta_total">
+					 
+						<td  colspan='3' ><strong>SubTotal:</strong> </td>
+					 	<td  colspan='1' ><strong> $ <label id="total_venta"><label></strong></td>
+					</tr>
+					<tr id="venta_total">
+					 
+						<td  colspan='3' ><strong>Total:</strong> </td>
+					 	<td  colspan='1' ><strong> $ <label id="total_venta_final"><label></strong></td>
+					</tr>
+			        </tbody>
+			     </table>    
+					 
+				</div>
+
+				<div class="col-xs-3 main-info" id="lista_art_foto">
+					<h2>Articulos</h2>
+					<!-- START BLOCK : lista_art -->
+					<div id="cat_{id_categoria}">
+						<!-- START BLOCK : lista_art_foto -->
+						<section onclick="detalles_art(this)"  id="{id_art}" class="cuadrado_foto">
+							
+							<!-- START BLOCK : imagen_lista_art -->
+							<img class="img-responsive" src="{pat_imagen}" alt="">
+							<!-- END BLOCK : imagen_lista_art -->
+						</section>
+						<!-- END BLOCK : lista_art_foto -->
+					</div>
+					<!-- END BLOCK : lista_art -->
+					
+					
+				</div>
+
+				<div class="col-xs-1 main-info" id="lista_art">
+					<h2>Categorias</h2>
+					<ul class="nav nav-pills nav-stacked" id="categorias_lista">
+						<!-- START BLOCK : categorias -->
+						<li onclick="mostrar_art(this)" class="pendientes_user" id="cat_{id_cat}"><a>{nombre_cat}</a></li>
+						<!-- END BLOCK : categorias -->
+						 
+
+					</ul>	
+				</div>
+
+			</div>
+		</div>
+
+ 
+ 

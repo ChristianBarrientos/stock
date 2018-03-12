@@ -156,7 +156,7 @@ class usuario {
                 //$_SESSION["proveedores"] = 0;
                
             //}else{
-                $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
+                //$_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
             //}
       
             $_SESSION["locales"] = $locales;
@@ -180,11 +180,11 @@ class usuario {
                 $okok_empleados_fin[] = usuario::generar_usuario($value5);
             }
              
-            $_SESSION["locales_empleados"] = $okok_empleados_fin;
+            //$_SESSION["locales_empleados"] = $okok_empleados_fin;
          
             //$_SESSION["locales_empleados"] =  $locales_empleados; 
             //$_SESSION["locales_empleados"] = $locales_empleados;
-            $_SESSION["locales_articulos"] = $locales_articulos;
+            //$_SESSION["locales_articulos"] = $locales_articulos;
             
             /*foreach ($locales_empleados as $key => $value3) {
                 foreach ($value3 as $key => $value4) {
@@ -251,18 +251,19 @@ class usuario {
     public static function obtener_lote_us($id_user){
         global $baseDatos;
         
-        $res = $baseDatos->query("SELECT * FROM `lote_us` WHERE id_usuario = $id_user");  
+        //$res = $baseDatos->query("SELECT * FROM `lote_us` WHERE id_usuario = $id_user LIMIT 1000");  
+        $res = $baseDatos->query("SELECT * FROM `lote_us` WHERE id_usuario = $id_user LIMIT 100");  
         $filas = $res->fetch_all(MYSQLI_ASSOC);
         
         if (count($filas) != 0) {
             $lotes_us = array();
-            $lote_local = array();
+            //$lote_local = array();
             
             foreach ($filas as $clave => $valor) {
                 $lotes_us[] = art_lote::generar_lote($valor['id_lote']);  
-                $lote_local[] = art_lote_local::generar_lote_local($valor['id_lote']); 
+                //$lote_local[] = art_lote_local::generar_lote_local($valor['id_lote']); 
             }   
-            $_SESSION["lote_local"] = $lote_local;
+            //$_SESSION["lote_local"] = $lote_local;
             $_SESSION["lotes"] = $lotes_us;
             return true;
         }
@@ -271,6 +272,79 @@ class usuario {
             return false;
         }
     }
+
+    public static function cantidad_locales($id_user){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT count(*) FROM `art_local`");  
+        
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            return $res_fil;
+        }else{
+            return false;
+        }  
+    }
+
+    public static function nombre_locales(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT nombre FROM `art_local` ");  
+        
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($filas) != 0) {
+            return $filas;
+        }else{
+            return false;
+        }  
+    }
+
+    public static function cantidad_articulos(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT count(*) FROM `art_lote`");  
+        
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+            return $res_fil;
+        }else{
+            return false;
+        }
+        
+        
+    }
+
+    public static function cantidad_empleados(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT count(*) FROM `usuarios`");  
+        
+        $res_fil = $res->fetch_all(MYSQLI_ASSOC);
+        if (count($res_fil) != 0) {
+           
+            return $res_fil[0]['count(*)'] - 1;
+        }else{
+            return false;
+        }
+        
+        
+    }
+    
+    public static function cantidad_proveedor(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT count(*) FROM `prvd_provedor`");  
+        
+        $res_fil = $res->fetch_assoc();
+        if (count($res_fil) != 0) {
+           
+            return $res_fil['count(*)'];
+        }else{
+            return false;
+        }
+  
+    }
+    
 
     public static function obtener_jefe($id_usuario_oper){
         global $baseDatos;
