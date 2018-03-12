@@ -29,7 +29,8 @@
 			$codigo = $data->sheets[0]['cells'][$i][1];
 			$nombre = utf8_encode($data->sheets[0]['cells'][$i][2]);
 			$costo =  $data->sheets[0]['cells'][$i][3];
-			$prvd = utf8_encode($data->sheets[0]['cells'][$i][4]);
+			//$prvd = utf8_encode($data->sheets[0]['cells'][$i][4]);
+			$prvd = null;
 			$stock = $data->sheets[0]['cells'][$i][5];
 			$moneda = $data->sheets[0]['cells'][$i][6];
 			$importe = $data->sheets[0]['cells'][$i][7];
