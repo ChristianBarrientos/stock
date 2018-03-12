@@ -21,6 +21,13 @@ class art_lote_local {
         
     }
 
+    public static function reiniciar_autoincrement(){
+        global $baseDatos;
+        $sql = "ALTER TABLE art_lote_local AUTO_INCREMENT = 1";
+        $res = $baseDatos->query($sql);
+        return $res;
+    }
+
     public static function alta_art_lote_local($id_lote,$id_local,$cantidad_parcial,$id_carga){
         global $baseDatos;
         
@@ -34,7 +41,13 @@ class art_lote_local {
              
             return $id_lote_local;
         }else{
-            
+            echo "Alta ArtLoteLocal";
+            echo "\n";
+            echo "Id_lote:";echo $id_lote;
+            echo "id_local:";echo $id_local;
+            echo "cantidad_parcial:";echo $cantidad_parcial;
+            echo "id_carga:";echo $id_carga;
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 

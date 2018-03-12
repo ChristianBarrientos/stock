@@ -6,7 +6,7 @@
 
 		public static function importar(){
 
-		
+		//usuario::obtener_locales($_SESSION['usuario']);
 
 		$path=  archivo::cargar_datos ($_FILES["archivo_xls"]["name"], 
                $_FILES["archivo_xls"]["size"],
@@ -44,8 +44,8 @@
 				$id_prvd_alta = 10;
 			}else{
 
-				//usuario::obtener_locales($_SESSION['usuario']->getId_user());
-				foreach ($_SESSION["proveedores"] as $key => $value) {
+				$id_prvd_alta = 10;
+				/*foreach ($_SESSION["proveedores"] as $key => $value) {
 					$nombre_prv = $value->getid_datos_prvd()->getNombre();
 					$id_prvd =  $value->getId_proveedor();
 					
@@ -57,7 +57,7 @@
 					 	//Si existe
 					 	$id_prvd_alta = $id_prvd;
 					}
-				}
+				}*/
 			}
 			 
 			if (floatval($moneda) > 5) {

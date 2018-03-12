@@ -47,6 +47,49 @@ class art_lote {
 
     }
 
+    public static function alta_art_lote_2($id,$id_art_conjunto, $cantidad_total, $codigo_barras,$id_art_fotos,$precio_base,$importe,$id_proveedor,$id_gc,$id_moneda,$descripcion = 'null'){
+        global $baseDatos;
+       
+        //$id_contacto_tel = $this::alta_contacto($telefono);
+        $id_lote = art_lote::ultimo_id_lote();
+
+
+        $sql = "INSERT INTO `art_lote`(`id_lote`, `id_art_conjunto`, `id_provedor`, `cantidad_total`, `codigo_barras`, `id_gc`, `descripcion`, `id_art_fotos`, `precio_base`, `importe`,`id_moneda`) VALUES ($id,$id_art_conjunto,$id_proveedor,$cantidad_total,'$codigo_barras',$id_gc,'$descripcion',$id_art_fotos,$precio_base,$importe,$id_moneda)";
+        $res = $baseDatos->query($sql);
+        
+        if ($res) {
+             
+            return $id;
+        }else{
+            echo "Alta Art_lote";
+            echo "\n";
+            echo "Id_lote:";echo $id;
+            echo "id_art_conjunto:";echo $id_art_conjunto;
+             echo "cantidad_total:";echo $cantidad_total;
+            echo "codigo_barras:";echo $codigo_barras;
+             echo "id_art_fotos:";echo $id_art_fotos;
+            echo "precio_base:";echo $precio_base;
+             echo "importe:";echo $importe;
+            echo "id_proveedor:";echo $id_proveedor;
+             echo "id_gc:";echo $id_gc;
+            echo "id_moneda:";echo $id_moneda;
+            echo "descripcion:";echo $descripcion;
+
+            
+            printf("Errormessage: %s\n", $baseDatos->error);
+            return false;
+            return false;
+        }
+
+    }
+
+    public static function reiniciar_autoincrement(){
+        global $baseDatos;
+        $sql = "ALTER TABLE art_lote AUTO_INCREMENT = 1";
+        $res = $baseDatos->query($sql);
+        return $res;
+    }
+
     public static function ultimo_id_lote(){
         global $baseDatos;
         $sql_fecha_ab = "SELECT AUTO_INCREMENT AS LastId FROM information_schema.tables WHERE TABLE_SCHEMA='stock' AND TABLE_NAME='art_lote'";

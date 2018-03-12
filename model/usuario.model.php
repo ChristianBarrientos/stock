@@ -413,14 +413,22 @@ class usuario {
         //$id_contacto_tel = $this::alta_contacto($telefono);
         //$id_lote = art_lote::ultimo_id_lote();
         $id_usuario = $_SESSION['usuario']->getId_user();
+
+        
         $sql = "INSERT INTO `lote_us`(`id_lote_us`, `id_usuario`, `id_lote`) VALUES (0,$id_usuario,$id_lote)";
         $res = $baseDatos->query($sql);
         if ($res) {
               
             return true;
         }else{
-             
+            echo "Alta Lote_Us";
+            echo "\n";
+            echo "Id_lote:";echo $id_lote;
+            echo "id_usuario:";echo $id_usuario;
+            
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
+             
         }
 
     }

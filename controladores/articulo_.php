@@ -89,7 +89,8 @@ class Articulo_Controller{
                                 }
                             }
                         }
-
+                        
+                       
                         $cantodad_final_lote_local = $value->getCantidad().'(Total)';
                         $cantodad_final_lote_local .= '<br>';
                         $contadori = 0;
@@ -279,6 +280,7 @@ class Articulo_Controller{
                                     }*/
                                     $tpl->newBlock("actualiza_stock_boton");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
+
                                     $tpl->newBlock("modal_actualiza_stock");
                                     $tpl->assign("id_art_lote",$value->getId_lote());
                                     $tpl->assign("id_art_lote_stock_actual",$value->getId_lote());
@@ -963,6 +965,9 @@ return $tpl->getOutputContent();
 public static function alta_masica_desde_archivo_art($lista){
 
 $bandera = 0;
+//art_lote::reiniciar_autoincrement();
+//art_lote_local::reiniciar_autoincrement();
+
     foreach ($lista as $key => $value) {
         //Armar art_conjunto
             //Alta en tipo
@@ -987,7 +992,7 @@ $bandera = 0;
         ///
 
 
-        $id_lote = art_lote::alta_art_lote($id_conjunto,$cantidad_total,$codigo_barras,$id_art_fotos,$precio_base,$importe,$id_prvd,$id_gc,$id_moneda);
+        $id_lote = art_lote::alta_art_lote_2($value[4],$id_conjunto,$cantidad_total,$codigo_barras,$id_art_fotos,$precio_base,$importe,$id_prvd,$id_gc,$id_moneda);
 
         if ($id_lote) {
             $ok_lote = true;
