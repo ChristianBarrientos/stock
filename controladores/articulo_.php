@@ -978,7 +978,7 @@ $bandera = 0;
         $bandera = $bandera +1;
         $id_art_tipo = art_tipo::alta_art_tipo(str_replace('\'', '', $value[0]));
        
-        $id_conjunto = art_conjunto::alta_art_conjunto(57,33,$id_art_tipo);
+        $id_conjunto = art_conjunto::alta_art_conjunto(1,1,$id_art_tipo);
         $id_prvd = $value[1];
         $codigo_barras = 'null';
         $precio_base = $value[2];
@@ -1028,6 +1028,9 @@ $bandera = 0;
         }else{
             return 'Fallo en lote_local';
         }
+        print_r($value[0]);
+        echo "\n";
+        print_r($value[4]);
         
     }
 

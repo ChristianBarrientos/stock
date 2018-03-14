@@ -33,11 +33,26 @@ class art_lote_local {
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
         $id_lote_local = art_lote_local::ultimo_id_lote_local();
-        
+        echo "COmienzo Alta Art Lote Local";
+        echo "Id_Lote";
+        print_r($id_lote);
+        echo "Id_Local";
+        print_r($id_local);
+        echo "Cantidad";
+        print_r($cantidad_parcial);
+        echo "Id_Carga";
+        print_r($id_carga);
         $sql = "INSERT INTO `art_lote_local`(`id_lote_local`, `id_lote`, `id_local`, `cantidad_parcial`, `id_carga`) VALUES (0,$id_lote,$id_local,$cantidad_parcial,$id_carga)";
         $res = $baseDatos->query($sql);
+        echo "Fin Alta Art Lote Local";
         //printf("Errormessage: %s\n", $baseDatos->error);
         if ($res) {
+            echo "Alta ArtLoteLocal";
+            echo "\n";
+            echo "Id_lote:";echo $id_lote;
+            echo "id_local:";echo $id_local;
+            echo "cantidad_parcial:";echo $cantidad_parcial;
+            echo "id_carga:";echo $id_carga;
              
             return $id_lote_local;
         }else{

@@ -29,8 +29,8 @@
 			$codigo = $data->sheets[0]['cells'][$i][1];
 			$nombre = utf8_encode($data->sheets[0]['cells'][$i][2]);
 			$costo =  $data->sheets[0]['cells'][$i][3];
-			//$prvd = utf8_encode($data->sheets[0]['cells'][$i][4]);
-			$prvd = null;
+			$prvd = utf8_encode($data->sheets[0]['cells'][$i][4]);
+			//$prvd = null;
 			$stock = $data->sheets[0]['cells'][$i][5];
 			$moneda = $data->sheets[0]['cells'][$i][6];
 			$importe = $data->sheets[0]['cells'][$i][7];
@@ -40,25 +40,12 @@
 
 				continue;
 			}
-			if ($prvd == null) {
-				 
-				$id_prvd_alta = 10;
+			if (is_numeric($prvd)) {
+				 $id_prvd_alta = $prvd;
+				
 			}else{
-
+				
 				$id_prvd_alta = 10;
-				/*foreach ($_SESSION["proveedores"] as $key => $value) {
-					$nombre_prv = $value->getid_datos_prvd()->getNombre();
-					$id_prvd =  $value->getId_proveedor();
-					
-					$pos = strpos(strtoupper($prvd),strtoupper($nombre_prv));
-					if ($pos === false OR (strcmp($prvd, $nombre_prv) != 0)) {
-					    //No existe
-					    $id_prvd_alta = 10;
-					} else {
-					 	//Si existe
-					 	$id_prvd_alta = $id_prvd;
-					}
-				}*/
 			}
 			 
 			if (floatval($moneda) > 5) {
