@@ -10,8 +10,8 @@
 //-----------
 //Setear TimeZone
 date_default_timezone_set("America/Argentina/Catamarca");
-	
-set_time_limit(300);
+ini_set('MAX_EXECUTION_TIME', -1);
+ 
 include("include_config.php");
 
 /*global $config;
@@ -93,7 +93,7 @@ if ($config["dbEngine"]=="MYSQL"){
     }
     
 
-
+   
 	$tpl->printToScreen();
     
     	  

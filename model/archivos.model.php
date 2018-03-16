@@ -31,8 +31,7 @@ public static function  cargar_datos ($nom, $size, $tipo, $archivo_tmp_name, $ar
             
             
 			
-			
-
+		 
             copy($ruta, $destino);
             $archivo->ubicacion = $destino;
         }

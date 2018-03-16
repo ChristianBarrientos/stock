@@ -65,76 +65,38 @@
 			<!-- END BLOCK : con_articulos_nolista -->
 			
 	
-			<!-- START BLOCK : con_articulos_lista -->
-			<table cellpadding="15" class="display" id="mitabla" align="center">
+			
+			<table cellpadding="1" class="display" id="mitabla" align="center">
 			<thead>
-			<!-- START BLOCK : con_articulos_lista_cabeza -->
+			 
 			 <tr>
-	            <th>N°</th>
-	            <th>Articulo</th>
-	            <th>Stock</th>
-	            <th>Proveedor</th>            
-	            <th>Precio Costo</th>
-	            <th>Importe</th>
-	            <th>Precio Final</th>
-	            <th>Atributos</th>
-	            <th>Operaciones</th>
+
+	            <th>id</th>
+	            <th>nombre</th>
+	            <th>prvd</th>
+	            <th>costo</th>
+	            <th>importe</th>
+	            <th>moneda</th>
+	            <th>cantidad</th>
+	             
+	             
+	             
 	             
         	</tr>
         	</thead>
         	<tbody>
-        	
-			<!-- END BLOCK : con_articulos_lista_cabeza -->
+
+	        	
 			
-			<!-- START BLOCK : con_articulos_lista_cuerpo -->
-			<tr>
-				<td>{numero}</td>
-	            <td>{nombre}</td>
-	            <td>{cantidad_total}</td>
-	            <td>{art_prvd}</td>
-	            <td>{precio_base}</td>
-	            <td>{ganancia}</td>
-	            <td>{precio_final}</td>
-	            <td>{attr}</td>
-
-	            <td> 
-	        
-
-					<br>
-					<!-- START BLOCK : actualiza_stock_boton -->
-					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#actualiza_{id_art_lote}">Actualizar Stock</button>
-					<!-- START BLOCK : actualiza_stock_boton -->
-					<br>
-					<!-- START BLOCK : actualiza_precio_boton -->
-					<button type="button" class="btn btn-warning" data-toggle="modal" 
-					data-target="#precio_{id_art_lote}">Actualizar Precio</button>
-					<!-- START BLOCK : actualiza_precio_boton -->
-					
-					<!-- START BLOCK : actualiza_atrs_ -->
-					<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#atrs_{id_lote}">
-							Actualizar Atrs
-					</button>
-					<!-- START BLOCK : actualiza_atrs_ -->
-
-					<!-- START BLOCK : ver_cb -->
-					<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#ver_cb_{id_lote}">Ver Codigo de Barras</button>
-					<!-- START BLOCK : ver_cb -->
-
-				</td>
-	        </tr>
-			<!-- END BLOCK : con_articulos_lista_cuerpo -->
-			 
-	            
-	        
 	        </tbody>
 	        </table>
-			<!-- END BLOCK : con_articulos_lista -->
+			
 
 			
 		</div>
 	</div>
 </div>
-
+<a href="#" onclick="mostrar_lista_art()">Mostrar Datos</a>
 <!-- START BLOCK : modal_codigo_ver -->
 <div class="container-fluid">
 	  <div class="row">

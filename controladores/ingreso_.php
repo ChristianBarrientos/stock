@@ -3,10 +3,29 @@
 //use Spipu\Html2Pdf\Html2Pdf;
 class Ingreso_Controller{
 
+	public static function armar_tabla_temp (){
+
+		$ok_temp = usuario::genera_temp_art();
+		if ($ok_temp) {
+			$tabla = usuario::obtener_temp_art();
+			if ($tabla) {
+				echo "Tabla Temp Creada";
+				return true;
+			}else{
+				echo "\n";
+				echo "Error obtener tabla temp";
+				return false;
+			}
+		}else{
+			echo "ERROR GENERAR TAMBLA TEMP--COD.ERROR:616";
+			return false;
+		}
+	}
 
 	public static function login (){
 		
 		if (isset($_SESSION["usuario"])){
+
 			if ($_SESSION["permiso"] == 'ADMIN') {
 				return Ingreso_Controller::menu_admin();
 			}
@@ -14,8 +33,7 @@ class Ingreso_Controller{
 			if ($_SESSION["permiso"] == 'OPER') {
 				return Ingreso_Controller::menu_operador();
 			}
-			
-			
+	
 		}
 		else{
 			$tpl = new TemplatePower("template/login.html");
@@ -120,7 +138,8 @@ class Ingreso_Controller{
 			//$nombre = $baseDatos->real_escape_string($_POST['nombre']);
 			$usuario = new usuario($user, $pass);
 			if($usuario -> verificar_user()){
-				
+				$temp = Ingreso_Controller::armar_tabla_temp();
+				 
 				//if ($usuario -> obtener_us_datos() && $usuario -> obtener_us_prvd_contacto()) {
 				$usuario -> obtener_us_datos();
 				$usuario -> obtener_us_prvd_contacto();
@@ -381,7 +400,7 @@ class Ingreso_Controller{
 		}
 		session_unset();
 		session_destroy();
-
+		usuario::elimina_temp_art();
 		return Ingreso_Controller::login();
 	}
 

@@ -147,16 +147,12 @@ class usuario {
                 $locales_articulos [] = $locales[$clave]->getId_local();
                 
             }
-            //$res_fil['id_zona'];
-            
-           
             //if ($_SESSION["proveedores"] == false) {
-                # code...
                 
-                //$_SESSION["proveedores"] = 0;
+            //    $_SESSION["proveedores"] = 0;
                
-            //}else{
-                //$_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
+            //}else{  
+                $_SESSION["proveedores"] = proveedor::obtener_prvd($id_user);
             //}
       
             $_SESSION["locales"] = $locales;
@@ -308,6 +304,7 @@ class usuario {
         if (count($res_fil) != 0) {
             return $res_fil;
         }else{
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
         
@@ -509,6 +506,70 @@ class usuario {
         $res = $baseDatos->query($sql);
         return $res;   
     }
+
+    public static function genera_temp_art(){
+        global $baseDatos;
+
+
+        $sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),prvd varchar(50),costo DEC(15,2),importe DEC(15,10),moneda DEC(15,2),cantidad varchar(20),PRIMARY KEY pk_id(id))";
+
+        $res = $baseDatos->query($sql);
+        if ($res) {
+
+            $sql = "INSERT INTO temp_art (id,nombre, prvd,costo,importe,moneda,cantidad)
+            SELECT art_lote.id_lote,art_tipo.nombre,prvd_datos.nombre,art_lote.precio_base,art_lote.importe,art_moneda.valor,art_lote.cantidad_total
+            FROM art_conjunto,art_lote,art_articulo,art_marca,art_tipo,prvd_provedor,prvd_datos,art_moneda WHERE ( art_tipo.id_tipo = art_conjunto.id_tipo AND art_conjunto.id_art_conjunto = art_lote.id_art_conjunto) AND (art_lote.id_provedor = prvd_provedor.id_provedor AND prvd_datos.id_datos_prvd = prvd_provedor.id_provedor) AND art_lote.id_moneda = art_moneda.id_moneda";
+            $res = $baseDatos->query($sql);
+            if ($res) {
+
+                
+                 
+            }else{
+                //echo "ERROR al INsertar";
+                //printf("Errormessage: %s\n", $baseDatos->error);
+                 
+            }
+            
+        }else{
+
+            //echo "Error al crear Tabla";
+            //printf("Errormessage: %s\n", $baseDatos->error);
+
+        }
+
+
+        return $res;
+
+         
+
+
+    }
+
+    public static function obtener_temp_art(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `temp_art`");  
+        
+        $res_fil = $res->fetch_all();
+        if (count($res_fil) != 0) {
+           
+            return $res_fil;
+        }else{
+            //printf("Errormessage: %s\n", $baseDatos->error);
+            return false;
+        }
+
+    }
+
+    public static function elimina_temp_art(){
+        global $baseDatos;
+        $sql = "DROP TABLE temp_art";
+        $res = $baseDatos->query($sql);
+        return $res;
+
+    }
+
+    
 
     
 

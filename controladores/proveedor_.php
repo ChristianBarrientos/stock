@@ -9,11 +9,13 @@ class Proveedor_Controller{
      if (Ingreso_Controller::admin_ok()) {
         
                         //if ($_SESSION['usuario']->obtener_locales($_SESSION['usuario'])){
+
         $_SESSION['usuario']->obtener_locales($_SESSION['usuario']);
+         
         if (isset($_SESSION["proveedores"] )) {
             
             if ($_SESSION["proveedores"] == false) {
-                
+               
                 $tpl->newBlock("sin_proveedores");
             }else{
                 
@@ -100,8 +102,6 @@ class Proveedor_Controller{
                 }
             }
         }
-        
-                        //}
         
     }
     else{

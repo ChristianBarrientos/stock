@@ -69,8 +69,9 @@
 			 
 		}
 
+		 
 		$okok = Articulo_Controller::alta_masica_desde_archivo_art($lista);
-
+		 
 		 
 		if ($okok && (!is_string($okok))) {
 
@@ -78,15 +79,16 @@
 	        $tpl->prepare();
 	        $tpl->newBlock("articulos_carga");
 	        $tpl->assign("cantidad_art",$cantidad_filas);
+	        echo "Valor de OKOK en IF:";
+	        print_r($okok);
 	    }else{
 	    	$tpl = new TemplatePower("template/error.html");
 	        $tpl->prepare();
+	        echo "Valor de OKOK en ELSE:";
 	        print_r($okok);
 	    }
         return $tpl->getOutputContent(); 
-        }else{
-			
-		}
+        }
 	}
 }
 	
