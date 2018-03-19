@@ -50,6 +50,7 @@ public static function generar_html(){
 			return Ingreso_Controller::salir();
 		}
 	}
+	$_SESSION["usuario"]->obtener_locales($_SESSION["usuario"]);
 	$clave_reporte = $_GET['clave_reporte'];
 
 	$fecha_desde = $_POST['fecha_desde'];
@@ -672,13 +673,14 @@ public static function fecha_dma_($fecha){
 }
 public static function reporte_global_detallado($fecha_desde,$fecha_hasta,$sb = true){
 	$respuesta = reporte::reporte_por_semana($fecha_desde,$fecha_hasta);
-	
+	 
 	$tpl = new TemplatePower("template/reportes/tabla.html");
 	$tpl->prepare();
 
 	$encabezado_html =  Reportes_Controller::encabezado_reporte('Reporte Global Detallado',Reportes_Controller::fecha_dma_($fecha_desde),Reportes_Controller::fecha_dma_($fecha_hasta));
 	$tpl->assign("encabezado",$encabezado_html);
-
+	 
+	
 	if (isset($_SESSION['locales'])) {
 		$cantidad_locales = count($_SESSION['locales']);
 		$tpl->newBlock("columna_tabla");

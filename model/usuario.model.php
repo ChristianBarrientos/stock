@@ -158,6 +158,7 @@ class usuario {
             $_SESSION["locales"] = $locales;
              
             $array_id_empelados = array();
+             
             foreach ($locales_empleados as $key3 => $value3) {
                 foreach ($value3 as $key4 => $value4) {
                     //array_push($array_id_empelados, $value4->getId_user())
@@ -171,12 +172,13 @@ class usuario {
             $okok_empleados = array_unique($array_id_empelados);
 
             $okok_empleados_fin = array();
+             
             foreach ($okok_empleados as $key5 => $value5) {
  
                 $okok_empleados_fin[] = usuario::generar_usuario($value5);
             }
              
-            //$_SESSION["locales_empleados"] = $okok_empleados_fin;
+            $_SESSION["locales_empleados"] = $okok_empleados_fin;
          
             //$_SESSION["locales_empleados"] =  $locales_empleados; 
             //$_SESSION["locales_empleados"] = $locales_empleados;
@@ -511,14 +513,15 @@ class usuario {
         global $baseDatos;
 
 
-        $sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),prvd varchar(50),costo DEC(15,2),importe DEC(15,10),moneda DEC(15,2),cantidad varchar(20),PRIMARY KEY pk_id(id))";
+        //$sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),prvd varchar(50),costo DEC(15,2),importe DEC(15,2),moneda DEC(15,2),cantidad varchar(20),PRIMARY KEY pk_id(id))";
+        $sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),costo DEC(15,2),importe DEC(15,2),moneda DEC(15,2),PRIMARY KEY pk_id(id))";
 
         $res = $baseDatos->query($sql);
         if ($res) {
 
-            $sql = "INSERT INTO temp_art (id,nombre, prvd,costo,importe,moneda,cantidad)
-            SELECT art_lote.id_lote,art_tipo.nombre,prvd_datos.nombre,art_lote.precio_base,art_lote.importe,art_moneda.valor,art_lote.cantidad_total
-            FROM art_conjunto,art_lote,art_articulo,art_marca,art_tipo,prvd_provedor,prvd_datos,art_moneda WHERE ( art_tipo.id_tipo = art_conjunto.id_tipo AND art_conjunto.id_art_conjunto = art_lote.id_art_conjunto) AND (art_lote.id_provedor = prvd_provedor.id_provedor AND prvd_datos.id_datos_prvd = prvd_provedor.id_provedor) AND art_lote.id_moneda = art_moneda.id_moneda";
+            $sql = "INSERT INTO temp_art (id,nombre,costo,importe,moneda)
+            SELECT art_lote.id_lote,art_tipo.nombre,art_lote.precio_base,art_lote.importe,art_moneda.valor
+            FROM art_conjunto,art_lote,art_tipo,art_moneda WHERE (art_tipo.id_tipo = art_conjunto.id_tipo AND art_conjunto.id_art_conjunto = art_lote.id_art_conjunto)  AND art_lote.id_moneda = art_moneda.id_moneda";
             $res = $baseDatos->query($sql);
             if ($res) {
 

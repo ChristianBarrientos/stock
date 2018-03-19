@@ -53,6 +53,7 @@ class art_tipo {
             return $id_tipo_;
         }else{
              
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 

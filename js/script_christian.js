@@ -938,15 +938,54 @@ function calculo_ganancia(){
         console.log(im);
         
         $("#art_ganancia").val(im.toFixed(6));
-        
-
-
     }else{
         console.log("No se puede realizar el calculo.");
     }
 
     $("#total_pagar").text("Pesos Argentinos:$" + pf.toFixed(2));
     $("#valor_calculado_ganancia").text("Pesos Argentinos: " + pf.toFixed(2));
+}
+
+function calculo_ganancia2(){
+     
+    let pf = parseFloat($("#prc_final").val());
+    let pc = parseFloat($("#costo_art").val());
+    var moneda = String($("#art_moneda option:selected").html());
+    
+    let pm_aux = moneda.replace(/^[a-zA-Z\s]*/,"");
+     
+    let pm = parseFloat(pm_aux.replace(/\(|\)|\$/g,""));
+
+    let im = 0;
+    if (pf != null && pc != null && pm != null) {
+        
+        im = (pf/pc) / pm;
+        
+        
+        $("#importe_art").val(im.toFixed(6));
+    }else{
+        console.log("No se puede realizar el calculo.");
+    }
+    pf = Math.ceil(pf);
+    $("#prc_final").val(pf)
+    //$("#total_pagar").text("Pesos Argentinos:$" + pf.toFixed(2));
+    //$("#valor_calculado_ganancia").text("Pesos Argentinos: " + pf.toFixed(2));
+}
+
+function calculo_precio_valores(){
+     
+    //let pf = parseFloat($("#prc_final").val());
+    console.log("Cat Valores");
+    let pc = parseFloat($("#costo_art").val());
+    var moneda = String($("#art_moneda option:selected").html());
+    let pm_aux = moneda.replace(/^[a-zA-Z\s]*/,"");
+    let pm = parseFloat(pm_aux.replace(/\(|\)|\$/g,""));
+    let imp = parseFloat($("#importe_art").val());
+
+    pf = (parseFloat((pc * pm)) * parseFloat(imp));
+    pf = Math.ceil(pf);
+    console.log("pc:"+pc+"imp:"+imp+"pm:"+pm+"pf:"+pf);
+    $("#prc_final").val(pf)
 }
 
 /*String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };

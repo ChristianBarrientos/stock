@@ -6,7 +6,7 @@ $total = $_GET['total'];
 $medios_pago = $_GET['medios_pago'];
 $articulos = $_GET['articulos'];
 $cuotas = $_GET['cuotas'];
-
+ 
 if (($id_local == null || $id_local == '' ) || ($total == null || $total == '' ) || ($medios_pago == null || $medios_pago == '' ) || ($articulos == null || $articulos == '' ) || ($cuotas == null || $cuotas == '' )) {
 	$data['status'] = 'err';
 	$data['result'] = '';

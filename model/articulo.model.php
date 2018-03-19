@@ -79,78 +79,31 @@ class articulo {
         }
     }
 
-    public static function busqueda_ajax($nombre_art){
+    public static function busqueda_ajax($id){
         global $baseDatos;
-
-        //$baseDatos = new mysqli($config["dbhost"],$config["dbuser"],$config["dbpass"],$config["db"]);
-        /*$res = $baseDatos->query("SELECT lote.id_lote,tipo.nombre
-                                FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto
-                                WHERE tipo.nombre LIKE '%".$nombre_art."%' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '%".$nombre_art."%' ");  */
 
         if (Ingreso_Controller::es_admin()) {
             $id_usuario =  $_SESSION["usuario"]->getId_user();
         }else{
             $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
         }
-        $ot_cl = ot_cliente::generar($id_usuario);
-        $nombre_cliente = $ot_cl->getNombre();
 
-        $pos = strpos($nombre_art, $nombre_cliente);
-        $bandera = false;
-        if (is_numeric($nombre_art)) {
-            $bandera = false;
-        }else{
-            if ($pos === false) {
-                $bandera = true;
-            }else{
-                $bandera = false;
-            }
-        }
-         
-            //$bandera
-        if ($bandera) {
-             
-        
-            $Like = "%".$nombre_art."%";
-            /*$res = $baseDatos->query("SELECT lote.id_lote, art.nombre AS Art,marca.nombre AS Marca,tipo.nombre AS Tipo, lote.importe , lote.precio_base FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_marca as marca, art_articulo as art WHERE tipo.nombre LIKE '$Like' AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto OR lote.codigo_barras LIKE '$Like'"); */
             
-            $res = $baseDatos->query("
-                SELECT lote.id_lote ,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca 
-                FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca 
-                WHERE ((tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') OR (lote.codigo_barras LIKE '$Like')) AND (tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca)
-                ");
-        }else{
-             
-            $res = $baseDatos->query("
-                SELECT lote.id_lote ,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca 
-                FROM art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca 
-                WHERE (lote.codigo_barras = '$nombre_art') AND (tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca)
-                ");
-        }
+        $res = $baseDatos->query("    SELECT *
+                FROM art_lote 
+                WHERE id_lote  = $id");
 
-        /*$res = $baseDatos->query("SELECT DISTINCT lote.id_lote,art.nombre AS Articulo,tipo.nombre AS Tipo, marca.nombre AS Marca, lote.importe , lote.precio_base, moneda.valor AS Moneda FROM art_moneda AS moneda, art_lote as lote, art_tipo as tipo, art_conjunto as conjunto, art_articulo as art, art_marca AS marca WHERE (tipo.nombre LIKE '$Like' OR marca.nombre LIKE '$Like' OR art.nombre LIKE '$Like') AND tipo.id_tipo = conjunto.id_tipo AND lote.id_art_conjunto = conjunto.id_art_conjunto AND conjunto.id_articulo = art.id_articulo AND conjunto.id_marca = marca.id_marca AND moneda.id_moneda = lote.id_moneda OR lote.codigo_barras LIKE '$Like'");*/
-
-        //$res = $baseDatos->query("SELECT id_lote FROM art_lote WHERE id_lote = 1 ");
-        //$filas = $res->fetch_assoc();
         $filas = $res->fetch_all(MYSQLI_ASSOC);
+
         if (count($filas) != 0 && $filas != null AND $filas != '') {
             $attr = '';
             $counter = 0;
             foreach ($filas as $clave => $valor) { 
-                    $lote = art_lote::generar_lote($valor['id_lote']);
-                    //->getId_categoria()
-                    if ($lote->getId_gc() != null) {
-                        $gc = $lote->getId_gc()->getId_categoria();
-
-                        foreach ($gc as $key => $value) {
-                            $nombre_attr = $value->getNombre();
-                            $valor_attr = $value->getValor();
-                            $attr = $attr.$nombre_attr.'('.$valor_attr.')';
-                        }
-                    }
-                    $filas[$counter]['attr'] = $attr;
-                    $attr = '';
-                    $counter = $counter + 1;
+                $lote = art_lote::generar_lote($valor['id_lote']);
+                $id_lote = $lote->getId_lote();
+                $nombre = $lote->getId_art_conjunto()->getId_tipo()->getNombre();
+                $filas[$counter]['attr'] = [$id_lote,$nombre];
+                $counter = $counter + 1;
             }
             
             $data['status'] = 'ok';
@@ -164,6 +117,190 @@ class articulo {
             return false;
         }
     }
+
+    public static function busqueda_ajax2($id){
+        global $baseDatos;
+
+        if (Ingreso_Controller::es_admin()) {
+            $id_usuario =  $_SESSION["usuario"]->getId_user();
+        }else{
+            $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+        }
+
+            
+        $res = $baseDatos->query("    SELECT *
+                FROM art_lote_local 
+                WHERE id_lote  = $id");
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+
+        if (count($filas) != 0 && $filas != null AND $filas != '') {
+            $attr = '';
+            $counter = 0;
+            foreach ($filas as $clave => $valor) { 
+                $lote = art_lote_local::generar_lote_local($valor['id_lote']);
+                     
+                $filas[$counter]['attr'] = $lote;
+
+            }
+            
+            $data['status'] = 'ok';
+            $data['result'] = $filas;
+            
+            return $data;
+        }
+        else{
+            $data['status'] = 'err';
+            $data['result'] = '';
+            return false;
+        }
+    }
+
+    public static function busqueda_ajax3($id){
+        global $baseDatos;
+
+        if (Ingreso_Controller::es_admin()) {
+            $id_usuario =  $_SESSION["usuario"]->getId_user();
+        }else{
+            $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+        }
+
+            
+        $res = $baseDatos->query("SELECT *
+                FROM art_lote,art_moneda
+                WHERE art_lote.id_lote  = $id and art_lote.id_moneda = art_moneda.id_moneda");
+
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+
+        if (count($filas) != 0 && $filas != null AND $filas != '') {
+            $attr = '';
+            $counter = 0;
+            foreach ($filas as $clave => $valor) { 
+                $lote = art_lote_local::generar_lote_local($valor['id_lote']);
+                $valor_moneda = $valor['valor'];
+                $filas[$counter]['attr'] = $lote;
+                $filas[1]['valor_moneda'] = $valor_moneda;
+
+            }
+            
+            $data['status'] = 'ok';
+            $data['result'] = $filas;
+            
+            return $data;
+        }
+        else{
+            $data['status'] = 'err';
+            $data['result'] = '';
+            return false;
+        }
+    }
+
+    public static function act_stock_ajax($id_lote_local,$id_lote,$stock){
+        global $baseDatos;
+
+        if (Ingreso_Controller::es_admin()) {
+            $id_usuario =  $_SESSION["usuario"]->getId_user();
+        }else{
+            $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+        } 
+        $stock_viejo_lote_local = $baseDatos->query("SELECT cantidad_parcial FROM art_lote_local WHERE id_lote_local  = $id_lote_local");
+        $stock_viejo_lote_local = $stock_viejo_lote_local->fetch_assoc();
+
+        $stock_viejo_lote_local = $stock_viejo_lote_local['cantidad_parcial'];
+
+        if ($stock_viejo_lote_local == $stock) {
+            $data['status'] = 'ok';
+            $data['result'] = ['Sin Cambios'];
+            return $data;
+        }else{
+            if ($stock_viejo_lote_local < $stock) {
+                $aux = $stock - $stock_viejo_lote_local;
+            }else{
+                $aux = $stock_viejo_lote_local - $stock;
+            }
+        }
+         
+
+        //$new_stock_lote_local = intval($stock_viejo_lote_local) + intval($aux);
+        $new_stock_lote_local = $stock;
+
+        $stock_viejo_lote = $baseDatos->query("SELECT cantidad_total FROM art_lote WHERE id_lote  = $id_lote");
+        $stock_viejo_lote = $stock_viejo_lote->fetch_assoc();
+        $stock_viejo_lote = $stock_viejo_lote['cantidad_total'];
+
+
+        $new_stock_lote = intval($stock_viejo_lote) + intval($aux);
+         
+
+        $act_lotelocal = articulo::update_ajax($id_lote_local,$new_stock_lote_local,'cantidad_parcial');
+
+        if ($act_lotelocal) {
+            $act_lote = articulo::update_ajax_2($id_lote,$new_stock_lote,'cantidad_total');
+            if ($act_lote) {
+                $data['status'] = 'ok';
+                $data['result'] = ['id_lote',$id_lote,'cantidad_total',$new_stock_lote,'id_lote_local',$id_lote_local,'cantidad_parcial',$new_stock_lote_local];
+            }else{
+                $data['status'] = 'err';
+                $data['result'] = "No Act Lote".$id_lote;  
+                  
+            }
+        }else{
+            $data['status'] = 'err';
+            $data['result'] = "No Act lote local".$id_lote_local;
+             
+            
+        }
+        return $data;
+    }
+
+    public static function update_ajax($id,$valor,$campo){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query("UPDATE `art_lote_local` SET $campo = $valor WHERE id_lote_local = $id");  
+       
+        return $res;
+    }
+
+    public static function comprueba_pass($pass){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query("SELECT * FROM usuarios WHERE acceso='ADMIN' AND pass = '$pass'");  
+        $filas = $res->fetch_all();
+        if ($filas) {
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+
+    
+
+    public static function update_ajax_2($id,$valor,$campo){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query("UPDATE `art_lote` SET $campo = $valor WHERE id_lote = $id");  
+       
+        return $res;
+    }
+
+    public static function act_precio_ajax($id_lote,$costo,$importe,$moneda){
+        //obtener empleados por local
+        global $baseDatos;
+        
+        $res = $baseDatos->query("UPDATE `art_lote` SET precio_base = $costo, importe = $importe, id_moneda = $moneda WHERE id_lote = $id_lote");  
+
+        
+        return $res;
+    }
+
+     
+
+
+    
 
 
 

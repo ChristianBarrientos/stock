@@ -8,13 +8,36 @@ class Articulo_Controller{
         //include('php_recurso/server_process.php');
         $tpl = new TemplatePower("template/seccion_admin_articulos.html");
         $tpl->prepare();
-        if (Ingreso_Controller::admin_ok()) {
+        //if (Ingreso_Controller::admin_ok()) {
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+
+            $monedas  = us_moneda::obtener($id_usuario);
+             
+            foreach ($monedas->getId_moneda() as $key => $value) {
+                $id = $value->getId();
+                $nombre = $value->getNombre();
+                $valor = $value->getValor();
+                $tpl->newBlock("cargar_moneda");
+                $tpl->assign("valor_id_moneda",$id);
+                $tpl->assign("selected_moneda",false);
+                $tpl->assign("nombre_moneda",$nombre.'($ '.$valor.')');
+
+            }
+
             
+
             
-        }
-         else{
-            return Ingreso_Controller::salir();
-        }
+        //}
+        // else{
+        //    return Ingreso_Controller::salir();
+        //}
 
         return $tpl->getOutputContent();
 
@@ -555,9 +578,9 @@ $bandera = 0;
 
     foreach ($lista as $key => $value) {
         //Armar art_conjunto
-            //Alta en tipo
+        //Alta en tipo
         $id_art_tipo = art_tipo::alta_art_tipo(str_replace('\'', '', $value[0]));
-       
+
         $id_conjunto = art_conjunto::alta_art_conjunto(1,1,$id_art_tipo);
         $id_prvd = $value[1];
         $codigo_barras = 'null';
@@ -2389,6 +2412,15 @@ public static function actualizar_precio_lote(){
             return $tpl->getOutputContent();
         }
 
+        public static function comprueba_pass($pass){
+
+            $Respuesta = articulo::comprueba_pass($pass);
+
+            return $Respuesta;
+            
+
+        }
+
         public static function cargar_art_venta($DatosAjax){
             if (Ingreso_Controller::es_admin()) {
                 $es_admin = true;
@@ -2397,6 +2429,7 @@ public static function actualizar_precio_lote(){
             else{ 
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
+                 
                 //return Ingreso_Controller::salir();
             }
 
@@ -2416,6 +2449,76 @@ public static function actualizar_precio_lote(){
 
             //return $tpl->getOutputContent();
      }
+
+        public static function busqueda_art_id($id){
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+            
+            $Respuesta = articulo::busqueda_ajax2($id);
+
+            if ($Respuesta) {
+             return $Respuesta;
+         }
+        }
+
+        public static function busqueda_art_id2($id){
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+            
+            $Respuesta = articulo::busqueda_ajax3($id);
+
+            if ($Respuesta) {
+             return $Respuesta;
+         }
+        }
+
+        public static function act_stock_($id_lote_local,$id_lote,$stock){
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+            
+            $Respuesta = articulo::act_stock_ajax($id_lote_local,$id_lote,$stock);
+
+            if ($Respuesta) {
+             return $Respuesta;
+         }
+        }
+
+        public static function act_precio_($id_lote,$costo,$importe,$moneda){
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+            
+            $Respuesta = articulo::act_precio_ajax($id_lote,$costo,$importe,$moneda);
+
+            if ($Respuesta) {
+             return $Respuesta;
+         }
+        }
      
      public static function facturacion_input($id_lote){
         if (Ingreso_Controller::es_admin()) {
@@ -2609,6 +2712,9 @@ public static function cargar_art_marca(){
     
 
 }
+
+
+
 
 public static function actualiza_atrs(){
 

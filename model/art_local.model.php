@@ -51,6 +51,7 @@ class art_local {
             $empleados_lista[] = usuario::obtener_tabla_usuario($value['id_usuarios']);
 
         }
+         
         return $empleados_lista;
        
     }

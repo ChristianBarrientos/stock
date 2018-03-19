@@ -9,7 +9,7 @@ class Ingreso_Controller{
 		if ($ok_temp) {
 			$tabla = usuario::obtener_temp_art();
 			if ($tabla) {
-				echo "Tabla Temp Creada";
+				 
 				return true;
 			}else{
 				echo "\n";

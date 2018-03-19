@@ -89,13 +89,13 @@ class art_venta {
                 
                 if (count($aux) == 5) {
                     $id_user_carga = $aux[4];
-                    if ($id_user_carga == $id_usuario) {
+                    //if ($id_user_carga == $id_usuario) {
 
                         $ventas[] = art_venta::generar($value['id_venta']);
 
-                    }else{
-                        continue;
-                    }
+                    //}else{
+                    //    continue;
+                    //}
                 }else{
                     continue;
                 }

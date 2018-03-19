@@ -41,20 +41,17 @@ public static function menu(){
     $tpl->prepare();
     if (Ingreso_Controller::es_admin()) {
         
-     $empleados_si = false;
+        $empleados_si = true;
  }else{
     return Ingreso_Controller::salir();
 
 }
 if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
-
-    
+ 
     foreach ($_SESSION["locales_empleados"] as $clave => $valor) {
 
-					//foreach ($_SESSION["locales_empleados"][$key] as $clave => $valor) {
-      
-        
-
+		//foreach ($valor2 as $clave => $valor) {
+       
       if ($valor->getAcceso() == 'OPER') {
         
          $empleados_si = true;
@@ -113,9 +110,9 @@ if ($_SESSION['usuario']::obtener_locales($_SESSION['usuario'])) {
 
 }
 
-if (!($empleados_si)) {
-    $tpl->newBlock("sin_empleados");
-}
+    if (!($empleados_si)) {
+        $tpl->newBlock("sin_empleados");
+    }
 			//else{
 			//	return Ingreso_Controller::salir();
 			//}
@@ -488,7 +485,7 @@ public static function alta_empelado(){
             $tpl->assign("nombre_local", $value->getNombre());
 
             
-            foreach ($_SESSION["locales_empleados"] as $key2 => $value2) {
+            foreach ($_SESSION["locales_empleados"]  as $key2 => $value2) {
              
              
                 if ($id_usuario == $value2->getId_user()) {

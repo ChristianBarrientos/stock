@@ -28,7 +28,7 @@ class art_conjunto {
              
             return $id_conjunto;
         }else{
-             
+            printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
 

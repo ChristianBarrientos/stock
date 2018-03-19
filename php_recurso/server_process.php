@@ -21,7 +21,7 @@
 	$sTabla = "temp_art";
 
 	/* Array que contiene los nombres de las columnas de la tabla*/
-	$aColumnas = array( 'id', 'nombre', 'prvd','costo','importe','moneda','cantidad');
+	$aColumnas = array( 'id', 'nombre','costo','importe','moneda');
 	
 	/* columna indexada */
 	$sIndexColumn = "id";
@@ -64,7 +64,6 @@
 		//{
 			$sWhere .= 'id'." LIKE '%".$_GET['sSearch']."%' OR ";
 			$sWhere .= 'nombre'." LIKE '%".$_GET['sSearch']."%' OR ";
-			$sWhere .= 'prvd'." LIKE '%".$_GET['sSearch']."%' OR ";
 		//}
 		$sWhere = substr_replace( $sWhere, "", -3 );
 		$sWhere .= ')';
@@ -131,6 +130,11 @@
 	"aaData" => array()
 	);
 	
+	$costo = 0;
+	$importe = 0;
+	$moneda = 0;
+	$precio_final = 0;
+	$es_Admin = Ingreso_Controller::admin_ok();
 	while ( $aRow = $rResult->fetch_array())
 	{
 		$row = array();
@@ -144,11 +148,63 @@
 			else if ( $aColumnas[$i] != ' ' )
 			{
 				/* General output */
+				if ($es_Admin) {
+					if ($i == 2) {
+						$costo = $aRow[$aColumnas[$i]];
+					}
+					if ($i == 3) {
+						$importe = $aRow[$aColumnas[$i]];
+					}
+					if ($i == 4) {
+						$moneda = $aRow[$aColumnas[$i]];
+					}
+
+					if ($costo != 0 AND $importe != 0 AND $moneda != 0) {
+						$precio_final = (floatval(($costo * $moneda)) * floatval($importe));
+					}
+				}else{
+					if ($i == 2) {
+						$costo = $aRow[$aColumnas[$i]];
+						$aRow[$aColumnas[$i]] = 0;
+					}
+					if ($i == 3) {
+						$importe = $aRow[$aColumnas[$i]];
+						$aRow[$aColumnas[$i]] = 0;
+					}
+					if ($i == 4) {
+						$moneda = $aRow[$aColumnas[$i]];
+						$aRow[$aColumnas[$i]] = 0;
+					}
+
+					if ($costo != 0 AND $importe != 0 AND $moneda != 0) {
+						$precio_final = (floatval(($costo * $moneda)) * floatval($importe));
+					}
+
+				}
+					
 				$row[] = $aRow[ $aColumnas[$i] ];
 			}
 		}
+		if ($precio_final != 0) {
+			$row[] = ceil($precio_final) ;
+		}
+
+		$precio_final = 0;
+		$costo = 0;
+		$importe = 0;
+		$moneda = 0;
+		if ($es_Admin) {
+			$row[] = "<td><span  id='".$aRow['id']."' onclick='stock_art(this)' class='glyphicon glyphicon-align-left para_clic'></span></td>";
+
+			$row[] = "<td><span  id='".$aRow['id']."' onclick='precio_art(this)' class='glyphicon glyphicon-usd para_clic'></span></td>";
+		}else{
+			$row[] = "<td><span  id='".$aRow['id']."' class='glyphicon glyphicon-align-left para_clic'></span></td>";
+
+			$row[] = "<td><span  id='".$aRow['id']."' class='glyphicon glyphicon-usd para_clic'></span></td>";
+
+		}
 		
-		//$row[] = "<td><a href='modificar.php?id=".$aRow['id']."'><span ></span></a></td>";
+
 		//$row[] = "<td><a href='#' data-href='eliminar.php?id=".$aRow['id']."' data-toggle='modal' data-target='#confirm-delete'><span ></span></a></td>";
 		
 		$output['aaData'][] = $row;

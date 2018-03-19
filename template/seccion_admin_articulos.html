@@ -12,6 +12,10 @@
 			</div>
 		</div>
 
+		<div id="msj_noencontrado" hidden>
+			<h3>No encontrado</h3>
+		</div>
+
 		<br>
 		<!-- START BLOCK : con_articulos_actualiza_lote_masivo2 -->
 		<div class="row">
@@ -63,25 +67,190 @@
 
 			</div>
 			<!-- END BLOCK : con_articulos_nolista -->
-			
-	
-			
+		
+		<div class="modal fade" id="stock_art" role="dialog">
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">Stock de Articulos</h4>
+		        </div>
+		        <div class="form-group">
+			    	<div class="row">
+			    		<div class=" col-sm-offset-2 control-label  col-sm-4 col-xs-12">
+						    <label for="stock_1">DEPOSITO:</label>
+						</div>	
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input type="number" class="form-control" id="stock_1" placeholder="Ingrese el codigo de barras del articulo." name="stock_1">
+									      
+						</div>
+			    	</div>
+			    </div>
+
+			    <div class="form-group">
+			    	<div class="row">
+			    		<div class=" col-sm-offset-2 control-label  col-sm-4 col-xs-12">
+						    <label for="stock_2">MOTOMATCH CENTRAL:</label>
+						</div>	
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input type="number" class="form-control" id="stock_2" placeholder="Ingrese el codigo de barras del articulo." name="stock_2">
+									      
+						</div>
+			    	</div>
+			    </div>
+
+			    <div class="form-group">
+			    	<div class="row">
+			    		<div class=" col-sm-offset-2 control-label  col-sm-4 col-xs-12">
+						    <label for="stock_3">MOTOMATCH III:</label>
+						</div>	
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input type="number" class="form-control" id="stock_3" placeholder="Ingrese el codigo de barras del articulo." name="stock_3">
+									      
+						</div>
+			    	</div>
+			    </div>
+
+			    <div class="form-group">
+			    	<div class="row">
+			    		<div class=" col-sm-offset-2 control-label  col-sm-4 col-xs-12">
+						    <label for="stock_4">MOTOMATCH IV:</label>
+						</div>	
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input type="number" class="form-control" id="stock_4" placeholder="Ingrese el codigo de barras del articulo." name="stock_4">
+									      
+						</div>
+			    	</div>
+			    </div>
+		       
+				
+				<div class="form-group">
+					<div class="row">
+						<div class=" col-sm-offset-2 control-label  col-sm-2">
+							<button id="act_stock" type="button" class="btn btn-info">Actualizar</button>
+						</div>
+					</div>
+				</div>
+
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        </div>
+		      </div>
+		      
+		    </div>
+		</div>
+
+		<div class="modal fade" id="precio_art" role="dialog">
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">Precio de Articulo</h4>
+		        </div>
+		        <div class="modal-body">
+		          	 
+			    <div class="form-group">
+			    	<div class="row">
+			    		<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+						    <label for="costo_art">Costo:</label>
+						</div>	
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input  onblur="calculo_precio_valores()"  type="number" min="0" step="0.001" class="form-control" id="costo_art" placeholder="Ingrese el codigo de barras del articulo." name="costo_art">
+									      
+						</div>
+			    	</div>
+			    </div>
+		          	
+				    
+				<div class="form-group">
+					<div class="row">
+						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+						    <label for="costo_art">Moneda:</label>
+						</div>
+						<div onblur="calculo_precio_valores()" class="col-md-4 col-sm-3 col-xs-12">
+					      <select  required name="art_moneda" id="art_moneda"> 
+						      <option disabled value="null" {selected_ninguno} >Ninguno</option>
+						      <!-- START BLOCK : cargar_moneda -->
+						        <option value="{valor_id_moneda}" >{nombre_moneda}</option>
+						      <!-- END BLOCK : cargar_moneda -->
+					      </select>
+					      
+				    	</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+						    <label for="importe_art">Importe:</label>
+						</div>
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									         
+							<input  onblur="calculo_precio_valores()"  type="number" min="0" step="0.001" class="form-control" id="importe_art" placeholder="Ingrese el codigo de barras del articulo." name="importe_art">
+									      
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+						    <label for="prc_final">Precio Final:</label>
+						</div>
+						<div class="col-md-4 col-sm-3 col-xs-12">
+									       
+							<input onblur="calculo_ganancia2()" type="number" min="0" step="0.001" class="form-control" id="prc_final" placeholder="Precio Final del Articulo" name="prc_final">
+									      
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class=" col-sm-offset-2 control-label  col-sm-2">
+							<button id="act_precio" type="button" class="btn btn-info">Actualizar</button>
+						</div>
+					</div>
+				</div>
+				
+
+				 
+		        </div>
+
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        </div>
+		      </div>
+		      
+		    </div>
+		</div>
+
+
 			<table cellpadding="1" class="display" id="mitabla" align="center">
 			<thead>
 			 
 			 <tr>
 
-	            <th>id</th>
-	            <th>nombre</th>
-	            <th>prvd</th>
-	            <th>costo</th>
-	            <th>importe</th>
-	            <th>moneda</th>
-	            <th>cantidad</th>
+			 	
+	            <th>Codigo</th>
+	            <th>Nombre</th>
 	             
-	             
-	             
-	             
+	            <th>Costo</th>
+	            <th>Importe</th>
+	            <th>Moneda</th>
+	            <th>Total</th>
+	            
+	            <th></th>  
+	            <th></th> 
+
         	</tr>
         	</thead>
         	<tbody>
