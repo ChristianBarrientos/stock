@@ -31,9 +31,9 @@ class Ajax_lista{
 		$id_lote_local = $_GET['id_lote_local'];
 		$stock = $_GET['stock'];
 		$id_lote = $_GET['id_lote'];
-
+		echo "Entra en Act Stock";
 		$Respuesta = Articulo_Controller::act_stock_($id_lote_local,$id_lote,$stock);
-		  
+		 echo "Sale de Act Stock";
 		if (count($Respuesta) == 0 OR $Respuesta == '' OR $Respuesta == null) {
 
 			echo json_encode("<h3>Sin Resultados</h3>");

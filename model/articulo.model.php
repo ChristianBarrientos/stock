@@ -197,7 +197,7 @@ class articulo {
 
     public static function act_stock_ajax($id_lote_local,$id_lote,$stock){
         global $baseDatos;
-
+        echo "Entra en ariculo model";
         if (Ingreso_Controller::es_admin()) {
             $id_usuario =  $_SESSION["usuario"]->getId_user();
         }else{
@@ -250,6 +250,7 @@ class articulo {
              
             
         }
+        
         return $data;
     }
 
@@ -258,7 +259,8 @@ class articulo {
         global $baseDatos;
        
         $res = $baseDatos->query("UPDATE `art_lote_local` SET $campo = $valor WHERE id_lote_local = $id");  
-       
+        echo "Ajax_";
+       printf("Errormessage: %s\n", $baseDatos->error);
         return $res;
     }
 
@@ -283,7 +285,8 @@ class articulo {
         global $baseDatos;
        
         $res = $baseDatos->query("UPDATE `art_lote` SET $campo = $valor WHERE id_lote = $id");  
-       
+        echo "Ajax_2";
+       printf("Errormessage: %s\n", $baseDatos->error);
         return $res;
     }
 

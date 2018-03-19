@@ -3,6 +3,7 @@ var id_lote  = 0;
 
 function stock_art(obj){
     buscar_art_(obj.id,1);
+    id_lote = obj.id;
     $('#stock_art').modal();
 }
 

@@ -2451,14 +2451,14 @@ public static function actualizar_precio_lote(){
      }
 
         public static function busqueda_art_id($id){
-            if (Ingreso_Controller::es_admin()) {
+            /*if (Ingreso_Controller::es_admin()) {
                 $es_admin = true;
                 $id_usuario =  $_SESSION["usuario"]->getId_user();
             }
             else{ 
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
-            }
+            }*/
             
             $Respuesta = articulo::busqueda_ajax2($id);
 
@@ -2468,14 +2468,14 @@ public static function actualizar_precio_lote(){
         }
 
         public static function busqueda_art_id2($id){
-            if (Ingreso_Controller::es_admin()) {
+            /*if (Ingreso_Controller::es_admin()) {
                 $es_admin = true;
                 $id_usuario =  $_SESSION["usuario"]->getId_user();
             }
             else{ 
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
-            }
+            }*/
             
             $Respuesta = articulo::busqueda_ajax3($id);
 
@@ -2485,25 +2485,32 @@ public static function actualizar_precio_lote(){
         }
 
         public static function act_stock_($id_lote_local,$id_lote,$stock){
-            if (Ingreso_Controller::es_admin()) {
+            //echo "Entra en Articulo Act Srtocj";
+            /*if (Ingreso_Controller::es_admin()) {
+                echo "Salio menu admin, es admin";
                 $es_admin = true;
                 $id_usuario =  $_SESSION["usuario"]->getId_user();
             }
             else{ 
-
+                 echo "Salio menu admin,NO es admin";
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
-            }
-            
+            }*/
+            //echo "Salio de los otras dos";
             $Respuesta = articulo::act_stock_ajax($id_lote_local,$id_lote,$stock);
+            //echo "Fin articulo model";
+            //echo "Respuesta";
+            //print_r($Respuesta);
 
             if ($Respuesta) {
              return $Respuesta;
-         }
+            }else{
+                echo "Devuelve ELse";
+            }
         }
 
         public static function act_precio_($id_lote,$costo,$importe,$moneda){
-            if (Ingreso_Controller::es_admin()) {
+            /*if (Ingreso_Controller::es_admin()) {
                 $es_admin = true;
                 $id_usuario =  $_SESSION["usuario"]->getId_user();
             }
@@ -2511,7 +2518,7 @@ public static function actualizar_precio_lote(){
 
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
-            }
+            }*/
             
             $Respuesta = articulo::act_precio_ajax($id_lote,$costo,$importe,$moneda);
 
