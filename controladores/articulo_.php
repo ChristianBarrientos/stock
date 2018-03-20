@@ -17,6 +17,15 @@ class Articulo_Controller{
                 $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
                 $es_admin = false;
             }
+            
+            foreach ($_SESSION['locales'] as $key => $value) {
+        
+                $tpl->newBlock("locales_mv");              
+                $tpl->assign("id_local_mv", $value->getId_local());
+                $tpl->assign("nombre_local_mv", $value->getNombre());  
+            }
+
+
 
             $monedas  = us_moneda::obtener($id_usuario);
              
@@ -42,7 +51,91 @@ class Articulo_Controller{
         return $tpl->getOutputContent();
 
     }
+    public static function Declarar_sobrante(){
+        $tpl = new TemplatePower("template/venta_declarar_sobrante.html");
+        $tpl->prepare();
+        $tpl->newBlock("fecha_sobrante");
+        $hoy = getdate();
+        $ahora = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+        $tpl->assign("fecha_actual",$ahora);
+        return $tpl->getOutputContent();
+    }
 
+    public static function alta_sobrante(){
+
+        if (isset($_SESSION['usuario'])) {
+            $cantidad_sobrante = $_POST['cantidad_sobrante'];
+            $fecha_sobrante = $_POST['fecha_sobrante'];
+            $detalles_sobrante = $_POST['detalles_sobrante'];
+            $usuario = $_SESSION['usuario']->getId_user();
+
+             
+            $id_sobrante = art_sobrante::alta ($cantidad_sobrante, $usuario,$fecha_sobrante, $detalles_sobrante);
+
+            if ($id_sobrante) {
+                $tpl = new TemplatePower("template/exito.html");
+                $tpl->prepare();
+                $tpl->newBlock("alta_sobrante_exito");
+            }else{
+                $tpl = new TemplatePower("template/error.html");
+                $tpl->prepare();
+                 
+
+            }
+
+        }else{
+            return Ingreso_Controller::salir();
+        }
+        return $tpl->getOutputContent();
+
+    }
+
+ 
+    public static function alta_movimiento($art_lote,$id_local,$id_lote_local,$cantidad,$tipo_mv,$detalle){
+
+        if (isset($_SESSION['usuario'])) {
+
+           
+            $hoy = getdate();
+            $fecha_hora =$hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'].' '.$hoy['hours'].':'.$hoy['minutes'].':'.$hoy['seconds'];
+        
+            
+            
+
+            switch ($tipo_mv) {
+                case 'carga':
+                    $Respuesta = articulo::act_stock_ajax($id_lote_local,$art_lote,$cantidad);
+                    if ($Respuesta['status'] == 'ok') {
+                        $okok = art_movimiento::carga($art_lote,$id_local,$cantidad,$fecha_hora,$detalle);
+
+                    }else{
+                        echo "Error al Act el Stock";
+                    }
+                    
+                    break;
+                case 'decomiso':
+                    $okok = art_movimiento::decomiso($art_lote,$cantidad,$fecha_hora,$descripcion,$detalle,$art_lote_local);
+
+                    break;
+                case 'devuelto':
+                    $okok = art_movimiento::devuelto($art_lote,$cantidad,$fecha_hora,$descripcion,$detalle,$art_lote_local);
+                    break;
+                case 'traslado':
+                    $art_lote_local = $_POST['art_lote_local'];
+                    $okok = art_movimiento::traslado($art_lote,$cantidad,$fecha_hora,$descripcion,$detalle,$art_lote_local);
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+           
+
+        }else{
+            return Ingreso_Controller::salir();
+        }
+        return $Respuesta;
+
+    }
             public static function pre_mostrar_operador(){
 
                 $id_empleado_venta_local_art = $_GET['id_local'];
@@ -1687,6 +1780,7 @@ public static function confirmar_venta(){
             $fecha_hasta = $value6->getId_fechas_medio()->getFecha_hora_fin();
             $dias = $value6->getId_dias_medio()->getDias();
             //$dia_hoy = $date_php['wday'];
+            $date_php = getdate();
             $hoy = $date_php['year'].'-'.$date_php['mon'].'-'.$date_php['mday'];
             $dias_faltantes_desde = Articulo_Controller::compararFechas($fecha_desde,$hoy);
             $dias_faltantes_hasta = Articulo_Controller::compararFechas($fecha_hasta,$hoy);
@@ -2438,12 +2532,12 @@ public static function actualizar_precio_lote(){
             
             $Respuesta = articulo::busqueda_ajax($Datos);
 
-            if ($Respuesta) {
+            //if ($Respuesta) {
                     # code...
              return $Respuesta;
-         }else{
-                    //echo "Mal";
-         }
+         //}else{
+            //    return false;
+         //}
 
          
 

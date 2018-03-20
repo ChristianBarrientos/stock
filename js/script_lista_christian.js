@@ -14,6 +14,12 @@ function precio_art(obj){
   
 }
 
+function mv_art(obj){
+    console.log("MvModal");
+    $('#modal_mv_art').modal();
+    
+}
+
 function buscar_art_($id_lote,$opcion){
     let Datos = new FormData();
     switch($opcion) {
@@ -46,8 +52,6 @@ function buscar_art_lote(id,opc){
 
 
         var valores = JSON.parse(response);
-        console.log('Respuesta:');
-        console.log(valores);
         if (valores.status == 'ok') {
 
             art_lote_local_ = valores.result;
@@ -129,6 +133,35 @@ $(document).ready(function(){
                 id_moneda: moneda,
                 importe: importe,
                 opcion: 4
+            };
+        $.get("template/venta_/ajax_lista.php", params, function (response) {
+            console.log(response);
+            var valores = JSON.parse(response);
+            console.log(valores);
+            if (valores.status == 'ok') {
+                    
+            }else{
+                $("#msj_noencontrado").show();
+            }
+        }); 
+
+    });
+
+    $('#btn_mv_art').click(function(){
+        console.log("Cargar_Articulos");
+        let codigo = $("#mv_codigo_art").val();
+        let tipo_mv = $("#tipo_mv").val();
+        let local_mv = $("#local_mv option:selected").val();
+        let cantidad_mv = $("#cantidad_mv").val();
+        let detalle = $("#cantidad_mv").val();
+
+        var params = {
+                id_lote: codigo,
+                cantidad: cantidad_mv,
+                tipo_mv: tipo_mv,
+                detalle : detalle,
+                id_local : local_mv,
+                opcion: 6
             };
         $.get("template/venta_/ajax_lista.php", params, function (response) {
             console.log(response);

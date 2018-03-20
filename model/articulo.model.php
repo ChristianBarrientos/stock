@@ -91,7 +91,7 @@ class articulo {
             
         $res = $baseDatos->query("    SELECT *
                 FROM art_lote 
-                WHERE id_lote  = $id");
+                WHERE id_lote  = '$id'");
 
         $filas = $res->fetch_all(MYSQLI_ASSOC);
 
@@ -197,7 +197,7 @@ class articulo {
 
     public static function act_stock_ajax($id_lote_local,$id_lote,$stock){
         global $baseDatos;
-        echo "Entra en ariculo model";
+        
         if (Ingreso_Controller::es_admin()) {
             $id_usuario =  $_SESSION["usuario"]->getId_user();
         }else{

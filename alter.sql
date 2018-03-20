@@ -136,3 +136,12 @@ para que anda dompdf
 
 //08/03/2018
 ALTER TABLE art_lote MODIFY importe DEC(15,10) NOT NULL;
+
+//20/03/2018
+CREATE TABLE  art_sobrante (
+     id_sobrante INTEGER AUTO_INCREMENT NOT NULL,
+     cantidad INTEGER NOT NULL,
+     usuario INTEGER NOT NULL,
+     descripcion VARCHAR(100),
+     KEY (id_sobrante)
+     ) ENGINE=InnoDB;

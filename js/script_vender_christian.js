@@ -40,7 +40,20 @@ $( "#cantidad_cuotas" ).prop( "disabled", true );
 
 $(document).ready(function()
     {   
+
+
       foco_cajabusqueda();
+
+
+      $("#CajaBusqueda").on("keyup", function() {
+          var campo = $('#CajaBusqueda').val();
+          // Ocultar o mostrar de acuerdo al largo del texto
+          if(campo === ''){
+              $(".tap2").hide();
+              $(".tap1").hide();
+              return false;
+          }
+      });
 
       $('#div_carga')
           .hide()
@@ -60,7 +73,7 @@ $(document).ready(function()
           var code = (e.keyCode ? e.keyCode : e.which);
           if(code==13){
             let art;
-            console.log("EnterKey2");
+           
             art_obtener();
           }
           foco_cajabusqueda();
@@ -219,7 +232,7 @@ function art_obtener(){
       contentType: false,
       processData: false,
     success: function(Respuesta){ 
-      
+      console.log(Respuesta);
       var valores = JSON.parse(Respuesta);
       
       if (valores.status == 'ok') {

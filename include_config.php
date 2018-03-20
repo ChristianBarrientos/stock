@@ -17,6 +17,7 @@ include('controladores/reportes_.php');
 include('controladores/autoventa_.php');
 
 /*Modelos*/
+include('model/art_sobrante.model.php');
 include('model/usuario.model.php');
 include('model/us_datos.usuario.model.php');
 include('model/us_prvd_contacto.prvd.usuario.model.php');

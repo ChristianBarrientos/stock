@@ -1,0 +1,101 @@
+<div class="cargar_monedas">
+
+
+<div class="container">
+	
+	  <h2>Declarar Sobrante de Caja</h2>
+	  <h3>Datos generales</h3>
+ 							        
+	  <form class="form-horizontal" enctype="multipart/form-data" action="index.php?action=Articulo::alta_sobrante" method="post">
+	
+	    <div class="form-group">
+	    <div class="row">
+	    	<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      		<label for="nombre_moneda">Fecha:</label>
+	     	</div>	
+	       	<div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				<div class=" col-sm-12 col-xs-8">
+				     
+				<!-- START BLOCK : fecha_sobrante -->
+			        <div class='input-group date' id='fecha_sobrante'>
+			            <input disabled value="{fecha_actual}" placeholder="AAAA-MM-DD" name="fecha_sobrante" type='text' class="form-control" />
+			            <span class="input-group-addon">
+			                <span class="glyphicon glyphicon-calendar"></span>
+			            </span>
+			        </div>
+			    </div>  
+			    <!-- END BLOCK : fecha_sobrante --> 
+			   
+				<script type="text/javascript">
+				    $(function () {
+				    	
+				        $('#fecha_sobrante').datetimepicker({
+				        	//
+				        	format: 'YYYY-MM-DD HH:MM:SS'
+
+
+				        });
+				    });
+				</script>
+				      
+			</div>
+
+			 
+			      
+		</div>	    
+	    </div>
+
+	    <div class="form-group">
+	    <div class="row">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      <label for="cantidad_sobrante">Cantidad:</label>
+	     </div>	
+	            <div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				    <input required type="number" step="0.01" class="form-control" id="cantidad_sobrante" placeholder="Valor de la moneda" name="cantidad_sobrante">
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+
+	    <div class="form-group">
+	    <div class="row">
+	    <div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
+	      <label for="detalles_sobrante">Detalles:</label>
+	     </div>	
+	            <div class="col-md-4 col-sm-3 col-xs-12">
+				         
+				    <input type="text" class="form-control" id="detalles_sobrante" placeholder="Detalles sobre el sobrante de dinero." name="detalles_sobrante">
+				      
+			    </div>
+			      
+		</div>	    
+	    </div>
+
+	    <div class="form-group">
+	     
+	    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+	        	<button type="submit" id ="us_gct_button" class="btn btn-default">Cargar</button>
+	      	</div>
+  
+		    <!-- START BLOCK : sin_locales --> 
+		    <div class="alert alert-warning">
+	  			<strong>Alerta!</strong> {mensaje_alerta}
+			</div>
+		    	<div class="col-md-5 col-sm-offset-2 col-sm-5 col-xs-12">
+		        	<button disabled="disabled" type="submit" class="btn btn-default">Cargar</button>
+		      	</div>
+		    <!-- END BLOCK : sin_locales -->     
+	      
+	    </div>
+
+	  
+
+	  </form>
+	</div>
+
+</div>
+
+	 

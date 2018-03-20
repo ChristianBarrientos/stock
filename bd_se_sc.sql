@@ -644,6 +644,30 @@ CREATE TABLE  sl_datos (
      KEY (id_sl_datos)
      ) ENGINE=InnoDB;
 
+CREATE TABLE  art_sobrante (
+     id_sobrante INTEGER AUTO_INCREMENT NOT NULL,
+     cantidad INTEGER NOT NULL,
+     usuario INTEGER NOT NULL,
+     fecha_hora DATETIME NOT NULL,
+     descripcion VARCHAR(100),
+     KEY (id_sobrante)
+     ) ENGINE=InnoDB;
+
+CREATE TABLE  art_movimiento (
+     id_movimiento INTEGER AUTO_INCREMENT NOT NULL,
+     id_art_lote INTEGER NOT NULL,
+     cantidad INTEGER NOT NULL,
+     tipo ENUM('carga', 'decomiso', 'devuelto', 'traslado'),
+     fecha_hora DATETIME NOT NULL,
+     usuario INTEGER NOT NULL,
+     id_local INTEGER NOT NULL,
+     id_local_2 INTEGER,
+     id_prvd INTEGER,
+     descripcion VARCHAR(100),
+     KEY (id_movimiento)
+     ) ENGINE=InnoDB;
+
+
 
 
 

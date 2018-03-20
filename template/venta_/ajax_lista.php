@@ -103,6 +103,23 @@ class Ajax_lista{
 		
 	}
 
+	public function cargar_art(){
+		 
+
+		$id_lote = $this->Busqueda;
+        $cantidad = $_POST['cantidad'];
+        $tipo_mv = $_POST['tipo_mv'];
+        $detalle = $_POST['detalle'];
+        $id_local = $_POST['id_local'];
+		 
+		$id_lote_local = art_lote_local::obtener_lote_local_oper($id_lote,$id_local);
+
+		$Respuesta = Articulo_Controller::alta_movimiento($id_lote,$id_local,$id_lote_local,$cantidad,$tipo_mv,$detalle);
+		echo json_encode($Respuesta);
+			
+		
+	}
+
 	
 
 	
@@ -132,6 +149,10 @@ if (isset($_GET['opcion'])) {
 
 		case 5:
 			$a->comprueba_pass();
+			break;
+
+		case 6:
+			$a->cargar_art();
 			break;
 
 		default:
