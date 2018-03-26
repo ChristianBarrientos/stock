@@ -620,15 +620,16 @@ class usuario {
             $res = $baseDatos->query($sql_aux);  
             $filas = $res->fetch_all(MYSQLI_ASSOC);
 
+            print_r($filas);
+            $array_final = array();
             foreach ($filas as $key => $value) { 
                 $codigo = $value['id_lote'];  
                 $nombre = $value['nombre'];  
                 $local = $value['id_local'];  
-                $local = $value['cantidad_parcial'];
+                $local = $value['cantidad_parcial']; 
 
-                
-                 
             }
+
             $sql = "INSERT INTO temp_art_traslado (id,nombre,local,cantidad)
             VALUES ()";
             $res = $baseDatos->query($sql);
