@@ -5,22 +5,15 @@
 			<div class="col-md-6 col-xs-4">
 				<div class="titulo-secciones panel-heading">Articulos</div>
 			</div>
-			<div class="col-md-4 col-xs-12">
-					<a href="index.php?action=Articulo::cargar_deposito">
-						<button type="button" class="agregar btn btn-primary">Agregar</button>
-					</a>
-
-					<a href="#">
-						<button type="button" onclick="mv_art()" class="agregar btn btn-primary">Actualizar/Mover</button>
-					</a>
-			</div>
+			 
 
 
 		</div>
-
-		<div id="msj_noencontrado" hidden>
-			<h3>No encontrado</h3>
+		
+		<div>
+			<h3>Precio y Stock</h3>
 		</div>
+		 
 
 		<br>
 		<!-- START BLOCK : con_articulos_actualiza_lote_masivo2 -->
@@ -44,35 +37,7 @@
 		</div>
 		<!--table-responsive  crea una barra horizontal de navegacion en talbets-->
 		<div class="row ">
-		<!-- START BLOCK : con_articulos_nolista -->
-
-			<div class="col-md-6 col-xs-12">
-				<div class="panel panel-default">
-				  <div class="panel-body">
-				  </div>
-				  <div class="panel panel-default">
-					  <div class="panel-heading"><strong>{nombre}</strong></div>
-					  <div class="panel-body">
-					    <p><img class="img-circle img-responsive" id="empleado_foto" src="{empl_foto}" alt=""></p>
-					  </div>
-					  <ul class="list-group">
-					    <li class="list-group-item"><strong>Proveedor:</strong>  {prvd}</li>
-					    <li class="list-group-item"><strong>Cantidad Total:</strong> {cantidad_total}</li>
-					    <li class="list-group-item"><strong>Codigo de Barra:</strong> {cb}</li>
-					    <li class="list-group-item"><strong>Medida:</strong> {art_medida}</li>
-					    <li class="list-group-item"><strong>Precio Costo:</strong> {precio_base}</li>
-					    <li class="list-group-item"><strong>Importe:</strong> {importe}</li>
-					    <li class="list-group-item"><strong>Credito Personal:</strong> {credito_personal}</li>
-					    <li class="list-group-item"><strong>Color:</strong> {art_color}</li>
-					  </ul>
-					</div>
-					<div class="panel-footer">
-						<button type="button" class="btn btn-info">Modificar</button>
-					</div>
-				</div>
-
-			</div>
-			<!-- END BLOCK : con_articulos_nolista -->
+		 
 		
 		<div class="modal fade" id="stock_art" role="dialog">
 		    <div class="modal-dialog">
@@ -90,7 +55,7 @@
 						</div>	
 						<div class="col-md-4 col-sm-3 col-xs-12">
 									         
-							<input type="number" class="form-control" id="stock_1" placeholder="Ingrese el codigo de barras del articulo." name="stock_1">
+							<input disabled type="number" class="form-control" id="stock_1" placeholder="Ingrese el codigo de barras del articulo." name="stock_1">
 									      
 						</div>
 			    	</div>
@@ -103,7 +68,7 @@
 						</div>	
 						<div class="col-md-4 col-sm-3 col-xs-12">
 									         
-							<input type="number" class="form-control" id="stock_2" placeholder="Ingrese el codigo de barras del articulo." name="stock_2">
+							<input disabled type="number" class="form-control" id="stock_2" placeholder="Ingrese el codigo de barras del articulo." name="stock_2">
 									      
 						</div>
 			    	</div>
@@ -116,7 +81,7 @@
 						</div>	
 						<div class="col-md-4 col-sm-3 col-xs-12">
 									         
-							<input type="number" class="form-control" id="stock_3" placeholder="Ingrese el codigo de barras del articulo." name="stock_3">
+							<input disabled type="number" class="form-control" id="stock_3" placeholder="Ingrese el codigo de barras del articulo." name="stock_3">
 									      
 						</div>
 			    	</div>
@@ -129,27 +94,11 @@
 						</div>	
 						<div class="col-md-4 col-sm-3 col-xs-12">
 									         
-							<input type="number" class="form-control" id="stock_4" placeholder="Ingrese el codigo de barras del articulo." name="stock_4">
+							<input disabled type="number" class="form-control" id="stock_4" placeholder="Ingrese el codigo de barras del articulo." name="stock_4">
 									      
 						</div>
 			    	</div>
 			    </div>
-		       	
-		       	
-		
-
-			
-
-
-
-				
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2">
-							<button id="act_stock" type="button" class="btn btn-info">Actualizar</button>
-						</div>
-					</div>
-				</div>
 
 		        <div class="modal-footer">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -158,127 +107,7 @@
 		      
 		    </div>
 		</div>
-
-		<div class="modal fade" id="modal_mv_art" role="dialog">
-		    <div class="modal-dialog">
-
-		      <div class="modal-content">
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h4 class="modal-title">Movimiento de Articulo</h4>
-		        </div>
-		        <div class="modal-body">
-		          	 
-			    <div class="form-group">
-			    	<div class="row">
-			    		<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="mv_codigo_art">Codigo(*):</label>
-						</div>	
-						<div class="col-md-4 col-sm-3 col-xs-12">
-									         
-							<input  type="number" min="0" step="1" class="form-control" id="mv_codigo_art" placeholder="Ingrese el codigo del articulo." name="mv_codigo_art">
-									      
-						</div>
-			    	</div>
-			    </div>
-		          	
-				    
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="costo_art">Accion(*):</label>
-						</div>
-						<div class="col-md-4 col-sm-3 col-xs-12">
-					      <select  required name="tipo_mv" id="tipo_mv"> 
-						      <option disabled value="null" selected="" >Ninguno</option>
-						       <option value="carga" >Cargar</option>
-						       <!--<option value="decomiso" >Decomiso</option>
-						       <option value="devuelto" >Devuelto</option>
-						       <option value="traslado" >Traslado</option>-->
-					      </select>
-					      
-				    	</div>
-					</div>
-				</div>
-	
-			
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="local_mv">Local(*):</label>
-						</div>
-						<div class="col-md-4 col-sm-3 col-xs-12">
-					      <select  required name="local_mv" id="local_mv"> 
-						      <option disabled value="null" selected="" >Ninguno</option>
-						      <!-- START BLOCK : locales_mv -->
-						      	<option value="{id_local_mv}" >{nombre_local_mv}</option>
-						      <!-- END BLOCK : locales_mv -->
-					      </select>
-					      
-				    	</div>
-					</div>
-				</div>
-
-				<!--<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="prc_final">Proveedor:</label>
-						</div>
-						<div class="col-md-4 col-sm-3 col-xs-12">
-									       
-							<input onblur="calculo_ganancia2()" type="number" min="0" step="0.001" class="form-control" id="prc_final" placeholder="Precio Final del Articulo" name="prc_final">
-									      
-						</div>
-					</div>
-				</div>-->
-
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="cantidad_mv">Cantidad(*):</label>
-						</div>
-						<div class="col-md-4 col-sm-3 col-xs-12">
-									       
-							<input type="number" min="0" step="1" class="form-control" id="cantidad_mv" placeholder="Cantidad de articulos a mover/cargar." name="cantidad_mv">
-									      
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">
-						    <label for="detalle_mv">Detalle:</label>
-						</div>
-						<div class="col-md-4 col-sm-3 col-xs-12">
-									       
-							<input type="text" class="form-control" id="cantidad_mv" placeholder="Ingrese detalle relevante." name="detalle_mv">
-									      
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="row">
-						<div class=" col-sm-offset-2 control-label  col-sm-2">
-							<button id="btn_mv_art" type="button" class="btn btn-info">Confirmar</button>
-						</div>
-					</div>
-				</div>
-				
-
-				 
-		        </div>
-
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		        </div>
-		      </div>
-		      
-		    </div>
-		</div>
-
-
+ 
 		<div class="modal fade" id="precio_art" role="dialog">
 		    <div class="modal-dialog">
 		    
@@ -289,7 +118,13 @@
 		          <h4 class="modal-title">Precio de Articulo</h4>
 		        </div>
 		        <div class="modal-body">
-		          	 
+		          	 <div id="exito_precio_art" class="alert alert-success">
+					  <strong>Exito!!</strong>Precio Actualizado con Exito.
+					</div>
+					<div id="error_precio_art" class="alert alert-danger">
+					  <strong>Error!</strong> Error. No se pudo actualizar el precio.
+					</div>
+ 
 			    <div class="form-group">
 			    	<div class="row">
 			    		<div class=" col-sm-offset-2 control-label  col-sm-2 col-xs-12">

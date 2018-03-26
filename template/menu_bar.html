@@ -76,10 +76,14 @@
                 <li class="dropdown" {select_articulos}>
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articulos <span sclass="sr-only" class="pull-right hidden-xs showopacity caret" tyle="font-size:16px;"></span></a>
-
+                   
                     <ul class="dropdown-menu">
                         <!--class="disabled" en el li -->
-                        <li >  <a href="index.php?action=Articulo::mostrar">Listar/Modificar</a></li>
+                        <li >  <a href="index.php?action=Articulo::cargar_deposito">Alta Articulo</a></li>
+                        <li >  <a href="index.php?action=Articulo::mostrar">Precio y Stock</a></li>
+                        <li >  <a href="index.php?action=Articulo::cargar_stock">Cargar Stock</a></li>
+                        <li >  <a href="index.php?action=Articulo::traslado_art">Traslado</a></li>
+                        
                         <li><a href="index.php?action=Proveedor::menu&opcion_list=1">Proveedores</a></li>
                         <li><a href="index.php?action=Articulo::Vender">Vender</a></li>
 
@@ -103,6 +107,7 @@
 
                     <ul class="dropdown-menu">
                         <!--class="disabled" en el li -->
+                       
                         <li > <a href="index.php?action=Gasto::menu">Listar</a></li>
 
                         <li class="divider"></li>

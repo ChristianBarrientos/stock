@@ -61,26 +61,34 @@ class art_lote {
              
             return $id;
         }else{
-            echo "Alta Art_lote";
-            echo "\n";
-            echo "Id_lote:";echo $id;
-            echo "id_art_conjunto:";echo $id_art_conjunto;
-             echo "cantidad_total:";echo $cantidad_total;
-            echo "codigo_barras:";echo $codigo_barras;
-             echo "id_art_fotos:";echo $id_art_fotos;
-            echo "precio_base:";echo $precio_base;
-             echo "importe:";echo $importe;
-            echo "id_proveedor:";echo $id_proveedor;
-             echo "id_gc:";echo $id_gc;
-            echo "id_moneda:";echo $id_moneda;
-            echo "descripcion:";echo $descripcion;
-
-            
+        
             printf("Errormessage: %s\n", $baseDatos->error);
             return false;
             return false;
         }
 
+    }
+
+    public static function existe_cb($cb){
+        global $baseDatos;
+        
+         
+        $sql_fecha_ab = "SELECT count(*) AS cantidad FROM art_lote WHERE codigo_barras ='$cb' ";
+        $res = $baseDatos->query($sql_fecha_ab);
+        $res_fil = $res->fetch_assoc();
+         
+        if ($res_fil['cantidad'] == 0) {
+             
+            $data['status'] = 'ok';
+            $data['result'] = "No existe coincidencia"; 
+        }else{
+            
+            $data['status'] = 'err';
+            $data['result'] = "Ya existe un codigo de barras como el introducido"; 
+        }
+         
+
+        return $data;
     }
 
     public static function reiniciar_autoincrement(){
@@ -203,6 +211,11 @@ class art_lote {
              case 'cantidad_total':
                 # code...
                 $res = $baseDatos->query(" UPDATE `art_lote` SET `cantidad_total`='$valor_nuevo' WHERE id_lote = $id_lote");  
+                break;
+
+             case 'codigo_barras':
+                # code...
+                $res = $baseDatos->query(" UPDATE `art_lote` SET `codigo_barras`='$valor_nuevo' WHERE id_lote = $id_lote");  
                 break;
             default:
                 # code...

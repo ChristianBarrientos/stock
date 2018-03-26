@@ -39,10 +39,6 @@ class Articulo_Controller{
                 $tpl->assign("nombre_moneda",$nombre.'($ '.$valor.')');
 
             }
-
-            
-
-            
         //}
         // else{
         //    return Ingreso_Controller::salir();
@@ -51,6 +47,59 @@ class Articulo_Controller{
         return $tpl->getOutputContent();
 
     }
+
+    public static function cargar_stock(){
+        //usuario::genera_temp_art();
+        //$temp = usuario::obtener_temp_art();
+        
+        //include('php_recurso/server_process.php');
+        $tpl = new TemplatePower("template/cargar_stock_articulo.html");
+        $tpl->prepare();
+        //if (Ingreso_Controller::admin_ok()) {
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+           $_SESSION['usuario']->obtener_locales_2($_SESSION['usuario']);
+            foreach ($_SESSION['locales'] as $key => $value) {
+        
+                $tpl->newBlock("locales_mv");              
+                $tpl->assign("id_local_mv", $value->getId_local());
+                $tpl->assign("nombre_local_mv", $value->getNombre());  
+            }
+
+        return $tpl->getOutputContent();
+
+    }
+
+    public static function traslado_art(){
+        
+        $tpl = new TemplatePower("template/traslado_articulo.html");
+        $tpl->prepare();
+        //if (Ingreso_Controller::admin_ok()) {
+            if (Ingreso_Controller::es_admin()) {
+                $es_admin = true;
+                $id_usuario =  $_SESSION["usuario"]->getId_user();
+            }
+            else{ 
+                $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
+                $es_admin = false;
+            }
+           $_SESSION['usuario']->obtener_locales_2($_SESSION['usuario']);
+            foreach ($_SESSION['locales'] as $key => $value) {
+        
+                $tpl->newBlock("locales_mv");              
+                $tpl->assign("id_local_mv", $value->getId_local());
+                $tpl->assign("nombre_local_mv", $value->getNombre());  
+            }
+
+        return $tpl->getOutputContent();
+    }
+    
     public static function Declarar_sobrante(){
         $tpl = new TemplatePower("template/venta_declarar_sobrante.html");
         $tpl->prepare();
@@ -104,12 +153,15 @@ class Articulo_Controller{
 
             switch ($tipo_mv) {
                 case 'carga':
+
                     $Respuesta = articulo::act_stock_ajax($id_lote_local,$art_lote,$cantidad);
                     if ($Respuesta['status'] == 'ok') {
-                        $okok = art_movimiento::carga($art_lote,$id_local,$cantidad,$fecha_hora,$detalle);
+
+                        $Respuesta = art_movimiento::alta_carga($art_lote,$id_local,$cantidad,$fecha_hora,$detalle);
 
                     }else{
-                        echo "Error al Act el Stock";
+                       
+                        return $Respuesta;
                     }
                     
                     break;
@@ -2591,17 +2643,21 @@ public static function actualizar_precio_lote(){
                 $es_admin = false;
             }*/
             //echo "Salio de los otras dos";
+            //$data['result'] = $data['result'] .'Entra en Act_stock_ajax';  
             $Respuesta = articulo::act_stock_ajax($id_lote_local,$id_lote,$stock);
+            //$data['result'] = $data['result'] .'Sale de Act_stock_ajax';
             //echo "Fin articulo model";
             //echo "Respuesta";
             //print_r($Respuesta);
 
-            if ($Respuesta) {
+            //if ($Respuesta) {
              return $Respuesta;
-            }else{
-                echo "Devuelve ELse";
-            }
+            //}else{
+            //    echo "Devuelve ELse";
+            //}
         }
+
+
 
         public static function act_precio_($id_lote,$costo,$importe,$moneda){
             /*if (Ingreso_Controller::es_admin()) {
@@ -2616,9 +2672,9 @@ public static function actualizar_precio_lote(){
             
             $Respuesta = articulo::act_precio_ajax($id_lote,$costo,$importe,$moneda);
 
-            if ($Respuesta) {
-             return $Respuesta;
-         }
+             
+            return $Respuesta;
+          
         }
      
      public static function facturacion_input($id_lote){

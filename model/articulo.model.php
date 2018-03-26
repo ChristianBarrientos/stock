@@ -197,12 +197,8 @@ class articulo {
 
     public static function act_stock_ajax($id_lote_local,$id_lote,$stock){
         global $baseDatos;
-        
-        if (Ingreso_Controller::es_admin()) {
-            $id_usuario =  $_SESSION["usuario"]->getId_user();
-        }else{
-            $id_usuario = usuario::obtener_jefe($_SESSION["usuario"]->getId_user());
-        } 
+
+         
         $stock_viejo_lote_local = $baseDatos->query("SELECT cantidad_parcial FROM art_lote_local WHERE id_lote_local  = $id_lote_local");
         $stock_viejo_lote_local = $stock_viejo_lote_local->fetch_assoc();
 
@@ -213,26 +209,22 @@ class articulo {
             $data['result'] = ['Sin Cambios'];
             return $data;
         }else{
-            if ($stock_viejo_lote_local < $stock) {
-                $aux = $stock - $stock_viejo_lote_local;
-            }else{
-                $aux = $stock_viejo_lote_local - $stock;
-            }
+            $new_stock_lote_local = $stock_viejo_lote_local + $stock;
         }
          
 
         //$new_stock_lote_local = intval($stock_viejo_lote_local) + intval($aux);
-        $new_stock_lote_local = $stock;
+        //$new_stock_lote_local = $stock;
 
         $stock_viejo_lote = $baseDatos->query("SELECT cantidad_total FROM art_lote WHERE id_lote  = $id_lote");
         $stock_viejo_lote = $stock_viejo_lote->fetch_assoc();
         $stock_viejo_lote = $stock_viejo_lote['cantidad_total'];
 
 
-        $new_stock_lote = intval($stock_viejo_lote) + intval($aux);
+        $new_stock_lote = intval($stock_viejo_lote) + intval($stock);
          
 
-        $act_lotelocal = articulo::update_ajax($id_lote_local,$new_stock_lote_local,'cantidad_parcial');
+        $act_lotelocal = articulo::update_ajax_22($id_lote_local,$new_stock_lote_local,'cantidad_parcial');
 
         if ($act_lotelocal) {
             $act_lote = articulo::update_ajax_2($id_lote,$new_stock_lote,'cantidad_total');
@@ -246,9 +238,7 @@ class articulo {
             }
         }else{
             $data['status'] = 'err';
-            $data['result'] = "No Act lote local".$id_lote_local;
-             
-            
+            $data['result'] = "No Act lote local".$id_lote_local; 
         }
         
         return $data;
@@ -259,8 +249,18 @@ class articulo {
         global $baseDatos;
        
         $res = $baseDatos->query("UPDATE `art_lote_local` SET $campo = $valor WHERE id_lote_local = $id");  
-        echo "Ajax_";
-       printf("Errormessage: %s\n", $baseDatos->error);
+        //echo "Ajax_";
+       //printf("Errormessage: %s\n", $baseDatos->error);
+        return $res;
+    }
+
+    public static function update_ajax_22($id,$valor,$campo){
+        //obtener empleados por local
+        global $baseDatos;
+       
+        $res = $baseDatos->query("UPDATE `art_lote_local` SET cantidad_parcial = $valor WHERE id_lote_local = $id");  
+        //echo "Ajax_";
+       //printf("Errormessage: %s\n", $baseDatos->error);
         return $res;
     }
 
@@ -285,8 +285,8 @@ class articulo {
         global $baseDatos;
        
         $res = $baseDatos->query("UPDATE `art_lote` SET $campo = $valor WHERE id_lote = $id");  
-        echo "Ajax_2";
-       printf("Errormessage: %s\n", $baseDatos->error);
+        //echo "Ajax_2";
+        //printf("Errormessage: %s\n", $baseDatos->error);
         return $res;
     }
 
@@ -295,9 +295,15 @@ class articulo {
         global $baseDatos;
         
         $res = $baseDatos->query("UPDATE `art_lote` SET precio_base = $costo, importe = $importe, id_moneda = $moneda WHERE id_lote = $id_lote");  
-
+        if ($res) {
+            $data['status'] = 'ok';
+            $data['result'] = "Exito";     
+        }else{
+            $data['status'] = 'err';
+            $data['result'] = "Error"; 
+        }
         
-        return $res;
+        return $data;
     }
 
      

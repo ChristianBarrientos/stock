@@ -6,16 +6,10 @@ class Ingreso_Controller{
 	public static function armar_tabla_temp (){
 
 		$ok_temp = usuario::genera_temp_art();
-		if ($ok_temp) {
-			$tabla = usuario::obtener_temp_art();
-			if ($tabla) {
-				 
-				return true;
-			}else{
-				echo "\n";
-				echo "Error obtener tabla temp";
-				return false;
-			}
+		$ok_temp_cargar = usuario::genera_temp_art_cargar();
+		$ok_temp_traslado = usuario::genera_temp_art_traslado();
+		if ($ok_temp && $ok_temp_cargar && $ok_temp_traslado) {
+			return true;
 		}else{
 			echo "ERROR GENERAR TAMBLA TEMP--COD.ERROR:616";
 			return false;

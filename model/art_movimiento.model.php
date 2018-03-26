@@ -78,27 +78,33 @@ public static function obtener($id_movimiento){
         }
 	}
  
-public static function alta_carga($id_art_lote,$id_local,$cantidad,$fecha_hora,$detalle){
+public static function alta_carga($id_art_lote,$id_local,$cantidad,$fecha_hora,$detalle = 'null'){
 
 	$tipo = 'carga';
 	$usuario = $_SESSION['usuario']->getId_user();
 
+	$id_lote_local = art_lote_local::obtener_lote_local_oper($id_art_lote,$id_local);
+	 
 	global $baseDatos;
         
         //$id_contacto_tel = $this::alta_contacto($telefono);
-        $art_movimiento = art_movimiento::ultimo_id();
+        //$art_movimiento = art_movimiento::ultimo_id();
         
-        $sql = "INSERT INTO `art_movimiento`(`id_movimiento`, `id_art_lote`, `cantidad`, `tipo`, `fecha_hora`, `usuario`, `id_art_lote_local`, `id_art_lote_local_2`, `id_prvd`, `descripcion`) VALUES (0,$id_art_lote,[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10])";
+        $sql = "INSERT INTO `art_movimiento`(`id_movimiento`, `id_art_lote`, `cantidad`, `tipo`, `fecha_hora`, `usuario`, `id_local`, `id_local_2`, `id_prvd`, `descripcion`) VALUES (0,$id_art_lote,$cantidad,'$tipo','$fecha_hora',$usuario,$id_local,null,null,'$detalle')";
+
         $res = $baseDatos->query($sql);
         if ($res) {
-             
-            return $art_movimiento;
+            $data['status'] = 'ok';
+            $data['result'] = "Stock, cargado con Exito";  
+            
         }else{
-            printf("Errormessage: %s\n", $baseDatos->error);
+        	$data['status'] = 'err';
+            $data['result'] = "No Act Lote".$id_lote_local.'errormysql:'.$baseDatos->error;  
+            //printf("Errormessage: %s\n", $baseDatos->error);
             return false;
         }
-	
 
+        return $data;
 }
 
 public static function decomiso($id_art_lote, $cantidad,$fecha_hora,$usuario){

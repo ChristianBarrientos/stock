@@ -205,6 +205,29 @@ class usuario {
         }
     }
 
+    public static function obtener_locales_2($user){
+        global $baseDatos;
+        
+        $id_user = $user->getId_user();
+
+        $res = $baseDatos->query("SELECT * FROM us_local WHERE id_usuarios = $id_user");  
+        $filas = $res->fetch_all(MYSQLI_ASSOC);
+        
+        if (count($filas) != 0) {
+            $locales = array();
+            foreach ($filas as $clave => $valor) {
+
+                $locales [] = art_local::generar_local($valor['id_local'],count($locales_empleados[$clave]));   
+            }
+            $_SESSION["locales"] = $locales;
+             
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public static function obtener_locales_empleado($id_empleado){
         global $baseDatos;
         $res = $baseDatos->query("SELECT * FROM `us_local` WHERE `id_usuarios` = $id_empleado");  
@@ -548,10 +571,104 @@ class usuario {
 
     }
 
+    public static function genera_temp_art_cargar(){
+        global $baseDatos;
+
+
+        //$sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),prvd varchar(50),costo DEC(15,2),importe DEC(15,2),moneda DEC(15,2),cantidad varchar(20),PRIMARY KEY pk_id(id))";
+        $sql = "CREATE TEMPORARY TABLE temp_art_cargar (id INTEGER,nombre varchar(50),codigo varchar(50),PRIMARY KEY pk_id2(id))";
+
+        $res = $baseDatos->query($sql);
+        if ($res) {
+
+            $sql = "INSERT INTO temp_art_cargar (id,nombre,codigo)
+            SELECT art_lote.id_lote,art_tipo.nombre,art_lote.codigo_barras
+            FROM art_conjunto,art_lote,art_tipo WHERE (art_tipo.id_tipo = art_conjunto.id_tipo AND art_conjunto.id_art_conjunto = art_lote.id_art_conjunto)";
+            $res = $baseDatos->query($sql);
+            if ($res) {
+  
+            }else{
+                //echo "ERROR al INsertar";
+                //printf("Errormessage: %s\n", $baseDatos->error);  
+            }
+            
+        }else{
+
+            //echo "Error al crear Tabla";
+            //printf("Errormessage: %s\n", $baseDatos->error);
+
+        }
+        return $res;
+
+    }
+
+    public static function genera_temp_art_traslado(){
+        global $baseDatos;
+
+
+        //$sql = "CREATE TEMPORARY TABLE temp_art (id INTEGER,nombre varchar(50),prvd varchar(50),costo DEC(15,2),importe DEC(15,2),moneda DEC(15,2),cantidad varchar(20),PRIMARY KEY pk_id(id))";
+        $sql = "CREATE TEMPORARY TABLE temp_art_traslado (id INTEGER,nombre varchar(50),deposito INTEGER,central INTEGER, III INTEGER, IV INTEGER)";
+
+        $res = $baseDatos->query($sql);
+        if ($res) {
+            //Obtener array
+            $sql_aux = "SELECT art_lote.id_lote,art_tipo.nombre,art_local.id_local,art_lote_local.cantidad_parcial            
+                FROM art_conjunto,art_lote,art_tipo,art_local,art_lote_local 
+                WHERE (art_tipo.id_tipo = art_conjunto.id_tipo AND art_conjunto.id_art_conjunto = art_lote.id_art_conjunto) 
+                AND (art_lote.id_lote = art_lote_local.id_lote AND art_local.id_local = art_lote_local.id_local)";
+
+            $res = $baseDatos->query($sql_aux);  
+            $filas = $res->fetch_all(MYSQLI_ASSOC);
+
+            foreach ($filas as $key => $value) { 
+                $codigo = $value['id_lote'];  
+                $nombre = $value['nombre'];  
+                $local = $value['id_local'];  
+                $local = $value['cantidad_parcial'];
+
+                
+                 
+            }
+            $sql = "INSERT INTO temp_art_traslado (id,nombre,local,cantidad)
+            VALUES ()";
+            $res = $baseDatos->query($sql);
+            if ($res) {
+  
+            }else{
+                echo "ERROR al Insertar";
+                printf("Errormessage: %s\n", $baseDatos->error);  
+            }
+            
+        }else{
+
+            echo "Error al crear Tabla";
+            printf("Errormessage: %s\n", $baseDatos->error);
+
+        }
+        return $res;
+
+    }
+
     public static function obtener_temp_art(){
         global $baseDatos;
         
         $res = $baseDatos->query("SELECT * FROM `temp_art`");  
+        
+        $res_fil = $res->fetch_all();
+        if (count($res_fil) != 0) {
+           
+            return $res_fil;
+        }else{
+            //printf("Errormessage: %s\n", $baseDatos->error);
+            return false;
+        }
+
+    }
+
+    public static function obtener_temp_art_cargar(){
+        global $baseDatos;
+        
+        $res = $baseDatos->query("SELECT * FROM `temp_art_cargar`");  
         
         $res_fil = $res->fetch_all();
         if (count($res_fil) != 0) {

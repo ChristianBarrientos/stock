@@ -9,10 +9,69 @@ function stock_art(obj){
 
 function precio_art(obj){
     $('#precio_art').modal();
+    $("#error_precio_art").hide();
+    $("#exito_precio_art").hide();
     buscar_art_(obj.id,2);
     id_lote = obj.id;
   
 }
+
+function cargar_stock_art_cerrar_model(){
+    //$("#exito_carga_art").hide();
+    //$("#error_carga_art").hide();
+
+    $("#exito_carga_art").fadeOut(5);
+    $("#error_carga_art").fadeOut(5);
+    $("#advertencia_carga_art").fadeOut(5);
+}
+
+function precio_art_cerrar_model(){
+    //$("#exito_carga_art").hide();
+    //$("#error_carga_art").hide();
+
+    $("#error_precio_art").fadeOut(5);
+    $("#exito_precio_art").fadeOut(5);
+     
+}
+
+function cargar_stock_art(obj){
+    $('#modal_mv_art').modal();
+    $('#codigo_art').val(obj.id);
+    $("#exito_carga_art").hide();
+    $("#error_carga_art").hide();
+    $("#advertencia_carga_art").hide();
+
+    $('#cantidad_mv').val('');
+    //buscar_art_(obj.id,2);
+    id_lote = obj.id;
+  
+}
+
+function cargar_codigobarras_art_cerrar_model(){
+    //$("#exito_carga_art").hide();
+    //$("#error_carga_art").hide();
+
+    $("#exito_codigobarras_art").fadeOut(5);
+    $("#error_codigobarras_art").fadeOut(5);
+    $("#advertencia_codigobarras_art").fadeOut(5);
+}
+
+function cargar_codigo_art(obj){
+    id_lote = obj.id;
+    $('#modal_codigobarras_art').modal();
+    $('#codigo_art_codigobarras').val(obj.id);
+    $("#exito_codigobarras_art").hide();
+    $("#error_codigobarras_art").hide();
+    $("#advertencia_codigobarras_art").hide();
+    $('#codigo_barras_art').val('');
+    
+    $('input[name=codigo_barras_art]').focus();
+    //$('input:text:visible:first', '#codigo_barras_art').focus();
+    //$('#codigo_barras_art').focus();
+    //$('#codigo_barras_art').select();
+}
+
+
 
 function mv_art(obj){
     console.log("MvModal");
@@ -135,26 +194,36 @@ $(document).ready(function(){
                 opcion: 4
             };
         $.get("template/venta_/ajax_lista.php", params, function (response) {
-            console.log(response);
+             
             var valores = JSON.parse(response);
-            console.log(valores);
+             
             if (valores.status == 'ok') {
-                    
+                 $("#exito_precio_art").show();
             }else{
-                $("#msj_noencontrado").show();
+                 $("#error_precio_art").show();
             }
-        }); 
 
+        }); 
+        setTimeout(precio_art_cerrar_model, 4000);
     });
 
-    $('#btn_mv_art').click(function(){
+    $('#btn_mv_art_cargar').click(function(){
         console.log("Cargar_Articulos");
-        let codigo = $("#mv_codigo_art").val();
-        let tipo_mv = $("#tipo_mv").val();
+        let codigo = $("#codigo_art").val();
+        let tipo_mv = 'carga';
         let local_mv = $("#local_mv option:selected").val();
         let cantidad_mv = $("#cantidad_mv").val();
-        let detalle = $("#cantidad_mv").val();
-
+        let detalle = $("#detalle_mv").val();
+        console.log("Id_lote");
+        console.log(codigo);
+        console.log("cantidad");
+        console.log(cantidad_mv);
+        console.log("tipo_mv");
+        console.log(tipo_mv);
+        console.log("detalle");
+        console.log(detalle);
+        console.log("id_local");
+        console.log(local_mv);
         var params = {
                 id_lote: codigo,
                 cantidad: cantidad_mv,
@@ -168,13 +237,66 @@ $(document).ready(function(){
             var valores = JSON.parse(response);
             console.log(valores);
             if (valores.status == 'ok') {
-                    
+                console.log("Exito");
+                console.log(valores);
+                $("#exito_carga_art").show();
             }else{
-                $("#msj_noencontrado").show();
+                console.log("Sin Exito");
+                console.log(valores);
+                if (valores.status == 'err2') {
+                    $("#advertencia_carga_art").show();
+                }else{
+                    $("#error_carga_art").show();
+                }
+                
+                
             }
         }); 
-
+        setTimeout(cargar_stock_art_cerrar_model, 4000);
     });
+
+    $('#btn_mv_art_codigobarras').click(function(){
+        console.log("Cargar Codigo de Barras");
+        let codigo = $("#codigo_art").val();
+        let tipo_mv = 'codigo_barras';
+        let codigobarras = $("#codigo_barras_art").val();
+
+        console.log("Id_lote");
+        console.log(codigo);
+        console.log("tipo_mv");
+        console.log(tipo_mv);
+        console.log("codigobarras");
+        console.log(codigobarras);
+
+        var params = {
+                id_lote: codigo,
+                tipo_mv: tipo_mv,
+                codigobarras : codigobarras,
+                opcion: 7
+            };
+        $.get("template/venta_/ajax_lista.php", params, function (response) {
+            console.log(response);
+            var valores = JSON.parse(response);
+            console.log(valores);
+            if (valores.status == 'ok') {
+                console.log("Exito");
+                console.log(valores);
+                $("#exito_codigobarras_art").show();
+            }else{
+                console.log("Sin Exito");
+                console.log(valores);
+                if (valores.status == 'err2') {
+                    $("#advertencia_codigobarras_art").show();
+                }else{
+                    $("#error_codigobarras_art").show();
+                }
+                
+                
+            }
+        }); 
+        setTimeout(cargar_codigobarras_art_cerrar_model, 4000);
+    });
+    
 
 
     $('#act_stock').click(function(){
